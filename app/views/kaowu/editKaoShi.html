@@ -1,0 +1,330 @@
+<h4 class="pb10 bdb">
+  <span class="cYell">{{session.defaultLyName}}</span><span>新建考试</span><em style="font-size:12px">带 <i>*</i>为必填项</em>
+</h4>
+<div class="row editKaoShi">
+  <form class="form-horizontal" name="kaoshiForm">
+    <!--<div class="form-group explain">-->
+      <!--<label class="col-sm-2 control-label"></label>-->
+      <!--<div class="col-sm-8">-->
+        <!---->
+      <!--</div>-->
+    <!--</div>-->
+    <div class="form-group">
+      <label class="col-sm-2 control-label">考试名称<i>*</i></label>
+      <div class="col-sm-6">
+        <input type="text" name="ksName" class="form-control" placeholder="考试名称" required autofocus="true"
+               ng-model="kaoshiData.shuju.KAOSHIZU_NAME"/>
+      </div>
+      <div class="col-sm-4">
+        <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">考试名称不能为空！</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>
+      <div class="col-sm-2">
+        <input type="text" name="ksTime" class="form-control" placeholder="时长" required maxlength="3"
+               onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kaoshiData.shuju.SHICHANG"
+               onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
+      </div>
+      <div class="col-sm-4">
+        <p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">考试时长(纯数字)不能为空！</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">在线报名<i>*</i></label>
+      <div class="col-sm-6">
+        <label class="radio-inline">
+          <input type="radio" value="2" ng-model="kaoshiData.shuju.BAOMINGFANGSHI" ng-click="getBaoMingCont()"/>是
+        </label>
+        <label class="radio-inline">
+          <input type="radio" value="1" ng-model="kaoshiData.shuju.BAOMINGFANGSHI" ng-click="getBaoMingCont()"/>否
+        </label>
+      </div>
+    </div>
+    <!--在线报名-->
+    <div class="form-group" ng-show="onlineBaoMing">
+      <div class="row">
+        <label class="col-sm-2 control-label">报名名单<i>*</i></label>
+        <div class="col-sm-6">
+          <h5 class="fz16">
+            <span ng-show="studentsOrgData.length"><strong>考生人数:{{studentsOrgData.length}} 人</strong></span>
+            <a href="javascript:void(0)" class="ml15" ng-click="addStuByKxh()">课序号添加</a>
+            <a href="javascript:void(0)" class="ml15" ng-click="addStuByExcel()">Excel导入</a>
+            <a href="javascript:void(0)" class="ml15" ng-click="showKaoShengList()" ng-show="studentsOrgData.length">查看名单</a>
+            <a href="javascript:void(0)" class="ml15" ng-click="clearKaoShengList()" ng-show="studentsOrgData.length">清空名单</a>
+          </h5>
+        </div>
+      </div>
+      <div class="row">
+        <table class="table table-bordered table-changci">
+          <tr>
+            <th class="positionRe" width="300px">
+              时间场次（已有{{kaoshiData.shuju.CHANGCI.length || 0}}场）
+              <button type="button" class="btn btn-success addChangCiBtn" ng-click="addNewChangCiPop()">
+                添加场次
+              </button>
+            </th>
+            <th>
+              <span>考点（已选考点:{{selectChangCi.KAOCHANG.length || 0}}）</span>
+              <span class="pull-right">考位（共:{{selectChangCi.selectKaoWei || 0}}）</span>
+            </th>
+            <th class="positionRe">
+              试卷（已选试卷:{{selectChangCi.SHIJUAN_ID.length || 0}}）
+              <button class="btn btn-success addChangCiBtn" ng-click="getMoreShiJuan()"
+                ng-hide="paperListIds.length > 10">显示更多</button>
+            </th>
+          </tr>
+          <tr>
+            <td>
+              <ul class="list-unstyled h300">
+                <li class="bdb mt10" ng-class="{active:selectChangCiIdx == $index}" ng-repeat="cc in kaoshiData.shuju.CHANGCI" >
+                  <p class="fz16 cursorPointer" ng-bind="cc.KAOSHI_MINGCHENG" ng-click="showChangCiInfo(cc, $index)"></p>
+                  <p class="fz14" ng-bind="'开考时间:' + cc.KAISHISHIJIAN"></p>
+                  <p class="fz14" ng-bind="'结束时间:' + cc.JIESHUSHIJIAN"></p>
+                  <p class="deleteChangCi cursorPointer fz14" title="删除" ng-click="deleteChangCi(cc, $index)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </p>
+                </li>
+              </ul>
+            </td>
+            <td>
+              <div class="h300">
+                <div class="checkbox" ng-repeat="kcInfo in allKaoChangList">
+                  <label>
+                    <input type="checkbox" value="kcInfo.KID" ng-click="addKaoChangToCc(kcInfo)" ng-checked="kcInfo.ckd">
+                    {{kcInfo.KMINGCHENG}}
+                  </label>
+                  <span class="pull-right" ng-bind="kcInfo.KAOWEISHULIANG"></span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="h300">
+                <div class="checkbox" ng-repeat="sj in paperListIds">
+                  <label>
+                    <input type="checkbox" value="ks.SHIJUAN_ID"  ng-click="addShiJuanToCc(sj)" ng-checked="sj.ckd">
+                    {{sj.SHIJUANMINGCHENG}}
+                  </label>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <!--非在线报名-->
+    <div class="form-group" ng-show="unOnlineBaoMing">
+      <table class="table table-bordered table-changci">
+        <tr>
+          <th class="positionRe" width="300px">
+            时间场次（已有{{kaoshiData.shuju.CHANGCI.length || 0}}场）
+            <button type="button" class="btn btn-success addChangCiBtn" ng-click="addNewChangCiPop()">
+              添加场次
+            </button>
+          </th>
+          <th>
+            <span>考点（已选考点:{{selectChangCi.KAOCHANG.length || 0}}）</span>
+            <span class="pull-right">考位（共:{{selectChangCi.selectKaoWei || 0}}）</span>
+          </th>
+          <th class="positionRe">
+            试卷（已选试卷:{{selectChangCi.SHIJUAN_ID.length || 0}}）
+            <button class="btn btn-success addChangCiBtn" ng-click="getMoreShiJuan()"
+                    ng-hide="paperListIds.length > 10">显示更多</button>
+          </th>
+          <th>名单（{{selectChangCi.KAOSHENG.length || 0}} 人）</th>
+        </tr>
+        <tr>
+          <td>
+            <ul class="list-unstyled h300">
+              <li class="bdb mt10" ng-class="{active:selectChangCiIdx == $index}" ng-repeat="cc in kaoshiData.shuju.CHANGCI" >
+                <p class="fz16 cursorPointer" ng-bind="cc.KAOSHI_MINGCHENG" ng-click="showChangCiInfo(cc, $index)"></p>
+                <p class="fz14" ng-bind="'开考时间:' + cc.KAISHISHIJIAN"></p>
+                <p class="fz14" ng-bind="'结束时间:' + cc.JIESHUSHIJIAN"></p>
+                <p class="deleteChangCi cursorPointer fz14" title="删除" ng-click="deleteChangCi(cc, $index)">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </p>
+              </li>
+            </ul>
+          </td>
+          <td>
+            <div class="h300">
+              <div class="checkbox" ng-repeat="kcInfo in allKaoChangList">
+                <label>
+                  <input type="checkbox" value="kcInfo.KID" ng-click="addKaoChangToCc(kcInfo)" ng-checked="kcInfo.ckd">
+                  {{kcInfo.KMINGCHENG}}
+                </label>
+                <span class="pull-right" ng-bind="kcInfo.KAOWEISHULIANG"></span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="h300">
+              <div class="checkbox" ng-repeat="sj in paperListIds">
+                <label>
+                  <input type="checkbox" value="ks.SHIJUAN_ID"  ng-click="addShiJuanToCc(sj)" ng-checked="sj.ckd">
+                  {{sj.SHIJUANMINGCHENG}}
+                </label>
+              </div>
+            </div>
+          </td>
+          <td>
+            <p></p><a href="javascript:void(0)" class="dpb ml15 mt15" ng-click="addStuByKxh()">课序号添加</a>
+            <a href="javascript:void(0)" class="dpb ml15 mt15" ng-click="addStuByExcel()">Excel导入</a>
+            <a href="javascript:void(0)" class="dpb ml15 mt15" ng-click="showKaoShengList()">查看名单</a>
+            <a href="javascript:void(0)" class="dpb ml15 mt15" ng-click="clearKaoShengList()">清空名单</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!--考试须知-->
+    <div class="form-group">
+      <label class="col-sm-2 control-label">考试须知</label>
+      <div class="col-sm-6">
+        <textarea class="form-control" name="ksXuZhi" rows="5" placeholder="考试须知" ng-model="kaoshiData.shuju.XUZHI">
+        </textarea>
+      </div>
+    </div>
+    <!-- 考生错误信息展示结束 -->
+    <div class="save-box">
+      <button type="button" class="btn btn-primary" ng-click="saveKaoShi()"
+              ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || kwParams.forbidBtn">保存考试
+      </button>
+      <button type="button" class="btn btn-danger ml10" ng-click="showKaoShiZuList('all')">取消</button>
+    </div>
+  </form>
+  <!--添加考生页面-->
+  <div class="popup-wrap" ng-show="showAddStuBox">
+    <div class="popup-wrap-inner">
+      <div class="pwi-header plr10">
+        <!--由课序号添加-->
+        <div ng-show="isAddStuByKxh">
+          <span class="title">由课序号添加考生</span>
+          <button type="button" class="btn btn-primary pull-right mt5 ml15" ng-click="chaXunKxhYongHu()">确定</button>
+          <button type="button" class="btn btn-danger pull-right mt5" ng-click="closeAddStuBox()">关闭</button>
+        </div>
+        <!--由Excel添加-->
+        <div ng-show="isAddStuByExcel">
+          <span class="title">上传Excel文件添加考生</span>
+          <button type="button" class="btn btn-primary pull-right mt5 ml15" ng-click="uploadXlsFile()"
+                  ng-disabled="kwParams.forbidBtn">上传</button>
+          <button type="button" class="btn btn-danger pull-right mt5" ng-click="closeAddStuBox()">关闭</button>
+        </div>
+        <!--添加考生-->
+        <div ng-show="addChangCi">
+          <span class="title">添加场次</span>
+        </div>
+      </div>
+      <div class="pwi-body plr10">
+        <!--由课序号添加-->
+        <div ng-show="isAddStuByKxh">
+          <table class="table table-striped mt15 newTable">
+            <tr>
+              <th>课序号</th>
+              <th>人数</th>
+              <th>任课教师</th>
+            </tr>
+            <tr ng-repeat="kxh in keXuHaoData">
+              <td>
+                <label class="keXuHao cursorPointer pull-left">
+                  <input type="checkbox" ng-click="pickOnKxh(kxh)" ng-checked="kxh.ckd"/> {{kxh.KEXUHAO_MINGCHENG}}
+                </label>
+              </td>
+              <td ng-bind="kxh.STUDENTS + '人'"></td>
+              <td ng-bind="kxh.jiaoShiStr"></td>
+            </tr>
+          </table>
+        </div>
+        <!--由Excel添加-->
+        <div ng-show="isAddStuByExcel">
+          <form id="importStudentForm" class="mt15">
+            <em> 请选择上传考生信息的文件，格式为Excel格式 </em>
+            <input type="file" file-upload="" multiple="" class="pull-left hide addFileBtn">
+            <button ng-click="addMyFile()" class="btn btn-default pull-left">添加文件</button>
+          </form>
+          <div class="mt15">
+            <p ng-repeat="fl in uploadFiles track by $index">
+              <span ng-bind="fl.name"></span>
+              <span ng-bind="(fl.size/1024).toFixed(2) + 'KB'"></span>
+            </p>
+          </div>
+        </div>
+        <!--添加场次的输入部分-->
+        <form class="form-horizontal mt30" name="changCiForm" ng-show="addChangCi">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">开始时间<i>*</i></label>
+            <div class="col-sm-6">
+              <input type="text" name="ccKssj" class="form-control start-date" placeholder="开始时间" required
+                     autofocus="true"/>
+            </div>
+            <div class="col-sm-4">
+              <p ng-show="changCiForm.ccKssj.$error.required" class="help-block">开始时间不能为空！</p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="pwi-footer plr10 text-center">
+        <!--由课序号添加-->
+        <div ng-show="isAddStuByKxh">
+          <div class="paging text-right" ng-if="keXuHaoPages.length>0">
+            <ul class="pagination pagination-sm">
+              <li ng-class="{disabled: currentKxhPageVal == 1}">
+                <a href ng-click="keXuHaoDist(1)">首页</a>
+              </li>
+              <li ng-class="{disabled: currentKxhPageVal == 1}">
+                <a href
+                   ng-click="keXuHaoDist(prevPg = currentKxhPageVal > 1 ? currentKxhPageVal - 1 : 1)">
+                  上一页
+                </a>
+              </li>
+              <li ng-repeat="pg in keXuHaoPages" ng-class="{active: currentKxhPageVal == pg}">
+                <a href ng-click="keXuHaoDist(pg)">{{pg}}</a>
+              </li>
+              <li ng-class="{disabled: currentKxhPageVal == lastKxhPageNum}">
+                <a href
+                   ng-click="keXuHaoDist(nextPg = currentKxhPageVal < lastKxhPageNum ? currentKxhPageVal + 1 : lastKxhPageNum)">
+                  下一页
+                </a>
+              </li>
+              <li ng-class="{disabled: currentKxhPageVal == lastKxhPageNum}">
+                <a href ng-click="keXuHaoDist(lastKxhPageNum)">尾页</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!--添加场次的确定按钮-->
+        <div class="mt5" ng-show="addChangCi">
+          <button type="button" class="btn btn-danger" ng-click="addNewChangCi('cancel')">取消</button>
+          <button type="button" class="btn btn-primary ml15" ng-click="addNewChangCi('submit')">确定</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--考生名单弹出框-->
+  <div class="popup-percent" ng-if="showImportStuds==true">
+    <div class="popup-percent-inner">
+      <div class="row">
+        <button type="button" class="btn btn-danger mt10 mr10 pull-right" ng-click="hideImportList()">关闭</button>
+      </div>
+      <div class="row p10">
+        <table class="table table-striped">
+          <tr>
+            <th>姓名</th>
+            <th>学号</th>
+            <th>班级</th>
+            <th>课序号</th>
+            <th width="60px" class="text-center">操作</th>
+          </tr>
+          <tr ng-repeat="stu in studentsOrgData">
+            <td ng-bind="stu.XINGMING"></td>
+            <td ng-bind="stu.YONGHUHAO"></td>
+            <td ng-bind="stu.BANJI"></td>
+            <td ng-bind="stu.KEXUHAO_MINGCHENG"></td>
+            <td class="text-center">
+              <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="addKsDelStu(stu)"></span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

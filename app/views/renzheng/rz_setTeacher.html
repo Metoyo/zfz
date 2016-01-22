@@ -1,0 +1,24 @@
+<h4>教师管理</h4>
+<div class="dagangInput teacherInfo">
+  <table class="table-bordered">
+    <tr>
+      <th>姓名</th>
+      <th>用户名</th>
+      <th>邮箱</th>
+      <th>手机</th>
+      <th>领域和角色</th>
+    </tr>
+    <tr ng-repeat="tech in teacherData">
+      <td ng-bind="tech.XINGMING"></td>
+      <td ng-bind="tech.YONGHUMING"></td>
+      <td ng-bind="tech.YOUXIANG"></td>
+      <td ng-bind="tech.SHOUJI"></td>
+      <td>
+        <p ng-repeat="ly in tech.lingyu">
+          <span ng-bind="ly.LINGYUMINGCHENG" class="clGreen"></span>：
+          <span ng-bind="ly.juese" class="cBlue"></span>
+        </p>
+      </td>
+    </tr>
+  </table>
+</div>

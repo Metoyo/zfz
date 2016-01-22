@@ -1,0 +1,66 @@
+<div class="sub-nav tj-ks fixed-top">
+  <ul class="nav nav-tabs" ng-hide="isTjDetailShow">
+    <li ng-class="{active: tj_tabActive == 'kaoshiTj'}">
+      <a href="javascript:void(0)" ng-click="showKaoShiTjList()">
+        考试统计
+      </a>
+    </li>
+    <li ng-class="{active: tj_tabActive == 'kaoshengTj'}">
+      <a href="javascript:void(0)" ng-click="showKaoShengTjList()">
+        作答重现
+      </a>
+    </li>
+  </ul>
+</div>
+<!-- 统计的容器 开始-->
+<div class="tab-content wp90 mlp5 ptb10">
+  <h4 class="pb10">
+    <span class="cYell">{{session.defaultLyName}}</span>考试统计
+  </h4>
+  <table class="table table-striped">
+    <tr>
+      <th>考试名称</th>
+      <!--<th>试卷名称</th>-->
+      <th width="120px" class="text-center">考试人数</th>
+      <th width="240px" class="text-center">创建时间</th>
+    </tr>
+    <tr ng-repeat="ks in tjKaoShiList" ng-click="tjShowKaoShiChart(ks)">
+      <td>
+        <!--<a href="javascript:void(0)" ng-bind="ks.KAOSHI_MINGCHENG"></a>-->
+        <a href="javascript:void(0)" ng-bind="ks.KAOSHIZU_NAME"></a>
+      </td>
+      <!--<td>-->
+        <!--<span ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"></span>-->
+      <!--</td>-->
+      <td class="text-center" ng-bind="ks.ZONGRENSHU"></td>
+      <td class="text-center" ng-bind="ks.UPDATE_TIME | myLocalDate | date : 'yyyy-MM-dd'"></td>
+      <!--<td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>-->
+    </tr>
+  </table>
+  <div class="paging text-right">
+    <ul class="pagination pagination-sm" ng-hide="!tjKaoShiList">
+      <li ng-class="{disabled: currentPage == 1}">
+        <a href ng-click="tjPaging(1)">首页</a>
+      </li>
+      <li ng-class="{disabled: currentPage == 1}">
+        <a href
+           ng-click="tjPaging(prevPg = currentPage > 1 ? currentPage - 1 : 1)">
+          上一页
+        </a>
+      </li>
+      <li ng-repeat="pg in tjPages" ng-class="{active: currentPage == pg}">
+        <a href ng-click="tjPaging(pg)">{{pg}}</a>
+      </li>
+      <li ng-class="{disabled: currentPage == lastPageNum}">
+        <a href
+           ng-click="tjPaging(nextPg = currentPage < lastPageNum ? currentPage + 1 : lastPageNum)">
+          下一页
+        </a>
+      </li>
+      <li ng-class="{disabled: currentPage == lastPageNum}">
+        <a href  ng-click="tjPaging(lastPageNum)">尾页</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<!-- 统计的容器 结束-->

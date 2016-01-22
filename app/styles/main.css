@@ -1,0 +1,4133 @@
+@charset "UTF-8";
+body {
+  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif;
+  color: #000;
+  font-size: 15px;
+  overflow-x: hidden; }
+
+.bg {
+  position: fixed;
+  background-color: #f0f0f0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2; }
+
+/*base css begin*/
+.col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3,
+.col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6,
+.col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9,
+.col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11,
+.col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+  padding-left: 5px;
+  padding-right: 5px; }
+
+.container {
+  width: 100%; }
+
+.renZhengPart {
+  background: #f0f0f0; }
+  .renZhengPart .container {
+    width: 960px; }
+
+.footer {
+  display: none; }
+
+.form-control {
+  font-size: 15px; }
+
+.wp10 {
+  width: 10%; }
+
+.wp15 {
+  width: 15%; }
+
+.wp20 {
+  width: 20%; }
+
+.wp22 {
+  width: 22%; }
+
+.wp30 {
+  width: 30%; }
+
+.wp40 {
+  width: 40%; }
+
+.wp48 {
+  width: 48%; }
+
+.wp50 {
+  width: 50%; }
+
+.wp56 {
+  width: 56%; }
+
+.wp60 {
+  width: 60%; }
+
+.wp70 {
+  width: 70%; }
+
+.wp75 {
+  width: 75%; }
+
+.wp80 {
+  width: 80%; }
+
+.wp90 {
+  width: 90%; }
+
+.wp100 {
+  width: 100%; }
+
+.w40 {
+  width: 40px; }
+
+.w80 {
+  width: 80px; }
+
+.w110 {
+  width: 110px; }
+
+.w200 {
+  width: 200px; }
+
+.h20 {
+  height: 20px; }
+
+.h28 {
+  height: 28px; }
+
+.h300 {
+  max-height: 300px;
+  overflow-y: auto; }
+
+.h400 {
+  max-height: 400px;
+  overflow-y: auto; }
+
+.m0 {
+  margin: 0; }
+
+.mt5 {
+  margin-top: 5px; }
+
+.mt10 {
+  margin-top: 10px; }
+
+.mt15 {
+  margin-top: 15px; }
+
+.mt30 {
+  margin-top: 30px; }
+
+.mt50 {
+  margin-top: 50px; }
+
+.mt65 {
+  margin-top: 65px; }
+
+.mb10 {
+  margin-bottom: 10px; }
+
+.mr5 {
+  margin-right: 5px; }
+
+.mr10 {
+  margin-right: 10px; }
+
+.mlp5 {
+  margin-left: 5%; }
+
+.mrp5 {
+  margin-right: 5%; }
+
+.mlp4 {
+  margin-left: 4%; }
+
+.ml10 {
+  margin-left: 10px; }
+
+.ml15 {
+  margin-left: 15px; }
+
+.ml50 {
+  margin-left: 50px; }
+
+.p0 {
+  padding: 0; }
+
+.pl10 {
+  padding-left: 10px; }
+
+.pl40 {
+  padding-left: 40px; }
+
+.pt10 {
+  padding-top: 10px; }
+
+.p10 {
+  padding: 10px; }
+
+.pb10 {
+  padding-bottom: 10px; }
+
+.pb20 {
+  padding-bottom: 20px; }
+
+.plr10 {
+  padding: 0 10px; }
+
+.plr15 {
+  padding: 0 15px; }
+
+.plr50 {
+  padding: 0 50px; }
+
+.ptb5 {
+  padding: 5px 0; }
+
+.fz14 {
+  font-size: 14px;
+  font-weight: normal; }
+
+.fz16 {
+  font-size: 16px;
+  font-weight: normal; }
+
+.bdb {
+  border-bottom: 1px solid #cfcfcf; }
+
+.bd1 {
+  border: 1px solid #cfcfcf; }
+
+.bd0 {
+  border: 0; }
+
+.co676767 {
+  color: #676767; }
+
+.clRed {
+  color: red; }
+
+.clGreen {
+  color: #049400; }
+
+.cInfo {
+  color: #46b8da; }
+
+.cBlue {
+  color: #357ebd; }
+
+.cYell {
+  color: #f60; }
+
+.cWhite {
+  color: #fff; }
+
+.kssCl0 {
+  background-color: #fce3f2; }
+
+.kssCl2 {
+  background-color: #c6ebf5; }
+
+.kssCl3 {
+  background-color: #f2d46f; }
+
+.kssCl5, .kssCl6 {
+  background-color: #87c5d6; }
+
+.bgcFFF {
+  background-color: #fff; }
+
+.cursorPointer {
+  cursor: pointer; }
+
+.tagnCent {
+  text-align: center; }
+
+.wordBreak {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 300px; }
+
+.btn {
+  padding: 3px 12px; }
+
+.radius4 {
+  border-radius: 4px; }
+
+.row {
+  margin-left: 0;
+  margin-right: 0; }
+
+.font-cut {
+  width: 100%;
+  border: 0;
+  text-overflow: ellipsis; }
+
+.itemHasImg img {
+  width: 80%;
+  border: 1px solid #ccc; }
+
+.itemHasImgWith120 img {
+  height: 120px;
+  border: 1px solid #ccc; }
+
+.positionAb {
+  position: absolute; }
+
+.positionRe {
+  position: relative; }
+
+.dpb {
+  display: block; }
+
+a.add-btn:hover span {
+  color: #00CC33; }
+
+.form-header {
+  margin-bottom: 0; }
+  .form-header .form-th {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 15px; }
+  .form-header .answerBox {
+    margin-bottom: 5px; }
+    .form-header .answerBox a {
+      color: #069200; }
+      .form-header .answerBox a:hover {
+        text-decoration: none; }
+
+.form-body .answerBox {
+  margin-bottom: 5px; }
+  .form-body .answerBox a {
+    color: #069200; }
+    .form-body .answerBox a:hover {
+      text-decoration: none; }
+.form-body .assignment-box {
+  margin-top: 10px; }
+  .form-body .assignment-box .checkbox-inline,
+  .form-body .assignment-box .radio-inline {
+    padding-top: 0; }
+  .form-body .assignment-box .radio-inline {
+    background-color: #fafafa;
+    border: 1px solid #cacece;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+    padding: 9px;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    line-height: 12px; }
+    .form-body .assignment-box .radio-inline input[name=fuzhi] {
+      display: none; }
+  .form-body .assignment-box span {
+    padding-top: 7px; }
+.form-body .radio {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: 2px solid #6c92ff;
+  padding: 0;
+  margin-top: 7px;
+  margin-left: 25px; }
+  .form-body .radio span {
+    width: 20px;
+    height: 20px;
+    top: 0;
+    margin-right: 0;
+    color: #00CC00;
+    display: none; }
+  .form-body .radio:hover span {
+    display: block; }
+.form-body .radio-select span {
+  display: block; }
+.form-body .delete-this-tiem {
+  color: #ccc;
+  top: 10px;
+  margin-right: 15px;
+  position: absolute; }
+.form-body .delete-select {
+  color: #d9534f;
+  cursor: pointer; }
+.form-body .imitationInput {
+  display: none;
+  height: auto; }
+  .form-body .imitationInput p {
+    margin-bottom: 0; }
+
+.form-horizontal .form-group {
+  margin-right: 0;
+  margin-left: 0;
+  margin-bottom: 10px; }
+
+.logo {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  height: 56px; }
+  .logo img {
+    width: 130px;
+    margin-top: 0; }
+
+.moreBtn {
+  cursor: pointer;
+  border: 1px solid #fff;
+  z-index: 2;
+  position: relative; }
+
+.moreBtnCont {
+  display: none;
+  position: absolute;
+  width: 192px;
+  right: 34px;
+  top: 3px;
+  background-color: #FFFFFF;
+  border: 1px solid #AFC1CF;
+  padding: 10px;
+  text-align: right;
+  z-index: 1;
+  overflow: hidden; }
+  .moreBtnCont .mbc-inner {
+    width: 172px; }
+
+.newTable > thead > tr > td,
+.newTable > tbody > tr > td,
+.newTable > tfoot > tr > td {
+  padding: 3px 8px; }
+
+/*base css end*/
+/**
+*弹出层，背景为浅灰色
+*/
+.popup-wrap {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000; }
+  .popup-wrap .popup-wrap-inner {
+    width: 700px;
+    height: 502px;
+    border: 1px solid #7A7A7A;
+    background-color: #fff;
+    position: absolute;
+    top: 50%;
+    margin-top: -251px;
+    left: 50%;
+    margin-left: -350px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6); }
+    .popup-wrap .popup-wrap-inner .pwi-header {
+      border-bottom: 1px solid #999;
+      height: 40px; }
+      .popup-wrap .popup-wrap-inner .pwi-header .title {
+        line-height: 40px;
+        font-size: 16px;
+        font-weight: bold; }
+    .popup-wrap .popup-wrap-inner .pwi-body {
+      height: 420px;
+      overflow-y: auto; }
+    .popup-wrap .popup-wrap-inner .pwi-footer {
+      border-top: 1px solid #999;
+      height: 40px; }
+    .popup-wrap .popup-wrap-inner .pagination {
+      margin: 5px 0 0 0; }
+  .popup-wrap .no-footer .pwi-body {
+    height: 450px; }
+  .popup-wrap .no-header .pwi-body {
+    margin-top: 10px;
+    height: 450px; }
+  .popup-wrap .changePsw td {
+    border-top: 0;
+    padding: 5px 8px; }
+  .popup-wrap .changePsw th {
+    border-top: 1px solid #dddddd; }
+
+.popup-wrap-350 .popup-wrap-inner {
+  height: 350px;
+  margin-top: -175px; }
+  .popup-wrap-350 .popup-wrap-inner .pwi-footer {
+    height: 50px; }
+    .popup-wrap-350 .popup-wrap-inner .pwi-footer .btn {
+      font-size: 18px; }
+.popup-wrap-350 .no-header .pwi-body {
+  height: 290px; }
+
+.saveStuSelectInfo .popup-wrap-inner {
+  height: 300px; }
+  .saveStuSelectInfo .popup-wrap-inner .pwi-body {
+    height: 200px; }
+
+.popup-percent {
+  width: 100%;
+  height: 100%;
+  vertical-align: middle;
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1010; }
+  .popup-percent .popup-percent-inner {
+    width: 80%;
+    height: 90%;
+    border: 1px solid #7A7A7A;
+    background-color: #fff;
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6); }
+    .popup-percent .popup-percent-inner .inner-box {
+      float: left;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow-y: auto;
+      padding: 0 15px; }
+    .popup-percent .popup-percent-inner .paper-title {
+      font-size: 20px; }
+    .popup-percent .popup-percent-inner .paper-sub-title {
+      font-size: 15px; }
+    .popup-percent .popup-percent-inner .shijuantimu-list {
+      margin-top: 15px; }
+    .popup-percent .popup-percent-inner .testList {
+      padding: 0; }
+      .popup-percent .popup-percent-inner .testList li {
+        border: 0;
+        padding: 5px;
+        margin-top: 0; }
+        .popup-percent .popup-percent-inner .testList li .item-cont {
+          margin-top: 0; }
+    .popup-percent .popup-percent-inner .dati-name-box,
+    .popup-percent .popup-percent-inner .dati-score-box {
+      display: inline; }
+      .popup-percent .popup-percent-inner .dati-name-box p,
+      .popup-percent .popup-percent-inner .dati-score-box p {
+        display: inline; }
+    .popup-percent .popup-percent-inner .closePaperDetailBtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      z-index: 1015; }
+    .popup-percent .popup-percent-inner label.closePaperDetailBtn {
+      top: 50px; }
+
+/* dashboard styles begin*/
+.pointTree {
+  width: 100%;
+  overflow-y: auto; }
+  .pointTree .checkbox {
+    margin-bottom: 2px;
+    margin-top: 2px; }
+    .pointTree .checkbox input[type="checkbox"] {
+      margin-left: -15px; }
+  .pointTree .levelOne li {
+    padding-left: 12px;
+    position: relative; }
+  .pointTree .foldBtn {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 0;
+    top: 5px;
+    cursor: pointer;
+    background: url("../images/tree_icon.png") no-repeat 0 0; }
+  .pointTree .unfoldBtn {
+    background-position: 0 bottom; }
+
+.dashboard {
+  width: 80px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #33363b;
+  z-index: 15;
+  display: none; }
+  .dashboard .container {
+    padding: 0; }
+  .dashboard .list-group {
+    width: 100%;
+    margin-top: 10px; }
+  .dashboard .list-group-item {
+    border-radius: 0;
+    background: none;
+    padding: 10px 0;
+    border: 0; }
+
+.subDashboard {
+  width: 220px;
+  height: 100%;
+  position: fixed;
+  background-color: #f5f5f5;
+  border-right: 1px solid #cfcfcf; }
+  .subDashboard .sdb-title {
+    font-size: 24px;
+    margin-top: 10px;
+    margin-bottom: 5px; }
+  .subDashboard .sdb-cont {
+    font-size: 18px; }
+  .subDashboard .sdb-cont-dg {
+    font-size: 16px; }
+  .subDashboard .selectedItems h3 {
+    font-size: 12px;
+    margin: 15px 0 5px 0; }
+  .subDashboard .selectedItems table {
+    width: 100%;
+    margin-bottom: 10px; }
+    .subDashboard .selectedItems table td, .subDashboard .selectedItems table th {
+      font-size: 12px;
+      text-align: center;
+      padding: 3px; }
+      .subDashboard .selectedItems table td .glyphicon, .subDashboard .selectedItems table th .glyphicon {
+        top: 3px;
+        margin-right: 0; }
+    .subDashboard .selectedItems table .text-left {
+      text-align: left; }
+    .subDashboard .selectedItems table .deleteBtn {
+      width: 21px; }
+  .subDashboard .sj-preview-btns {
+    padding: 10px 0;
+    text-align: center; }
+  .subDashboard .pointTree {
+    padding: 0 10px;
+    position: absolute;
+    bottom: 0;
+    top: 140px;
+    left: 0; }
+
+.dashboard_shown_show {
+  display: block; }
+
+.dropdownToggle {
+  margin-bottom: 0;
+  font-size: 115%;
+  font-weight: 600;
+  color: #67717e;
+  display: block;
+  width: 100%;
+  text-align: center; }
+
+.glyphicon {
+  top: 2px;
+  margin-right: 5px; }
+
+.nav-icon {
+  height: 40px;
+  width: 40px;
+  margin-left: 20px;
+  display: block;
+  background: url("../images/dsIcons.png") no-repeat left 0; }
+
+.nav-name {
+  color: #aaa;
+  margin-top: -5px;
+  display: block;
+  font-weight: normal; }
+
+.zujuan .nav-icon {
+  background-position: left -40px; }
+
+.dagang .nav-icon {
+  background-position: left -80px; }
+
+.kaowu .nav-icon {
+  background-position: left -120px; }
+
+.chengji .nav-icon {
+  background-position: left -160px; }
+
+.baoming .nav-icon {
+  background-position: left -200px; }
+
+.tongji .nav-icon {
+  background-position: left -240px; }
+
+.guanli .nav-icon {
+  background-position: left -280px; }
+
+.weiluke .nav-icon {
+  background-position: left -320px; }
+
+.dropdownToggle:hover {
+  text-decoration: none; }
+  .dropdownToggle:hover .nav-icon {
+    background-position-x: right; }
+  .dropdownToggle:hover .nav-name {
+    color: #fff; }
+
+.dashboard .active .dropdownToggle {
+  text-decoration: none; }
+.dashboard .active .nav-icon {
+  background-position-x: right; }
+.dashboard .active .nav-name {
+  color: #fff; }
+
+.toggle-menu {
+  list-style: none;
+  padding: 0;
+  display: none; }
+
+.menuitem {
+  padding: 5px 15px 5px 25px;
+  display: block;
+  text-decoration: none;
+  font-size: 14px;
+  color: #67717e; }
+  .menuitem:hover {
+    text-decoration: none;
+    color: #262626;
+    background: url("../images/icon-right.png") no-repeat 10px 12px; }
+
+.select:focus {
+  text-decoration: none;
+  color: #262626;
+  background: url("../images/icon-right.png") no-repeat 10px 12px; }
+
+.userInfo a {
+  text-decoration: none;
+  font-size: 14px;
+  color: #efefef;
+  margin-top: 5px;
+  margin-left: 5px;
+  text-align: center;
+  width: 70px;
+  display: block;
+  overflow: hidden; }
+  .userInfo a:hover {
+    color: #62AC19; }
+
+.dsfoldBox {
+  border-top: 1px solid #7f7f7f;
+  height: 30px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 30px; }
+  .dsfoldBox a {
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none; }
+    .dsfoldBox a:hover {
+      color: #C7C7C7; }
+
+/* dashboard styles end*/
+/* 信息提示样式*/
+.popInfoWrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  z-index: 9999;
+  display: none;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #599EDB; }
+  .popInfoWrap .messageTd {
+    width: 100%;
+    font-size: 15px;
+    line-height: 50px;
+    text-align: center; }
+  .popInfoWrap .mesSuccess {
+    color: #009E00; }
+  .popInfoWrap .mesPrompt {
+    color: #285e8e; }
+  .popInfoWrap .mesError {
+    color: #c9302c; }
+
+.right-pop-fixed {
+  font-size: 14px;
+  position: fixed;
+  right: 0;
+  top: 20%;
+  border: 1px solid #aaa;
+  background-color: #f5f5f5; }
+  .right-pop-fixed .title {
+    margin: 0;
+    font-size: 16px;
+    text-align: right;
+    padding: 6px 0;
+    background-color: #428bca;
+    border-bottom: 1px solid #aaa; }
+    .right-pop-fixed .title .glyphicon {
+      margin-right: 10px;
+      cursor: pointer;
+      color: #fff; }
+      .right-pop-fixed .title .glyphicon:hover {
+        color: #eee; }
+
+.main {
+  padding: 0 0 20px 80px; }
+
+.content {
+  padding-left: 220px;
+  background-color: #fff; }
+
+.active {
+  color: #f60; }
+
+.messageWrap {
+  color: red; }
+
+.sub-nav {
+  height: 47px; }
+  .sub-nav ul {
+    height: 47px; }
+  .sub-nav li {
+    margin-top: 4px; }
+  .sub-nav .nav-tabs li:first-child {
+    margin-left: 15px; }
+
+/*sub dashboard styles begin*/
+.innerWrapperSubDs {
+  /*sub dashboard styles end*/
+  /* contentWraps styles begin */
+  /* contentWraps styles end */ }
+  .innerWrapperSubDs .selectLyName {
+    font-size: 15px;
+    color: #f60;
+    font-weight: bold; }
+  .innerWrapperSubDs .kmTxWrap {
+    height: 47px;
+    background-color: #F5F5F5;
+    border-bottom: 1px solid #cfcfcf; }
+    .innerWrapperSubDs .kmTxWrap .kmTxBox, .innerWrapperSubDs .kmTxWrap .nanduBox {
+      background: none;
+      height: auto;
+      float: left;
+      width: 100%; }
+      .innerWrapperSubDs .kmTxWrap .kmTxBox .kmTxNdList, .innerWrapperSubDs .kmTxWrap .nanduBox .kmTxNdList {
+        margin: 2px 0 0 0; }
+        .innerWrapperSubDs .kmTxWrap .kmTxBox .kmTxNdList li a, .innerWrapperSubDs .kmTxWrap .nanduBox .kmTxNdList li a {
+          padding: 0 5px;
+          color: #444;
+          font-size: 14px; }
+        .innerWrapperSubDs .kmTxWrap .kmTxBox .kmTxNdList li a.active, .innerWrapperSubDs .kmTxWrap .nanduBox .kmTxNdList li a.active {
+          color: #f60; }
+    .innerWrapperSubDs .kmTxWrap .alterTiXingBox span {
+      margin: 18px 0 0 15px;
+      float: left; }
+      .innerWrapperSubDs .kmTxWrap .alterTiXingBox span strong {
+        font-weight: normal; }
+  .innerWrapperSubDs .contentWraps {
+    padding: 10px 0; }
+    .innerWrapperSubDs .contentWraps .errorMsg {
+      margin-left: 10px;
+      font-size: 15px;
+      color: red; }
+
+/* test list styls begin*/
+.total-test {
+  padding: 0 10px;
+  font-size: 14px;
+  margin-top: 10px;
+  position: relative; }
+
+.testList {
+  padding: 0 10px; }
+  .testList li {
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #d8d8d8;
+    position: relative;
+    float: left;
+    width: 100%; }
+  .testList .pr130 {
+    padding-right: 130px; }
+  .testList .pr100 {
+    padding-right: 100px; }
+  .testList h3 {
+    font-size: 14px;
+    margin: 0; }
+  .testList .item-title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px; }
+  .testList .item-tigan {
+    margin-bottom: 10px;
+    line-height: 24px; }
+    .testList .item-tigan img {
+      width: 50%; }
+  .testList .item-sub-title {
+    font-size: 14px;
+    width: 100%;
+    line-height: 30px; }
+    .testList .item-sub-title p {
+      display: inline;
+      margin-right: 10px;
+      float: left; }
+    .testList .item-sub-title .use-times {
+      color: #f60; }
+    .testList .item-sub-title .add-to-paper {
+      position: absolute;
+      top: 10px;
+      right: 10px; }
+    .testList .item-sub-title .knowledge-point span {
+      margin-right: 10px; }
+    .testList .item-sub-title .knowledge-point-zsd > span {
+      margin-right: 0px;
+      margin-left: -10px; }
+    .testList .item-sub-title .level-num span {
+      width: 42px;
+      height: 10px;
+      margin-top: 10px;
+      background: url("../images/levelstar.png") no-repeat 0 0; }
+    .testList .item-sub-title .level-num .level-star-2 {
+      background-position: 0 -10px; }
+    .testList .item-sub-title .level-num .level-star-3 {
+      background-position: 0 -20px; }
+    .testList .item-sub-title .level-num .level-star-4 {
+      background-position: 0 -30px; }
+    .testList .item-sub-title .level-num .level-star-5 {
+      background-position: 0 -40px; }
+  .testList .item-cont {
+    width: 100%;
+    float: left;
+    cursor: pointer; }
+    .testList .item-cont .item-tizhi-wrap {
+      margin-bottom: 5px; }
+      .testList .item-cont .item-tizhi-wrap .item-tizhi {
+        margin-bottom: 5px;
+        line-height: 20px; }
+        .testList .item-cont .item-tizhi-wrap .item-tizhi .tiZhiSpan p {
+          display: inline; }
+    .testList .item-cont img {
+      max-width: 100%; }
+  .testList .answer-cont {
+    float: left;
+    width: 100%;
+    position: relative;
+    font-size: 14px;
+    line-height: 24px;
+    display: none; }
+    .testList .answer-cont .daAnLabel {
+      position: absolute; }
+    .testList .answer-cont .daAnBox {
+      margin-left: 45px; }
+
+/* test list styls end*/
+/*edit wrap styles begin*/
+.editWrap {
+  position: absolute;
+  right: 10px;
+  top: 10px; }
+
+/*edit wrap styles end*/
+/* 分页的样式 开始*/
+.paging {
+  padding: 0 10px; }
+  .paging .pagination {
+    margin: 5px 0; }
+
+/* 分页的样式 结束*/
+.back-home-box {
+  position: fixed;
+  right: 10px;
+  top: 10px;
+  z-index: 1000; }
+
+.save-box {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  z-index: 1000; }
+
+/* loading 图片样式*/
+.loading-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin: -32px 0 0 -32px;
+  z-index: 10000; }
+  .loading-box img {
+    width: 64px;
+    height: 64px; }
+  .loading-box p {
+    color: red; }
+
+.subjectBox {
+  padding: 10px;
+  float: left;
+  width: 100%; }
+  .subjectBox h2 {
+    font-size: 15px;
+    display: inline;
+    margin: 0;
+    color: #f60;
+    font-weight: bold; }
+  .subjectBox a {
+    font-size: 12px;
+    text-decoration: none; }
+
+/* 组卷规则难度选择图片 */
+.zj-style-star {
+  width: 200px;
+  height: 28px;
+  float: left;
+  background: url("../images/zjStar.png") no-repeat 0 0; }
+  .zj-style-star li {
+    float: left;
+    margin-right: 12px; }
+    .zj-style-star li a {
+      float: left;
+      width: 28px;
+      height: 28px; }
+  .zj-style-star .active a {
+    background-position: 0 -30px; }
+
+.zj-style-star-1 {
+  background-position: 0 -30px; }
+
+.zj-style-star-2 {
+  background-position: 0 -60px; }
+
+.zj-style-star-3 {
+  background-position: 0 -90px; }
+
+.zj-style-star-4 {
+  background-position: 0 -120px; }
+
+.zj-style-star-5 {
+  background-position: 0 -150px; }
+
+/*伪装的select复选框*/
+.fakeMutiSelect {
+  background: url("../images/selectBg.png") no-repeat right center; }
+  .fakeMutiSelect .fakeOptionList {
+    background-color: #F2F2F2;
+    padding: 10px 10px  0 10px;
+    position: relative;
+    top: -28px;
+    border-radius: 4px;
+    border: 1px solid #A9A9A9;
+    box-shadow: 0px 1px 4px #888888;
+    z-index: 100; }
+    .fakeMutiSelect .fakeOptionList .options {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-left: 20px; }
+    .fakeMutiSelect .fakeOptionList .btns {
+      border-top: 1px solid #ccc;
+      text-align: center; }
+      .fakeMutiSelect .fakeOptionList .btns a {
+        text-decoration: none; }
+
+label.checkbox {
+  font-weight: normal;
+  color: #000; }
+
+.zsdWrap .zsd {
+  cursor: pointer;
+  margin-bottom: 5px; }
+.zsdWrap .keMuWrap {
+  max-height: 360px;
+  overflow-y: auto;
+  padding-left: 20px; }
+.zsdWrap .btns .btn {
+  padding: 3px 10px; }
+
+.table-striped {
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd; }
+
+/*大纲  开始*/
+.dagangInput {
+  position: relative; }
+  .dagangInput .dgLevel {
+    border: 1px solid red; }
+  .dagangInput .col-md-12 {
+    margin-top: 20px;
+    float: left; }
+  .dagangInput .btn {
+    padding: 6px 12px; }
+  .dagangInput .saveDagangBtn {
+    margin-left: 10px; }
+  .dagangInput .glyphicon {
+    top: 2px;
+    margin-right: 0; }
+  .dagangInput .media {
+    border: 0;
+    margin: 1px 0 0 0;
+    padding-top: 20px;
+    background: url("../images/sline.jpg") repeat-y 15px 0; }
+  .dagangInput .dgLevel_1:last-child,
+  .dagangInput .dgLevel_2:last-child,
+  .dagangInput .dgLevel_3:last-child,
+  .dagangInput .dgLevel_4:last-child {
+    background: white url("../images/sline.jpg") no-repeat 15px -2px; }
+  .dagangInput .lastChild {
+    background: white url("../images/sline.jpg") no-repeat 15px -2px; }
+  .dagangInput .dagangBox {
+    margin-left: 15px;
+    margin-top: 10px;
+    padding-top: 0; }
+  .dagangInput .media-object {
+    width: 40px;
+    height: 34px;
+    background: url("../images/hline.jpg") no-repeat right 17px; }
+  .dagangInput .media-heading {
+    height: 34px;
+    margin: 0;
+    position: relative; }
+  .dagangInput .media-body {
+    padding: 0;
+    background: url("../images/sline.jpg") repeat-y 15px 0; }
+  .dagangInput .media > .pull-left {
+    margin-right: 0; }
+  .dagangInput .kaoChang .col-md-5 {
+    margin-left: 10px; }
+  .dagangInput .kaoChang .checkbox-inline:first-child {
+    margin-left: 10px; }
+
+.dgLevel_0 .dagangName {
+  color: #16418b;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 21px;
+  position: relative; }
+
+.dgAddBtn {
+  background-color: #d5dadf;
+  color: #000; }
+
+.dagangInput .dgAddBtn_0 {
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  border-radius: 0 4px 4px 0; }
+
+.dgDeleteBtn {
+  background-color: #d5dadf; }
+
+.inlineBlock {
+  display: inline-block;
+  margin-right: -1px; }
+
+.dgInputWelcome p {
+  margin: 20px;
+  font-size: 18px; }
+
+/*大纲  结束*/
+/**
+*日期选择器的样式
+*/
+.intimidatetime {
+  position: absolute;
+  z-index: 9999;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
+  font-size: 12px;
+  font-size: 0.75rem;
+  line-height: 18px;
+  line-height: 1.125rem;
+  background-color: #ffffff;
+  border: solid 2px #e4e4e4;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  -webkit-box-shadow: 0 0 8px #dddddd;
+  -moz-box-shadow: 0 0 8px #dddddd;
+  -ms-box-shadow: 0 0 8px #dddddd;
+  -o-box-shadow: 0 0 8px #dddddd;
+  box-shadow: 0 0 8px #dddddd; }
+
+.intimidatetime:after {
+  clear: both; }
+
+.intimidatetime.intimidatetime-inline {
+  position: static; }
+
+.intimidatetime .intimidatetime-buttons {
+  padding: 10px; }
+
+.intimidatetime .intimidatetime-buttons button {
+  margin: 0 15px 0 0; }
+
+.intimidatetime .intimidatetime-buttons:before {
+  clear: both; }
+
+.intimidatetime .intimidatetime-buttons:after {
+  clear: both; }
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*	MODE: basic
+*/
+.intimidatetime-mode-basic {
+  display: inline-block; }
+
+.intimidatetime-mode-basic .intimidatetime-range {
+  display: inline-block;
+  border-left: solid 1px #e4e4e4; }
+
+.intimidatetime-mode-basic .intimidatetime-range .intimidatetime-preview {
+  text-align: center;
+  padding: 10px 0; }
+
+.intimidatetime-mode-basic .intimidatetime-range .intimidatetime-group {
+  padding: 5px 10px; }
+
+.intimidatetime-mode-basic .intimidatetime-range .intimidatetime-group .intimidatetime-unit {
+  display: inline-block;
+  padding-right: 5px; }
+
+.intimidatetime-mode-basic .intimidatetime-range .intimidatetime-group .intimidatetime-unit span {
+  display: block; }
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 300px;
+  z-index: 2;
+  background-color: #fff; }
+
+.hover-style {
+  cursor: pointer; }
+  .hover-style:hover {
+    color: #f60; }
+    .hover-style:hover table td {
+      border: 2px solid #f60; }
+
+.renzhengWrapper {
+  position: relative;
+  width: 960px;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+  /* 审核页面样式 */
+  /* 审核页面样式 */ }
+  .renzhengWrapper em {
+    font-weight: normal;
+    font-size: 12px; }
+  .renzhengWrapper .mt {
+    margin-top: 8px; }
+  .renzhengWrapper .mb0 {
+    margin-bottom: 0; }
+  .renzhengWrapper .btn {
+    padding: 6px 20px; }
+  .renzhengWrapper .row {
+    margin-left: 0;
+    margin-right: 0; }
+  .renzhengWrapper label {
+    color: #000; }
+  .renzhengWrapper h4.logo {
+    margin-top: 56px;
+    margin-bottom: 10px;
+    border: 0;
+    height: auto; }
+  .renzhengWrapper h4.logo img {
+    width: 300px;
+    height: auto; }
+  .renzhengWrapper .loginBox {
+    padding-right: 30px;
+    color: #000;
+    border-right: 1px solid #969696; }
+  .renzhengWrapper .loginWithXh {
+    padding-left: 30px;
+    color: #fff; }
+  .renzhengWrapper .loginWithXh .btn {
+    margin-top: 25px;
+    width: 100%; }
+  .renzhengWrapper .userBox {
+    padding: 50px 0; }
+  .renzhengWrapper .thumbnail {
+    border: 0;
+    background: none;
+    margin-bottom: 0; }
+  .renzhengWrapper .thumbnail img {
+    width: 236px;
+    height: 236px; }
+  .renzhengWrapper .caption p {
+    padding: 0 12px; }
+  .renzhengWrapper .loginInfo h2 {
+    margin-top: 0; }
+  .renzhengWrapper .loginInfo h4 {
+    margin: 30px 0; }
+  .renzhengWrapper .entries h4 {
+    margin-top: 34px; }
+  .renzhengWrapper .entries li {
+    float: left;
+    padding: 0 5px;
+    width: 25%; }
+    .renzhengWrapper .entries li a {
+      width: 100%;
+      margin-top: 10px; }
+  .renzhengWrapper .lingYuWrap {
+    padding: 20px 0 0 0; }
+    .renzhengWrapper .lingYuWrap .btn {
+      margin-right: 20px; }
+  .renzhengWrapper .registerBox h4.logo {
+    margin-top: 20px;
+    margin-bottom: 0; }
+  .renzhengWrapper .registerBox .infoBox .table {
+    color: #000; }
+    .renzhengWrapper .registerBox .infoBox .table td {
+      border: 0; }
+  .renzhengWrapper .registerBox .infoBox .register-hero {
+    color: #46b8da;
+    font-size: 18px;
+    margin-top: 100px; }
+  .renzhengWrapper .registerBox .help-block {
+    margin-top: 0;
+    color: red;
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    font-size: 12px; }
+  .renzhengWrapper .registerBox .nav-tabs {
+    float: left;
+    width: 100%;
+    margin-bottom: 0;
+    border-bottom: 0; }
+  .renzhengWrapper .registerBox .nav-tabs li {
+    float: left;
+    padding: 10px 20px;
+    margin-right: 5px;
+    color: #fff;
+    font-size: 14px;
+    background-color: #5b5147;
+    font-weight: 600;
+    cursor: pointer; }
+  .renzhengWrapper .registerBox .nav-tabs li.active {
+    background-color: #fff;
+    color: #5b5147; }
+  .renzhengWrapper .infoBox .list-inline li:first-child {
+    padding-left: 20px; }
+  .renzhengWrapper .tab-content {
+    float: left;
+    width: 100%;
+    background-color: #fff; }
+  .renzhengWrapper .tab-pane {
+    padding: 20px 10px 5px 10px;
+    display: none; }
+  .renzhengWrapper .nextBtn span, .renzhengWrapper .prevBtn span, .renzhengWrapper .submitBtn span {
+    float: right;
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0 5px;
+    background-image: url("../images/button-icons.png");
+    background-repeat: no-repeat;
+    background-position: 0 0; }
+  .renzhengWrapper .prevBtn span {
+    float: left;
+    background-position: 0 -45px;
+    margin: 2px 5px 0 0; }
+  .renzhengWrapper .objectWrapSub {
+    float: left;
+    width: 100%; }
+  .renzhengWrapper .subjectBox {
+    padding: 10px;
+    border: 1px solid #cfcfcf; }
+  .renzhengWrapper .selectedObjectBox {
+    padding: 10px 0 5px 0;
+    margin-bottom: 15px;
+    color: #000;
+    width: 100%; }
+  .renzhengWrapper .selectedObjectList {
+    width: 49%;
+    margin-bottom: 16px;
+    background: #f0f0f0;
+    padding: 10px;
+    position: relative; }
+  .renzhengWrapper .selectedObjectList p {
+    width: 100%; }
+  .renzhengWrapper .btn-can {
+    position: absolute;
+    top: -8px;
+    right: -15px;
+    font-size: 15px; }
+  .renzhengWrapper .btn-can .btn {
+    padding: 2px 15px;
+    border-radius: 0;
+    margin-bottom: 1px; }
+  .renzhengWrapper .selectedObjectBox span {
+    margin-right: 10px; }
+  .renzhengWrapper .objectToggleBox {
+    border: 1px solid #cfcfcf;
+    padding-top: 15px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    float: left;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px; }
+  .renzhengWrapper .addNewObject {
+    margin-left: 10px; }
+  .renzhengWrapper .addNewObject span {
+    font-size: 13px; }
+  .renzhengWrapper span.msgBox {
+    display: none;
+    font-weight: normal; }
+  .renzhengWrapper .errorMsg {
+    color: red;
+    float: left;
+    margin-right: 10px; }
+  .renzhengWrapper .errorMsg span {
+    color: red;
+    float: left;
+    margin-right: 10px; }
+  .renzhengWrapper .errorMsg .msgBox {
+    display: block; }
+  .renzhengWrapper .privilegeBtn:hover {
+    text-decoration: none; }
+  .renzhengWrapper .privilegeBtn span {
+    margin-right: 5px; }
+  .renzhengWrapper .privilegeBox {
+    position: relative;
+    border: 1px solid #cfcfcf;
+    background-color: #fff;
+    padding: 15px 10px;
+    display: none;
+    float: right; }
+  .renzhengWrapper .privilegeBox .sanj {
+    position: absolute;
+    right: 40px;
+    top: -11px; }
+  .renzhengWrapper .privilegeBox .btn {
+    margin-top: 10px;
+    padding: 2px 12px; }
+  .renzhengWrapper .jueseVal {
+    width: 400px;
+    height: 40px;
+    display: none; }
+  .renzhengWrapper .yonghuming {
+    background-color: #fff;
+    padding-left: 10px; }
+  .renzhengWrapper .messageWrap {
+    position: absolute;
+    top: -18px; }
+  .renzhengWrapper .logoutInfo h4 {
+    margin-top: 10px;
+    margin-bottom: 0;
+    float: left;
+    width: 100%; }
+    .renzhengWrapper .logoutInfo h4 .btn {
+      width: 80%; }
+  .renzhengWrapper .shenheBox {
+    margin-top: 10px; }
+    .renzhengWrapper .shenheBox .infoBox {
+      background: #fff;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      margin-top: 20px; }
+    .renzhengWrapper .shenheBox .table {
+      margin-bottom: 0; }
+    .renzhengWrapper .shenheBox .shenheTable thead {
+      background-color: #33363b; }
+    .renzhengWrapper .shenheBox .shenheTable th {
+      text-align: center;
+      color: #fff;
+      vertical-align: middle; }
+    .renzhengWrapper .shenheBox .shenheTable td {
+      text-align: center;
+      vertical-align: middle;
+      color: #666; }
+    .renzhengWrapper .shenheBox .shenheTable .text-left {
+      text-align: left; }
+    .renzhengWrapper .shenheBox .shenheBox .shenheTable td {
+      vertical-align: middle; }
+    .renzhengWrapper .shenheBox .shenheTable .btn {
+      border-radius: 0; }
+    .renzhengWrapper .shenheBox .shTitle {
+      margin-top: 10px; }
+    .renzhengWrapper .shenheBox .btn {
+      padding: 4px 10px; }
+    .renzhengWrapper .shenheBox .jg-table {
+      background-color: #fff; }
+      .renzhengWrapper .shenheBox .jg-table th {
+        background-color: #f6f6f6;
+        text-align: center; }
+      .renzhengWrapper .shenheBox .jg-table td {
+        text-align: center;
+        vertical-align: middle; }
+        .renzhengWrapper .shenheBox .jg-table td a {
+          padding: 0 2px; }
+          .renzhengWrapper .shenheBox .jg-table td a:hover {
+            text-decoration: none; }
+        .renzhengWrapper .shenheBox .jg-table td span {
+          padding: 0 5px; }
+    .renzhengWrapper .shenheBox .add-btn-box {
+      margin-top: 15px; }
+    .renzhengWrapper .shenheBox .add-new-box {
+      margin-top: 15px; }
+      .renzhengWrapper .shenheBox .add-new-box .reset-admin-psw {
+        margin-top: 15px; }
+      .renzhengWrapper .shenheBox .add-new-box h5 {
+        border-bottom: 1px solid #9C9C9C;
+        text-align: center;
+        padding: 10px 0; }
+    .renzhengWrapper .shenheBox .selected-lingYu {
+      position: absolute;
+      top: 1%;
+      right: 0px;
+      width: 40%;
+      padding: 10px;
+      height: 98%;
+      border-left: 1px solid #cdcdcd; }
+      .renzhengWrapper .shenheBox .selected-lingYu p {
+        margin-bottom: 5px;
+        padding: 3px;
+        border-bottom: 1px solid #cfcfcf; }
+      .renzhengWrapper .shenheBox .selected-lingYu .delete-select-ly {
+        color: red;
+        cursor: pointer; }
+    .renzhengWrapper .shenheBox .lingYu-list {
+      padding: 0 10px; }
+      .renzhengWrapper .shenheBox .lingYu-list p {
+        cursor: pointer; }
+    .renzhengWrapper .shenheBox .tiXing-list {
+      padding: 10px 0; }
+      .renzhengWrapper .shenheBox .tiXing-list .checkbox-inline:first-child {
+        margin-left: 10px; }
+    .renzhengWrapper .shenheBox .admin-title a {
+      font-size: 14px;
+      margin-left: 10px; }
+  .renzhengWrapper .closeShenBox {
+    color: #d80000;
+    font-size: 15px;
+    margin-top: 5px; }
+  .renzhengWrapper .alterBtn, .renzhengWrapper .shYonghuId, .renzhengWrapper .shJigouId, .renzhengWrapper .shLingyuId, .renzhengWrapper .originZT {
+    display: none; }
+  .renzhengWrapper .active {
+    display: block; }
+  .renzhengWrapper .fix-to-top-right {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1; }
+    .renzhengWrapper .fix-to-top-right .btn {
+      padding: 3px 10px; }
+  .renzhengWrapper .dagangInput {
+    background-color: #fff;
+    padding: 10px; }
+    .renzhengWrapper .dagangInput .btn {
+      padding: 6px 12px; }
+    .renzhengWrapper .dagangInput .btns .btn {
+      padding: 3px 10px; }
+    .renzhengWrapper .dagangInput .btns .ml10 {
+      margin-left: 10px; }
+    .renzhengWrapper .dagangInput .selectLingYu {
+      margin-left: 10px; }
+      .renzhengWrapper .dagangInput .selectLingYu .all-lingYu {
+        border-radius: 4px; }
+    .renzhengWrapper .dagangInput .dagangBox {
+      margin-left: 0;
+      margin-top: 0; }
+    .renzhengWrapper .dagangInput .text-left {
+      text-align: left; }
+  .renzhengWrapper .teacherInfo {
+    padding: 10px; }
+    .renzhengWrapper .teacherInfo table {
+      width: 100%; }
+      .renzhengWrapper .teacherInfo table th, .renzhengWrapper .teacherInfo table td {
+        padding: 5px;
+        font-size: 14px; }
+  .renzhengWrapper .setDaGangBox {
+    float: left;
+    width: 100%; }
+    .renzhengWrapper .setDaGangBox .dagangBox {
+      margin-left: 5px;
+      margin-top: 10px; }
+    .renzhengWrapper .setDaGangBox .ly-select-box {
+      width: 50%;
+      margin: 10px 0 0 10px; }
+  .renzhengWrapper .publicKnowledgeBox {
+    position: fixed;
+    top: 100px;
+    bottom: 90px;
+    right: 10px;
+    width: 250px; }
+    .renzhengWrapper .publicKnowledgeBox .publicKnowledge {
+      border: 1px solid #cfcfcf;
+      height: 100%;
+      overflow-y: auto;
+      padding: 10px;
+      background-color: #fff; }
+      .renzhengWrapper .publicKnowledgeBox .publicKnowledge p {
+        margin-bottom: 5px;
+        cursor: pointer; }
+
+.dagangWrapper {
+  /*main styles end*/ }
+  .dagangWrapper .content {
+    padding-top: 50px; }
+  .dagangWrapper .itemTitle {
+    font-size: 120%;
+    font-weight: 600;
+    margin-left: 20px; }
+  .dagangWrapper .list-sheet li {
+    margin-top: 5px;
+    width: 46%;
+    border: 1px solid #cfcfcf;
+    float: left;
+    margin-left: 2%; }
+  .dagangWrapper .list-sheet a {
+    width: 100%;
+    text-align: center;
+    float: left;
+    padding: 80px 0;
+    font-size: 20px;
+    background-color: #f0f0f0; }
+    .dagangWrapper .list-sheet a:hover {
+      text-decoration: none;
+      background-color: #f3f3f3; }
+  .dagangWrapper .publicKnowledgeWrap {
+    position: fixed;
+    right: 20px;
+    top: 60px;
+    bottom: 0;
+    width: 250px;
+    padding-bottom: 90px; }
+    .dagangWrapper .publicKnowledgeWrap .innerBox {
+      border: 1px solid #cfcfcf;
+      height: 100%;
+      overflow-y: auto;
+      background-color: #fff;
+      padding: 10px; }
+      .dagangWrapper .publicKnowledgeWrap .innerBox p {
+        cursor: pointer; }
+    .dagangWrapper .publicKnowledgeWrap .title {
+      padding: 10px 0; }
+      .dagangWrapper .publicKnowledgeWrap .title .pull-left {
+        width: 90px; }
+      .dagangWrapper .publicKnowledgeWrap .title .pull-right {
+        width: 155px; }
+        .dagangWrapper .publicKnowledgeWrap .title .pull-right span {
+          margin-right: 10px; }
+        .dagangWrapper .publicKnowledgeWrap .title .pull-right input {
+          margin-right: 5px; }
+  .dagangWrapper .dg-list-box {
+    width: 50%;
+    margin: 15px 0 20px 15px; }
+    .dagangWrapper .dg-list-box .daGangListSelect {
+      display: inline;
+      width: 80%; }
+  .dagangWrapper .keMuName {
+    width: 100%;
+    float: left;
+    padding: 0 10px; }
+    .dagangWrapper .keMuName h2 {
+      margin-top: 10px;
+      margin-bottom: 0; }
+    .dagangWrapper .keMuName .keMuNameDetail {
+      font-size: 20px;
+      display: inline;
+      margin: 0;
+      color: #f60;
+      font-weight: bold;
+      line-height: 30px; }
+  .dagangWrapper .selectedDgName {
+    width: 100%;
+    float: left;
+    padding: 0 10px; }
+    .dagangWrapper .selectedDgName h2 {
+      margin-top: 10px; }
+    .dagangWrapper .selectedDgName p {
+      line-height: 26px; }
+
+.mingtiWrapper {
+  /* test list styls begin*/
+  /* test list styls end*/ }
+  .mingtiWrapper .patternList {
+    font-size: 13px;
+    float: left;
+    margin-left: 10px;
+    margin-top: 16px; }
+    .mingtiWrapper .patternList li:first-child {
+      padding: 0; }
+      .mingtiWrapper .patternList li:first-child a:hover {
+        text-decoration: none; }
+    .mingtiWrapper .patternList a {
+      color: #333; }
+    .mingtiWrapper .patternList .active a {
+      color: #f60; }
+  .mingtiWrapper .addNewTiMuBtn {
+    position: absolute;
+    right: 15px;
+    top: 9px; }
+  .mingtiWrapper .zsdNameBox {
+    margin-bottom: 5px; }
+  .mingtiWrapper .total-test {
+    padding: 0 10px;
+    font-size: 14px; }
+    .mingtiWrapper .total-test .checkbox {
+      margin: 4px 0 0 80px; }
+    .mingtiWrapper .total-test .allTestNums {
+      margin: 4px 0 0 60px; }
+  .mingtiWrapper .testList .item-tigan {
+    font-size: 14px;
+    font-weight: normal; }
+  .mingtiWrapper .nandu-select .radio-inline {
+    margin-left: 20px;
+    font-size: 15px; }
+  .mingtiWrapper .panDuanFb {
+    padding: 0 0 10px 0; }
+    .mingtiWrapper .panDuanFb .radio {
+      margin-top: 0; }
+      .mingtiWrapper .panDuanFb .radio span {
+        width: 15px;
+        height: 15px; }
+  .mingtiWrapper .nandu-star-box {
+    width: 250px;
+    height: 32px;
+    background-image: url("../images/nadustar.png");
+    background-position: 0 0; }
+    .mingtiWrapper .nandu-star-box a {
+      width: 50px;
+      height: 32px;
+      float: left; }
+  .mingtiWrapper .starHover1 {
+    background-position: 0 -50px; }
+  .mingtiWrapper .starHover2 {
+    background-position: 0 -100px; }
+  .mingtiWrapper .starHover3 {
+    background-position: 0 -150px; }
+  .mingtiWrapper .starHover4 {
+    background-position: 0 -200px; }
+  .mingtiWrapper .starHover5 {
+    background-position: 0 -250px; }
+  .mingtiWrapper .starClick1 {
+    background-position: 0 -50px; }
+  .mingtiWrapper .starClick2 {
+    background-position: 0 -100px; }
+  .mingtiWrapper .starClick3 {
+    background-position: 0 -150px; }
+  .mingtiWrapper .starClick4 {
+    background-position: 0 -200px; }
+  .mingtiWrapper .starClick5 {
+    background-position: 0 -250px; }
+  .mingtiWrapper .contentWraps {
+    padding-top: 55px; }
+
+.tiKong .tizhiWrap .addMoreBtn {
+  display: block;
+  padding-top: 7px; }
+.tiKong .tizhiWrap li {
+  position: relative;
+  padding-right: 30px;
+  margin-top: 10px; }
+.tiKong .tizhiWrap .glyphicon-remove {
+  margin-top: 8px;
+  color: red; }
+
+.zujuanWrapper .paper-title {
+  font-size: 24px;
+  padding: 10px 0;
+  margin: 0; }
+.zujuanWrapper .paper-sub-title {
+  font-size: 20px;
+  margin: 10px 0; }
+.zujuanWrapper .shijuantimu-list {
+  margin-top: 15px; }
+  .zujuanWrapper .shijuantimu-list .btn {
+    margin-left: 5px; }
+  .zujuanWrapper .shijuantimu-list .mubandati {
+    font-weight: bold;
+    line-height: 28px; }
+    .zujuanWrapper .shijuantimu-list .mubandati .dati-name-box {
+      display: inline; }
+      .zujuanWrapper .shijuantimu-list .mubandati .dati-name-box .dati-name {
+        cursor: pointer; }
+    .zujuanWrapper .shijuantimu-list .mubandati .dati-score-box {
+      display: inline;
+      cursor: pointer; }
+      .zujuanWrapper .shijuantimu-list .mubandati .dati-score-box p {
+        display: inline;
+        margin: 0;
+        padding: 0; }
+    .zujuanWrapper .shijuantimu-list .mubandati .btn {
+      margin-top: -2px; }
+    .zujuanWrapper .shijuantimu-list .mubandati .datiMoveBtns {
+      display: none; }
+    .zujuanWrapper .shijuantimu-list .mubandati:hover .datiMoveBtns {
+      display: inline; }
+  .zujuanWrapper .shijuantimu-list .testList li {
+    border: none; }
+    .zujuanWrapper .shijuantimu-list .testList li h5.item-title {
+      position: absolute;
+      top: 0;
+      right: 10px;
+      display: none; }
+    .zujuanWrapper .shijuantimu-list .testList li .item-cont {
+      margin-top: 0; }
+    .zujuanWrapper .shijuantimu-list .testList li:hover {
+      border: 1px solid #d8d8d8;
+      background-color: #F5F5F5; }
+      .zujuanWrapper .shijuantimu-list .testList li:hover h5.item-title {
+        display: block; }
+    .zujuanWrapper .shijuantimu-list .testList li .write-answer-region {
+      height: 150px; }
+.zujuanWrapper .nandu-dist h4 {
+  font-size: 14px; }
+  .zujuanWrapper .nandu-dist h4 em {
+    font-size: 12px; }
+.zujuanWrapper .nandu-dist .distBox {
+  position: relative; }
+.zujuanWrapper .nandu-dist .sliderBox {
+  width: 220px;
+  height: 10px;
+  margin: 3px 5px 0 5px;
+  background-color: #ddd; }
+.zujuanWrapper .nandu-dist .sliderItem {
+  width: 110px;
+  height: 10px;
+  background-color: darkseagreen;
+  position: relative; }
+  .zujuanWrapper .nandu-dist .sliderItem .sliderItemInner {
+    max-width: 220px; }
+.zujuanWrapper .nandu-dist .sliderBtn {
+  cursor: e-resize;
+  position: absolute;
+  height: 20px;
+  top: -5px;
+  right: 0;
+  width: 5px;
+  background-color: #f60;
+  z-index: 6; }
+.zujuanWrapper .nandu-dist .maskLabel {
+  font-size: 12px; }
+.zujuanWrapper .contentInner {
+  position: relative; }
+.zujuanWrapper .contentWraps {
+  padding: 0; }
+  .zujuanWrapper .contentWraps .kmTxBox, .zujuanWrapper .contentWraps .nanduBox {
+    background: none;
+    height: auto; }
+    .zujuanWrapper .contentWraps .kmTxBox ul, .zujuanWrapper .contentWraps .nanduBox ul {
+      line-height: 20px;
+      margin-bottom: 0; }
+      .zujuanWrapper .contentWraps .kmTxBox ul li a, .zujuanWrapper .contentWraps .nanduBox ul li a {
+        font-size: 12px;
+        padding: 0 5px; }
+      .zujuanWrapper .contentWraps .kmTxBox ul .tiXingId_all, .zujuanWrapper .contentWraps .kmTxBox ul .nanDuId_all, .zujuanWrapper .contentWraps .nanduBox ul .tiXingId_all, .zujuanWrapper .contentWraps .nanduBox ul .nanDuId_all {
+        height: auto;
+        background: none;
+        width: auto; }
+        .zujuanWrapper .contentWraps .kmTxBox ul .tiXingId_all a, .zujuanWrapper .contentWraps .kmTxBox ul .nanDuId_all a, .zujuanWrapper .contentWraps .nanduBox ul .tiXingId_all a, .zujuanWrapper .contentWraps .nanduBox ul .nanDuId_all a {
+          font-size: 14px;
+          font-weight: normal;
+          padding: 0 5px 0 10px; }
+  .zujuanWrapper .contentWraps .kmTxBox ul {
+    margin-top: 10px; }
+.zujuanWrapper .preview-title {
+  height: 40px;
+  background-color: #ccc;
+  position: fixed;
+  width: 100%;
+  line-height: 40px;
+  padding: 0 10px; }
+.zujuanWrapper .paper-content {
+  margin-left: 10px;
+  color: #000; }
+  .zujuanWrapper .paper-content .secret-mark {
+    font-size: 14px; }
+  .zujuanWrapper .paper-content .paper-info {
+    font-size: 14px; }
+  .zujuanWrapper .paper-content .student-title {
+    font-size: 14px; }
+  .zujuanWrapper .paper-content .cent-box table {
+    margin: 0 auto; }
+    .zujuanWrapper .paper-content .cent-box table td {
+      border: 2px solid #666;
+      width: 50px;
+      line-height: 25px;
+      font-size: 14px;
+      text-align: center; }
+  .zujuanWrapper .paper-content .attention {
+    font-size: 12px; }
+  .zujuanWrapper .paper-content .sj-param-val {
+    width: 100%;
+    display: block; }
+  .zujuanWrapper .paper-content .alter-dati .pwi-body {
+    height: 410px;
+    margin-top: 10px; }
+  .zujuanWrapper .paper-content .alter-dati .xiaoTiScoreInput {
+    width: 94%;
+    margin: 15px 3%; }
+  .zujuanWrapper .paper-content .alter-dati .showAddFuBiaoTi {
+    padding-bottom: 5px; }
+    .zujuanWrapper .paper-content .alter-dati .showAddFuBiaoTi a {
+      text-decoration: none; }
+      .zujuanWrapper .paper-content .alter-dati .showAddFuBiaoTi a:hover {
+        text-decoration: none; }
+  .zujuanWrapper .paper-content .alter-dati .dati-box span {
+    position: absolute;
+    height: 34px;
+    line-height: 34px; }
+  .zujuanWrapper .paper-content .alter-dati .dati-box input {
+    width: 90%;
+    margin-left: 30px; }
+  .zujuanWrapper .paper-content .alter-dati .fenshu-box span {
+    position: absolute;
+    height: 34px;
+    line-height: 34px; }
+  .zujuanWrapper .paper-content .alter-dati .fenshu-box input {
+    width: 75%;
+    margin-left: 40px; }
+  .zujuanWrapper .paper-content .alter-dati input {
+    font-size: 14px;
+    margin-bottom: 10px; }
+  .zujuanWrapper .paper-content .alter-dati textarea {
+    font-size: 14px;
+    margin-bottom: 10px; }
+  .zujuanWrapper .paper-content .alter-dati h5 {
+    width: 100%;
+    text-align: right; }
+  .zujuanWrapper .paper-content .alter-dati .submit-edit-info {
+    height: 50px;
+    line-height: 50px;
+    border-top: 1px solid #cfcfcf; }
+    .zujuanWrapper .paper-content .alter-dati .submit-edit-info .btn {
+      margin-top: 0; }
+  .zujuanWrapper .paper-content .save-paper-box,
+  .zujuanWrapper .paper-content .back-to-paper-list {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    z-index: 100;
+    background-color: #fff;
+    padding-left: 10px; }
+    .zujuanWrapper .paper-content .save-paper-box label,
+    .zujuanWrapper .paper-content .back-to-paper-list label {
+      font-weight: normal; }
+  .zujuanWrapper .paper-content .back-to-paper-list {
+    top: 10px;
+    height: 35px; }
+.zujuanWrapper .fixed-top {
+  top: 47px; }
+.zujuanWrapper .kmTxWrap {
+  padding-right: 100px;
+  width: 100%; }
+.zujuanWrapper .back-to-zujuan {
+  width: 100px;
+  position: absolute;
+  top: 0;
+  right: 10px; }
+  .zujuanWrapper .back-to-zujuan button {
+    float: right;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 12px; }
+.zujuanWrapper .test-list-wrap {
+  padding-top: 50px; }
+  .zujuanWrapper .test-list-wrap .mt15 {
+    margin-top: 15px; }
+.zujuanWrapper .paper-list {
+  padding: 10px 15px; }
+  .zujuanWrapper .paper-list ul {
+    margin: 0;
+    padding: 0; }
+  .zujuanWrapper .paper-list table {
+    margin-bottom: 0; }
+    .zujuanWrapper .paper-list table th {
+      text-align: center;
+      border-bottom: 0; }
+    .zujuanWrapper .paper-list table td {
+      vertical-align: middle; }
+  .zujuanWrapper .paper-list .table-title th {
+    border-top: 0; }
+  .zujuanWrapper .paper-list .more-info {
+    display: none;
+    padding: 10px; }
+    .zujuanWrapper .paper-list .more-info h5 {
+      font-weight: bold; }
+    .zujuanWrapper .paper-list .more-info span {
+      margin-right: 10px; }
+  .zujuanWrapper .paper-list .paging {
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    margin-top: -1px; }
+  .zujuanWrapper .paper-list .zj_list {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd; }
+    .zujuanWrapper .paper-list .zj_list li {
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd; }
+    .zujuanWrapper .paper-list .zj_list li:nth-child(odd) {
+      background-color: #f9f9f9; }
+.zujuanWrapper .paperConfirmTable {
+  width: 96%;
+  margin: 20px 0 20px 2%; }
+  .zujuanWrapper .paperConfirmTable th {
+    text-align: center;
+    padding: 5px; }
+  .zujuanWrapper .paperConfirmTable td {
+    text-align: center;
+    padding: 5px; }
+.zujuanWrapper .ruleMakePaper-header {
+  border-bottom: 1px solid #ccc;
+  padding: 5px;
+  background-color: #f5f5f5; }
+  .zujuanWrapper .ruleMakePaper-header table {
+    width: 100%; }
+    .zujuanWrapper .ruleMakePaper-header table th, .zujuanWrapper .ruleMakePaper-header table td {
+      padding: 5px; }
+  .zujuanWrapper .ruleMakePaper-header .form-control {
+    height: 28px;
+    padding: 3px 12px; }
+  .zujuanWrapper .ruleMakePaper-header em {
+    font-weight: normal;
+    font-size: 12px; }
+  .zujuanWrapper .ruleMakePaper-header .txNum {
+    width: 50px;
+    text-align: center; }
+.zujuanWrapper .fixed-bottom {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 10px; }
+.zujuanWrapper .ruleMakePaper-body {
+  padding: 10px; }
+  .zujuanWrapper .ruleMakePaper-body table {
+    width: 100%; }
+    .zujuanWrapper .ruleMakePaper-body table th {
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: center; }
+    .zujuanWrapper .ruleMakePaper-body table td {
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: center; }
+      .zujuanWrapper .ruleMakePaper-body table td .glyphicon-trash {
+        cursor: pointer; }
+        .zujuanWrapper .ruleMakePaper-body table td .glyphicon-trash:hover {
+          color: red; }
+  .zujuanWrapper .ruleMakePaper-body .txTotalNum {
+    font-size: 14px;
+    margin-left: 15px; }
+.zujuanWrapper .zsdPreview {
+  position: fixed;
+  width: 500px;
+  height: 300px;
+  z-index: 2000;
+  background-color: #F8F8F8;
+  margin: -150px 0 0 -250px;
+  top: 50%;
+  left: 50%;
+  display: none;
+  border: 1px solid #ccc; }
+  .zujuanWrapper .zsdPreview .zsdPreviewInner {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 10px; }
+.zujuanWrapper .sub-nav {
+  position: fixed;
+  background: #fff;
+  width: 100%;
+  z-index: 3; }
+.zujuanWrapper .pointTree {
+  top: 10px; }
+.zujuanWrapper .randomMakePaperWrap .test-list-wrap {
+  padding-top: 25px; }
+.zujuanWrapper .tab-content {
+  padding-top: 47px; }
+.zujuanWrapper .myPaper .ruleMakePaper-header {
+  border: 1px solid #ccc;
+  margin-right: 10px; }
+
+.kaowuWrapper .active {
+  color: #000; }
+.kaowuWrapper i {
+  color: red;
+  font-style: normal; }
+.kaowuWrapper .explain {
+  font-size: 12px; }
+.kaowuWrapper .fixed-top {
+  left: 80px; }
+.kaowuWrapper .kaowu-table {
+  margin-top: 15px; }
+  .kaowuWrapper .kaowu-table th {
+    text-align: center; }
+  .kaowuWrapper .kaowu-table td {
+    vertical-align: middle;
+    position: relative; }
+    .kaowuWrapper .kaowu-table td p {
+      margin: 0; }
+.kaowuWrapper .kaoChangList .moreBtnCont {
+  width: 300px;
+  right: 75px; }
+  .kaowuWrapper .kaoChangList .moreBtnCont .mbc-inner {
+    width: 280px;
+    text-align: center; }
+.kaowuWrapper .paper-cont {
+  height: 440px;
+  overflow-x: hidden;
+  overflow-y: auto; }
+.kaowuWrapper .paper-list {
+  padding: 0;
+  margin: 0 0 5px 0;
+  list-style: none;
+  float: left;
+  width: 100%; }
+  .kaowuWrapper .paper-list li {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    float: left;
+    width: 100%;
+    margin: 0; }
+    .kaowuWrapper .paper-list li .more-info {
+      display: none;
+      float: left;
+      width: 100%; }
+      .kaowuWrapper .paper-list li .more-info p {
+        margin-bottom: 0; }
+        .kaowuWrapper .paper-list li .more-info p span {
+          margin-right: 10px; }
+    .kaowuWrapper .paper-list li a {
+      line-height: 24px; }
+.kaowuWrapper .paging {
+  height: 48px; }
+  .kaowuWrapper .paging .pagination {
+    margin: 5px 0 0 0; }
+.kaowuWrapper .tab-content {
+  padding-top: 60px; }
+  .kaowuWrapper .tab-content .help-block {
+    font-size: 13px;
+    color: indianred;
+    font-style: italic; }
+  .kaowuWrapper .tab-content .start-date-valid {
+    display: none; }
+.kaowuWrapper .student-info,
+.kaowuWrapper .selectFileBox {
+  border-top: 2px solid #8699a4;
+  padding: 15px 10px; }
+.kaowuWrapper .student-list .kaowu-table {
+  margin-top: 0; }
+.kaowuWrapper .findFileBtn {
+  margin-top: 10px; }
+.kaowuWrapper .advanced-set a {
+  margin-right: 15px; }
+.kaowuWrapper .editKaoShi .table-changci td {
+  padding: 0; }
+  .kaowuWrapper .editKaoShi .table-changci td .checkbox {
+    padding: 0 5px;
+    margin-top: 5px; }
+.kaowuWrapper .editKaoShi .table-changci .list-unstyled {
+  padding: 0 5px;
+  margin-bottom: 0; }
+  .kaowuWrapper .editKaoShi .table-changci .list-unstyled li {
+    position: relative; }
+.kaowuWrapper .editKaoShi .table-changci p {
+  margin-bottom: 5px; }
+.kaowuWrapper .editKaoShi .table-changci .addChangCiBtn {
+  padding: 2px 5px;
+  position: absolute;
+  right: 5px;
+  top: 6px; }
+.kaowuWrapper .editKaoShi .active {
+  color: #f60; }
+.kaowuWrapper .editKaoShi .popup-percent-inner {
+  overflow-y: auto; }
+.kaowuWrapper .editKaoShi .deleteChangCi {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  z-index: 1;
+  color: #777; }
+.kaowuWrapper .editKaoShi .cursorPointer:hover {
+  color: #f60; }
+.kaowuWrapper .sub-nav .nav-tabs li:first-child {
+  margin-left: 5%; }
+
+.tongjiWrapper .tj-ks .nav-tabs li:first-child {
+  margin-left: 5%; }
+.tongjiWrapper .tj-btn-box {
+  width: 100%;
+  text-align: center;
+  display: block; }
+  .tongjiWrapper .tj-btn-box .btn {
+    margin-top: 10px; }
+.tongjiWrapper .tj-title {
+  font-size: 20px;
+  line-height: 56px;
+  padding: 0 20px;
+  margin: 0;
+  border-bottom: 1px solid #ddd; }
+  .tongjiWrapper .tj-title .btn {
+    margin-top: 14px; }
+  .tongjiWrapper .tj-title .tjt-avg-score {
+    font-size: 14px; }
+.tongjiWrapper .tab-content {
+  padding: 15px;
+  margin-top: 49px; }
+.tongjiWrapper .ptb10 {
+  padding: 10px 0; }
+.tongjiWrapper .tm-err-rate {
+  background-color: #f5f5f5;
+  padding: 10px;
+  margin-bottom: 10px;
+  position: relative; }
+.tongjiWrapper ul.tm-err-rate-info {
+  padding: 0; }
+.tongjiWrapper ul.tm-err-rate-info li {
+  list-style: none;
+  display: inline;
+  margin-right: 30px; }
+.tongjiWrapper .item-tizhi-wrap {
+  margin-top: 10px; }
+  .tongjiWrapper .item-tizhi-wrap .item-tizhi {
+    margin-bottom: 5px; }
+.tongjiWrapper .answer-cont {
+  position: relative;
+  display: none; }
+  .tongjiWrapper .answer-cont .daAnLabel {
+    position: absolute; }
+  .tongjiWrapper .answer-cont .daAnBox {
+    margin-left: 45px; }
+.tongjiWrapper .chart-wrap .avg-score {
+  position: absolute;
+  text-align: center;
+  width: 100px;
+  left: 46%;
+  margin-left: -50px; }
+  .tongjiWrapper .chart-wrap .avg-score p {
+    font-size: 42px; }
+.tongjiWrapper .ar-tiGan {
+  font-size: 16px; }
+  .tongjiWrapper .ar-tiGan .ar-tk-da {
+    border-bottom: 1px solid #000000;
+    padding: 0 10px;
+    color: red; }
+.tongjiWrapper .ar-tzs .ar-tz {
+  margin-bottom: 10px;
+  position: relative; }
+  .tongjiWrapper .ar-tzs .ar-tz p {
+    margin-bottom: 0; }
+  .tongjiWrapper .ar-tzs .ar-tz .positionAb {
+    top: 50%;
+    margin-top: -11px; }
+.tongjiWrapper .tj-stu .btn {
+  padding: 6px 12px; }
+.tongjiWrapper .ks-chart-page .summary {
+  padding-right: 70px; }
+.tongjiWrapper .ks-chart-page .back-btn {
+  position: absolute;
+  right: 0;
+  bottom: 15px; }
+.tongjiWrapper .ks-chart-page .row {
+  margin-bottom: 15px; }
+.tongjiWrapper .ks-chart-page .table {
+  margin-bottom: 0; }
+.tongjiWrapper .tj-ks-title {
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+  background-color: #fff; }
+  .tongjiWrapper .tj-ks-title span {
+    font-size: 18px;
+    line-height: 28px; }
+.tongjiWrapper .fixed-top {
+  left: 80px;
+  height: 49px; }
+.tongjiWrapper .tj-ks-box {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  float: left; }
+  .tongjiWrapper .tj-ks-box .title {
+    background-color: #d9edf7;
+    margin: 0;
+    padding-left: 10px;
+    height: 38px;
+    line-height: 38px;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd; }
+    .tongjiWrapper .tj-ks-box .title .explain {
+      font-size: 12px;
+      font-weight: normal; }
+    .tongjiWrapper .tj-ks-box .title .all {
+      background-color: #95C880; }
+    .tongjiWrapper .tj-ks-box .title .bj {
+      background-color: #DFCC6D; }
+    .tongjiWrapper .tj-ks-box .title em {
+      font-size: 12px;
+      font-weight: normal; }
+    .tongjiWrapper .tj-ks-box .title input[type='radio'] {
+      margin-top: 10px; }
+  .tongjiWrapper .tj-ks-box .chart {
+    height: 320px;
+    padding: 10px;
+    overflow-y: auto; }
+  .tongjiWrapper .tj-ks-box .chart1 {
+    height: 320px;
+    width: 49%;
+    padding: 10px;
+    overflow-y: auto; }
+  .tongjiWrapper .tj-ks-box .selectBanJi {
+    height: 190px;
+    float: left;
+    width: 100%; }
+  .tongjiWrapper .tj-ks-box .student-list {
+    height: 300px;
+    overflow-y: auto; }
+.tongjiWrapper .banJiList {
+  width: 120px;
+  border-right: 1px solid #ddd;
+  height: 190px;
+  float: left; }
+  .tongjiWrapper .banJiList ul {
+    height: 170px;
+    margin-bottom: 0; }
+    .tongjiWrapper .banJiList ul a {
+      padding: 4px 10px;
+      font-size: 14px;
+      display: block; }
+      .tongjiWrapper .banJiList ul a:hover {
+        text-decoration: none;
+        color: #f60; }
+    .tongjiWrapper .banJiList ul li.active {
+      background: #FFF;
+      margin-right: -1px;
+      border-top: 1px solid #ddd;
+      border-bottom: 1px solid #ddd; }
+      .tongjiWrapper .banJiList ul li.active a {
+        color: #f60;
+        text-decoration: none; }
+  .tongjiWrapper .banJiList .page .wp50 {
+    margin: 0;
+    height: 20px;
+    float: left;
+    cursor: pointer; }
+    .tongjiWrapper .banJiList .page .wp50 .glyphicon {
+      font-size: 12px;
+      margin: 0;
+      color: #666; }
+  .tongjiWrapper .banJiList .page .up {
+    background-color: #dff0d8; }
+  .tongjiWrapper .banJiList .page .down {
+    background-color: #EAE2B9; }
+.tongjiWrapper .banJiName {
+  font-size: 12px;
+  margin-right: 30px; }
+.tongjiWrapper .zsd-list li {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd; }
+  .tongjiWrapper .zsd-list li p {
+    margin-bottom: 0;
+    width: 100%; }
+    .tongjiWrapper .zsd-list li p span {
+      float: left;
+      text-align: center; }
+    .tongjiWrapper .zsd-list li p .zsd-all {
+      background-color: #95C880; }
+    .tongjiWrapper .zsd-list li p .zsd-bj {
+      background-color: #DFCC6D; }
+
+.studentWrapper .baoMingTable th, .studentWrapper .baoMingTable td {
+  text-align: center; }
+.studentWrapper .media-body, .studentWrapper .media-left, .studentWrapper .media-right {
+  display: table-cell;
+  vertical-align: top;
+  position: relative; }
+.studentWrapper .media-left, .studentWrapper .media > .pull-left {
+  padding-right: 10px; }
+.studentWrapper .shiChang {
+  position: absolute;
+  right: 15px;
+  bottom: 2px;
+  color: #888; }
+.studentWrapper .videoList {
+  width: 86%;
+  margin-left: 40px; }
+  .studentWrapper .videoList .media {
+    width: 48%;
+    display: inline-table;
+    margin-left: 1%; }
+    .studentWrapper .videoList .media .media-left {
+      width: 160px; }
+      .studentWrapper .videoList .media .media-left .media-left-a {
+        display: block;
+        padding: 1px;
+        border: 1px solid #7f7f7f; }
+      .studentWrapper .videoList .media .media-left .playIcon {
+        position: absolute;
+        left: 50%;
+        margin-left: -28px;
+        top: 50%;
+        margin-top: -24px; }
+    .studentWrapper .videoList .media .media-body .videoInfo {
+      position: absolute;
+      bottom: 0; }
+      .studentWrapper .videoList .media .media-body .videoInfo p {
+        margin-bottom: 0;
+        font-size: 14px;
+        color: #888; }
+    .studentWrapper .videoList .media .media-body .videoName {
+      color: #222; }
+      .studentWrapper .videoList .media .media-body .videoName:hover {
+        color: #e73c31;
+        text-decoration: none; }
+.studentWrapper .xgspTitle {
+  color: #fff;
+  background: #424242;
+  border-bottom: 1px solid #888;
+  margin: 0;
+  padding: 10px; }
+.studentWrapper .sideVideoList {
+  font-size: 12px;
+  line-height: 18px;
+  color: #ccc;
+  overflow-y: auto; }
+  .studentWrapper .sideVideoList p {
+    margin-bottom: 0; }
+  .studentWrapper .sideVideoList a {
+    color: #ccc;
+    font-size: 12px; }
+  .studentWrapper .sideVideoList .media {
+    background: #555;
+    padding: 3px;
+    margin-top: 10px;
+    cursor: pointer; }
+    .studentWrapper .sideVideoList .media:hover {
+      background: #777; }
+      .studentWrapper .sideVideoList .media:hover .videoName {
+        color: #fff;
+        text-decoration: none; }
+.studentWrapper .fixed-top {
+  left: 80px; }
+.studentWrapper .videoPlayBox {
+  background: #2d2d2d;
+  border-left: 1px solid #2d2d2d; }
+.studentWrapper .bmKaoDianBox .form-body {
+  float: left; }
+  .studentWrapper .bmKaoDianBox .form-body .radio {
+    margin: 2px 2px 0 10px;
+    float: left; }
+
+.markItUp * {
+  margin: 0px;
+  padding: 0px;
+  outline: none; }
+
+.markItUp a:link,
+.markItUp a:visited {
+  color: #000;
+  text-decoration: none; }
+
+.markItUpContainer {
+  border: 1px solid #3C769D;
+  padding: 5px;
+  font: 11px Verdana, Arial, Helvetica, sans-serif; }
+
+.markItUpEditor {
+  font: 15px 'Courier New', Courier, monospace;
+  padding: 10px;
+  border: 2px solid #3C769D;
+  height: 320px;
+  clear: both;
+  line-height: 18px;
+  overflow: auto; }
+
+.markItUpPreviewFrame {
+  overflow: auto;
+  background-color: #FFFFFF;
+  border: 1px solid #3C769D;
+  width: 99.9%;
+  height: 300px;
+  margin: 5px 0; }
+
+.markItUpFooter {
+  width: 100%;
+  cursor: n-resize; }
+
+.markItUpResizeHandle {
+  overflow: hidden;
+  width: 22px;
+  height: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: n-resize; }
+
+/***************************************************************************************/
+/* first row of buttons */
+.markItUpHeader {
+  float: left;
+  margin-bottom: 5px; }
+  .markItUpHeader ul li {
+    list-style: none;
+    float: left;
+    position: relative;
+    /* next rows of buttons */ }
+    .markItUpHeader ul li a {
+      display: block;
+      width: 35px;
+      height: 35px;
+      margin: 0px 1px 1px 0px;
+      border: solid 1px #ccc;
+      text-indent: -10000px;
+      padding: 0;
+      background-repeat: no-repeat; }
+      .markItUpHeader ul li a:hover {
+        border: 1px solid #f60; }
+    .markItUpHeader ul li ul {
+      display: none;
+      position: absolute;
+      top: 35px;
+      left: 0px;
+      z-index: 2;
+      background: #FFF;
+      border: 1px solid #f60;
+      width: 157px;
+      border-right: 0;
+      border-bottom: 0; }
+    .markItUpHeader ul li ul li {
+      width: 39px;
+      height: 39px;
+      padding: 2px 0 0 2px;
+      border: 1px solid #f60;
+      border-top: 0;
+      border-left: 0; }
+    .markItUpHeader ul li ul li a {
+      width: 35px;
+      height: 35px;
+      border: 0; }
+    .markItUpHeader ul li .markItUpSeparator {
+      margin: 0 10px;
+      width: 1px;
+      height: 16px;
+      overflow: hidden;
+      background-color: #CCC; }
+    .markItUpHeader ul li ul .markItUpSeparator {
+      width: auto;
+      height: 1px;
+      margin: 0px; }
+  .markItUpHeader ul .width70 a {
+    width: 71px;
+    height: 35px; }
+  .markItUpHeader ul .width70 ul li a {
+    width: 35px;
+    height: 35px;
+    border: 0; }
+  .markItUpHeader ul .width70:hover > a {
+    border: 1px solid #f60; }
+  .markItUpHeader ul .wh70x35 ul {
+    width: 314px; }
+    .markItUpHeader ul .wh70x35 ul li {
+      width: 78px; }
+      .markItUpHeader ul .wh70x35 ul li a {
+        width: 70px; }
+  .markItUpHeader ul .wh105x70 ul {
+    width: 328px; }
+    .markItUpHeader ul .wh105x70 ul li {
+      width: 109px;
+      height: 70px; }
+      .markItUpHeader ul .wh105x70 ul li a {
+        width: 105px;
+        height: 70px; }
+  .markItUpHeader ul .wh140x70 ul {
+    width: 289px; }
+    .markItUpHeader ul .wh140x70 ul li {
+      width: 144px;
+      height: 70px; }
+      .markItUpHeader ul .wh140x70 ul li a {
+        width: 140px;
+        height: 70px; }
+
+.previewBox {
+  float: left;
+  width: 100%;
+  margin-top: 10px; }
+  .previewBox .title {
+    font-size: 14px;
+    color: #0033CC;
+    float: left;
+    width: 100%; }
+    .previewBox .title span.pull-right {
+      color: #069200;
+      cursor: pointer; }
+  .previewBox #prevDoc, .previewBox #prevTiZhiDoc {
+    padding: 10px;
+    background-color: #f5f5f5;
+    float: left;
+    width: 100%; }
+
+.mktEditor .markItUpButton a {
+  background-image: url("../bower_components/markitup/images/all.png");
+  background-position: 0 0; }
+
+.mktEditor .markItUpButton1 a {
+  background-position: 0 -770px; }
+
+.mktEditor .markItUpButton1-1 a {
+  background-position: 0 0; }
+
+.mktEditor .markItUpButton1-2 a {
+  background-position: -35px 0; }
+
+.mktEditor .markItUpButton1-3 a {
+  background-position: -70px 0; }
+
+.mktEditor .markItUpButton1-4 a {
+  background-position: -105px 0; }
+
+.mktEditor .markItUpButton1-5 a {
+  background-position: -140px 0; }
+
+.mktEditor .markItUpButton1-6 a {
+  background-position: -175px 0; }
+
+.mktEditor .markItUpButton1-7 a {
+  background-position: -210px 0; }
+
+.mktEditor .markItUpButton1-8 a {
+  background-position: -245px 0; }
+
+.mktEditor .markItUpButton1-9 a {
+  background-position: -280px 0; }
+
+.mktEditor .markItUpButton1-10 a {
+  background-position: -315px 0; }
+
+.mktEditor .markItUpButton1-11 a {
+  background-position: -350px 0; }
+
+.mktEditor .markItUpButton1-12 a {
+  background-position: -385px 0; }
+
+.mktEditor .markItUpButton1-13 a {
+  background-position: -420px 0; }
+
+.mktEditor .markItUpButton1-14 a {
+  background-position: -455px 0; }
+
+.mktEditor .markItUpButton1-15 a {
+  background-position: -490px 0; }
+
+.mktEditor .markItUpButton1-16 a {
+  background-position: -525px 0; }
+
+.mktEditor .markItUpButton1-17 a {
+  background-position: -560px 0; }
+
+.mktEditor .markItUpButton1-18 a {
+  background-position: -595px 0; }
+
+.mktEditor .markItUpButton1-19 a {
+  background-position: -630px 0; }
+
+.mktEditor .markItUpButton1-20 a {
+  background-position: -665px 0; }
+
+.mktEditor .markItUpButton1-21 a {
+  background-position: -700px 0; }
+
+.mktEditor .markItUpButton1-22 a {
+  background-position: -735px 0; }
+
+.mktEditor .markItUpButton1-23 a {
+  background-position: -770px 0; }
+
+.mktEditor .markItUpButton1-24 a {
+  background-position: -805px 0; }
+
+.mktEditor .markItUpButton1-25 a {
+  background-position: -840px 0; }
+
+.mktEditor .markItUpButton1-26 a {
+  background-position: -875px 0; }
+
+.mktEditor .markItUpButton1-27 a {
+  background-position: -910px 0; }
+
+.mktEditor .markItUpButton1-28 a {
+  background-position: -945px 0; }
+
+.mktEditor .markItUpButton1-29 a {
+  background-position: -980px 0; }
+
+.mktEditor .markItUpButton1-30 a {
+  background-position: -1015px 0; }
+
+.mktEditor .markItUpButton1-31 a {
+  background-position: -1050px 0; }
+
+.mktEditor .markItUpButton1-32 a {
+  background-position: -1085px 0; }
+
+.mktEditor .markItUpButton1-33 a {
+  background-position: -1120px 0; }
+
+.mktEditor .markItUpButton1-34 a {
+  background-position: -1155px 0; }
+
+.mktEditor .markItUpButton2 a {
+  background-position: -70px -770px; }
+
+.mktEditor .markItUpButton2-1 a {
+  background-position: 0 -35px; }
+
+.mktEditor .markItUpButton2-2 a {
+  background-position: -35px -35px; }
+
+.mktEditor .markItUpButton2-3 a {
+  background-position: -70px -35px; }
+
+.mktEditor .markItUpButton2-4 a {
+  background-position: -105px -35px; }
+
+.mktEditor .markItUpButton2-5 a {
+  background-position: -140px -35px; }
+
+.mktEditor .markItUpButton2-6 a {
+  background-position: -175px -35px; }
+
+.mktEditor .markItUpButton2-7 a {
+  background-position: -210px -35px; }
+
+.mktEditor .markItUpButton2-8 a {
+  background-position: -245px -35px; }
+
+.mktEditor .markItUpButton2-9 a {
+  background-position: -280px -35px; }
+
+.mktEditor .markItUpButton2-10 a {
+  background-position: -315px -35px; }
+
+.mktEditor .markItUpButton2-11 a {
+  background-position: -350px -35px; }
+
+.mktEditor .markItUpButton2-12 a {
+  background-position: -385px -35px; }
+
+.mktEditor .markItUpButton2-13 a {
+  background-position: -420px -35px; }
+
+.mktEditor .markItUpButton2-14 a {
+  background-position: -455px -35px; }
+
+.mktEditor .markItUpButton2-15 a {
+  background-position: -490px -35px; }
+
+.mktEditor .markItUpButton2-16 a {
+  background-position: -525px -35px; }
+
+.mktEditor .markItUpButton2-17 a {
+  background-position: -560px -35px; }
+
+.mktEditor .markItUpButton2-18 a {
+  background-position: -595px -35px; }
+
+.mktEditor .markItUpButton2-19 a {
+  background-position: -630px -35px; }
+
+.mktEditor .markItUpButton2-20 a {
+  background-position: -665px -35px; }
+
+.mktEditor .markItUpButton2-21 a {
+  background-position: -700px -35px; }
+
+.mktEditor .markItUpButton2-22 a {
+  background-position: -735px -35px; }
+
+.mktEditor .markItUpButton2-23 a {
+  background-position: -770px -35px; }
+
+.mktEditor .markItUpButton2-24 a {
+  background-position: -805px -35px; }
+
+.mktEditor .markItUpButton2-25 a {
+  background-position: -840px -35px; }
+
+.mktEditor .markItUpButton2-26 a {
+  background-position: -875px -35px; }
+
+.mktEditor .markItUpButton2-27 a {
+  background-position: -910px -35px; }
+
+.mktEditor .markItUpButton2-28 a {
+  background-position: -945px -35px; }
+
+.mktEditor .markItUpButton2-29 a {
+  background-position: -980px -35px; }
+
+.mktEditor .markItUpButton2-30 a {
+  background-position: -1015px -35px; }
+
+.mktEditor .markItUpButton2-31 a {
+  background-position: -1050px -35px; }
+
+.mktEditor .markItUpButton2-32 a {
+  background-position: -1085px -35px; }
+
+.mktEditor .markItUpButton3 a {
+  background-position: -140px -770px; }
+
+.mktEditor .markItUpButton3-1 a {
+  background-position: 0 -70px; }
+
+.mktEditor .markItUpButton3-2 a {
+  background-position: -35px -70px; }
+
+.mktEditor .markItUpButton3-3 a {
+  background-position: -70px -70px; }
+
+.mktEditor .markItUpButton3-4 a {
+  background-position: -105px -70px; }
+
+.mktEditor .markItUpButton3-5 a {
+  background-position: -140px -70px; }
+
+.mktEditor .markItUpButton3-6 a {
+  background-position: -175px -70px; }
+
+.mktEditor .markItUpButton3-7 a {
+  background-position: -210px -70px; }
+
+.mktEditor .markItUpButton3-8 a {
+  background-position: -245px -70px; }
+
+.mktEditor .markItUpButton3-9 a {
+  background-position: -280px -70px; }
+
+.mktEditor .markItUpButton3-10 a {
+  background-position: -315px -70px; }
+
+.mktEditor .markItUpButton3-11 a {
+  background-position: -350px -70px; }
+
+.mktEditor .markItUpButton3-12 a {
+  background-position: -385px -70px; }
+
+.mktEditor .markItUpButton3-13 a {
+  background-position: -420px -70px; }
+
+.mktEditor .markItUpButton3-14 a {
+  background-position: -455px -70px; }
+
+.mktEditor .markItUpButton3-15 a {
+  background-position: -490px -70px; }
+
+.mktEditor .markItUpButton3-16 a {
+  background-position: -525px -70px; }
+
+.mktEditor .markItUpButton3-17 a {
+  background-position: -560px -70px; }
+
+.mktEditor .markItUpButton3-18 a {
+  background-position: -595px -70px; }
+
+.mktEditor .markItUpButton3-19 a {
+  background-position: -630px -70px; }
+
+.mktEditor .markItUpButton3-20 a {
+  background-position: -665px -70px; }
+
+.mktEditor .markItUpButton3-21 a {
+  background-position: -700px -70px; }
+
+.mktEditor .markItUpButton3-22 a {
+  background-position: -735px -70px; }
+
+.mktEditor .markItUpButton3-23 a {
+  background-position: -770px -70px; }
+
+.mktEditor .markItUpButton3-24 a {
+  background-position: -805px -70px; }
+
+.mktEditor .markItUpButton3-25 a {
+  background-position: -840px -70px; }
+
+.mktEditor .markItUpButton3-26 a {
+  background-position: -875px -70px; }
+
+.mktEditor .markItUpButton3-27 a {
+  background-position: -910px -70px; }
+
+.mktEditor .markItUpButton3-28 a {
+  background-position: -945px -70px; }
+
+.mktEditor .markItUpButton3-29 a {
+  background-position: -980px -70px; }
+
+.mktEditor .markItUpButton3-30 a {
+  background-position: -1015px -70px; }
+
+.mktEditor .markItUpButton4 a {
+  background-position: -210px -770px; }
+
+.mktEditor .markItUpButton4-1 a {
+  background-position: 0 -105px; }
+
+.mktEditor .markItUpButton4-2 a {
+  background-position: -35px -105px; }
+
+.mktEditor .markItUpButton4-3 a {
+  background-position: -70px -105px; }
+
+.mktEditor .markItUpButton4-4 a {
+  background-position: -105px -105px; }
+
+.mktEditor .markItUpButton4-5 a {
+  background-position: -140px -105px; }
+
+.mktEditor .markItUpButton4-6 a {
+  background-position: -175px -105px; }
+
+.mktEditor .markItUpButton4-7 a {
+  background-position: -210px -105px; }
+
+.mktEditor .markItUpButton4-8 a {
+  background-position: -245px -105px; }
+
+.mktEditor .markItUpButton4-9 a {
+  background-position: -280px -105px; }
+
+.mktEditor .markItUpButton4-10 a {
+  background-position: -315px -105px; }
+
+.mktEditor .markItUpButton4-11 a {
+  background-position: -350px -105px; }
+
+.mktEditor .markItUpButton4-12 a {
+  background-position: -385px -105px; }
+
+.mktEditor .markItUpButton4-13 a {
+  background-position: -420px -105px; }
+
+.mktEditor .markItUpButton4-14 a {
+  background-position: -455px -105px; }
+
+.mktEditor .markItUpButton4-15 a {
+  background-position: -490px -105px; }
+
+.mktEditor .markItUpButton4-16 a {
+  background-position: -525px -105px; }
+
+.mktEditor .markItUpButton4-17 a {
+  background-position: -560px -105px; }
+
+.mktEditor .markItUpButton4-18 a {
+  background-position: -595px -105px; }
+
+.mktEditor .markItUpButton4-19 a {
+  background-position: -630px -105px; }
+
+.mktEditor .markItUpButton4-20 a {
+  background-position: -665px -105px; }
+
+.mktEditor .markItUpButton4-21 a {
+  background-position: -700px -105px; }
+
+.mktEditor .markItUpButton4-22 a {
+  background-position: -735px -105px; }
+
+.mktEditor .markItUpButton4-23 a {
+  background-position: -770px -105px; }
+
+.mktEditor .markItUpButton4-24 a {
+  background-position: -805px -105px; }
+
+.mktEditor .markItUpButton4-25 a {
+  background-position: -840px -105px; }
+
+.mktEditor .markItUpButton4-26 a {
+  background-position: -875px -105px; }
+
+.mktEditor .markItUpButton4-27 a {
+  background-position: -910px -105px; }
+
+.mktEditor .markItUpButton4-28 a {
+  background-position: -945px -105px; }
+
+.mktEditor .markItUpButton5 a {
+  background-position: -280px -770px; }
+
+.mktEditor .markItUpButton5-1 a {
+  background-position: 0 -140px; }
+
+.mktEditor .markItUpButton5-2 a {
+  background-position: -35px -140px; }
+
+.mktEditor .markItUpButton5-3 a {
+  background-position: -70px -140px; }
+
+.mktEditor .markItUpButton5-4 a {
+  background-position: -105px -140px; }
+
+.mktEditor .markItUpButton5-5 a {
+  background-position: -140px -140px; }
+
+.mktEditor .markItUpButton5-6 a {
+  background-position: -175px -140px; }
+
+.mktEditor .markItUpButton5-7 a {
+  background-position: -210px -140px; }
+
+.mktEditor .markItUpButton5-8 a {
+  background-position: -245px -140px; }
+
+.mktEditor .markItUpButton5-9 a {
+  background-position: -280px -140px; }
+
+.mktEditor .markItUpButton5-10 a {
+  background-position: -315px -140px; }
+
+.mktEditor .markItUpButton5-11 a {
+  background-position: -350px -140px; }
+
+.mktEditor .markItUpButton5-12 a {
+  background-position: -385px -140px; }
+
+.mktEditor .markItUpButton5-13 a {
+  background-position: -420px -140px; }
+
+.mktEditor .markItUpButton5-14 a {
+  background-position: -455px -140px; }
+
+.mktEditor .markItUpButton5-15 a {
+  background-position: -490px -140px; }
+
+.mktEditor .markItUpButton5-16 a {
+  background-position: -525px -140px; }
+
+.mktEditor .markItUpButton5-17 a {
+  background-position: -560px -140px; }
+
+.mktEditor .markItUpButton5-18 a {
+  background-position: -595px -140px; }
+
+.mktEditor .markItUpButton5-19 a {
+  background-position: -630px -140px; }
+
+.mktEditor .markItUpButton5-20 a {
+  background-position: -665px -140px; }
+
+.mktEditor .markItUpButton5-21 a {
+  background-position: -700px -140px; }
+
+.mktEditor .markItUpButton5-22 a {
+  background-position: -735px -140px; }
+
+.mktEditor .markItUpButton5-23 a {
+  background-position: -770px -140px; }
+
+.mktEditor .markItUpButton5-24 a {
+  background-position: -805px -140px; }
+
+.mktEditor .markItUpButton5-25 a {
+  background-position: -840px -140px; }
+
+.mktEditor .markItUpButton5-26 a {
+  background-position: -875px -140px; }
+
+.mktEditor .markItUpButton5-27 a {
+  background-position: -910px -140px; }
+
+.mktEditor .markItUpButton5-28 a {
+  background-position: -945px -140px; }
+
+.mktEditor .markItUpButton5-29 a {
+  background-position: -980px -140px; }
+
+.mktEditor .markItUpButton5-30 a {
+  background-position: -1015px -140px; }
+
+.mktEditor .markItUpButton5-31 a {
+  background-position: -1050px -140px; }
+
+.mktEditor .markItUpButton5-32 a {
+  background-position: -1085px -140px; }
+
+.mktEditor .markItUpButton5-33 a {
+  background-position: -1120px -140px; }
+
+.mktEditor .markItUpButton5-34 a {
+  background-position: -1155px -140px; }
+
+.mktEditor .markItUpButton5-35 a {
+  background-position: -1190px -140px; }
+
+.mktEditor .markItUpButton5-36 a {
+  background-position: -1225px -140px; }
+
+.mktEditor .markItUpButton5-37 a {
+  background-position: -1260px -140px; }
+
+.mktEditor .markItUpButton5-38 a {
+  background-position: -1295px -140px; }
+
+.mktEditor .markItUpButton5-39 a {
+  background-position: -1330px -140px; }
+
+.mktEditor .markItUpButton5-40 a {
+  background-position: -1375px -140px; }
+
+.mktEditor .markItUpButton6 a {
+  background-position: -350px -770px; }
+
+.mktEditor .markItUpButton6-1 a {
+  background-position: 0 -175px; }
+
+.mktEditor .markItUpButton6-2 a {
+  background-position: -35px -175px; }
+
+.mktEditor .markItUpButton6-3 a {
+  background-position: -70px -175px; }
+
+.mktEditor .markItUpButton6-4 a {
+  background-position: -105px -175px; }
+
+.mktEditor .markItUpButton6-5 a {
+  background-position: -140px -175px; }
+
+.mktEditor .markItUpButton6-6 a {
+  background-position: -175px -175px; }
+
+.mktEditor .markItUpButton6-7 a {
+  background-position: -210px -175px; }
+
+.mktEditor .markItUpButton6-8 a {
+  background-position: -245px -175px; }
+
+.mktEditor .markItUpButton6-9 a {
+  background-position: -280px -175px; }
+
+.mktEditor .markItUpButton6-10 a {
+  background-position: -315px -175px; }
+
+.mktEditor .markItUpButton6-11 a {
+  background-position: -350px -175px; }
+
+.mktEditor .markItUpButton6-12 a {
+  background-position: -385px -175px; }
+
+.mktEditor .markItUpButton6-13 a {
+  background-position: -420px -175px; }
+
+.mktEditor .markItUpButton6-14 a {
+  background-position: -455px -175px; }
+
+.mktEditor .markItUpButton6-15 a {
+  background-position: -490px -175px; }
+
+.mktEditor .markItUpButton6-16 a {
+  background-position: -525px -175px; }
+
+.mktEditor .markItUpButton6-17 a {
+  background-position: -560px -175px; }
+
+.mktEditor .markItUpButton6-18 a {
+  background-position: -595px -175px; }
+
+.mktEditor .markItUpButton6-19 a {
+  background-position: -630px -175px; }
+
+.mktEditor .markItUpButton6-20 a {
+  background-position: -665px -175px; }
+
+.mktEditor .markItUpButton6-21 a {
+  background-position: -700px -175px; }
+
+.mktEditor .markItUpButton6-22 a {
+  background-position: -735px -175px; }
+
+.mktEditor .markItUpButton6-23 a {
+  background-position: -770px -175px; }
+
+.mktEditor .markItUpButton6-24 a {
+  background-position: -805px -175px; }
+
+.mktEditor .markItUpButton6-25 a {
+  background-position: -840px -175px; }
+
+.mktEditor .markItUpButton6-26 a {
+  background-position: -875px -175px; }
+
+.mktEditor .markItUpButton6-27 a {
+  background-position: -910px -175px; }
+
+.mktEditor .markItUpButton6-28 a {
+  background-position: -945px -175px; }
+
+.mktEditor .markItUpButton7 a {
+  background-position: -420px -770px; }
+
+.mktEditor .markItUpButton7-1 a {
+  background-position: 0 -210px; }
+
+.mktEditor .markItUpButton7-2 a {
+  background-position: -35px -210px; }
+
+.mktEditor .markItUpButton7-3 a {
+  background-position: -70px -210px; }
+
+.mktEditor .markItUpButton7-4 a {
+  background-position: -105px -210px; }
+
+.mktEditor .markItUpButton7-5 a {
+  background-position: -140px -210px; }
+
+.mktEditor .markItUpButton7-6 a {
+  background-position: -175px -210px; }
+
+.mktEditor .markItUpButton7-7 a {
+  background-position: -210px -210px; }
+
+.mktEditor .markItUpButton7-8 a {
+  background-position: -245px -210px; }
+
+.mktEditor .markItUpButton7-9 a {
+  background-position: -280px -210px; }
+
+.mktEditor .markItUpButton7-10 a {
+  background-position: -315px -210px; }
+
+.mktEditor .markItUpButton7-11 a {
+  background-position: -350px -210px; }
+
+.mktEditor .markItUpButton7-12 a {
+  background-position: -385px -210px; }
+
+.mktEditor .markItUpButton7-13 a {
+  background-position: -420px -210px; }
+
+.mktEditor .markItUpButton7-14 a {
+  background-position: -455px -210px; }
+
+.mktEditor .markItUpButton7-15 a {
+  background-position: -490px -210px; }
+
+.mktEditor .markItUpButton7-16 a {
+  background-position: -525px -210px; }
+
+.mktEditor .markItUpButton7-17 a {
+  background-position: -560px -210px; }
+
+.mktEditor .markItUpButton7-18 a {
+  background-position: -595px -210px; }
+
+.mktEditor .markItUpButton7-19 a {
+  background-position: -630px -210px; }
+
+.mktEditor .markItUpButton7-20 a {
+  background-position: -665px -210px; }
+
+.mktEditor .markItUpButton7-21 a {
+  background-position: -700px -210px; }
+
+.mktEditor .markItUpButton7-22 a {
+  background-position: -735px -210px; }
+
+.mktEditor .markItUpButton7-23 a {
+  background-position: -770px -210px; }
+
+.mktEditor .markItUpButton7-24 a {
+  background-position: -805px -210px; }
+
+.mktEditor .markItUpButton7-25 a {
+  background-position: -840px -210px; }
+
+.mktEditor .markItUpButton7-26 a {
+  background-position: -875px -210px; }
+
+.mktEditor .markItUpButton7-27 a {
+  background-position: -910px -210px; }
+
+.mktEditor .markItUpButton7-28 a {
+  background-position: -945px -210px; }
+
+.mktEditor .markItUpButton7-29 a {
+  background-position: -980px -210px; }
+
+.mktEditor .markItUpButton7-30 a {
+  background-position: -1015px -210px; }
+
+.mktEditor .markItUpButton7-31 a {
+  background-position: -1050px -210px; }
+
+.mktEditor .markItUpButton7-32 a {
+  background-position: -1085px -210px; }
+
+.mktEditor .markItUpButton8 a {
+  background-position: -490px -770px; }
+
+.mktEditor .markItUpButton8-1 a {
+  background-position: 0 -245px; }
+
+.mktEditor .markItUpButton8-2 a {
+  background-position: -35px -245px; }
+
+.mktEditor .markItUpButton8-3 a {
+  background-position: -70px -245px; }
+
+.mktEditor .markItUpButton8-4 a {
+  background-position: -105px -245px; }
+
+.mktEditor .markItUpButton8-5 a {
+  background-position: -140px -245px; }
+
+.mktEditor .markItUpButton8-6 a {
+  background-position: -175px -245px; }
+
+.mktEditor .markItUpButton8-7 a {
+  background-position: -210px -245px; }
+
+.mktEditor .markItUpButton8-8 a {
+  background-position: -245px -245px; }
+
+.mktEditor .markItUpButton8-9 a {
+  background-position: -280px -245px; }
+
+.mktEditor .markItUpButton8-10 a {
+  background-position: -315px -245px; }
+
+.mktEditor .markItUpButton8-11 a {
+  background-position: -350px -245px; }
+
+.mktEditor .markItUpButton8-12 a {
+  background-position: -385px -245px; }
+
+.mktEditor .markItUpButton8-13 a {
+  background-position: -420px -245px; }
+
+.mktEditor .markItUpButton8-14 a {
+  background-position: -455px -245px; }
+
+.mktEditor .markItUpButton8-15 a {
+  background-position: -490px -245px; }
+
+.mktEditor .markItUpButton8-16 a {
+  background-position: -525px -245px; }
+
+.mktEditor .markItUpButton8-17 a {
+  background-position: -560px -245px; }
+
+.mktEditor .markItUpButton8-18 a {
+  background-position: -595px -245px; }
+
+.mktEditor .markItUpButton8-19 a {
+  background-position: -630px -245px; }
+
+.mktEditor .markItUpButton8-20 a {
+  background-position: -665px -245px; }
+
+.mktEditor .markItUpButton9 a {
+  background-position: -560px -770px; }
+
+.mktEditor .markItUpButton9-1 a {
+  background-position: 0 -280px; }
+
+.mktEditor .markItUpButton9-2 a {
+  background-position: -35px -280px; }
+
+.mktEditor .markItUpButton9-3 a {
+  background-position: -70px -280px; }
+
+.mktEditor .markItUpButton9-4 a {
+  background-position: -105px -280px; }
+
+.mktEditor .markItUpButton9-5 a {
+  background-position: -140px -280px; }
+
+.mktEditor .markItUpButton9-6 a {
+  background-position: -175px -280px; }
+
+.mktEditor .markItUpButton9-7 a {
+  background-position: -210px -280px; }
+
+.mktEditor .markItUpButton9-8 a {
+  background-position: -245px -280px; }
+
+.mktEditor .markItUpButton9-9 a {
+  background-position: -280px -280px; }
+
+.mktEditor .markItUpButton9-10 a {
+  background-position: -315px -280px; }
+
+.mktEditor .markItUpButton9-11 a {
+  background-position: -350px -280px; }
+
+.mktEditor .markItUpButton9-12 a {
+  background-position: -385px -280px; }
+
+.mktEditor .markItUpButton9-13 a {
+  background-position: -420px -280px; }
+
+.mktEditor .markItUpButton9-14 a {
+  background-position: -455px -280px; }
+
+.mktEditor .markItUpButton9-15 a {
+  background-position: -490px -280px; }
+
+.mktEditor .markItUpButton9-16 a {
+  background-position: -525px -280px; }
+
+.mktEditor .markItUpButton9-17 a {
+  background-position: -560px -280px; }
+
+.mktEditor .markItUpButton9-18 a {
+  background-position: -595px -280px; }
+
+.mktEditor .markItUpButton9-19 a {
+  background-position: -630px -280px; }
+
+.mktEditor .markItUpButton9-20 a {
+  background-position: -665px -280px; }
+
+.mktEditor .markItUpButton9-21 a {
+  background-position: -700px -280px; }
+
+.mktEditor .markItUpButton9-22 a {
+  background-position: -735px -280px; }
+
+.mktEditor .markItUpButton9-23 a {
+  background-position: -770px -280px; }
+
+.mktEditor .markItUpButton9-24 a {
+  background-position: -805px -280px; }
+
+.mktEditor .markItUpButton9-25 a {
+  background-position: -840px -280px; }
+
+.mktEditor .markItUpButton9-26 a {
+  background-position: -875px -280px; }
+
+.mktEditor .markItUpButton9-27 a {
+  background-position: -910px -280px; }
+
+.mktEditor .markItUpButton9-28 a {
+  background-position: -945px -280px; }
+
+.mktEditor .markItUpButton9-29 a {
+  background-position: -980px -280px; }
+
+.mktEditor .markItUpButton9-30 a {
+  background-position: -1015px -280px; }
+
+.mktEditor .markItUpButton9-31 a {
+  background-position: -1050px -280px; }
+
+.mktEditor .markItUpButton9-32 a {
+  background-position: -1085px -280px; }
+
+.mktEditor .markItUpButton9-33 a {
+  background-position: -1120px -280px; }
+
+.mktEditor .markItUpButton9-34 a {
+  background-position: -1155px -280px; }
+
+.mktEditor .markItUpButton9-35 a {
+  background-position: -1190px -280px; }
+
+.mktEditor .markItUpButton9-36 a {
+  background-position: -1225px -280px; }
+
+.mktEditor .markItUpButton10 a {
+  background-position: -630px -770px; }
+
+.mktEditor .markItUpButton10-1 a {
+  background-position: 0 -315px; }
+
+.mktEditor .markItUpButton10-2 a {
+  background-position: -35px -315px; }
+
+.mktEditor .markItUpButton10-3 a {
+  background-position: -70px -315px; }
+
+.mktEditor .markItUpButton10-4 a {
+  background-position: -105px -315px; }
+
+.mktEditor .markItUpButton10-5 a {
+  background-position: -140px -315px; }
+
+.mktEditor .markItUpButton10-6 a {
+  background-position: -175px -315px; }
+
+.mktEditor .markItUpButton10-7 a {
+  background-position: -210px -315px; }
+
+.mktEditor .markItUpButton10-8 a {
+  background-position: -245px -315px; }
+
+.mktEditor .markItUpButton10-9 a {
+  background-position: -280px -315px; }
+
+.mktEditor .markItUpButton10-10 a {
+  background-position: -315px -315px; }
+
+.mktEditor .markItUpButton10-11 a {
+  background-position: -350px -315px; }
+
+.mktEditor .markItUpButton10-12 a {
+  background-position: -385px -315px; }
+
+.mktEditor .markItUpButton10-13 a {
+  background-position: -420px -315px; }
+
+.mktEditor .markItUpButton10-14 a {
+  background-position: -455px -315px; }
+
+.mktEditor .markItUpButton10-15 a {
+  background-position: -490px -315px; }
+
+.mktEditor .markItUpButton10-16 a {
+  background-position: -525px -315px; }
+
+.mktEditor .markItUpButton10-17 a {
+  background-position: -560px -315px; }
+
+.mktEditor .markItUpButton10-18 a {
+  background-position: -595px -315px; }
+
+.mktEditor .markItUpButton10-19 a {
+  background-position: -630px -315px; }
+
+.mktEditor .markItUpButton10-20 a {
+  background-position: -665px -315px; }
+
+.mktEditor .markItUpButton10-21 a {
+  background-position: -700px -315px; }
+
+.mktEditor .markItUpButton10-22 a {
+  background-position: -735px -315px; }
+
+.mktEditor .markItUpButton10-23 a {
+  background-position: -770px -315px; }
+
+.mktEditor .markItUpButton10-24 a {
+  background-position: -805px -315px; }
+
+.mktEditor .markItUpButton10-25 a {
+  background-position: -840px -315px; }
+
+.mktEditor .markItUpButton10-26 a {
+  background-position: -875px -315px; }
+
+.mktEditor .markItUpButton10-27 a {
+  background-position: -910px -315px; }
+
+.mktEditor .markItUpButton10-28 a {
+  background-position: -945px -315px; }
+
+.mktEditor .markItUpButton10-29 a {
+  background-position: -980px -315px; }
+
+.mktEditor .markItUpButton10-30 a {
+  background-position: -1015px -315px; }
+
+.mktEditor .markItUpButton10-31 a {
+  background-position: -1050px -315px; }
+
+.mktEditor .markItUpButton10-32 a {
+  background-position: -1085px -315px; }
+
+.mktEditor .markItUpButton11 a {
+  background-position: -700px -770px; }
+
+.mktEditor .markItUpButton11-1 a {
+  background-position: 0 -350px; }
+
+.mktEditor .markItUpButton11-2 a {
+  background-position: -70px -350px; }
+
+.mktEditor .markItUpButton11-3 a {
+  background-position: -140px -350px; }
+
+.mktEditor .markItUpButton11-4 a {
+  background-position: -210px -350px; }
+
+.mktEditor .markItUpButton11-5 a {
+  background-position: -280px -350px; }
+
+.mktEditor .markItUpButton11-6 a {
+  background-position: -350px -350px; }
+
+.mktEditor .markItUpButton11-7 a {
+  background-position: -420px -350px; }
+
+.mktEditor .markItUpButton11-8 a {
+  background-position: -490px -350px; }
+
+.mktEditor .markItUpButton11-9 a {
+  background-position: -560px -350px; }
+
+.mktEditor .markItUpButton11-10 a {
+  background-position: -630px -350px; }
+
+.mktEditor .markItUpButton11-11 a {
+  background-position: -700px -350px; }
+
+.mktEditor .markItUpButton11-12 a {
+  background-position: -770px -350px; }
+
+.mktEditor .markItUpButton11-13 a {
+  background-position: -840px -350px; }
+
+.mktEditor .markItUpButton11-14 a {
+  background-position: -910px -350px; }
+
+.mktEditor .markItUpButton11-15 a {
+  background-position: -980px -350px; }
+
+.mktEditor .markItUpButton11-16 a {
+  background-position: -1050px -350px; }
+
+.mktEditor .markItUpButton11-17 a {
+  background-position: -1120px -350px; }
+
+.mktEditor .markItUpButton11-18 a {
+  background-position: -1190px -350px; }
+
+.mktEditor .markItUpButton11-19 a {
+  background-position: -1260px -350px; }
+
+.mktEditor .markItUpButton11-20 a {
+  background-position: -1330px -350px; }
+
+.mktEditor .markItUpButton11-21 a {
+  background-position: 0 -385px; }
+
+.mktEditor .markItUpButton11-22 a {
+  background-position: -70px -385px; }
+
+.mktEditor .markItUpButton11-23 a {
+  background-position: -140px -385px; }
+
+.mktEditor .markItUpButton11-24 a {
+  background-position: -210px -385px; }
+
+.mktEditor .markItUpButton11-25 a {
+  background-position: -280px -385px; }
+
+.mktEditor .markItUpButton11-26 a {
+  background-position: -350px -385px; }
+
+.mktEditor .markItUpButton11-27 a {
+  background-position: -420px -385px; }
+
+.mktEditor .markItUpButton11-28 a {
+  background-position: -490px -385px; }
+
+.mktEditor .markItUpButton11-29 a {
+  background-position: -560px -385px; }
+
+.mktEditor .markItUpButton11-30 a {
+  background-position: -630px -385px; }
+
+.mktEditor .markItUpButton12 a {
+  background-position: -770px -770px; }
+
+.mktEditor .markItUpButton12-1 a {
+  background-position: 0 -420px; }
+
+.mktEditor .markItUpButton12-2 a {
+  background-position: -35px -420px; }
+
+.mktEditor .markItUpButton12-3 a {
+  background-position: -70px -420px; }
+
+.mktEditor .markItUpButton12-4 a {
+  background-position: -105px -420px; }
+
+.mktEditor .markItUpButton12-5 a {
+  background-position: -140px -420px; }
+
+.mktEditor .markItUpButton12-6 a {
+  background-position: -175px -420px; }
+
+.mktEditor .markItUpButton12-7 a {
+  background-position: -210px -420px; }
+
+.mktEditor .markItUpButton12-8 a {
+  background-position: -245px -420px; }
+
+.mktEditor .markItUpButton12-9 a {
+  background-position: -280px -420px; }
+
+.mktEditor .markItUpButton12-10 a {
+  background-position: -315px -420px; }
+
+.mktEditor .markItUpButton12-11 a {
+  background-position: -350px -420px; }
+
+.mktEditor .markItUpButton12-12 a {
+  background-position: -385px -420px; }
+
+.mktEditor .markItUpButton12-13 a {
+  background-position: -420px -420px; }
+
+.mktEditor .markItUpButton12-14 a {
+  background-position: -455px -420px; }
+
+.mktEditor .markItUpButton12-15 a {
+  background-position: -490px -420px; }
+
+.mktEditor .markItUpButton12-16 a {
+  background-position: -525px -420px; }
+
+.mktEditor .markItUpButton12-17 a {
+  background-position: -560px -420px; }
+
+.mktEditor .markItUpButton12-18 a {
+  background-position: -595px -420px; }
+
+.mktEditor .markItUpButton12-19 a {
+  background-position: -630px -420px; }
+
+.mktEditor .markItUpButton12-20 a {
+  background-position: -665px -420px; }
+
+.mktEditor .markItUpButton12-21 a {
+  background-position: -700px -420px; }
+
+.mktEditor .markItUpButton12-22 a {
+  background-position: -735px -420px; }
+
+.mktEditor .markItUpButton12-23 a {
+  background-position: -770px -420px; }
+
+.mktEditor .markItUpButton12-24 a {
+  background-position: -805px -420px; }
+
+.mktEditor .markItUpButton12-25 a {
+  background-position: -840px -420px; }
+
+.mktEditor .markItUpButton12-26 a {
+  background-position: -875px -420px; }
+
+.mktEditor .markItUpButton12-27 a {
+  background-position: -910px -420px; }
+
+.mktEditor .markItUpButton12-28 a {
+  background-position: -945px -420px; }
+
+.mktEditor .markItUpButton12-29 a {
+  background-position: -980px -420px; }
+
+.mktEditor .markItUpButton12-30 a {
+  background-position: -1015px -420px; }
+
+.mktEditor .markItUpButton13 a {
+  background-position: -840px -770px; }
+
+.mktEditor .markItUpButton13-1 a {
+  background-position: 0 -455px; }
+
+.mktEditor .markItUpButton13-2 a {
+  background-position: -35px -455px; }
+
+.mktEditor .markItUpButton13-3 a {
+  background-position: -70px -455px; }
+
+.mktEditor .markItUpButton13-4 a {
+  background-position: -105px -455px; }
+
+.mktEditor .markItUpButton13-5 a {
+  background-position: -140px -455px; }
+
+.mktEditor .markItUpButton13-6 a {
+  background-position: -175px -455px; }
+
+.mktEditor .markItUpButton13-7 a {
+  background-position: -210px -455px; }
+
+.mktEditor .markItUpButton13-8 a {
+  background-position: -245px -455px; }
+
+.mktEditor .markItUpButton13-9 a {
+  background-position: -280px -455px; }
+
+.mktEditor .markItUpButton13-10 a {
+  background-position: -315px -455px; }
+
+.mktEditor .markItUpButton13-11 a {
+  background-position: -350px -455px; }
+
+.mktEditor .markItUpButton13-12 a {
+  background-position: -385px -455px; }
+
+.mktEditor .markItUpButton13-13 a {
+  background-position: -420px -455px; }
+
+.mktEditor .markItUpButton13-14 a {
+  background-position: -455px -455px; }
+
+.mktEditor .markItUpButton13-15 a {
+  background-position: -490px -455px; }
+
+.mktEditor .markItUpButton13-16 a {
+  background-position: -525px -455px; }
+
+.mktEditor .markItUpButton13-17 a {
+  background-position: -560px -455px; }
+
+.mktEditor .markItUpButton13-18 a {
+  background-position: -595px -455px; }
+
+.mktEditor .markItUpButton13-19 a {
+  background-position: -630px -455px; }
+
+.mktEditor .markItUpButton13-20 a {
+  background-position: -665px -455px; }
+
+.mktEditor .markItUpButton13-21 a {
+  background-position: -700px -455px; }
+
+.mktEditor .markItUpButton13-22 a {
+  background-position: -735px -455px; }
+
+.mktEditor .markItUpButton13-23 a {
+  background-position: -770px -455px; }
+
+.mktEditor .markItUpButton13-24 a {
+  background-position: -805px -455px; }
+
+.mktEditor .markItUpButton14 a {
+  background-position: -910px -770px; }
+
+.mktEditor .markItUpButton14-1 a {
+  background-position: 0 -490px; }
+
+.mktEditor .markItUpButton14-2 a {
+  background-position: -35px -490px; }
+
+.mktEditor .markItUpButton14-3 a {
+  background-position: -70px -490px; }
+
+.mktEditor .markItUpButton14-4 a {
+  background-position: -105px -490px; }
+
+.mktEditor .markItUpButton14-5 a {
+  background-position: -140px -490px; }
+
+.mktEditor .markItUpButton14-6 a {
+  background-position: -175px -490px; }
+
+.mktEditor .markItUpButton14-7 a {
+  background-position: -210px -490px; }
+
+.mktEditor .markItUpButton14-8 a {
+  background-position: -245px -490px; }
+
+.mktEditor .markItUpButton14-9 a {
+  background-position: -280px -490px; }
+
+.mktEditor .markItUpButton14-10 a {
+  background-position: -315px -490px; }
+
+.mktEditor .markItUpButton14-11 a {
+  background-position: -350px -490px; }
+
+.mktEditor .markItUpButton14-12 a {
+  background-position: -385px -490px; }
+
+.mktEditor .markItUpButton14-13 a {
+  background-position: -420px -490px; }
+
+.mktEditor .markItUpButton14-14 a {
+  background-position: -455px -490px; }
+
+.mktEditor .markItUpButton14-15 a {
+  background-position: -490px -490px; }
+
+.mktEditor .markItUpButton14-16 a {
+  background-position: -525px -490px; }
+
+.mktEditor .markItUpButton15 a {
+  background-position: -980px -770px; }
+
+.mktEditor .markItUpButton15-1 a {
+  background-position: 0 -525px; }
+
+.mktEditor .markItUpButton15-2 a {
+  background-position: -105px -525px; }
+
+.mktEditor .markItUpButton15-3 a {
+  background-position: -210px -525px; }
+
+.mktEditor .markItUpButton15-4 a {
+  background-position: -315px -525px; }
+
+.mktEditor .markItUpButton15-5 a {
+  background-position: -420px -525px; }
+
+.mktEditor .markItUpButton15-6 a {
+  background-position: -525px -525px; }
+
+.mktEditor .markItUpButton15-7 a {
+  background-position: -630px -525px; }
+
+.mktEditor .markItUpButton15-8 a {
+  background-position: -735px -525px; }
+
+.mktEditor .markItUpButton15-9 a {
+  background-position: -840px -525px; }
+
+.mktEditor .markItUpButton15-10 a {
+  background-position: -945px -525px; }
+
+.mktEditor .markItUpButton15-11 a {
+  background-position: -1050px -525px; }
+
+.mktEditor .markItUpButton15-12 a {
+  background-position: -1155px -525px; }
+
+.mktEditor .markItUpButton16 a {
+  background-position: -1050px -770px; }
+
+.mktEditor .markItUpButton16-1 a {
+  background-position: 0 -595px; }
+
+.mktEditor .markItUpButton16-2 a {
+  background-position: -35px -595px; }
+
+.mktEditor .markItUpButton16-3 a {
+  background-position: -70px -595px; }
+
+.mktEditor .markItUpButton16-4 a {
+  background-position: -105px -595px; }
+
+.mktEditor .markItUpButton16-5 a {
+  background-position: -140px -595px; }
+
+.mktEditor .markItUpButton16-6 a {
+  background-position: -175px -595px; }
+
+.mktEditor .markItUpButton16-7 a {
+  background-position: -210px -595px; }
+
+.mktEditor .markItUpButton16-8 a {
+  background-position: -245px -595px; }
+
+.mktEditor .markItUpButton16-9 a {
+  background-position: -280px -595px; }
+
+.mktEditor .markItUpButton16-10 a {
+  background-position: -315px -595px; }
+
+.mktEditor .markItUpButton16-11 a {
+  background-position: -350px -595px; }
+
+.mktEditor .markItUpButton16-12 a {
+  background-position: -385px -595px; }
+
+.mktEditor .markItUpButton16-13 a {
+  background-position: -420px -595px; }
+
+.mktEditor .markItUpButton16-14 a {
+  background-position: -455px -595px; }
+
+.mktEditor .markItUpButton16-15 a {
+  background-position: -490px -595px; }
+
+.mktEditor .markItUpButton16-16 a {
+  background-position: -525px -595px; }
+
+.mktEditor .markItUpButton16-17 a {
+  background-position: -560px -595px; }
+
+.mktEditor .markItUpButton16-18 a {
+  background-position: -595px -595px; }
+
+.mktEditor .markItUpButton16-19 a {
+  background-position: -630px -595px; }
+
+.mktEditor .markItUpButton16-20 a {
+  background-position: -665px -595px; }
+
+.mktEditor .markItUpButton16-21 a {
+  background-position: -700px -595px; }
+
+.mktEditor .markItUpButton16-22 a {
+  background-position: -735px -595px; }
+
+.mktEditor .markItUpButton16-23 a {
+  background-position: -770px -595px; }
+
+.mktEditor .markItUpButton16-24 a {
+  background-position: -805px -595px; }
+
+.mktEditor .markItUpButton16-25 a {
+  background-position: -840px -595px; }
+
+.mktEditor .markItUpButton16-26 a {
+  background-position: -875px -595px; }
+
+.mktEditor .markItUpButton16-27 a {
+  background-position: -910px -595px; }
+
+.mktEditor .markItUpButton16-28 a {
+  background-position: -945px -595px; }
+
+.mktEditor .markItUpButton17 a {
+  background-position: 0 -630px; }
+
+.mktEditor .markItUpButton18 a {
+  background-position: -35px -630px; }
+
+.mktEditor .markItUpButton19 a {
+  background-position: -70px -630px; }
+
+.mktEditor .markItUpButton20 a {
+  background-position: -105px -630px; }
+
+.mktEditor .markItUpButton21 a {
+  background-position: -140px -630px; }
+
+.mktEditor .markItUpButton22 a {
+  background-position: -175px -630px; }
+
+.mktEditor .markItUpButton23 a {
+  background-position: -210px -630px; }
+
+.mktEditor .markItUpButton24 a {
+  background-position: -245px -630px; }
+
+.mktEditor .markItUpButton25 a {
+  background-position: -280px -630px; }
+
+.mktEditor .markItUpButton26 a {
+  background-position: -315px -630px; }
+
+.mktEditor .markItUpButton27 a {
+  background-position: 0 -665px; }
+
+.mktEditor .markItUpButton28 a {
+  background-position: -35px -665px; }
+
+.mktEditor .markItUpButton29 a {
+  background-position: -70px -665px; }
+
+.mktEditor .markItUpButton30 a {
+  background-position: -105px -665px; }
+
+.mktEditor .markItUpButton31 a {
+  background-position: -140px -665px; }
+
+.mktEditor .markItUpButton32 a {
+  background-position: -175px -665px; }
+
+.mktEditor .markItUpButton33 a {
+  background-position: -210px -665px; }
+
+.mktEditor .markItUpButton34 a {
+  background-position: -245px -665px; }
+
+.mktEditor .markItUpButton35 a {
+  background-position: -280px -665px; }
+
+.mktEditor .markItUpButton36 a {
+  background-position: -315px -665px; }
+
+.mktEditor .markItUpButton37 a {
+  background-position: -350px -665px; }
+
+.mktEditor .markItUpButton38 a {
+  background-position: -1260px -770px; }
+
+.mktEditor .markItUpButton38-1 a {
+  background-position: 0 -700px; }
+
+.mktEditor .markItUpButton38-2 a {
+  background-position: -140px -700px; }
+
+.mktEditor .markItUpButton38-3 a {
+  background-position: -280px -700px; }
+
+.mktEditor .markItUpButton38-4 a {
+  background-position: -420px -700px; }
+
+.mktEditor .markItUpButton38-5 a {
+  background-position: -560px -700px; }
+
+.mktEditor .markItUpButton38-6 a {
+  background-position: -700px -700px; }
+
+.mktEditor .markItUpButton38-7 a {
+  background-position: -840px -700px; }
+
+.mktEditor .markItUpButton38-8 a {
+  background-position: -980px -700px; }
+
+.mktEditor .markItUpButton39 a {
+  background-position: 0 -805px; }
+
+.mktEditor .markItUpButton40 a {
+  background-position: -70px -805px; }
+
+.addBlank {
+  display: none; }
+
+.tianKong .addBlank {
+  display: block; }
+
+.fileUploadBox p span {
+  margin-right: 20px; }
+.fileUploadBox p .glyphicon-remove {
+  color: red; }
+.fileUploadBox .uploadBtnBox {
+  float: left;
+  width: 100%; }
+  .fileUploadBox .uploadBtnBox span {
+    margin: 4px 0 0 10px;
+    float: left; }
+
+#mediaPlugin {
+  display: none;
+  z-index: 20;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); }
+  #mediaPlugin .mediaPluginInner {
+    width: 600px;
+    height: 370px;
+    background-color: #fff;
+    border: 1px solid #7E7E7E;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -185px 0 0 -300px;
+    padding: 10px; }
+    #mediaPlugin .mediaPluginInner .closeBtn {
+      position: absolute;
+      right: 10px;
+      bottom: 10px; }
+      #mediaPlugin .mediaPluginInner .closeBtn a {
+        color: red; }
+
+/* angular animation */
+.guanLiWrapper .sub-nav .nav-tabs li:first-child {
+  margin-left: 5%; }
+.guanLiWrapper .fixed-top {
+  left: 80px; }
+.guanLiWrapper .tab-content {
+  padding-top: 60px;
+  width: 90%;
+  margin-left: 5%; }
+.guanLiWrapper .radio-inline,
+.guanLiWrapper .checkbox-inline {
+  margin-left: 10px; }
+.guanLiWrapper .paging {
+  padding: 0; }
+.guanLiWrapper .glMoreBtnCont {
+  display: auto;
+  right: 102px;
+  top: 22px;
+  width: 105px;
+  position: absolute;
+  background-color: #FFFFFF;
+  border: 1px solid #AFC1CF;
+  padding: 10px;
+  text-align: right;
+  z-index: 1;
+  overflow: hidden; }
+.guanLiWrapper .promptInfo {
+  font-size: 10px;
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 70%; }

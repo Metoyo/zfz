@@ -1,0 +1,32 @@
+<div class="innerWrap innerWrapperSubDs kaowuWrapper">
+  <div class="loading-box text-center" ng-show="loadingImgShow">
+    <img src="/images/loading.gif" alt="" width="64" height="64"/>
+    <p>
+      数据保存中……
+    </p>
+  </div>
+  <div class="sub-nav fixed-top" ng-init="tabActive = 'ksgl'">
+    <ul class="nav nav-tabs">
+      <li ng-class="{active: tabActive == 'ksgl'}">
+        <a href="javascript:void(0)" ng-click="showKaoShiZuList('all')">
+          考试管理
+        </a>
+      </li>
+      <li ng-class="{active: tabActive == 'anks'}">
+        <a href="javascript:void(0)" ng-click="addNewKaoShi()">
+          新建考试
+        </a>
+      </li>
+      <li ng-class="{active: tabActive == 'kcgl' }">
+        <a href="javascript:void(0)" ng-click="showKaoChangList()">
+          考场管理
+        </a>
+      </li>
+    </ul>
+  </div>
+  <!-- 考务的容器 开始-->
+  <div class="tab-content wp90 mlp5" ng-init="txTpl = 'views/kaowu/kaoShiList.html'" ng-include="txTpl">
+
+  </div>
+  <!-- 考务的容器 结束-->
+</div>

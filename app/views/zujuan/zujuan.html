@@ -1,0 +1,180 @@
+<div class="innerWrap innerWrapperSubDs zujuanWrapper" ng-class="{paper_hand_form: paper_hand_form}">
+  <div class="loading-box text-center" ng-show="loadingImgShow">
+    <img src="/images/loading.gif" alt="" width="64" height="64"/>
+    <p>数据加载中，请耐心等待……</p>
+  </div>
+  <div class="subDashboard">
+    <!--题目题型统计-->
+    <div class="tiMuTongJi" ng-hide="zjDaGangListShow">
+      <div class="plr10">
+        <h2 class="sdb-title">科目名称</h2>
+        <p ng-bind="session.defaultLyName" class="sdb-cont cYell"></p>
+      </div>
+      <div class="plr10">
+        <h2 class="sdb-title">题库默认大纲</h2>
+        <p ng-bind="dgList[0].ZHISHIDAGANGMINGCHENG" class="sdb-cont-dg cYell"></p>
+      </div>
+      <!--<div class="plr10">-->
+        <!--<div class="selectedItems clearfix" ng-show="showBackToPaperListBtn">-->
+          <!--<h3 class="clearfix">-->
+            <!--<span class="pull-left">已选试题({{totalSelectedItmes ? totalSelectedItmes : 0}})</span>-->
+            <!--<a href="javascript:void(0)" class="pull-right">全部清空</a>-->
+          <!--</h3>-->
+          <!--<table class="table-bordered tixingTalbe">-->
+            <!--<tr>-->
+              <!--<th>题型</th>-->
+              <!--<th>数量</th>-->
+              <!--<th>占比</th>-->
+              <!--<th>分数</th>-->
+              <!--<th></th>-->
+            <!--</tr>-->
+            <!--<tr ng-repeat="kmtx in kmtxList">-->
+              <!--<td class="text-left">{{kmtx.TIXINGMINGCHENG}}</td>-->
+              <!--<td>{{kmtx.itemsNum}}</td>-->
+              <!--<td>{{kmtx.txPercentNum == 'NaN%' ? '0%' : kmtx.txPercentNum }}</td>-->
+              <!--<td>{{kmtx.datiScore}}</td>-->
+              <!--<td class="deleteBtn">-->
+                <!--<a href="javascript:void(0)" ng-click="deleteDaTiArr(kmtx.TIXING_ID)">-->
+                  <!--<span class="glyphicon glyphicon-trash"></span>-->
+                <!--</a>-->
+              <!--</td>-->
+            <!--</tr>-->
+          <!--</table>-->
+        <!--</div>-->
+        <!--<div class="selectedItems clearfix" ng-show="showBackToPaperListBtn">-->
+          <!--<table class="table-bordered nanduTable">-->
+            <!--<tr>-->
+              <!--<th>难度</th>-->
+              <!--<th>数量</th>-->
+              <!--<th>占比</th>-->
+              <!--<th>分数</th>-->
+            <!--</tr>-->
+            <!--<tr ng-repeat="ndtd in nanduTempData">-->
+              <!--<td class="text-left">{{ndtd.nanduName}}</td>-->
+              <!--<td>{{ndtd.nanduCount.length}}</td>-->
+              <!--<td>{{ndtd.ndPercentNum == 'NaN%' ? '0%' : ndtd.ndPercentNum}}</td>-->
+              <!--<td></td>-->
+            <!--</tr>-->
+          <!--</table>-->
+        <!--</div>-->
+        <!--<div class="right-pop-fixed" ng-show="zuJuanParam.xuanTiError.length">-->
+          <!--<h2 class="title">-->
+            <!--<span class="glyphicon glyphicon-remove" ng-click="closeRuleZuJuanTiMuNumErr()"></span>-->
+          <!--</h2>-->
+          <!--<div class="p10">-->
+            <!--<p ng-repeat="xtErr in zuJuanParam.xuanTiError">-->
+              <!--难度为 <span ng-bind="xtErr.errNanDu" class="clRed"></span>-->
+              <!--的<span ng-bind="xtErr.errTxName" class="clRed"></span>有-->
+              <!--<span ng-bind="xtErr.lessenVal" class="clRed"></span> 道题未选出。-->
+            <!--</p>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    </div>
+    <!-- 大纲列表 -->
+    <div id="dagangListWrap" ng-show="zjDaGangListShow">
+      <div class="pointTree">
+        <ul class="list-unstyled levelOne" id="daGangList">
+          <li ng-repeat="zsd in kowledgeList" repeat-done>
+            <div class="foldBtn pull-left unfoldBtn {{'node' + zsd.JIEDIAN_ID}}" ng-show="zsd.ZIJIEDIAN.length"
+                 ng-click="toggleChildNode(zsd.JIEDIAN_ID)"></div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="point" value="{{zsd.ZHISHIDIAN_ID}}"
+                       class="{{'select' + zsd.JIEDIAN_ID}}"
+                       ng-click="toggleSelection(zsd.JIEDIAN_ID)"
+                       data-zsdName="{{zsd.ZHISHIDIANMINGCHENG}}"/>
+                {{zsd.ZHISHIDIANMINGCHENG}}
+              </label>
+            </div>
+            <ul class="list-unstyled levelTwo">
+              <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
+                <div class="foldBtn pull-left unfoldBtn {{'node' + nd2.JIEDIAN_ID}}" ng-show="nd2.ZIJIEDIAN.length"
+                     ng-click="toggleChildNode(nd2.JIEDIAN_ID)"></div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="point" value="{{nd2.ZHISHIDIAN_ID}}"
+                           class="{{'select' + nd2.JIEDIAN_ID}}"
+                           ng-click="toggleSelection(nd2.JIEDIAN_ID)"
+                           data-zsdName="{{nd2.ZHISHIDIANMINGCHENG}}"/>
+                    {{nd2.ZHISHIDIANMINGCHENG}}{{'(' + nd2.tiMuNum + ')'}}
+                  </label>
+                </div>
+                <ul class="list-unstyled levelThree">
+                  <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
+                    <div class="foldBtn pull-left  {{'node' + nd3.JIEDIAN_ID}}" ng-show="nd3.ZIJIEDIAN.length"
+                         ng-click="toggleChildNode(nd3.JIEDIAN_ID)"></div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="point"
+                               value="{{nd3.ZHISHIDIAN_ID}}"
+                               class="{{'select' + nd3.JIEDIAN_ID}}"
+                               ng-click="toggleSelection(nd3.JIEDIAN_ID)"
+                               data-zsdName="{{nd3.ZHISHIDIANMINGCHENG}}"/>
+                        {{nd3.ZHISHIDIANMINGCHENG}}{{'(' + nd3.tiMuNum + ')'}}
+                      </label>
+                    </div>
+                    <ul class="list-unstyled levelFour">
+                      <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="point"
+                                   value="{{nd4.ZHISHIDIAN_ID}}"
+                                   class="{{'select' + nd4.JIEDIAN_ID}}"
+                                   ng-click="toggleSelection(nd4.JIEDIAN_ID)"
+                                   data-zsdName="{{nd4.ZHISHIDIANMINGCHENG}}"/>
+                            {{nd4.ZHISHIDIANMINGCHENG}}{{'(' + nd4.tiMuNum + ')'}}
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div id="dragBtn" class="dragBtn">
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="contentInner">
+      <div class="contentWraps">
+        <div class="sub-nav">
+          <ul class="nav nav-tabs">
+            <li ng-class="{active: zj_tabActive == 'addNewShiJuan' }">
+              <a href="javascript:void(0)" ng-click="showZuJuanPage()">
+                新增试卷
+              </a>
+            </li>
+            <li ng-class="{active: zj_tabActive == 'shiJuan' }">
+              <a href="javascript:void(0)" ng-click="showPaperList()">
+                试卷列表
+              </a>
+            </li>
+            <li ng-class="{active: zj_tabActive == 'ruleMakePaper' }">
+              <a href="javascript:void(0)" ng-click="ruleMakePaper()">
+                规则组卷
+              </a>
+            </li>
+            <li ng-class="{active: zj_tabActive == 'zjRule'}">
+              <a href="javascript:void(0)" ng-click="showZuJuanRuleList()">
+                组卷规则
+              </a>
+            </li>
+            <!--<li>-->
+              <!--<a href="javascript:void(0)" ng-click="exportShiJuanToPdf('myPaper')">-->
+                <!--下载-->
+              <!--</a>-->
+            <!--</li>-->
+          </ul>
+        </div>
+        <div class="tab-content" ng-include="zjTpl">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

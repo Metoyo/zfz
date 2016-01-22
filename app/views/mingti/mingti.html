@@ -1,0 +1,115 @@
+<div class="innerWrap innerWrapperSubDs mingtiWrapper">
+  <!--第二级控制面板代码，包含科目和大纲内容。 开始-->
+  <div id="dagangListWrap" class="subDashboard">
+    <div class="plr10">
+      <h2 class="sdb-title">科目名称</h2>
+      <p ng-bind="session.defaultLyName" class="sdb-cont cYell"></p>
+    </div>
+    <div class="plr10">
+      <h2 class="sdb-title">题库默认大纲</h2>
+      <p ng-bind="dgList[0].ZHISHIDAGANGMINGCHENG" class="sdb-cont-dg cYell"></p>
+    </div>
+    <div class="pointTree">
+      <ul class="list-unstyled levelOne" id="daGangList">
+        <li ng-repeat="zsd in kowledgeList">
+          <div class="foldBtn pull-left" ng-class="{unfoldBtn: zsd.fld}" ng-show="zsd.ZIJIEDIAN.length" ng-click="toggleChildNode(zsd)"></div>
+          <div class="checkbox">
+            <label>{{zsd.ZHISHIDIANMINGCHENG}}</label>
+          </div>
+          <ul class="list-unstyled" ng-show="zsd.fld">
+            <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
+              <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd2.fld}" ng-show="nd2.ZIJIEDIAN.length" ng-click="toggleChildNode(nd2)"></div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="point" ng-checked="nd2.ckd" ng-click="toggleSelection(nd2)"/>
+                  {{nd2.ZHISHIDIANMINGCHENG}}
+                </label>
+              </div>
+              <ul class="list-unstyled" ng-show="nd2.fld">
+                <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
+                  <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd3.fld}" ng-show="nd3.ZIJIEDIAN.length" ng-click="toggleChildNode(nd3)"></div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="point" ng-checked="nd3.ckd" ng-click="toggleSelection(nd3)"/>
+                      {{nd3.ZHISHIDIANMINGCHENG}}
+                    </label>
+                  </div>
+                  <ul class="list-unstyled levelFour" ng-show="nd3.fld">
+                    <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="point" ng-checked="nd4.ckd" ng-click="toggleSelection(nd4)"/>
+                          {{nd4.ZHISHIDIANMINGCHENG}}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!--第二级控制面板代码，包含科目和大纲内容。 结束-->
+  <div class="content">
+    <!--题型和难度DOM元素， 开始-->
+    <div class="kmTxWrap fixed-top">
+      <div ng-hide="patternListToggle || alterTiXingBox">
+        <div class="kmTxBox" ng-init="txSelectenIdx = 0">
+          <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
+            <li>
+              <a href="javascript:void(0)" ng-click="getTiXingId()"
+                 ng-class="{active:txSelectenIdx == 0}">全部题型</a>
+            </li>
+            <li ng-repeat="kmtx in kmtxList">
+              <a href="javascript:void(0)" ng-click="getTiXingId(kmtx.TIXING_ID)"
+                 ng-class="{active:txSelectenIdx == kmtx.TIXING_ID}">{{ kmtx.TIXINGMINGCHENG }}</a>
+            </li>
+          </ul>
+        </div>
+        <div class="nanduBox" ng-init="ndSelectenIdx = 0">
+          <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
+            <li>
+              <a href="javascript:void(0)" ng-click="getNanDuId()" ng-class="{active:ndSelectenIdx == 0}">全部难度</a>
+            </li>
+            <li class="nanDuId_1">
+              <a href="javascript:void(0)" ng-click="getNanDuId(1)" ng-class="{active:ndSelectenIdx == 1}">容易</a>
+            </li>
+            <li class="nanDuId_2">
+              <a href="javascript:void(0)" ng-click="getNanDuId(2)" ng-class="{active:ndSelectenIdx == 2}">较易</a>
+            </li>
+            <li class="nanDuId_3">
+              <a href="javascript:void(0)" ng-click="getNanDuId(3)" ng-class="{active:ndSelectenIdx == 3}">一般</a>
+            </li>
+            <li class="nanDuId_4">
+              <a href="javascript:void(0)" ng-click="getNanDuId(4)" ng-class="{active:ndSelectenIdx == 4}">较难</a>
+            </li>
+            <li class="nanDuId_5">
+              <a href="javascript:void(0)" ng-click="getNanDuId(5)" ng-class="{active:ndSelectenIdx == 5}">困难</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <ul class="patternList list-unstyled list-inline"
+          ng-init="patternListToggle = false" ng-show="patternListToggle">
+        <li>
+          <a>请选择你要添加的题型：</a>
+        </li>
+        <li class="{{ntx.ntxClass}}" ng-repeat="ntx in newShiTiTiXing">
+          <a href="javascript:void(0)" ng-click="addNewShiTiFun(ntx.TIXING_ID)">{{ntx.TIXINGMINGCHENG}}</a>
+        </li>
+      </ul>
+      <div class="alterTiXingBox" ng-show="alterTiXingBox">
+        <span>目前你修改的题型为：<strong class="active">{{alterTiMuTiXing}}</strong></span>
+      </div>
+      <div class="addNewTiMuBtn">
+        <button type="button" class="btn btn-danger" ng-show="patternListToggle || alterTiXingBox"
+                ng-click="cancelAddPattern()">返回
+        </button>
+      </div>
+    </div>
+    <!--题型和难度DOM元素， 结束-->
+    <div class="contentWraps" ng-init="txTpl = 'views/mingti/testList.html'" ng-include="txTpl"></div>
+  </div>
+</div>

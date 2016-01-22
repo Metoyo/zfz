@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="pull-left wp40">
+    <h4 class="pb10">
+      考试组
+    </h4>
+    <div class="glZsdgWrap pl10 bd1">
+      <div class="radio" ng-repeat="ksz in glKaoShiZuList">
+        <label>
+          <input type="radio" name="rdKaoShiZu" ng-model="guanliParams.selectKsz" value="{{ksz.KAOSHIZU_ID}}"
+                 ng-click="glQueryZsd()">{{ksz.KAOSHIZU_NAME}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="pull-right wp56">
+    <h4 class="pb10">
+      <span>知识大纲</span>
+      <button type="button" class="btn btn-default pull-right" ng-click="glKaoWuGetZsd()">获取知识点</button>
+    </h4>
+    <div class="pointTree glZsdgWrap pl10 bd1">
+      <ul class="list-unstyled levelOne" id="glDaGangList">
+        <li ng-repeat="zsd in glKowledgeList" repeat-done>
+          <div class="foldBtn pull-left" ng-class="{unfoldBtn: zsd.fld}" ng-show="zsd.ZIJIEDIAN.length" ng-click="toggleChildNode(zsd)"></div>
+          <div class="checkbox">
+            <label>{{zsd.ZHISHIDIANMINGCHENG}}</label>
+          </div>
+          <ul class="list-unstyled" ng-show="zsd.fld">
+            <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
+              <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd2.fld}" ng-show="nd2.ZIJIEDIAN.length" ng-click="toggleChildNode(nd2)"></div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="point" ng-checked="nd2.ckd" ng-click="toggleSelection(nd2)"/>
+                  {{nd2.ZHISHIDIANMINGCHENG}}
+                </label>
+              </div>
+              <ul class="list-unstyled" ng-show="nd2.fld">
+                <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
+                  <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd3.fld}" ng-show="nd3.ZIJIEDIAN.length" ng-click="toggleChildNode(nd3)"></div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="point" ng-checked="nd3.ckd" ng-click="toggleSelection(nd3)"/>
+                      {{nd3.ZHISHIDIANMINGCHENG}}
+                    </label>
+                  </div>
+                  <ul class="list-unstyled levelFour" ng-show="nd3.fld">
+                    <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="point" ng-checked="nd4.ckd" ng-click="toggleSelection(nd4)"/>
+                          {{nd4.ZHISHIDIANMINGCHENG}}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary mt15 pull-right" ng-click="glSaveTongJiSet()">保存修改</button>
+  </div>
+</div>

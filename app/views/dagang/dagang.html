@@ -1,0 +1,75 @@
+<div class="innerWrap dagangWrapper">
+  <div class="subDashboard">
+    <div class="plr10">
+      <h2 class="sdb-title">科目名称</h2>
+      <p ng-bind="session.defaultLyName" class="sdb-cont cYell"></p>
+    </div>
+    <div class="plr10">
+      <h2 class="sdb-title">题库默认大纲</h2>
+      <p ng-bind="defaultDaGang ? defaultDaGang : ''" class="sdb-cont-dg cYell"></p>
+    </div>
+  </div>
+  <div class="content">
+    <div class="save-box">
+      <button class="btn btn-primary" ng-click="daGangParam.showDaGangAsNew = true"
+              ng-show="isPrivateDg || isPublicDg" ng-disabled="!daGangParam.selected_dg">
+        大纲另存
+      </button>
+      <button class="btn btn-primary" ng-click="deleteDaGang()" ng-show="selectZjDgId">
+        删除大纲
+      </button>
+      <button class="btn btn-primary" ng-click="saveZjDaGangData()" ng-show="isPrivateDg"
+              ng-disabled="prDgBtnDisabled">
+        保存大纲
+      </button>
+      <button class="btn btn-primary" ng-click="saveZjDaGangData(true)" ng-show="isPrivateDg"
+              ng-disabled="prDgBtnDisabled">
+        用作默认大纲
+      </button>
+      <button class="btn btn-primary" ng-click="makeDaGangAsDefault()" ng-show="isPublicDg"
+              ng-disabled="!daGangParam.selected_dg">
+        用作默认大纲
+      </button>
+    </div>
+    <div class="row dagangInput" ng-init="dgTpl = 'views/dagang/daGangPublic.html'">
+      <div class="sub-nav fixed-top">
+        <ul class="nav nav-tabs">
+          <li ng-class="{active:daGangParam.activeIdx==1}">
+            <a href="javascript:void(0)" ng-click="renderDgPage('1')">
+              公共知识大纲
+            </a>
+          </li>
+          <li ng-class="{active:daGangParam.activeIdx==2}">
+            <a href="javascript:void(0)" ng-click="renderDgPage('2')">
+              自建知识大纲
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div ng-include="dgTpl">
+      </div>
+    </div>
+    <div class="popup-wrap" ng-show="daGangParam.showDaGangAsNew">
+      <div class="popup-wrap-inner no-header">
+        <div class="pwi-body plr10">
+          <div class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 col-sm-offset-1 control-label">新大纲名称</label>
+              <div class="col-sm-8">
+                <input type="text" class="form-control" ng-model="daGangParam.dgSaveAsName"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pwi-footer plr10">
+          <button type="button" class="btn btn-danger pull-left mt5"
+                  ng-click="daGangParam.showDaGangAsNew = false">关闭
+          </button>
+          <button type="button" class="btn btn-primary pull-right mt5"
+                  ng-click="saveDaGangAsNew()">保存新大纲
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

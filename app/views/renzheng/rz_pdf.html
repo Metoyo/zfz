@@ -1,0 +1,38 @@
+<h4>生成PDF</h4>
+<div class="form-horizontal dagangInput p10">
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      机构选择
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="jg.JIGOU_ID as jg.JIGOUMINGCHENG for jg in jigou_list"
+              ng-model="scanner.selectInfo.jgid" ng-change="getKeMuList(scanner.selectInfo.jgid)">
+        <option value="">请选择</option>
+      </select>
+    </div>
+    <label class="col-md-2 control-label">
+      科目选择
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="km.LINGYU_ID as km.LINGYUMINGCHENG for km in kemu_list"
+              ng-model="scanner.selectInfo.kmid" ng-change="getKaoShiZuList(scanner.selectInfo.kmid)">
+        <option value="">请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      考试组选择
+    </label>
+    <div class="col-md-10">
+      <select class="form-control" ng-options="ksz.KAOSHIZU_ID as ksz.KAOSHIZU_NAME for ksz in kaoshizu_list"
+              ng-model="scanner.selectInfo.kszid" ng-change="getKaoShiList(scanner.selectInfo.kszid)">
+        <option value="">请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group text-right">
+    <button type="button" class="btn btn-info" ng-click="createPdf('daan')">生成答案PDF</button>
+    <button type="button" class="btn btn-primary" ng-click="createPdf('zuoda')">生成作答PDF</button>
+  </div>
+</div>

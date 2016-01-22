@@ -1,0 +1,83 @@
+<div class="studentWrapper">
+  <h2 class="loading-box" ng-hide="kaoShiArrs.length">暂无数据</h2>
+  <div class="sub-nav fixed-top">
+    <ul class="nav nav-tabs">
+      <li class="active" style="margin-left:50px">
+        <a href="javascript:void(0)">
+          在线报名
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content wp80 mt65 ml50">
+    <div class="row" ng-hide="kaoShiChangCiDetail">
+      <h4 class="pb10">我的考试</h4>
+      <table class="table table-striped">
+        <tr>
+          <th>考试名称</th>
+          <th>考点</th>
+          <th class="text-center">开考时间</th>
+          <th class="text-center">报名状态</th>
+          <th width="80px" class="text-center">操作</th>
+        </tr>
+        <tr ng-repeat="ks in kaoShiArrs">
+          <td ng-bind="ks.KAOSHIZU_NAME"></td>
+          <td ng-bind="ks.kaoChangInfo.join(';')"></td>
+          <td class="text-center" ng-bind="ks.kaoShiShiJian"></td>
+          <td class="text-center">
+            <span class="clRed" ng-if="ks.YIBAOMING==0">未报名</span>
+            <span class="clGreen" ng-if="ks.YIBAOMING==1">已报名</span>
+          </td>
+          <td class="text-center">
+            <div ng-if="ks.ZHUANGTAI==2">
+              <a href="javascript:void(0)" ng-if="ks.YIBAOMING==0" ng-click="queryKaoShiZuDetail(ks)">点击报名</a>
+              <a href="javascript:void(0)" ng-if="ks.YIBAOMING==1" ng-click="cancelBaoMing(ks)">取消报名</a>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="row" ng-show="kaoShiChangCiDetail">
+      <h4 class="pb10">
+        <span ng-bind="kaoShiDetailData.KAOSHIZU_NAME"></span>
+        <button type="button" class="btn btn-success pull-right" ng-click="saveStudentSelcet()">确定报名</button>
+        <button type="button" class="btn btn-danger pull-right mr10" ng-click="backToBoMingList()">返回</button>
+      </h4>
+      <table class="table table-striped">
+        <tr ng-repeat="cc in kaoShiDetailData.changci">
+          <td ng-bind="cc.KAOSHI_MINGCHENG"></td>
+          <td ng-bind="cc.kaoShiShiJian"></td>
+          <td class="bmKaoDianBox">
+            <div class="form-body mr5" ng-repeat="kd in cc.kaoDian">
+              <div class="radio" ng-class="{'radio-select':kd.ckd}" ng-hide="kd.isFull" ng-click="bmKaoDianSelect(kd)">
+                <span class="glyphicon glyphicon-ok"></span>
+              </div>
+              <span ng-bind="kd.KMINGCHENG"></span><span ng-show="kd.isFull">(<b class="co676767">已满</b>)</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="popup-wrap saveStuSelectInfo" ng-show="showStuSelectInfo">
+  <div class="popup-wrap-inner">
+    <div class="pwi-header plr10">
+      <p class="title text-center">确认信息</p>
+    </div>
+    <div class="pwi-body plr10">
+      <p class="mt15">考试名称：{{confirmInfo.kaoshiName}}</p>
+      <p>时间：{{confirmInfo.shijian}}</p>
+      <p>考场：{{confirmInfo.kaochang}}</p>
+      <p>时间和考场选择后无法修改，是否确定？</p>
+    </div>
+    <div class="pwi-footer plr10 text-center">
+      <button type="button" class="btn btn-primary mt5" ng-click="saveStudentSelectFun()">
+        确定
+      </button>
+      <button type="button" class="btn btn-danger mt5 ml15" ng-click="colseSaveBaoMingSelect()">
+        取消
+      </button>
+    </div>
+  </div>
+</div>
