@@ -4,7 +4,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
   angular.module('zhifzApp.controllers.DagangCtrl', [])
     .controller('DagangCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService',
       function ($rootScope, $scope, $http, $timeout, DataService) {
-        //声明变量
+        //声明变量//
         var userInfo = $rootScope.session.userInfo;
         var info = $rootScope.session.info;
         var baseAPIUrl = config.apiurl_mt; //renzheng的api

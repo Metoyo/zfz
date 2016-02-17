@@ -22,7 +22,7 @@
         <a href="http://browsehappy.com/">请升级您的浏览器。</a> </p>
     <![endif]-->
     <!-- Add your site or application content here -->
-    <div id="dashboard" class="dashboard" ng-show="urlArrs.length" ng-class="{dashboard_shown_show: urlArrs.length}"
+    <div id="dashboard" class="dashboard" ng-if="urlArrs.length" ng-class="{dashboard_shown_show: urlArrs.length}"
          ng-include="'views/partials/nav.html'"></div>
     <!-- Add your site or application content here -->
     <div class="container" ng-class="{main: urlArrs.length}" ng-view>
@@ -34,7 +34,6 @@
     <script src="bower_components/json3/lib/json3.js"></script>
     <![endif]-->
     <!-- endbuild -->
-
     <script src="bower_components/requirejs/require.js" data-main="scripts/main.js"></script>
   </body>
 </html>

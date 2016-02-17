@@ -1,6 +1,7 @@
 body {
-  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体",
-  sans-serif;
+//  font-family: Helvetica, Tahoma, Arial, "Microsoft YaHei", "微软雅黑", SimSun, "宋体", STXihei, "华文细黑", Heiti, "黑体", sans-serif;
+  font-family: 'Lantinghei SC', 'Open Sans', Arial, 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', '宋体', STHeiti,
+  'WenQuanYi Micro Hei', SimSun, Helvetica, sans-serif;
   color: #000;
   font-size: 15px;
   overflow-x: hidden;
@@ -1529,6 +1530,7 @@ label.checkbox{
       width: 100%;
       margin-bottom: 0;
       border-bottom: 0;
+      margin-left: 0;
     }
     .nav-tabs li {
       float: left;

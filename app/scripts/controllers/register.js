@@ -46,6 +46,10 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         $scope.studentInfo = '';
         $scope.stuIfPswTheSame = false;
         $scope.jigou_list = '';
+        console.log($location);
+        if($location.$$path == '/register/teacher' || $location.$$path == '/register/student'){
+          $rootScope.urlArrs = '';
+        }
 
         /**
          * 注册信息的第一步，个人详情信息
