@@ -46,10 +46,32 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         $scope.studentInfo = '';
         $scope.stuIfPswTheSame = false;
         $scope.jigou_list = '';
-        console.log($location);
-        if($location.$$path == '/register/teacher' || $location.$$path == '/register/student'){
+        if($location.$$path == '/register'){
           $rootScope.urlArrs = '';
         }
+
+        /**
+         * 显示教师注册
+         */
+        $scope.teacherRegister = function(){
+          $scope.rzTpl = 'views/renzheng/rz_regTeacher.html';
+        };
+
+        /**
+         * 显示学生注册
+         */
+        $scope.studentRegister = function(){
+          $scope.rzTpl = 'views/renzheng/rz_regStudent.html';
+        };
+
+        /**
+         * 返回
+         */
+        $scope.registerBackTo = function(step){
+          if(step == 1){
+            $scope.rzTpl = 'views/renzheng/rz_registerSelect.html';
+          }
+        };
 
         /**
          * 注册信息的第一步，个人详情信息

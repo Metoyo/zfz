@@ -51,13 +51,8 @@ define( "config", [], function () {
         controller: 'UserCtrl',
         requireLogin: true
       },
-      '/register/teacher': {
-        templateUrl: '../views/partials/register.html',
-        controller: 'RegisterCtrl',
-        requireLogin: false
-      },
-      '/register/student': {
-        templateUrl: '../views/partials/registerStu.html',
+      '/register': {
+        templateUrl: '../views/renzheng/register.html',
         controller: 'RegisterCtrl',
         requireLogin: false
       },
