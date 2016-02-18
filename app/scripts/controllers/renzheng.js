@@ -46,6 +46,41 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $rootScope.urlArrs = '';
 
         /**
+         * 显示注册页面
+         */
+        $scope.showZheCe = function(){
+          $scope.rzTpl = 'views/renzheng/rz_registerSelect.html';
+        };
+
+        /**
+         * 显示教师注册
+         */
+        $scope.teacherRegister = function(){
+          $scope.rzTpl = 'views/renzheng/rz_regTeacher.html';
+        };
+
+        /**
+         * 显示学生注册
+         */
+        $scope.studentRegister = function(){
+          $scope.rzTpl = 'views/renzheng/rz_regStudent.html';
+        };
+
+        /**
+         * 返回
+         */
+        $scope.registerBackTo = function(step){
+          switch (step){
+            case 0:
+              $scope.rzTpl = 'views/renzheng/rz_login.html';
+              break;
+            case 1:
+              $scope.rzTpl = 'views/renzheng/rz_registerSelect.html';
+              break;
+          }
+        };
+
+        /**
          * 登录程序
          */
         $scope.signIn = function() {
