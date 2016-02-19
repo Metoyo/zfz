@@ -47,11 +47,11 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         $scope.stuIfPswTheSame = false;
         $scope.jigou_list = '';
         if($location.$$path == '/register'){
-          $rootScope.urlArrs = '';
+          $rootScope.urlArrs = [];
         }
 
         /**
-         * 显示教师注册
+         * 显示教师注册//
          */
         $scope.teacherRegister = function(){
           $scope.rzTpl = 'views/renzheng/rz_regTeacher.html';

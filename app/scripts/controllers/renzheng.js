@@ -43,7 +43,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.rzParams.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register';
         $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
         $scope.dengluInfo = false;
-        $rootScope.urlArrs = '';
+        $rootScope.urlArrs = [];
 
         /**
          * 登录程序
