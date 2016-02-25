@@ -1,21 +1,21 @@
 define( "config", [], function () {
   return {
     token: '12345',
-    //apiurl_rz: "http://test.taianting.com:3000/api/",//认证的url
-    //apiurl_mt: "http://test.taianting.com:4000/api/",//命题的url
-    //apiurl_kw: "http://test.taianting.com:4100/api/",//考务的url
-    //apiurl_tj: "http://test.taianting.com:4300/api/",//统计的url
-    //apiurl_bm: "http://test.taianting.com:4400/api/",//报名的url
-    //apiurl_gg: "http://test.taianting.com:5500/",//公共的url
-    //apiurl_sm: "http://test.taianting.com:4280/",//扫描的url
+    apiurl_rz: "http://test.taianting.com:3000/api/",//认证的url
+    apiurl_mt: "http://test.taianting.com:4000/api/",//命题的url
+    apiurl_kw: "http://test.taianting.com:4100/api/",//考务的url
+    apiurl_tj: "http://test.taianting.com:4300/api/",//统计的url
+    apiurl_bm: "http://test.taianting.com:4400/api/",//报名的url
+    apiurl_gg: "http://test.taianting.com:5500/",//公共的url
+    apiurl_sm: "http://test.taianting.com:4280/",//扫描的url
 
-    apiurl_rz: "http://www.zhifz.com:3000/api/",//认证的url
-    apiurl_mt: "http://www.zhifz.com:4000/api/",//命题的url
-    apiurl_kw: "http://www.zhifz.com:4100/api/",//考务的url
-    apiurl_tj: "http://www.zhifz.com:4300/api/",//统计的url
-    apiurl_bm: "http://www.zhifz.com:4400/api/",//报名的url
-    apiurl_gg: "http://www.zhifz.com:5500/",//公共的url
-    apiurl_sm: "http://www.zhifz.com:4280/",//扫描的url
+    //apiurl_rz: "http://www.zhifz.com:3000/api/",//认证的url
+    //apiurl_mt: "http://www.zhifz.com:4000/api/",//命题的url
+    //apiurl_kw: "http://www.zhifz.com:4100/api/",//考务的url
+    //apiurl_tj: "http://www.zhifz.com:4300/api/",//统计的url
+    //apiurl_bm: "http://www.zhifz.com:4400/api/",//报名的url
+    //apiurl_gg: "http://www.zhifz.com:5500/",//公共的url
+    //apiurl_sm: "http://www.zhifz.com:4280/",//扫描的url
 
     //apiurl_rz: "/renzheng/",//认证的url
     //apiurl_mt: "/mingti/",//命题的url

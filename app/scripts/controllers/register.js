@@ -1,4 +1,4 @@
-define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, lazy) {
+define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, lazy) {
   'use strict';
 
   angular.module('zhifzApp.controllers.RegisterCtrl', [])

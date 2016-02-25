@@ -134,54 +134,54 @@
 </head>
 <body>
 <div id="hide_page" style="visibility:hidden;-moz-user-select:none;-webkit-user-select:none;">
-  <div class="downLoadZuoDa">
-    <h2 class="text-center">
-      <span>{{sj_name}}</span>
-    </h2>
-    <div id="answerReappearShiJuan">
-      {{each sj_tm as dati i}}
-      <div>
-        <h4>
-          <span>{{cnNumArr[i]}}、</span>
-          <span>{{dati.tx_name}}</span>
-        </h4>
-        <ul class="list-unstyled">
-          {{each dati.tm as xtm j}}
-          <li class="ptb5">
-            <h4 class="ar-tiGan itemHasImg">
-              <span>{{(j + 1) + '、' + xtm.TIGAN.tiGan}}</span>
-              (本小题  <b>{{xtm.XIAOTI_FENZHI}}</b>  分)
-            </h4>
-            <div class="ar-tzs itemHasImg">
-              {{each xtm.TIGAN.tiZhiNeiRong as tznr k}}
-              <!-- 单选题 -->
-              {{if xtm.TIXING_ID == 1}}
-              <div class="ar-tz">
-                <p class="positionAb">
-                  <span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>
-                </p>
-                <p class="pl40">{{tznr}}</p>
-              </div>
-              {{/if}}
-              <!-- 多选题 -->
-              {{if xtm.TIXING_ID == 2 || xtm.TIXING_ID == 3}}
-              <div class="ar-tz">
-                <p class="positionAb">
-                  <span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>
-                </p>
-                <p class="pl40">{{tznr}}</p>
-              </div>
-              {{/if}}
-              {{/each}}
-            </div>
-            <h4>标准答案:{{xtm.DAAN}}</h4>
-          </li>
-          {{/each}}
-        </ul>
-      </div>
-      {{/each}}
-    </div>
-  </div>
+  <!--<div class="downLoadZuoDa">-->
+    <!--<h2 class="text-center">-->
+      <!--<span>{{sj_name}}</span>-->
+    <!--</h2>-->
+    <!--<div id="answerReappearShiJuan">-->
+      <!--{{each sj_tm as dati i}}-->
+      <!--<div>-->
+        <!--<h4>-->
+          <!--<span>{{cnNumArr[i]}}、</span>-->
+          <!--<span>{{dati.tx_name}}</span>-->
+        <!--</h4>-->
+        <!--<ul class="list-unstyled">-->
+          <!--{{each dati.tm as xtm j}}-->
+          <!--<li class="ptb5">-->
+            <!--<h4 class="ar-tiGan itemHasImg">-->
+              <!--<span>{{(j + 1) + '、' + xtm.TIGAN.tiGan}}</span>-->
+              <!--(本小题  <b>{{xtm.XIAOTI_FENZHI}}</b>  分)-->
+            <!--</h4>-->
+            <!--<div class="ar-tzs itemHasImg">-->
+              <!--{{each xtm.TIGAN.tiZhiNeiRong as tznr k}}-->
+              <!--&lt;!&ndash; 单选题 &ndash;&gt;-->
+              <!--{{if xtm.TIXING_ID == 1}}-->
+              <!--<div class="ar-tz">-->
+                <!--<p class="positionAb">-->
+                  <!--<span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>-->
+                <!--</p>-->
+                <!--<p class="pl40">{{tznr}}</p>-->
+              <!--</div>-->
+              <!--{{/if}}-->
+              <!--&lt;!&ndash; 多选题 &ndash;&gt;-->
+              <!--{{if xtm.TIXING_ID == 2 || xtm.TIXING_ID == 3}}-->
+              <!--<div class="ar-tz">-->
+                <!--<p class="positionAb">-->
+                  <!--<span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>-->
+                <!--</p>-->
+                <!--<p class="pl40">{{tznr}}</p>-->
+              <!--</div>-->
+              <!--{{/if}}-->
+              <!--{{/each}}-->
+            <!--</div>-->
+            <!--<h4>标准答案:{{xtm.DAAN}}</h4>-->
+          <!--</li>-->
+          <!--{{/each}}-->
+        <!--</ul>-->
+      <!--</div>-->
+      <!--{{/each}}-->
+    <!--</div>-->
+  <!--</div>-->
 </div>
 </body>
 </html>

@@ -134,83 +134,83 @@
 </head>
 <body>
 <div id="hide_page" style="visibility:hidden;-moz-user-select:none;-webkit-user-select:none;">
-  <div class="downLoadZuoDa">
-    <h2 class="text-center">
-      <span>{{sj_name}}</span>
-    </h2>
-    <h4 class="studentInfo">
-      <span>姓名:{{stu_obj.XINGMING}}</span>
-      <span>学号:{{stu_obj.YONGHUHAO}}</span>
-      <span>班级:{{stu_obj.BANJI}}</span>
-      <span>成绩:{{stu_obj.ZUIHOU_PINGFEN}}</span>
-    </h4>
-    <div id="answerReappearShiJuan">
-      {{each sj_tm as dati i}}
-      <div>
-        <h4>
-          <span>{{cnNumArr[i]}}、</span>
-          <span>{{dati.tx_name}}</span>
-        </h4>
-        <ul class="list-unstyled">
-          {{each dati.tm as xtm j}}
-          <li class="ptb5">
-            <h4 class="ar-tiGan itemHasImg">
-              <span>{{(j + 1) + '、' + xtm.TIGAN.tiGan}}</span>
-              (本小题  <b>{{xtm.XIAOTI_FENZHI}}</b>  分)
-              (最后得分：<b class="clRed">{{xtm.ZUIHOU_PINGFEN}}</b>  分
-              {{if xtm.TIXING_ID > 4}}
-              |  阅卷教师：<b>{{xtm.YUEJUANJIAOSHI}}</b>
-              {{/if}})
-              <!--(本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)-->
-            </h4>
-            <div class="ar-tzs itemHasImg">
-              {{each xtm.TIGAN.tiZhiNeiRong as tznr k}}
-              <!-- 单选题 -->
-              {{if xtm.TIXING_ID == 1}}
-              <div class="ar-tz">
-                <p class="positionAb">
-                  <input class="fLeft" type="radio" name="{{'radio' + j}}" value="{{letterArr[k]}}" {{xtm.KAOSHENGDAAN==k ? 'checked' : ''}}/>
-                  <span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>
-                </p>
-                <p class="pl40 {{xtm.KAOSHENGDAAN==k ? 'bdBottom' : ''}}">{{tznr}}</p>
-              </div>
-              {{/if}}
-              <!-- 多选题 -->
-              {{if xtm.TIXING_ID == 2 || xtm.TIXING_ID == 3}}
-              <div class="ar-tz">
-                <p class="positionAb">
-                  <input type="checkbox" class="fLeft" name="{{'checkbox' + j}}" {{xtm.KAOSHENGDAAN.indexOf(k)>-1 ? 'checked' : ''}}"/>
-                  <span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>
-                </p>
-                <p class="pl40 {{xtm.KAOSHENGDAAN.indexOf(k)>-1 ? 'bdBottom' : ''}}">{{tznr}}</p>
-              </div>
-              {{/if}}
-              {{/each}}
-              <!-- 判读题 -->
-              {{if xtm.TIXING_ID == 4}}
-				<span>
-				<input type="radio" name="{{'pdRadio' + j}}" value="对" {{xtm.KAOSHENGDAAN==1 ? 'checked' : ''}}/>  <span class="{{xtm.KAOSHENGDAAN==1 ? 'bdBottom' : ''}}">对</span>
-				</span>
-				<span>
-				<input type="radio" name="{{'pdRadio' + j}}" value="错" style="margin: 0 0 0 20px" {{xtm.KAOSHENGDAAN==0 ? 'checked' : ''}}/>  <span class="{{xtm.KAOSHENGDAAN==0 ? 'bdBottom' : ''}}">错</span>
-				</span>
-              {{/if}}
-              <!-- 笔答题填空题 -->
-              {{if xtm.TIXING_ID == 19}}
-              <p class="itemHasImgWith120" style="margin: 0;padding: 0;text-align: center;width: 100%;">{{xtm.KAOSHENGDAAN}}</p>
-              {{/if}}
-              <!-- 笔答题 -->
-              {{if xtm.TIXING_ID >= 9 && xtm.TIXING_ID <= 18}}
-              <p style="margin: 0;padding: 0;text-align: center;width: 100%;">{{xtm.KAOSHENGDAAN}}</p>
-              {{/if}}
-            </div>
-          </li>
-          {{/each}}
-        </ul>
-      </div>
-      {{/each}}
-    </div>
-  </div>
+  <!--<div class="downLoadZuoDa">-->
+    <!--<h2 class="text-center">-->
+      <!--<span>{{sj_name}}</span>-->
+    <!--</h2>-->
+    <!--<h4 class="studentInfo">-->
+      <!--<span>姓名:{{stu_obj.XINGMING}}</span>-->
+      <!--<span>学号:{{stu_obj.YONGHUHAO}}</span>-->
+      <!--<span>班级:{{stu_obj.BANJI}}</span>-->
+      <!--<span>成绩:{{stu_obj.ZUIHOU_PINGFEN}}</span>-->
+    <!--</h4>-->
+    <!--<div id="answerReappearShiJuan">-->
+      <!--{{each sj_tm as dati i}}-->
+      <!--<div>-->
+        <!--<h4>-->
+          <!--<span>{{cnNumArr[i]}}、</span>-->
+          <!--<span>{{dati.tx_name}}</span>-->
+        <!--</h4>-->
+        <!--<ul class="list-unstyled">-->
+          <!--{{each dati.tm as xtm j}}-->
+          <!--<li class="ptb5">-->
+            <!--<h4 class="ar-tiGan itemHasImg">-->
+              <!--<span>{{(j + 1) + '、' + xtm.TIGAN.tiGan}}</span>-->
+              <!--(本小题  <b>{{xtm.XIAOTI_FENZHI}}</b>  分)-->
+              <!--(最后得分：<b class="clRed">{{xtm.ZUIHOU_PINGFEN}}</b>  分-->
+              <!--{{if xtm.TIXING_ID > 4}}-->
+              <!--|  阅卷教师：<b>{{xtm.YUEJUANJIAOSHI}}</b>-->
+              <!--{{/if}})-->
+              <!--&lt;!&ndash;(本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)&ndash;&gt;-->
+            <!--</h4>-->
+            <!--<div class="ar-tzs itemHasImg">-->
+              <!--{{each xtm.TIGAN.tiZhiNeiRong as tznr k}}-->
+              <!--&lt;!&ndash; 单选题 &ndash;&gt;-->
+              <!--{{if xtm.TIXING_ID == 1}}-->
+              <!--<div class="ar-tz">-->
+                <!--<p class="positionAb">-->
+                  <!--<input class="fLeft" type="radio" name="{{'radio' + j}}" value="{{letterArr[k]}}" {{xtm.KAOSHENGDAAN==k ? 'checked' : ''}}/>-->
+                  <!--<span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>-->
+                <!--</p>-->
+                <!--<p class="pl40 {{xtm.KAOSHENGDAAN==k ? 'bdBottom' : ''}}">{{tznr}}</p>-->
+              <!--</div>-->
+              <!--{{/if}}-->
+              <!--&lt;!&ndash; 多选题 &ndash;&gt;-->
+              <!--{{if xtm.TIXING_ID == 2 || xtm.TIXING_ID == 3}}-->
+              <!--<div class="ar-tz">-->
+                <!--<p class="positionAb">-->
+                  <!--<input type="checkbox" class="fLeft" name="{{'checkbox' + j}}" {{xtm.KAOSHENGDAAN.indexOf(k)>-1 ? 'checked' : ''}}"/>-->
+                  <!--<span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>-->
+                <!--</p>-->
+                <!--<p class="pl40 {{xtm.KAOSHENGDAAN.indexOf(k)>-1 ? 'bdBottom' : ''}}">{{tznr}}</p>-->
+              <!--</div>-->
+              <!--{{/if}}-->
+              <!--{{/each}}-->
+              <!--&lt;!&ndash; 判读题 &ndash;&gt;-->
+              <!--{{if xtm.TIXING_ID == 4}}-->
+				<!--<span>-->
+				<!--<input type="radio" name="{{'pdRadio' + j}}" value="对" {{xtm.KAOSHENGDAAN==1 ? 'checked' : ''}}/>  <span class="{{xtm.KAOSHENGDAAN==1 ? 'bdBottom' : ''}}">对</span>-->
+				<!--</span>-->
+				<!--<span>-->
+				<!--<input type="radio" name="{{'pdRadio' + j}}" value="错" style="margin: 0 0 0 20px" {{xtm.KAOSHENGDAAN==0 ? 'checked' : ''}}/>  <span class="{{xtm.KAOSHENGDAAN==0 ? 'bdBottom' : ''}}">错</span>-->
+				<!--</span>-->
+              <!--{{/if}}-->
+              <!--&lt;!&ndash; 笔答题填空题 &ndash;&gt;-->
+              <!--{{if xtm.TIXING_ID == 19}}-->
+              <!--<p class="itemHasImgWith120" style="margin: 0;padding: 0;text-align: center;width: 100%;">{{xtm.KAOSHENGDAAN}}</p>-->
+              <!--{{/if}}-->
+              <!--&lt;!&ndash; 笔答题 &ndash;&gt;-->
+              <!--{{if xtm.TIXING_ID >= 9 && xtm.TIXING_ID <= 18}}-->
+              <!--<p style="margin: 0;padding: 0;text-align: center;width: 100%;">{{xtm.KAOSHENGDAAN}}</p>-->
+              <!--{{/if}}-->
+            <!--</div>-->
+          <!--</li>-->
+          <!--{{/each}}-->
+        <!--</ul>-->
+      <!--</div>-->
+      <!--{{/each}}-->
+    <!--</div>-->
+  <!--</div>-->
 </div>
 </body>
 </html>

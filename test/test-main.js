@@ -14,15 +14,23 @@ requirejs.config({
 
     paths: {
     angular: '../../bower_components/angular/angular',
-    'angular-animate': '../../bower_components/angular-animate/angular-animate',
     'angular-cookies': '../../bower_components/angular-cookies/angular-cookies',
-    'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
     'angular-resource': '../../bower_components/angular-resource/angular-resource',
     'angular-route': '../../bower_components/angular-route/angular-route',
     'angular-sanitize': '../../bower_components/angular-sanitize/angular-sanitize',
+    jquery: '../../bower_components/jquery/dist/jquery.min',
+    charts: '../../bower_components/echarts/echarts-plain',
+    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
+    markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
+    setJs: '../../bower_components/markitup/set.min',
+    mathjax: '../../bower_components/markitup/MathJax',
+    datepicker: '../../bower_components/intimidatetime/intimidatetime',
+    lazy: '../../bower_components/lazy.js/lazy',
+    polyv: '../../bower_components/polyv/polyvplayer_v2.0.min',
+    'angular-animate': '../../bower_components/angular-animate/angular-animate',
+    'angular-mocks': '../../bower_components/angular-mocks/angular-mocks',
     'angular-scenario': '../../bower_components/angular-scenario/angular-scenario',
-    'angular-touch': '../../bower_components/angular-touch/angular-touch',
-    bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap'
+    'angular-touch': '../../bower_components/angular-touch/angular-touch'
   },
 
     shim: {

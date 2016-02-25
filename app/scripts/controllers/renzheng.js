@@ -18,7 +18,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             userName: '',
             password: ''
           };
-        var loginPostParams;
         var session = {};
         var urlArr = [];
         var currentPath = $location.$$path;
@@ -32,7 +31,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $rootScope.isPromiseAlterOthersTimu = false;
         $scope.rzParams = { //全局参数
           registerEmail: '',
-          showFindPwWrap: false,
           passwordRegexp:' /^.{6,20}$/',
           emailLink: '',
           sendEmailSuccess: false,
@@ -46,198 +44,225 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $rootScope.urlArrs = [];
 
         /**
+         * 显示找回密码页面
+         */
+        $scope.showFindPw = function(){
+          $scope.rzTpl = 'views/renzheng/rz_findPw.html';
+        };
+
+        /**
+         * 认证返回界面
+         */
+        $scope.rzBackTo = function(step){
+          switch (step) {
+            case 0:
+              $scope.rzTpl = 'views/renzheng/rz_login.html';
+              break;
+          }
+        };
+
+        /**
          * 登录程序
          */
         $scope.signIn = function() {
-          urlArr = [];
-          if(login.userName && login.password) {
-            loginPostParams = {
-              token : config.token,
-              yonghuming : login.userName,
-              mima : login.password
-            };
-            //登录信息的验证
-            $http.post(loginApiUrl, loginPostParams).success(function(result) {
-              var jsArr, quanxianDist, userCookie, lingyuCookie, myUrlCookie;
-              session.info = result[0];
-              session.userInfo = '';
-              session.quanxian2032 = false;
-              if(result && result.length > 0){
-                var profileUrl = '/user/' + login.userName,
-                  yhxxxxApiUrl = config.apiurl_rz + 'yonghu_xiangxi_xinxi?token=' + config.token + '&yonghuid=' +
-                    session.info.UID; //通过UID查询用户详细的url
-                /**
-                 *查询过用户的详细信息，得到jigouid,lingyuid等等 JUESE
-                 */
-                $http.get(yhxxxxApiUrl).success(function(data){
-                  if(data.JIGOU && data.JIGOU.length > 0){
-                    if(data.JUESE && data.JUESE.length > 0){
-                      session.userInfo = data;
-                      jsArr = Lazy(data.JUESE)
-                        .sortBy(function(js){ return js.JUESE_ID; })
-                        .map(function(js){ return js.JUESE_ID; })
-                        .uniq()
-                        .without("9", "10")
-                        .toArray(); //得到角色的数组
-                      quanxianDist = Lazy(data.QUANXIAN).groupBy(function(qx){ return qx.LINGYU_ID; }).toObject();
-                      Lazy(data.LINGYU).each(function(ly){
-                        var qxIds = Lazy(quanxianDist[parseInt(ly.LINGYU_ID)]).map(function(qx){ return qx.QUANXIAN_ID; }).toArray();
-                        ly.quanxian = qxIds;
-                      });
-                      if(Lazy(jsArr).contains("1")){
-                        urlRedirect.goTo(currentPath, profileUrl);
-                      }
-                      else{
-                         // 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
-                        var permissions = data.QUANXIAN,
-                          find_QUANXIAN_ID_4, find_QUANXIAN_ID_5,
-                          quanxianArr = [],
-                          urlShowAndHideArr = [],
-                          jsUrl = '';
-                        find_QUANXIAN_ID_4 = Lazy(permissions).find(function(permission) {
-                          return permission.QUANXIAN_ID == 2004;
-                        });
-                        find_QUANXIAN_ID_5 = Lazy(permissions).find(function(permission) {
-                          return permission.QUANXIAN_ID == 2005;
-                        });
-                        if(find_QUANXIAN_ID_4 || find_QUANXIAN_ID_5) {
-                          urlRedirect.goTo(currentPath, profileUrl);
-                        }
-                        else {
-                          if(data.LINGYU.length == 1){
-                            session.defaultLyId = data.LINGYU[0].LINGYU_ID;
-                            session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
-                            session.defaultTiKuLyId = data.LINGYU[0].PARENT_LINGYU_ID;
-                            quanxianArr = Lazy(quanxianDist[parseInt(data.LINGYU[0].LINGYU_ID)]).map(function(qx){
-                              return qx.QUANXIAN_ID;
-                            }).toArray();
-                            quanxianArr = Lazy(quanxianArr).uniq().toArray();
-                            //存放权限id的cookies
-                            var quanXianCookie = {
-                                quanXianId: quanxianArr
-                              },
-                              tiKuCookie = {
-                                tkLingYuId: data.LINGYU[0].PARENT_LINGYU_ID
-                              };
-                            $cookieStore.put('quanXianCk', quanXianCookie);
-                            $cookieStore.put('tiKuCk', tiKuCookie);
-                            //根据角色判断要显示的模块
-                            Lazy(config.quanxianObj).each(function(qx, idx, lst){
-                              var navName = Lazy(qx.jsArr).intersection(jsArr).toArray().length;
-                              var urlObj = {
-                                myUrl: '',
-                                urlName: ''
-                              };
-                              //显示和隐藏url
-                              if(navName > 0){
-                                urlShowAndHideArr.push(qx.navName);
-                                urlObj.myUrl = qx.navName;
-                                urlObj.urlName = qx.hanName;
-                                urlArr.push(urlObj);
-                              }
-                            });
-                            //默认url
-                            if(urlShowAndHideArr && urlShowAndHideArr.length > 0){
-                              $rootScope.urlArrs = urlArr;
-                              //jsUrl = '/' + urlShowAndHideArr[0];
-                              var keMuManage = Lazy(quanxianArr).contains('2032'); //判断科目负责人
-                              var hasMingTiUrl = Lazy(urlShowAndHideArr).contains('mingti');//判断有没有命题模块
-                              if(keMuManage && hasMingTiUrl){
-                                jsUrl = '/mingti';
-                              }
-                              else{
-                                jsUrl = '/' + urlShowAndHideArr[0];
-                              }
-                            }
-                            session.quanxianStr = urlShowAndHideArr.join();
-                            urlRedirect.goTo(currentPath, jsUrl);
-                          }
-                          else{
-                            urlRedirect.goTo(currentPath, '/lingyu');
-                          }
-                        }
-                      }
-                      //cookies代码
-                      userCookie = {
-                        UID: $rootScope.session.info.UID,
-                        XINGMING: $rootScope.session.info.XINGMING,
-                        defaultLyId: session.defaultLyId,
-                        defaultLyName: session.defaultLyName,
-                        quanxianStr: session.quanxianStr,
-                        JIGOU: session.userInfo.JIGOU,
-                        JUESE: jsArr
-                      };
-                      lingyuCookie = {
-                        lingyu: data.LINGYU
-                      };
-                      myUrlCookie = {
-                        myUrl: $rootScope.urlArrs
-                      };
-                      $cookieStore.put('logged', userCookie);
-                      $cookieStore.put('lingyuCk', lingyuCookie);
-                      $cookieStore.put('myUrlCk', myUrlCookie);
-                    }
-                    else{
-                      DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
-                    }
-                  }
-                  else{
-                    if(data.YONGHULEIBIE == 2){
-                      var urlObj1 = {
-                        myUrl: 'baoming',
-                        urlName: '报名'
-                      };
-                      var urlObj2 = {
-                        myUrl: 'chengji',
-                        urlName: '成绩'
-                      };
-                      var urlObj3 = {
-                        myUrl: 'weiluke',
-                        urlName: '录课'
-                      };
-                      //var findNongDa = JSON.parse(result[0].JIGOU);
-                      //var findNongDaIn = Lazy(findNongDa).find(function(jd){ return jd.JIGOU_ID == 1003; });
-                      //if(!findNongDaIn){
-                      //  urlArr.push(urlObj2);
-                      //}
-                      urlArr.push(urlObj1);
-                      urlArr.push(urlObj2);
-                      urlArr.push(urlObj3);
-                      $rootScope.urlArrs = urlArr;
-                      //cookies代码
-                      userCookie = {
-                        UID: $rootScope.session.info.UID,
-                        XINGMING: $rootScope.session.info.XINGMING,
-                        defaultLyId: session.defaultLyId,
-                        defaultLyName: session.defaultLyName,
-                        quanxianStr: session.quanxianStr,
-                        JIGOU: JSON.parse(session.info.JIGOU)[0].JIGOU_ID,
-                        JUESE: jsArr,
-                        xuehao: session.info.YONGHUHAO
-                      };
-                      lingyuCookie = {
-                        lingyu: data.LINGYU
-                      };
-                      myUrlCookie = {
-                        myUrl: $rootScope.urlArrs
-                      };
-                      $cookieStore.put('logged', userCookie);
-                      $cookieStore.put('lingyuCk', lingyuCookie);
-                      $cookieStore.put('myUrlCk', myUrlCookie);
-                      urlRedirect.goTo(currentPath, '/baoming');
-                    }
-                    else{
-                      $scope.dengluInfo = false;
-                      DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
-                    }
-                  }
-                });
-              }
-              else{
-                $scope.dengluInfo = true;
-              }
-            });
-          }
+          var loginUrl = '/login?用户名=' + login.userName + '&密码=' + login.password;
+          $http.get(loginUrl).success(function(data){
+            if(data.result){
+              console.log(data);
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+          //urlArr = [];
+          //if(login.userName && login.password) {
+          //  var loginPostParams = {
+          //    token : config.token,
+          //    yonghuming : login.userName,
+          //    mima : login.password
+          //  };
+          //  //登录信息的验证
+          //  $http.post(loginApiUrl, loginPostParams).success(function(result) {
+          //    var jsArr, quanxianDist, userCookie, lingyuCookie, myUrlCookie;
+          //    session.info = result[0];
+          //    session.userInfo = '';
+          //    session.quanxian2032 = false;
+          //    if(result && result.length > 0){
+          //      var profileUrl = '/user/' + login.userName,
+          //        yhxxxxApiUrl = config.apiurl_rz + 'yonghu_xiangxi_xinxi?token=' + config.token + '&yonghuid=' +
+          //          session.info.UID; //通过UID查询用户详细的url
+          //      /**
+          //       *查询过用户的详细信息，得到jigouid,lingyuid等等 JUESE
+          //       */
+          //      $http.get(yhxxxxApiUrl).success(function(data){
+          //        if(data.JIGOU && data.JIGOU.length > 0){
+          //          if(data.JUESE && data.JUESE.length > 0){
+          //            session.userInfo = data;
+          //            jsArr = Lazy(data.JUESE)
+          //              .sortBy(function(js){ return js.JUESE_ID; })
+          //              .map(function(js){ return js.JUESE_ID; })
+          //              .uniq()
+          //              .without("9", "10")
+          //              .toArray(); //得到角色的数组
+          //            quanxianDist = Lazy(data.QUANXIAN).groupBy(function(qx){ return qx.LINGYU_ID; }).toObject();
+          //            Lazy(data.LINGYU).each(function(ly){
+          //              var qxIds = Lazy(quanxianDist[parseInt(ly.LINGYU_ID)]).map(function(qx){ return qx.QUANXIAN_ID; }).toArray();
+          //              ly.quanxian = qxIds;
+          //            });
+          //            if(Lazy(jsArr).contains("1")){
+          //              urlRedirect.goTo(currentPath, profileUrl);
+          //            }
+          //            else{
+          //               // 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
+          //              var permissions = data.QUANXIAN,
+          //                find_QUANXIAN_ID_4, find_QUANXIAN_ID_5,
+          //                quanxianArr = [],
+          //                urlShowAndHideArr = [],
+          //                jsUrl = '';
+          //              find_QUANXIAN_ID_4 = Lazy(permissions).find(function(permission) {
+          //                return permission.QUANXIAN_ID == 2004;
+          //              });
+          //              find_QUANXIAN_ID_5 = Lazy(permissions).find(function(permission) {
+          //                return permission.QUANXIAN_ID == 2005;
+          //              });
+          //              if(find_QUANXIAN_ID_4 || find_QUANXIAN_ID_5) {
+          //                urlRedirect.goTo(currentPath, profileUrl);
+          //              }
+          //              else {
+          //                if(data.LINGYU.length == 1){
+          //                  session.defaultLyId = data.LINGYU[0].LINGYU_ID;
+          //                  session.defaultLyName = data.LINGYU[0].LINGYUMINGCHENG;
+          //                  session.defaultTiKuLyId = data.LINGYU[0].PARENT_LINGYU_ID;
+          //                  quanxianArr = Lazy(quanxianDist[parseInt(data.LINGYU[0].LINGYU_ID)]).map(function(qx){
+          //                    return qx.QUANXIAN_ID;
+          //                  }).toArray();
+          //                  quanxianArr = Lazy(quanxianArr).uniq().toArray();
+          //                  //存放权限id的cookies
+          //                  var quanXianCookie = {
+          //                      quanXianId: quanxianArr
+          //                    },
+          //                    tiKuCookie = {
+          //                      tkLingYuId: data.LINGYU[0].PARENT_LINGYU_ID
+          //                    };
+          //                  $cookieStore.put('quanXianCk', quanXianCookie);
+          //                  $cookieStore.put('tiKuCk', tiKuCookie);
+          //                  //根据角色判断要显示的模块
+          //                  Lazy(config.quanxianObj).each(function(qx, idx, lst){
+          //                    var navName = Lazy(qx.jsArr).intersection(jsArr).toArray().length;
+          //                    var urlObj = {
+          //                      myUrl: '',
+          //                      urlName: ''
+          //                    };
+          //                    //显示和隐藏url
+          //                    if(navName > 0){
+          //                      urlShowAndHideArr.push(qx.navName);
+          //                      urlObj.myUrl = qx.navName;
+          //                      urlObj.urlName = qx.hanName;
+          //                      urlArr.push(urlObj);
+          //                    }
+          //                  });
+          //                  //默认url
+          //                  if(urlShowAndHideArr && urlShowAndHideArr.length > 0){
+          //                    $rootScope.urlArrs = urlArr;
+          //                    //jsUrl = '/' + urlShowAndHideArr[0];
+          //                    var keMuManage = Lazy(quanxianArr).contains('2032'); //判断科目负责人
+          //                    var hasMingTiUrl = Lazy(urlShowAndHideArr).contains('mingti');//判断有没有命题模块
+          //                    if(keMuManage && hasMingTiUrl){
+          //                      jsUrl = '/mingti';
+          //                    }
+          //                    else{
+          //                      jsUrl = '/' + urlShowAndHideArr[0];
+          //                    }
+          //                  }
+          //                  session.quanxianStr = urlShowAndHideArr.join();
+          //                  urlRedirect.goTo(currentPath, jsUrl);
+          //                }
+          //                else{
+          //                  urlRedirect.goTo(currentPath, '/lingyu');
+          //                }
+          //              }
+          //            }
+          //            //cookies代码
+          //            userCookie = {
+          //              UID: $rootScope.session.info.UID,
+          //              XINGMING: $rootScope.session.info.XINGMING,
+          //              defaultLyId: session.defaultLyId,
+          //              defaultLyName: session.defaultLyName,
+          //              quanxianStr: session.quanxianStr,
+          //              JIGOU: session.userInfo.JIGOU,
+          //              JUESE: jsArr
+          //            };
+          //            lingyuCookie = {
+          //              lingyu: data.LINGYU
+          //            };
+          //            myUrlCookie = {
+          //              myUrl: $rootScope.urlArrs
+          //            };
+          //            $cookieStore.put('logged', userCookie);
+          //            $cookieStore.put('lingyuCk', lingyuCookie);
+          //            $cookieStore.put('myUrlCk', myUrlCookie);
+          //          }
+          //          else{
+          //            DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
+          //          }
+          //        }
+          //        else{
+          //          if(data.YONGHULEIBIE == 2){
+          //            var urlObj1 = {
+          //              myUrl: 'baoming',
+          //              urlName: '报名'
+          //            };
+          //            var urlObj2 = {
+          //              myUrl: 'chengji',
+          //              urlName: '成绩'
+          //            };
+          //            var urlObj3 = {
+          //              myUrl: 'weiluke',
+          //              urlName: '录课'
+          //            };
+          //            //var findNongDa = JSON.parse(result[0].JIGOU);
+          //            //var findNongDaIn = Lazy(findNongDa).find(function(jd){ return jd.JIGOU_ID == 1003; });
+          //            //if(!findNongDaIn){
+          //            //  urlArr.push(urlObj2);
+          //            //}
+          //            urlArr.push(urlObj1);
+          //            urlArr.push(urlObj2);
+          //            urlArr.push(urlObj3);
+          //            $rootScope.urlArrs = urlArr;
+          //            //cookies代码
+          //            userCookie = {
+          //              UID: $rootScope.session.info.UID,
+          //              XINGMING: $rootScope.session.info.XINGMING,
+          //              defaultLyId: session.defaultLyId,
+          //              defaultLyName: session.defaultLyName,
+          //              quanxianStr: session.quanxianStr,
+          //              JIGOU: JSON.parse(session.info.JIGOU)[0].JIGOU_ID,
+          //              JUESE: jsArr,
+          //              xuehao: session.info.YONGHUHAO
+          //            };
+          //            lingyuCookie = {
+          //              lingyu: data.LINGYU
+          //            };
+          //            myUrlCookie = {
+          //              myUrl: $rootScope.urlArrs
+          //            };
+          //            $cookieStore.put('logged', userCookie);
+          //            $cookieStore.put('lingyuCk', lingyuCookie);
+          //            $cookieStore.put('myUrlCk', myUrlCookie);
+          //            urlRedirect.goTo(currentPath, '/baoming');
+          //          }
+          //          else{
+          //            $scope.dengluInfo = false;
+          //            DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
+          //          }
+          //        }
+          //      });
+          //    }
+          //    else{
+          //      $scope.dengluInfo = true;
+          //    }
+          //  });
+          //}
         };
 
         /**
