@@ -75,12 +75,21 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
 
       //退出登录
       this.logout = function(){
-        delete $rootScope.session;
-        $cookieStore.remove('logged');
-        $cookieStore.remove('lingyuCk');
-        $cookieStore.remove('lastUrl');
-        $cookieStore.remove('quanXianCk');
-        urlRedirect.goTo($location.$$path, '/renzheng');
+        var paramUrl = '/logout';
+        $http.get(paramUrl).success(function(data){
+          if(data.result){
+            delete $rootScope.session;
+            //$cookieStore.remove('logged');
+            //$cookieStore.remove('lingyuCk');
+            //$cookieStore.remove('lastUrl');
+            //$cookieStore.remove('quanXianCk');
+            config.userJs = '';
+            urlRedirect.goTo($location.$$path, '/renzheng');
+          }
+          else{
+            DataService.alertInfFun('err', data.error);
+          }
+        });
       };
 
       //题目题干答案格式化

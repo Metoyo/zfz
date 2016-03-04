@@ -104,61 +104,55 @@ define( "config", [], function () {
     },
     quanxianObj: [ //得到角色是数组
       {
-        qxArr: ['2006', '2007'],
-        jsArr: ['4'],
+        jsArr: [],
         targetUrl: '/dagang',
         navName : 'dagang',
         hanName: '大纲'
       },
       {
-        qxArr: ['2010', '2011', '2012', '2013', '2031', '2032'],
-        jsArr: ['4', '5'],
+        jsArr: [],
         targetUrl: '/mingti',
         navName : 'mingti',
         hanName: '命题'
       },
       {
-        qxArr: ['2017', '2020', '2021', '2022', '2023', '2030', '2033', '2034'],
-        jsArr: ['4', '6'],
+        jsArr: [],
         targetUrl: '/zujuan',
         navName : 'zujuan',
         hanName: '组卷'
       },
       {
-        qxArr: ['3001'],
-        jsArr: ['4', '8'],
+        jsArr: [],
         targetUrl: '/kaowu',
         navName : 'kaowu',
         hanName: '考务'
       },
       {
-        qxArr: ['4001', '4002', '3002'],
-        jsArr: ['4', '8', '11'],
+        jsArr: [],
         targetUrl: '/tongji',
         navName : 'tongji',
         hanName: '统计'
       },
       {
-        qxArr: [],
+        jsArr: [],
         targetUrl: '/baoming',
         navName : 'baoming',
         hanName: '报名'
       },
       {
-        qxArr: [],
+        jsArr: [],
         targetUrl: '/chengji',
         navName : 'chengji',
         hanName: '成绩'
       },
       {
-        qxArr: ['3001'],
-        jsArr: ['4', '8'],
+        jsArr: [],
         targetUrl: '/guanli',
         navName : 'guanli',
         hanName: '管理'
       },
       {
-        qxArr: [],
+        jsArr: [],
         targetUrl: '/weiluke',
         navName : 'weiluke',
         hanName: '微课'
@@ -171,6 +165,7 @@ define( "config", [], function () {
     imgType: ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
     videoType: ['.ogv', '.mp4', '.avi', '.mkv', '.wmv'],
     audioType: ['.ogg', '.mp3', '.wav'],
-    uploadFileSizeLimit: 2097152 //上传文件的大小限制2MB
+    uploadFileSizeLimit: 2097152, //上传文件的大小限制2MB
+    userJs: ''
   };
 });

@@ -13,22 +13,24 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         /**
          * 定义变量
          */
-        var userInfo = $rootScope.session.userInfo;
+        //var userInfo = $rootScope.session.userInfo;
         var baseRzAPIUrl = config.apiurl_rz; //renzheng的api;
         var baseMtAPIUrl = config.apiurl_mt; //mingti的api
         var baseKwAPIUrl = config.apiurl_kw; //考务的api
-        var baseTjAPIUrl = config.apiurl_tj; //统计的api
         var baseSmAPIUrl = config.apiurl_sm; //扫描的api
         var token = config.token; //token的值
-        var caozuoyuan = userInfo.UID;//登录的用户的UID
-        var jigouid = userInfo.JIGOU[0].JIGOU_ID;
-        var lingyuid = $rootScope.session.defaultLyId;
+        var caozuoyuan = 0;//登录的用户的UID
+        //var caozuoyuan = userInfo.UID;//登录的用户的UID
+        var jigouid = 0;
+        //var jigouid = userInfo.JIGOU[0].JIGOU_ID;
+        var lingyuid = 0;
         var session = $rootScope.session;
-        var dshyhjsUrl = baseRzAPIUrl + 'daishenhe_yonghu_juese?token=' + token + '&caozuoyuan=' + session.info.UID; //待审核用户角色url
+        //var lingyuid = $rootScope.session.defaultLyId;
+        //var session = $rootScope.session;
+        var dshyhjsUrl = baseRzAPIUrl + 'daishenhe_yonghu_juese?token=' + token + '&caozuoyuan=' + 0; //待审核用户角色url
+        //var dshyhjsUrl = baseRzAPIUrl + 'daishenhe_yonghu_juese?token=' + token + '&caozuoyuan=' + session.info.UID; //待审核用户角色url
         var shyhjsUrl = baseRzAPIUrl + 'shenhe_yonghu_juese'; //审核用户角色
-        var qryJglbUrl = baseRzAPIUrl + 'jiGou_LeiBie?token=' + token; //jiGouLeiBie 机构类别的api
         var qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
-        var qryJiGouAdminBase = baseRzAPIUrl + 'get_jigou_admin?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='; // 查询机构管理员
         var modifyJiGouUrl = baseRzAPIUrl + 'modify_jigou'; //修改机构数据
         var qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token; //查询领域的url
         var modifyLingYuUrl = baseRzAPIUrl + 'modify_lingyu'; //修改领域数据
@@ -114,6 +116,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             xuehao: ''
           }
         };
+        //新方法用到的变量
+        var xueXiaoUrl = '/xuexiao';
 
         $scope.adminParams = {
           selected_dg: '',
@@ -136,22 +140,22 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         $scope.cnNumArr = config.cnNumArr; //题支的序号
 
         /**
-         * 导向本页面时，判读展示什么页面，admin, xxgly, 审核员9
+         * 导向本页面时，判读展示什么页面，admin, xxgly --
          */
-        switch (userInfo.JUESE[0]){
-          case "1":
+        switch (config.userJs[0]){
+          case 0:
             $scope.shenHeTpl = 'views/renzheng/rz_admin.html';
             break;
-          case "2":
+          case 1:
             $scope.shenHeTpl = 'views/renzheng/rz_xxgly.html';
             break;
-          case "3":
-            $scope.shenHeTpl = 'views/renzheng/rz_shenHeRen.html';
-            break;
+          //case 3:
+          //  $scope.shenHeTpl = 'views/renzheng/rz_shenHeRen.html';
+          //  break;
         }
 
         /**
-         * 退出程序
+         * 退出程序 --
          */
         $scope.signOut = function(){
           DataService.logout();
@@ -265,145 +269,116 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 展示设置机构的页面
+         * 机构查询
          */
-        $scope.renderJiGouSetTpl = function(){
-          $scope.loadingImgShow = true; //rz_setJiGou.html
-           // 查询机构类别
-          $http.get(qryJglbUrl).success(function(data) {
-            if(data.length){
-              $scope.jigoulb_list = data;
-              $scope.isShenHeBox = false; //判断是不是审核页面
-              $scope.loadingImgShow = false; //rz_setJiGou.html
-              $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGou.html';
+        var getJgList = function(){
+          $scope.loadingImgShow = true;
+          $http.get(xueXiaoUrl).success(function(schools){
+            if(schools.result){
+              $scope.jigou_list = schools.data;
             }
             else{
-              $scope.jigoulb_list = '';
-              $scope.loadingImgShow = false; //rz_setJiGou.html
-              DataService.alertInfFun('err', '没用相应的机构！');
+              $scope.jigou_list = '';
+              DataService.alertInfFun('err', schools.error);
             }
+            $scope.loadingImgShow = false;
           });
         };
 
         /**
-         * 由机构类别查询机构
+         * 展示设置机构的页面 --
          */
-        $scope.getJgList = function(jglbId){
-          if(jglbId){
-            $scope.loadingImgShow = true; //rz_setJiGou.html
-            jgLeiBieId = jglbId; //给机构类别赋值
-            DataService.getData(qryJiGouUrl + jglbId).then(function(data){
-              if(data.length){
-                var jgIdStr = Lazy(data).map(function(jg){return jg.JIGOU_ID}).toArray().join();
-                var qryJiGouAdminUrl = qryJiGouAdminBase + jgIdStr;
-                DataService.getData(qryJiGouAdminUrl).then(function(jgAdmin){
-                  if(jgAdmin.length){
-                    $scope.jigou_list = jgAdmin;
-                    $scope.loadingImgShow = false; //rz_setJiGou.html
-                    if(whichJiGouAddAdmin >= 0){
-                      $scope.adminList = $scope.jigou_list[whichJiGouAddAdmin];
-                    }
-                  }
-                  else{
-                    $scope.jigou_list = '';
-                    $scope.loadingImgShow = false; //rz_setJiGou.html
-                  }
-                });
-              }
-              else{
-                $scope.jigou_list = '';
-                $scope.loadingImgShow = false; //rz_setJiGou.html
-              }
-            });
+        $scope.renderJiGouSetTpl = function(){
+          if(!($scope.jigou_list && $scope.jigou_list.length)){
+            getJgList();
+            $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGou.html';
           }
         };
 
         /**
-         * 点击新增机构，显示新增页面
+         * 点击新增机构，显示新增页面 --
          */
         $scope.addNewJiGouBoxShow = function(jg){
-          jiGouData.shuju = [];
-          var jgsjObj = {};
+          $scope.addNewJiGou = {};
           if(jg){ //修改机构
-            jgsjObj = { //新增机构里面的机构数据
-              JIGOU_ID: jg.JIGOU_ID,
-              JIGOUMINGCHENG: jg.JIGOUMINGCHENG,
-              LEIBIE: jgLeiBieId,
-              ZHUANGTAI: 1,
-              CHILDREN:{}
-            };
+            $scope.addNewJiGou['学校ID'] = jg['学校ID'];
+            $scope.addNewJiGou['学校名称'] = jg['学校名称'];
           }
           else{ //新增机构
-            jgsjObj = { //新增机构里面的机构数据
-              JIGOU_ID: '',
-              JIGOUMINGCHENG: '',
-              LEIBIE: jgLeiBieId,
-              ZHUANGTAI: 1,
-              CHILDREN:{}
-            };
+            $scope.addNewJiGou['学校名称'] = '';
           }
-          jiGouData.shuju.push(jgsjObj);
           $scope.isAddNewJiGouBoxShow = true; //显示机构增加页面
           $scope.isAddNewAdminBoxShow = false; //关闭管理员管理页面
-          $scope.addNewJiGou = jiGouData;
         };
 
         /**
-         * 关闭添加新机构页面
+         * 关闭添加新机构页面 --
          */
         $scope.closeAddNewJiGou = function(){
           $scope.isAddNewJiGouBoxShow = false;
-          jiGouData.shuju = [];
+          $scope.addNewJiGou = {};
         };
 
         /**
-         * 保存新增加的机构
+         * 保存新增加的机构 --
          */
         $scope.saveNewAddJiGou = function(){
-          $scope.loadingImgShow = true; //rz_setJiGou.html
-          if(jiGouData.shuju[0].JIGOUMINGCHENG){
-            $http.post(modifyJiGouUrl, jiGouData).success(function(data){
-              if(data.result){
-                $scope.loadingImgShow = false; //rz_setJiGou.html
-                DataService.alertInfFun('suc', '保存成功');
-                jiGouData.shuju[0].JIGOUMINGCHENG = '';
-                $scope.getJgList(jgLeiBieId);
-              }
-              else{
-                $scope.loadingImgShow = false; //rz_setJiGou.html
-                DataService.alertInfFun('err', data.error);
-              }
-            });
+          if($scope.addNewJiGou['学校名称']){
+            $scope.loadingImgShow = true;
+            if($scope.addNewJiGou['学校ID']){ //修改机构，用POST
+              $http.post(xueXiaoUrl, $scope.addNewJiGou).success(function(data){
+                if(data.result){
+                  $scope.closeAddNewJiGou();
+                  DataService.alertInfFun('suc', '修改成功');
+                  getJgList();
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+            else{ //新增机构，用PUT
+              $http.put(xueXiaoUrl, $scope.addNewJiGou).success(function(data){
+                if(data.result){
+                  $scope.closeAddNewJiGou();
+                  DataService.alertInfFun('suc', '新增成功');
+                  getJgList();
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
           }
           else{
-            $scope.loadingImgShow = false; //rz_setJiGou.html
             DataService.alertInfFun('err', '请输入机构名称！');
           }
+          $scope.loadingImgShow = false;
         };
 
         /**
          * 删除机构
          */
         $scope.deleteJiGou = function(jg){
-          jiGouData.shuju = [];
-          var jgsjObj = { //新增机构里面的机构数据
-            JIGOU_ID: jg.JIGOU_ID,
-            JIGOUMINGCHENG: jg.JIGOUMINGCHENG,
-            LEIBIE: jgLeiBieId,
-            ZHUANGTAI: -1,
-            CHILDREN:{}
-          };
-          jiGouData.shuju.push(jgsjObj);
-          $http.post(modifyJiGouUrl, jiGouData).success(function(data){
-            if(data.result){
-              DataService.alertInfFun('suc', '删除成功！');
-              jiGouData.shuju = [];
-              $scope.getJgList(jgLeiBieId);
-            }
-            else{
-              DataService.alertInfFun('err', data.error);
-            }
-          });
+          if(jg['学校ID']){
+            $scope.loadingImgShow = true;
+            var obj = {};
+            obj['学校ID'] = jg['学校ID'];
+            $http({method: 'delete', url: xueXiaoUrl, params: obj}).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '删除成功！');
+                jiGouData.shuju = [];
+                getJgList();
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择学校！');
+          }
+          $scope.loadingImgShow = false;
         };
 
         /**
@@ -438,7 +413,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
                 if(data.result){
                   $scope.loadingImgShow = false; //rz_setJiGou.html
                   DataService.alertInfFun('suc', '保存成功');
-                  $scope.getJgList(jgLeiBieId);
+                  getJgList();
                   adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
                   adminData.shuju.ADMINISTRATORS[0].MIMA = '';
                 }
@@ -468,7 +443,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = -1;
           $http.post(modifyJiGouAdminUrl, adminData).success(function(data){
             if(data.result){
-              $scope.getJgList(jgLeiBieId);
+              getJgList();
               adminData.shuju.ADMINISTRATORS[0].UID = '';
               adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
               adminData.shuju.ADMINISTRATORS[0].MIMA = '';
@@ -2288,4 +2263,3 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
 
     }]);
 });
-//'/create_pdf_single?token=12345&uid=8058&kaoshiid=1875&xingming=包宗源&yonghuhao=2015110867&banji=经济学&defen=83&pfdtype=zuoda'pfdtype

@@ -9,15 +9,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
 
         var baseRzAPIUrl = config.apiurl_rz;
         var token = config.token;
-        var loginApiUrl =  baseRzAPIUrl + 'denglu';
         var login = { //教师登录数据格式
-            userName: '',
-            password: ''
-          };
+          userName: '',
+          password: ''
+        };
         var stuLogin = { //学生登录数据格式
-            userName: '',
-            password: ''
-          };
+          userName: '',
+          password: ''
+        };
         var session = {};
         var urlArr = [];
         var currentPath = $location.$$path;
@@ -66,9 +65,60 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          */
         $scope.signIn = function() {
           var loginUrl = '/login?用户名=' + login.userName + '&密码=' + login.password;
+          urlArr = [];
+          config.userJs = '';
           $http.get(loginUrl).success(function(data){
             if(data.result){
-              console.log(data);
+              if(data.data['用户类别'] == 2){ //判断是否是学生
+                var urlObj1 = {
+                  myUrl: 'baoming',
+                  urlName: '报名'
+                };
+                var urlObj2 = {
+                  myUrl: 'chengji',
+                  urlName: '成绩'
+                };
+                var urlObj3 = {
+                  myUrl: 'weiluke',
+                  urlName: '录课'
+                };
+                urlArr.push(urlObj1);
+                urlArr.push(urlObj2);
+                urlArr.push(urlObj3);
+              }
+              else{
+                var qxArr = data.data['权限'];
+                if(qxArr && qxArr.length > 0){ //判断是否通过审批
+                  var lyTpArr = [], kmTpArr = [], jsTpArr = [], lyArr = '', kmArr = '', jsArr = '';
+                  Lazy(qxArr).each(function(qx){
+                    lyTpArr.push(qx['领域ID']);
+                    kmTpArr.push(qx['科目ID']);
+                    jsTpArr.push(qx['角色ID']);
+                  });
+                  lyArr = Lazy(lyTpArr).sortBy(function(ly){ return ly; }).uniq().toArray(); //得到领域的数组
+                  kmArr = Lazy(kmTpArr).sortBy(function(km){ return km; }).uniq().toArray(); //得到科目的数组
+                  jsArr = Lazy(jsTpArr).sortBy(function(js){ return js; }).uniq().toArray(); //得到角色的数组
+                  var adminQx = Lazy(jsArr).contains(0); //判断系统管理员
+                  var xxglyQx = Lazy(jsArr).contains(1); //判断学校管理员
+                  if(adminQx || xxglyQx){ //判断管理员
+                    var navUrl = '/user/' + data.data['用户名']; //导向的URL
+                    config.userJs = jsArr;
+                    urlRedirect.goTo(currentPath, navUrl);
+                  }
+                  else{
+                    if(kmArr && kmArr.length > 1){ //科目大于1，导向领域选择页面
+                      urlRedirect.goTo(currentPath, '/lingyu');
+                    }
+                    else{ //直接转向业务模块
+
+                    }
+                  }
+                }
+                else{
+                  DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
+                }
+              }
+              $rootScope.urlArrs = urlArr;
             }
             else{
               DataService.alertInfFun('err', data.error);
@@ -113,7 +163,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           //              urlRedirect.goTo(currentPath, profileUrl);
           //            }
           //            else{
-          //               // 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
+          //              // 查询用户权限的代码，用来导航，如果权限中包含QUANXIAN_ID包含4就导向审核页面，否则去相对应的页面
           //              var permissions = data.QUANXIAN,
           //                find_QUANXIAN_ID_4, find_QUANXIAN_ID_5,
           //                quanxianArr = [],
@@ -334,5 +384,5 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           stuLogin.password = '';
         };
 
-    }]);
+      }]);
 });

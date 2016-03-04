@@ -80,56 +80,56 @@ define([
          * 确保所有需要登陆才可以访问的链接进行用户登陆信息验证，如果没有登陆的话，则导向登陆界面
          */
         $rootScope.$on("$locationChangeStart", function (event, next, current) {
-          var routes = config.routes,
-            nextUrlPattern,
-            nextRoute,
-            currentUrlParser = document.createElement('a'), // 使用浏览器内置的a标签进行url的解析判断
-            nextUrlParser = document.createElement('a'),
-            nextPath,
-            currentPath,
-            session = {
-              defaultLyId: '',
-              defaultLyName: '',
-              quanxianStr: '',
-              info: {},
-              userInfo: {}
-            };
+          var routes = config.routes;
+          var  nextUrlPattern;
+          var  nextRoute;
+          var  currentUrlParser = document.createElement('a'); // 使用浏览器内置的a标签进行url的解析判断
+          var  nextUrlParser = document.createElement('a');
+          var  nextPath;
+          var  currentPath;
+          //var  session = {
+          //    defaultLyId: '',
+          //    defaultLyName: '',
+          //    quanxianStr: '',
+          //    info: {},
+          //    userInfo: {}
+          //  };
           //cookies 代码
-          $cookieStore.put('lastUrl', current);
-          var loggedInfo = $cookieStore.get('logged'),
-            lastUrl = $cookieStore.get('lastUrl'),
-            quanXianIds = $cookieStore.get('quanXianCk'),
-            tiKuInfo = $cookieStore.get('tiKuCk'),
-            isKeMuManage,
-            myUrl = $cookieStore.get('myUrlCk');
-          $rootScope.urlArrs = myUrl.myUrl;
-          if (quanXianIds) {
-            if (quanXianIds.quanXianId && quanXianIds.quanXianId.length > 0) {
-              isKeMuManage = Lazy(quanXianIds.quanXianId).contains('2032');
-            }
-          }
-          if (loggedInfo && loggedInfo.UID) {
-            $rootScope.session = session;
-            $rootScope.session.defaultLyId = loggedInfo.defaultLyId;
-            $rootScope.session.defaultLyName = loggedInfo.defaultLyName;
-            $rootScope.session.quanxianStr = loggedInfo.quanxianStr;
-            $rootScope.session.info.UID = loggedInfo.UID;
-            $rootScope.session.info.XINGMING = loggedInfo.XINGMING;
-            $rootScope.session.userInfo.UID = loggedInfo.UID;
-            $rootScope.session.userInfo.XINGMING = loggedInfo.XINGMING;
-            $rootScope.session.userInfo.JIGOU = loggedInfo.JIGOU;
-            $rootScope.session.userInfo.JUESE = loggedInfo.JUESE;
-            $rootScope.session.userInfo.xuehao = loggedInfo.xuehao;
-          }
-          if (tiKuInfo && $rootScope.session) {
-            $rootScope.session.defaultTiKuLyId = tiKuInfo.tkLingYuId;
-          }
-          if (isKeMuManage) { //判断科目负责人
-            $rootScope.isPromiseAlterOthersTimu = true;
-          }
-          else {
-            $rootScope.isPromiseAlterOthersTimu = false;
-          }
+          //$cookieStore.put('lastUrl', current);
+          //var loggedInfo = $cookieStore.get('logged'),
+          //  lastUrl = $cookieStore.get('lastUrl'),
+          //  quanXianIds = $cookieStore.get('quanXianCk'),
+          //  tiKuInfo = $cookieStore.get('tiKuCk'),
+          //  isKeMuManage,
+          //  myUrl = $cookieStore.get('myUrlCk');
+          //$rootScope.urlArrs = myUrl.myUrl;
+          //if (quanXianIds) {
+          //  if (quanXianIds.quanXianId && quanXianIds.quanXianId.length > 0) {
+          //    isKeMuManage = Lazy(quanXianIds.quanXianId).contains('2032');
+          //  }
+          //}
+          //if (loggedInfo && loggedInfo.UID) {
+          //  $rootScope.session = session;
+          //  $rootScope.session.defaultLyId = loggedInfo.defaultLyId;
+          //  $rootScope.session.defaultLyName = loggedInfo.defaultLyName;
+          //  $rootScope.session.quanxianStr = loggedInfo.quanxianStr;
+          //  $rootScope.session.info.UID = loggedInfo.UID;
+          //  $rootScope.session.info.XINGMING = loggedInfo.XINGMING;
+          //  $rootScope.session.userInfo.UID = loggedInfo.UID;
+          //  $rootScope.session.userInfo.XINGMING = loggedInfo.XINGMING;
+          //  $rootScope.session.userInfo.JIGOU = loggedInfo.JIGOU;
+          //  $rootScope.session.userInfo.JUESE = loggedInfo.JUESE;
+          //  $rootScope.session.userInfo.xuehao = loggedInfo.xuehao;
+          //}
+          //if (tiKuInfo && $rootScope.session) {
+          //  $rootScope.session.defaultTiKuLyId = tiKuInfo.tkLingYuId;
+          //}
+          //if (isKeMuManage) { //判断科目负责人
+          //  $rootScope.isPromiseAlterOthersTimu = true;
+          //}
+          //else {
+          //  $rootScope.isPromiseAlterOthersTimu = false;
+          //}
           currentUrlParser.href = current; // current为当前的url地址
           nextUrlParser.href = next; // next为即将要访问的url地址
           if (currentUrlParser.protocol === nextUrlParser.protocol
@@ -153,11 +153,11 @@ define([
               /**
                * 判断即将要访问的路由是否需要登陆验证， 并且确保如果当前用户没有登陆的话，将用户重定向至登陆界面
                */
-              if (nextRoute && nextRoute.requireLogin && !($rootScope.session && $rootScope.session.info)) {
-                event.preventDefault(); // 取消访问下一个路由地址
-                currentPath = $location.$$path;
-                urlRedirect.goTo(currentPath, '/renzheng');
-              }
+              //if (nextRoute && nextRoute.requireLogin && !($rootScope.session && $rootScope.session.info)) {
+              //  event.preventDefault(); // 取消访问下一个路由地址
+              //  currentPath = $location.$$path;
+              //  urlRedirect.goTo(currentPath, '/renzheng');
+              //}
             }
           }
         });
