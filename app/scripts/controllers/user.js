@@ -36,63 +36,63 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var modifyLingYuUrl = baseRzAPIUrl + 'modify_lingyu'; //修改领域数据
         var modifyJiGouLingYuUrl = baseRzAPIUrl + 'modify_jigou_lingyu'; //修改机构领域
         var jiGouData = { //新增机构的数据
-            token: token,
-            caozuoyuan: caozuoyuan,
-            shuju:[]
-          };
+          token: token,
+          caozuoyuan: caozuoyuan,
+          shuju:[]
+        };
         var jgLeiBieId; //机构列表id
         var modifyJiGouAdminUrl = baseRzAPIUrl + 'modify_jigou_admin'; //修改机构管理员
         var adminData = { //新增机构管理员的数据
-            token: token,
-            caozuoyuan: caozuoyuan,
-            shuju:{}
-          };
-        var whichJiGouAddAdmin = ''; //那个机构添加管理员
+          token: token,
+          caozuoyuan: caozuoyuan,
+          shuju:{}
+        };
+        //var whichJiGouAddAdmin = ''; //那个机构添加管理员
         var lingYuData = { //定义一个空的object用来存放需要保存的领域数据
-            token: token,
-            caozuoyuan: caozuoyuan,
-            shuju:[]
-          };
+          token: token,
+          caozuoyuan: caozuoyuan,
+          shuju:[]
+        };
         var selectedLyStr = ''; //已选择的领域ID
         var selectedLyArr = []; //已选择的领域ID
         var qryTiXingUrl = baseMtAPIUrl + 'chaxun_tixing?token=' + token; //查询全部题型的url
         var qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
-            jigouid + '&lingyuid='; //查询科目包含什么题型的url
+          jigouid + '&lingyuid='; //查询科目包含什么题型的url
         var modifyTxJgLyUrl = baseMtAPIUrl + 'modify_tixing_jigou_lingyu'; //修改题型机构领域
         var tiXingData = { //定义一个空的object用来存放需要保存的题型数据
-            token: token,
-            caozuoyuan: caozuoyuan,
-            shuju:[]
-          };
+          token: token,
+          caozuoyuan: caozuoyuan,
+          shuju:[]
+        };
         var qryZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-            + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid='; //查询公共知识点的url
+          + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid='; //查询公共知识点的url
         var qryZsdgBaseUrl = baseMtAPIUrl + 'chaxun_gonggong_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&lingyuid='; //查询公共知识大纲的url
+          + '&lingyuid='; //查询公共知识大纲的url
         var deletePublicDaGangBaseUrl = baseMtAPIUrl + 'shanchu_gonggong_zhishidagang'; //删除公共知识大纲的url
         var qryZsdgZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid='; //查询知识大纲知识点的url
+          + '&jigouid=' + jigouid + '&lingyuid='; //查询知识大纲知识点的url
         var daGangData = { //定义一个空的大纲数据
-            token: token,
-            caozuoyuan: caozuoyuan,
-            jigouid: jigouid,
-            shuju:{}
-          };
+          token: token,
+          caozuoyuan: caozuoyuan,
+          jigouid: jigouid,
+          shuju:{}
+        };
         var daGangJieDianData = []; //定义一个大纲节点的数据
         var modifyZsdgUrl = baseMtAPIUrl + 'xiugai_zhishidagang'; //保存知识大纲
         var queryTiKuBaseUrl = baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&chaxunzilingyu=false' + '&lingyuid='; //查询题目
+          + '&jigouid=' + jigouid + '&chaxunzilingyu=false' + '&lingyuid='; //查询题目
         var xiuGaiTiKuUrl = baseMtAPIUrl + 'xiugai_tiku'; //修改题库的url
         var alterShiJuanMuLuUrl = baseMtAPIUrl + 'xiugai_shijuanmulu'; //修改试卷目录
         var queryShiJuanMuLuUrl = baseMtAPIUrl + 'chaxun_shijuanmulu?token=' + token + '&caozuoyuan=' + caozuoyuan
-            + '&jigouid=' + jigouid + '&lingyuid='; //查询试卷目录
+          + '&jigouid=' + jigouid + '&lingyuid='; //查询试卷目录
         var isDaGangSet = false; //是否是大纲设置
         var isLingYuSet = false; //是否是领域设置
         var qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询题目列表的url
+          '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询题目列表的url
         var alterZsdUrl = baseMtAPIUrl + 'xiugai_zhishidian'; //修改知识点的url
         var alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
         var cxLyOfZsdBase = baseMtAPIUrl + 'chaxun_lingyu_of_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan +
-            '&jigouid=' + jigouid + '&zhishidianid='; //根据知识点查科目
+          '&jigouid=' + jigouid + '&zhishidianid='; //根据知识点查科目
         var modifyZsdLy = baseMtAPIUrl + 'xiugai_zhishidian_lingyu'; //修改知识点领域
         var qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid='; //查询此题目
         var originSelectLingYuArr = []; //存放本机构所选领域的原始数据
@@ -117,7 +117,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           }
         };
         //新方法用到的变量
-        var xueXiaoUrl = '/xuexiao';
+        var xueXiaoUrl = '/xuexiao'; //机构的增删改查
+        var yongHuUrl = '/yonghu'; //用户的增删改查
+        var yongHuJueSeUrl = '/yonghu_juese'; //用户角色URL
 
         $scope.adminParams = {
           selected_dg: '',
@@ -167,7 +169,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         $scope.setPermissions = function() {
           $scope.loadingImgShow = true; //user.html
           var hasShenHe = [], //定义一个已经通过审核的数组
-              notShenHe = []; //定义一个待审核的数组
+            notShenHe = []; //定义一个待审核的数组
           $http.get(dshyhjsUrl).success(function(data) {
             if(data){
               Lazy(data).each(function(sh, indx, lst) {
@@ -271,11 +273,30 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         /**
          * 机构查询
          */
-        var getJgList = function(){
+        var getJgList = function(jsid){
           $scope.loadingImgShow = true;
           $http.get(xueXiaoUrl).success(function(schools){
             if(schools.result){
-              $scope.jigou_list = schools.data;
+              if(jsid > 0){
+                var obj = {};
+                obj['角色ID'] = jsid;
+                $http({method: 'GET', url: yongHuJueSeUrl, params: obj}).success(function(data){
+                  if(data.result){
+                    Lazy(schools.data).each(function(sch){
+                      sch.ADMINISTRATORS = Lazy(data.data).filter(function(js){
+                        return js['学校ID'] == sch['学校ID'];
+                      }).toArray();
+                    });
+                    $scope.jigou_list = schools.data;
+                  }
+                  else{
+                    DataService.alertInfFun('err', data.error);
+                  }
+                });
+              }
+              else{
+                $scope.jigou_list = schools.data;
+              }
             }
             else{
               $scope.jigou_list = '';
@@ -290,7 +311,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          */
         $scope.renderJiGouSetTpl = function(){
           if(!($scope.jigou_list && $scope.jigou_list.length)){
-            getJgList();
+            getJgList(1);
             $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGou.html';
           }
         };
@@ -357,7 +378,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 删除机构
+         * 删除机构 --
          */
         $scope.deleteJiGou = function(jg){
           if(jg['学校ID']){
@@ -382,56 +403,65 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 展示管理机构管理页面
+         * 展示管理机构管理页面 --
          */
         $scope.manageAdmin = function(jg, idx){
-          adminData.shuju = {};
-          adminData.shuju.JIGOU_ID = jg.JIGOU_ID;
-          adminData.shuju.ADMINISTRATORS = [];
-          whichJiGouAddAdmin = idx;
-          var adminObj = {
-            UID: '',
-            YONGHUMING: '',
-            MIMA: '',
-            ZHUANGTAI: 1
-          };
-          adminData.shuju.ADMINISTRATORS.push(adminObj);
           $scope.isAddNewAdminBoxShow = true; //显示管理管理员页面
           $scope.isAddNewJiGouBoxShow = false; //关闭机构增加页面
-          $scope.adminList = jg;
-          $scope.newAdmin = adminData;
+          $scope.selectJg = jg;
+          $scope.newXxgly = {
+            '用户名' : '',
+            '邮箱': '',
+            '手机': '',
+            '密码': '',
+            '学校ID': jg['学校ID'],
+            '用户类别': 1,
+            '角色': [
+              {
+                '学校ID': jg['学校ID'],
+                '领域ID': 0,
+                '科目ID': 0,
+                '角色ID': 1
+              }
+            ]
+          };
         };
 
         /**
-         * 保存管理员的修改
+         * 学校管理员的添加 --
          */
         $scope.saveNewAddAdmin = function(){
-          $scope.loadingImgShow = true; //rz_setJiGou.html
-          if(adminData.shuju.ADMINISTRATORS[0].YONGHUMING){
-            if(adminData.shuju.ADMINISTRATORS[0].MIMA){
-              $http.post(modifyJiGouAdminUrl, adminData).success(function(data){
-                if(data.result){
-                  $scope.loadingImgShow = false; //rz_setJiGou.html
-                  DataService.alertInfFun('suc', '保存成功');
-                  getJgList();
-                  adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
-                  adminData.shuju.ADMINISTRATORS[0].MIMA = '';
-                }
-                else{
-                  $scope.loadingImgShow = false; //rz_setJiGou.html
-                  DataService.alertInfFun('err', data.error);
-                }
-              });
+          var mis = [];
+          if(!$scope.newXxgly['用户名']){
+            mis.push('用户名');
+          }
+          if(!$scope.newXxgly['邮箱']){
+            mis.push('邮箱');
+          }
+          if(!$scope.newXxgly['手机']){
+            mis.push('手机');
+          }
+          if(!$scope.newXxgly['密码']){
+            mis.push('密码');
+          }
+          if(mis.length > 0) {
+            DataService.alertInfFun('pmt', '缺少: ' + mis.join(','));
+            return ;
+          }
+          $scope.loadingImgShow = true;
+          $scope.newXxgly['角色'] = JSON.stringify($scope.newXxgly['角色']);
+          $http.put(yongHuUrl, $scope.newXxgly).success(function(data){
+            if(data.result){
+              $scope.closeManageAdmin();
+              DataService.alertInfFun('suc', '新增成功');
+              getJgList();
+              $scope.newXxgly = '';
             }
             else{
-              $scope.loadingImgShow = false; //rz_setJiGou.html
-              DataService.alertInfFun('pmt', '请输入管理员密码！');
+              DataService.alertInfFun('err', data.error);
             }
-          }
-          else{
-            $scope.loadingImgShow = false; //rz_setJiGou.html
-            DataService.alertInfFun('pmt', '请输入管理员账号！');
-          }
+            $scope.loadingImgShow = false;
+          });
         };
 
         /**
@@ -456,12 +486,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 关闭管理管理员页面
+         * 关闭添加学校管理员页面 --
          */
         $scope.closeManageAdmin = function(){
           $scope.isAddNewAdminBoxShow = false;
-          adminData.shuju = {};
-          whichJiGouAddAdmin = '';
         };
 
         /**
@@ -928,10 +956,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             }
             else{
               Lazy(ply.CHILDREN).each(function(ly){
-                  if(ly.LINGYU_ID == sly.LINGYU_ID){
-                    findLyArr = ply;
-                  }
-               });
+                if(ly.LINGYU_ID == sly.LINGYU_ID){
+                  findLyArr = ply;
+                }
+              });
             }
           });
           //操作已选的领域数据
@@ -989,19 +1017,19 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          */
         var saveTiKuFun = function(){
           var tiKuObj = {
-            token: token,
-            caozuoyuan: caozuoyuan,
-            jigouid: jigouid,
-            lingyuid: '',
-            shuju:{
-              TIKUID: "",
-              TIKUMULUID: 1,
-              TIKUMINGCHENG: "",
-              TIKUXINGZHI: 5,
-              QUANXIANBIANMA: '1,2,3,4,5',
-              ZHUANGTAI: 1
-            }
-          },
+              token: token,
+              caozuoyuan: caozuoyuan,
+              jigouid: jigouid,
+              lingyuid: '',
+              shuju:{
+                TIKUID: "",
+                TIKUMULUID: 1,
+                TIKUMINGCHENG: "",
+                TIKUXINGZHI: 5,
+                QUANXIANBIANMA: '1,2,3,4,5',
+                ZHUANGTAI: 1
+              }
+            },
             queryTiKuUrl,
             lyLength = $scope.jgSelectLingYu.length,
             count = 0;
@@ -1045,7 +1073,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
               shuju:{
                 SHIJUANMULUID: "",
                 MULUMINGCHENG: "",
-  //              FUMULUID: "",
+                //              FUMULUID: "",
                 ZHUANGTAI: 1
               }
             },
@@ -1280,10 +1308,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           }
           if(dgId){
             var qryZsdgZsdUrl = qryZsdgZsdBaseUrl + dgLyId + '&zhishidagangid=' + dgId, //查询知识大纲知识点的url
-              //pubDgZsdIdArr = [], //存放公共知识大纲知识点id的数组
-              //diffZsdIdArr, //存放不同知识点id的变量
-              //singleZsdData, //存放一条公共知识点数据的变量
-              //pubZsdList = [], //存放多条公共知识点的变量
+            //pubDgZsdIdArr = [], //存放公共知识大纲知识点id的数组
+            //diffZsdIdArr, //存放不同知识点id的变量
+            //singleZsdData, //存放一条公共知识点数据的变量
+            //pubZsdList = [], //存放多条公共知识点的变量
               selectDgDetail; //存放所选知识大纲的详细信息
             pubDgZsdIdArr = [];
             $scope.loadingImgShow = true; //rz_setDaGang.html
@@ -1388,7 +1416,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         $scope.addToDaGang = function(zsd, idx){
           targetNd.ZHISHIDIAN_ID = zsd.ZHISHIDIAN_ID;
           targetNd.ZHISHIDIANMINGCHENG = zsd.ZHISHIDIANMINGCHENG;
-  //        targetInput.focus();  //此处有问题先注释掉
+          //        targetInput.focus();  //此处有问题先注释掉
           targetNd = '';
           $scope.publicKnowledge.splice(idx, 1);
         };
@@ -1879,9 +1907,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             jigouid: 0,
             lingyuid: 0,
             shuju:{
-                ZHISHIDIAN_ID: $scope.adminParams.selectZsdId,
-                ZHUANGTAI: -1
-              }
+              ZHISHIDIAN_ID: $scope.adminParams.selectZsdId,
+              ZHUANGTAI: -1
+            }
           };
           if(zsdData.shuju.ZHISHIDIAN_ID){
             if(confirm('你确定要删除此知识大纲吗？')){
@@ -2261,5 +2289,5 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           }
         };
 
-    }]);
+      }]);
 });

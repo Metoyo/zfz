@@ -10,14 +10,11 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var token = config.token;
         var apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + token + '&jigouid='; //lingYu 学科领域的api
         var apiLyKm = baseRzAPIUrl + 'lingYu?token=' + token + '&parentid='; //由lingYu id 的具体的学科
-        var apiUrlJglb = baseRzAPIUrl + 'jiGou_LeiBie?token=' + token + '&leibieid=1,2'; //jiGouLeiBie 机构类别的api
         var apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + token; //jueSe 查询科目权限的数据的api
-        var jiGou_LeiBieUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
         var select_juese = []; //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
         var registerDate = {}; // 注册时用到的数据
         var jigouId; //所选的机构ID
         var registerUrl = baseRzAPIUrl + 'zhuce'; //提交注册信息的url
-        var stuRegisterUrl = baseRzAPIUrl + 'stu_zhuce'; //提交学生注册信息的url
         var objAndRightList = []; //已经选择的科目和单位
         var checkUserUrlBase = baseRzAPIUrl + 'check_user?token=' + token; //检测用户是否存在的url
         var qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token; //检查考生是否在报名表里
@@ -25,6 +22,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var delBlankReg = /\s/g; //去除空格的正则表达
         var checkUserData; //当输入学号和姓名后返回到用户信息表的数据
         var alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
+        //新方法用到的变量
+        var xueXiaoUrl = '/xuexiao';
 
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
@@ -51,7 +50,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         }
 
         /**
-         * 显示教师注册//
+         * 显示教师注册
          */
         $scope.teacherRegister = function(){
           $scope.rzTpl = 'views/renzheng/rz_regTeacher.html';
@@ -178,38 +177,21 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 查询机构类别
+         * 机构查询 --
          */
-        $http.get(apiUrlJglb).success(function(data) {
-          $scope.jigoulb_list = [];
-          if(data && data.length > 0){
-            $scope.jigoulb_list = data;
-          }
-          else{
-            DataService.alertInfFun('err', '没用相关机构！');
-          }
-        });
-
-        /**
-         * 由机构类别查询机构 getJgId
-         */
-        $scope.getJglist = function(jglbId){
-          $scope.keMuListLengthExist = false;
-          $scope.selected_jg = '';
-          $scope.selected_ly = '';
-          $http.get(jiGou_LeiBieUrl + jglbId).success(function(data) {
-            if(data.length){
-              $scope.jigou_list = data;
-              $scope.lingyu_list = ''; //重置领域
+        var getJgList = function(){
+          $scope.loadingImgShow = true;
+          $http.get(xueXiaoUrl).success(function(schools){
+            if(schools.result){
+              $scope.jigou_list = schools.data;
             }
             else{
               $scope.jigou_list = '';
-              $scope.lingyu_list = ''; //重置领域
-              DataService.alertInfFun('err', '没有相关机构！');
+              DataService.alertInfFun('err', schools.error);
             }
+            $scope.loadingImgShow = false;
           });
         };
-        $scope.getJglist(1);
 
         /**
          * 得到机构id

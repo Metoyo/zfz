@@ -543,48 +543,48 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           videoPageArr = [];
           $scope.selectVideo = '';
           //临时数据
-          var data = config.videos;
-          if(data && data.length > 0){
-            originVideoData = data;
-            videoLen = data.length;
-            lastVideoPage = Math.ceil(videoLen/itemsPerPage);
-            $scope.videoLastPage = lastVideoPage;
-            for(var i = 1; i <= lastVideoPage; i ++){
-              videoPageArr.push(i);
-            }
-            if(videoLen <= 8){
-              $scope.videoData = data;
-            }
-            else{
-              $scope.videoDistFun(1);
-            }
-          }
-          else{
-            originVideoData = '';
-            DataService.alertInfFun('err', data.error);
-          }
-          //var getVideoUrl = 'http://v.yunjiaoshou.com:4280/wlk/videos/1180';
-          //$http.get(getVideoUrl).success(function(data){
-          //  if(data && data.length > 0){
-          //    originVideoData = data;
-          //    videoLen = data.length;
-          //    lastVideoPage = Math.ceil(videoLen/itemsPerPage);
-          //    $scope.videoLastPage = lastVideoPage;
-          //    for(var i = 1; i <= lastVideoPage; i ++){
-          //      videoPageArr.push(i);
-          //    }
-          //    if(videoLen <= 8){
-          //      $scope.videoData = data;
-          //    }
-          //    else{
-          //      $scope.videoDistFun(1);
-          //    }
+          //var data = config.videos;
+          //if(data && data.length > 0){
+          //  originVideoData = data;
+          //  videoLen = data.length;
+          //  lastVideoPage = Math.ceil(videoLen/itemsPerPage);
+          //  $scope.videoLastPage = lastVideoPage;
+          //  for(var i = 1; i <= lastVideoPage; i ++){
+          //    videoPageArr.push(i);
+          //  }
+          //  if(videoLen <= 8){
+          //    $scope.videoData = data;
           //  }
           //  else{
-          //    originVideoData = '';
-          //    DataService.alertInfFun('err', data.error);
+          //    $scope.videoDistFun(1);
           //  }
-          //});
+          //}
+          //else{
+          //  originVideoData = '';
+          //  DataService.alertInfFun('err', data.error);
+          //}
+          var getVideoUrl = 'http://v.yunjiaoshou.com:4280/wlk/videos/' + caozuoyuan;
+          $http.get(getVideoUrl).success(function(data){
+            if(data && data.length > 0){
+              originVideoData = data;
+              videoLen = data.length;
+              lastVideoPage = Math.ceil(videoLen/itemsPerPage);
+              $scope.videoLastPage = lastVideoPage;
+              for(var i = 1; i <= lastVideoPage; i ++){
+                videoPageArr.push(i);
+              }
+              if(videoLen <= 8){
+                $scope.videoData = data;
+              }
+              else{
+                $scope.videoDistFun(1);
+              }
+            }
+            else{
+              originVideoData = '';
+              DataService.alertInfFun('err', data.error);
+            }
+          });
         };
 
         /**

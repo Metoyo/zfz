@@ -92,7 +92,7 @@
         </div>
         <!-- 手机号码 -->
         <div class="form-group clearfix">
-          <label class="col-sm-2 text-right">手机号码</label>
+          <label class="col-sm-2 text-right">手机号码<strong class="clRed">*</strong></label>
           <div class="col-sm-6">
             <input type="text" name="shouji" placeholder="手机号码" tabindex="6" class="form-control"
                    ng-pattern="/^[1][34578][0-9]{9}$/" ng-model="personalInfo.shouji" required/>
@@ -106,7 +106,7 @@
           <button type="button" ng-click="validatePersonalInfo()" ng-disabled="userForm.yonghuming.$invalid
                                || yonghumingExist || userForm.mima.$invalid || userForm.confirmPassword.$invalid
                                || userForm.youxiang.$invalid || youxiangExist || userForm.xingming.$invalid ||
-                               ifPswTheSame" class="btn btn-success nextBtn">
+                               ifPswTheSame || userForm.shouji.$invalid" class="btn btn-success nextBtn">
             下一步<span></span>
           </button>
         </div>
