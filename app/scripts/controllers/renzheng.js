@@ -17,14 +17,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           userName: '',
           password: ''
         };
-        var session = {};
+        //var session = {};
         var urlArr = [];
         var currentPath = $location.$$path;
         var checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token; //检测用户是否存在的url
         var findPwUrlBase = baseRzAPIUrl + 'find_password?token=' + token + '&registeremail='; //忘记密码
         var resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
 
-        $rootScope.session = session;
+        //$rootScope.session = session;
         $scope.login = login;
         $scope.stuLogin = stuLogin;
         $rootScope.isPromiseAlterOthersTimu = false;
@@ -41,6 +41,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
         $scope.dengluInfo = false;
         $rootScope.urlArrs = [];
+        $rootScope.loginUsr = '';
 
         /**
          * 显示找回密码页面
@@ -119,6 +120,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 }
               }
               $rootScope.urlArrs = urlArr;
+              $rootScope.loginUsr = data.data;
             }
             else{
               DataService.alertInfFun('err', data.error);

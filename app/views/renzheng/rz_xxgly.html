@@ -5,8 +5,8 @@
 </div>
 <div class="col-md-3 logoutInfo">
     <h2>
-        您好，{{session.info.XINGMING}}
-        <span class="hide userUID">{{UID}}</span>
+      您好，<a href="javascript:void(0)" ng-bind="loginUsr['用户名']"></a>
+      <span class="hide userUID" ng-bind="loginUsr['UID']"></span>
     </h2>
     <h4>
         <a type="button" href="javascript:void(0)" ng-click="signOut()" class="btn btn-success">注销</a>

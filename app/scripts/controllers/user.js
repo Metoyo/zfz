@@ -40,7 +40,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           caozuoyuan: caozuoyuan,
           shuju:[]
         };
-        var jgLeiBieId; //机构列表id
         var modifyJiGouAdminUrl = baseRzAPIUrl + 'modify_jigou_admin'; //修改机构管理员
         var adminData = { //新增机构管理员的数据
           token: token,
@@ -120,6 +119,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var xueXiaoUrl = '/xuexiao'; //机构的增删改查
         var yongHuUrl = '/yonghu'; //用户的增删改查
         var yongHuJueSeUrl = '/yonghu_juese'; //用户角色URL
+        var lingYuUrl = '/lingyu'; //领域URL
+        var keMuUrl = '/kemu'; //科目URL
+        var loginUsr = $rootScope.loginUsr;
 
         $scope.adminParams = {
           selected_dg: '',
@@ -312,8 +314,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         $scope.renderJiGouSetTpl = function(){
           if(!($scope.jigou_list && $scope.jigou_list.length)){
             getJgList(1);
-            $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGou.html';
           }
+          $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGou.html';
         };
 
         /**
@@ -465,24 +467,27 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 删除机构管理员
+         * 删除机构管理员 --
          */
         $scope.deleteJiGouAdmin = function(adm){
-          adminData.shuju.ADMINISTRATORS[0].UID = adm.UID;
-          adminData.shuju.ADMINISTRATORS[0].YONGHUMING = adm.YONGHUMING;
-          adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = -1;
-          $http.post(modifyJiGouAdminUrl, adminData).success(function(data){
-            if(data.result){
-              getJgList();
-              adminData.shuju.ADMINISTRATORS[0].UID = '';
-              adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
-              adminData.shuju.ADMINISTRATORS[0].MIMA = '';
-              adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
-            }
-            else{
-              DataService.alertInfFun('err', data.error);
-            }
-          });
+          if(adm['UID']){
+            $scope.loadingImgShow = true;
+            var obj = {};
+            obj['UID'] = adm['UID'];
+            $http({method: 'delete', url: yongHuUrl, params: obj}).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '删除成功！');
+                getJgList();
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择学校！');
+          }
+          $scope.loadingImgShow = false;
         };
 
         /**
@@ -605,58 +610,84 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 学校科目选择 modifyJiGouLingYuUrl
+         * 学校科目选择 --
          */
         $scope.renderLingYuSelectTpl = function(){
-          selectedLyArr = [];
-          originSelectLingYuArr = [];
-          selectLingYuChangedArr = [];
-          $scope.jgSelectLingYu = [];
-          lingYuData.shuju = [];
-          $scope.selectedLyStr = '';
-          $scope.loadingImgShow = true; //rz_selectLingYu.html
-          var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID,
-            lyStr; //拼接领域字符的变量
-          $http.get(qryLingYuUrl).success(function(data) { //查询全部的领域
-            if(data.length){
-              $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
-                if(jgLy.length){
-                  $scope.jgSelectLingYu = jgLy;
-                  $scope.loadingImgShow = false; //rz_selectLingYu.html
-                  $scope.lingyu_list = data;
-                  $scope.isShenHeBox = false; //判断是不是审核页面
-                  Lazy(jgLy).each(function(ply){
-                    lyStr = 'sly' + ply.LINGYU_ID + ';';
-                    selectedLyArr.push(lyStr);
-                    //保存原始的已选领域数据的id
-                    originSelectLingYuArr.push(ply.LINGYU_ID);
-                    if(ply.CHILDREN.length && ply.CHILDREN.length > 0){
-                      Lazy(ply.CHILDREN).each(function(ly){
-                        lyStr = 'sly' + ly.LINGYU_ID + ';';
-                        selectedLyArr.push(lyStr);
-                        //保存原始的已选领域数据的id
-                        originSelectLingYuArr.push(ly.LINGYU_ID);
-                      })
+          $http.get(lingYuUrl).success(function(allLy){
+            if(allLy.result){
+              $http.get(keMuUrl).success(function(allKm){
+                if(allKm.result){
+                  var obj = {};
+                  obj['学校ID'] = loginUsr['学校ID'];
+                  $http({method: 'GET', url: yongHuJueSeUrl, params: obj}).success(function(xxKm){
+                    if(xxKm.result){
+
+                    }
+                    else{
+                      DataService.alertInfFun('err', xxKm.error);
                     }
                   });
-                  selectedLyStr = selectedLyArr.toString();
-                  $scope.selectedLyStr = selectedLyStr;
-                  $scope.adminSubWebTpl = 'views/renzheng/rz_selectLingYu.html';
                 }
                 else{
-                  $scope.loadingImgShow = false; //rz_selectLingYu.html
-                  $scope.lingyu_list = data;
-                  $scope.isShenHeBox = false; //判断是不是审核页面
-                  $scope.adminSubWebTpl = 'views/renzheng/rz_selectLingYu.html';
+                  DataService.alertInfFun('err', allKm.error);
                 }
               });
+
             }
             else{
-              $scope.lingyu_list = '';
-              $scope.loadingImgShow = false; //rz_selectLingYu.html
-              DataService.alertInfFun('err', '没用相关的领域！');
+              DataService.alertInfFun('err', allLy.error);
             }
           });
+
+          //selectedLyArr = [];
+          //originSelectLingYuArr = [];
+          //selectLingYuChangedArr = [];
+          //$scope.jgSelectLingYu = [];
+          //lingYuData.shuju = [];
+          //$scope.selectedLyStr = '';
+          //$scope.loadingImgShow = true; //rz_selectLingYu.html
+          //var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + loginUsr['学校ID'];
+          //var lyStr; //拼接领域字符的变量
+          //$http.get(qryLingYuUrl).success(function(data) { //查询全部的领域
+          //  if(data.length){
+          //    $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
+          //      if(jgLy.length){
+          //        $scope.jgSelectLingYu = jgLy;
+          //        $scope.loadingImgShow = false; //rz_selectLingYu.html
+          //        $scope.lingyu_list = data;
+          //        $scope.isShenHeBox = false; //判断是不是审核页面
+          //        Lazy(jgLy).each(function(ply){
+          //          lyStr = 'sly' + ply.LINGYU_ID + ';';
+          //          selectedLyArr.push(lyStr);
+          //          //保存原始的已选领域数据的id
+          //          originSelectLingYuArr.push(ply.LINGYU_ID);
+          //          if(ply.CHILDREN.length && ply.CHILDREN.length > 0){
+          //            Lazy(ply.CHILDREN).each(function(ly){
+          //              lyStr = 'sly' + ly.LINGYU_ID + ';';
+          //              selectedLyArr.push(lyStr);
+          //              //保存原始的已选领域数据的id
+          //              originSelectLingYuArr.push(ly.LINGYU_ID);
+          //            })
+          //          }
+          //        });
+          //        selectedLyStr = selectedLyArr.toString();
+          //        $scope.selectedLyStr = selectedLyStr;
+          //        $scope.adminSubWebTpl = 'views/renzheng/rz_selectLingYu.html';
+          //      }
+          //      else{
+          //        $scope.loadingImgShow = false; //rz_selectLingYu.html
+          //        $scope.lingyu_list = data;
+          //        $scope.isShenHeBox = false; //判断是不是审核页面
+          //        $scope.adminSubWebTpl = 'views/renzheng/rz_selectLingYu.html';
+          //      }
+          //    });
+          //  }
+          //  else{
+          //    $scope.lingyu_list = '';
+          //    $scope.loadingImgShow = false; //rz_selectLingYu.html
+          //    DataService.alertInfFun('err', '没用相关的领域！');
+          //  }
+          //});
         };
 
         /**
