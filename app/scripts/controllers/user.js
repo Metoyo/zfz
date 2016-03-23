@@ -94,8 +94,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           '&jigouid=' + jigouid + '&zhishidianid='; //根据知识点查科目
         var modifyZsdLy = baseMtAPIUrl + 'xiugai_zhishidian_lingyu'; //修改知识点领域
         var qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid='; //查询此题目
-        var originSelectLingYuArr = []; //存放本机构所选领域的原始数据
-        var selectLingYuChangedArr = []; //存放本机构变动的领域数据
         var qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid=' + jigouid; //查询本机构下教师
         var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='+ caozuoyuan; //查询考试列表的url
         var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询考试
@@ -121,7 +119,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var yongHuJueSeUrl = '/yonghu_juese'; //用户角色URL
         var lingYuUrl = '/lingyu'; //领域URL
         var keMuUrl = '/kemu'; //科目URL
+        var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目
         var loginUsr = $rootScope.loginUsr;
+        var jdID = loginUsr['学校ID'];
 
         $scope.adminParams = {
           selected_dg: '',
@@ -613,434 +613,125 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          * 学校科目选择 --
          */
         $scope.renderLingYuSelectTpl = function(){
+          $scope.jgSelectKeMu = '';
           $http.get(lingYuUrl).success(function(allLy){
             if(allLy.result){
               $http.get(keMuUrl).success(function(allKm){
                 if(allKm.result){
+                  //整理数据
+                  Lazy(allKm.data).each(function(km){
+                    km.ckd = false;
+                  });
                   var obj = {};
-                  obj['学校ID'] = loginUsr['学校ID'];
-                  $http({method: 'GET', url: yongHuJueSeUrl, params: obj}).success(function(xxKm){
+                  obj['学校ID'] = jdID;
+                  $http({method: 'GET', url: xueXiaoKeMuUrl, params: obj}).success(function(xxKm){
                     if(xxKm.result){
-
+                      if(xxKm.data && xxKm.data.length > 0){
+                        var allKmLen = allKm.data.length;
+                        var i;
+                        Lazy(xxKm.data).each(function(km){
+                          for(i = 0; i < allKmLen; i++){
+                            var item = allKm.data[i];
+                            if(item['科目ID'] == km['科目ID']){
+                              km['领域名称'] = item['领域名称'];
+                              km['领域ID'] = item['领域ID'];
+                              item.ckd = true;
+                              Lazy(allLy.data).each(function(ly){
+                                if(ly['领域ID'] == item['领域ID']){
+                                  ly.ckd = true;
+                                }
+                              });
+                              break;
+                            }
+                          }
+                        });
+                      }
+                      $scope.jgSelectKeMu = xxKm.data;
                     }
                     else{
+                      $scope.jgSelectKeMu = [];
                       DataService.alertInfFun('err', xxKm.error);
                     }
+                    //数据组合
+                    var allKmSortObj = Lazy(allKm.data).groupBy(function(km){
+                      return km['领域ID'];
+                    }).toObject();
+                    Lazy(allLy.data).each(function(ly){
+                      ly['科目'] = allKmSortObj[ly['领域ID']];
+                      if(!ly.ckd){
+                        ly.ckd = false;
+                      }
+                    });
+                    $scope.lingyu_list = allLy.data;
+                    $scope.adminSubWebTpl = 'views/renzheng/rz_selectLingYu.html';
                   });
+                  $scope.isShenHeBox = false;
                 }
                 else{
                   DataService.alertInfFun('err', allKm.error);
                 }
               });
-
             }
             else{
               DataService.alertInfFun('err', allLy.error);
             }
           });
-
-          //selectedLyArr = [];
-          //originSelectLingYuArr = [];
-          //selectLingYuChangedArr = [];
-          //$scope.jgSelectLingYu = [];
-          //lingYuData.shuju = [];
-          //$scope.selectedLyStr = '';
-          //$scope.loadingImgShow = true; //rz_selectLingYu.html
-          //var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + loginUsr['学校ID'];
-          //var lyStr; //拼接领域字符的变量
-          //$http.get(qryLingYuUrl).success(function(data) { //查询全部的领域
-          //  if(data.length){
-          //    $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
-          //      if(jgLy.length){
-          //        $scope.jgSelectLingYu = jgLy;
-          //        $scope.loadingImgShow = false; //rz_selectLingYu.html
-          //        $scope.lingyu_list = data;
-          //        $scope.isShenHeBox = false; //判断是不是审核页面
-          //        Lazy(jgLy).each(function(ply){
-          //          lyStr = 'sly' + ply.LINGYU_ID + ';';
-          //          selectedLyArr.push(lyStr);
-          //          //保存原始的已选领域数据的id
-          //          originSelectLingYuArr.push(ply.LINGYU_ID);
-          //          if(ply.CHILDREN.length && ply.CHILDREN.length > 0){
-          //            Lazy(ply.CHILDREN).each(function(ly){
-          //              lyStr = 'sly' + ly.LINGYU_ID + ';';
-          //              selectedLyArr.push(lyStr);
-          //              //保存原始的已选领域数据的id
-          //              originSelectLingYuArr.push(ly.LINGYU_ID);
-          //            })
-          //          }
-          //        });
-          //        selectedLyStr = selectedLyArr.toString();
-          //        $scope.selectedLyStr = selectedLyStr;
-          //        $scope.adminSubWebTpl = 'views/renzheng/rz_selectLingYu.html';
-          //      }
-          //      else{
-          //        $scope.loadingImgShow = false; //rz_selectLingYu.html
-          //        $scope.lingyu_list = data;
-          //        $scope.isShenHeBox = false; //判断是不是审核页面
-          //        $scope.adminSubWebTpl = 'views/renzheng/rz_selectLingYu.html';
-          //      }
-          //    });
-          //  }
-          //  else{
-          //    $scope.lingyu_list = '';
-          //    $scope.loadingImgShow = false; //rz_selectLingYu.html
-          //    DataService.alertInfFun('err', '没用相关的领域！');
-          //  }
-          //});
         };
 
         /**
-         * 添加领域到已选 media-body selectLingYuChangedArr
+         * 添加领域到已选 --
          */
-        $scope.addLingYuToSelect = function(event, nd, parentLy){
-          var ifCheckOrNot = $(event.target).prop('checked'),
-            ifInOriginSelectLingYu, //是否存在于原始的领域里面
-            targetId = nd.LINGYU_ID, //选中的领域
-            ifInChangLingYuArr; //是否存在变动的领域数组里
-          ifInOriginSelectLingYu = Lazy(originSelectLingYuArr).find(function(lyId){
-            return lyId == targetId;
-          });
-          if(selectLingYuChangedArr && selectLingYuChangedArr.length > 0){
-            ifInChangLingYuArr = Lazy(selectLingYuChangedArr).find(function(cgLy){
-              return cgLy.LINGYU_ID == targetId;
-            });
-          }
-          if(parentLy){
-            var parentLyId = parentLy.LINGYU_ID;
-          }
-          if(ifCheckOrNot){ //添加
-            if(nd.PARENT_LINGYU_ID == 0){ // 父领域
-              //存在原始数据里
-              if(ifInOriginSelectLingYu){
-                var lyHasInChangArrDataPadd = Lazy(selectLingYuChangedArr).find(function(cLy){
-                  return cLy.LINGYU_ID == targetId;
-                });
-                if(lyHasInChangArrDataPadd){
-                  selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly) {
-                    return ly.LINGYU_ID == targetId;
-                  }).toArray();
-                }
-                if(nd.CHILDREN && nd.CHILDREN.length > 0){ //判断子nd下面的子领域
-                  Lazy(nd.CHILDREN).each(function(sLy, sIdx, sLst){
-                    var lyHasInOriginData = Lazy(originSelectLingYuArr).find(function(sLyId){
-                        return sLyId == sLy.LINGYU_ID;
-                      }),
-                      lyHasInChangArrDataC = Lazy(selectLingYuChangedArr).find(function(cLy){
-                        return cLy.LINGYU_ID == sLy.LINGYU_ID;
-                      });
-                    if(lyHasInOriginData){ //在原始数据里面
-                      if(lyHasInChangArrDataC){
-                        selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly) {
-                          return ly.LINGYU_ID == sLy.LINGYU_ID;
-                        }).toArray();
-                      }
-                    }
-                    else{ //不在原始数据里面
-                      if(!lyHasInChangArrDataC){
-                        sLy.itemStat = 'add';
-                        selectLingYuChangedArr.push(sLy);
-                      }
-                    }
-                  })
-                }
-              }
-              //不存在原始数据里
-              else{
-                var add_lyHasInChangArrDataP0 = Lazy(selectLingYuChangedArr).find(function(cLy){
-                  return cLy.LINGYU_ID == targetId;
-                });
-                if(!add_lyHasInChangArrDataP0){
-                  nd.itemStat = 'add';
-                  selectLingYuChangedArr.push(nd);
-                }
-                if(nd.CHILDREN && nd.CHILDREN.length > 0){
-                  Lazy(nd.CHILDREN).each(function(sLy){
-                    var add_lyHasInChangArrDataC0 = Lazy(selectLingYuChangedArr).find(function(cLy){
-                      return cLy.LINGYU_ID == sLy.LINGYU_ID;
-                    });
-                    if(!add_lyHasInChangArrDataC0){
-                      sLy.itemStat = 'add';
-                      selectLingYuChangedArr.push(sLy);
-                    }
-                  })
-                }
-              }
-              $scope.jgSelectLingYu.push(nd);
-              if(nd.CHILDREN.length){ //有子领域
-                //操作已选领域的代码
-                Lazy(nd.CHILDREN).each(function(ly, idx, lst){
-                  var hasLingYuArr, hasIn;
-                  hasLingYuArr = Lazy($scope.jgSelectLingYu).map(function(sly){return sly.LINGYU_ID}).toArray();
-                  hasIn = Lazy(hasLingYuArr).contains(ly.LINGYU_ID);
-                  if(!hasIn){
-                    $scope.jgSelectLingYu.push(ly);
-                  }
-                });
-                $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop('checked', true);
-              }
-            }
-            else{ //子领域
-              //当选择子领域的时候，同时选择父领域
-              if(parentLy){
-                var parentLyCss = '.checkbox' + parentLyId,
-                  ifParentLyChecked = $(parentLyCss).prop('checked');
-                if(!ifParentLyChecked){
-                  $(parentLyCss).prop('checked', true);
-                }
-                //判断父是否在原始数据里
-                var chd_lyHasInOriginDataAdd = Lazy(originSelectLingYuArr).find(function(sLyId){
-                    return sLyId == parentLy.LINGYU_ID;
-                  }),
-                  chd_lyHasInChangArrDataAdd = Lazy(selectLingYuChangedArr).find(function(cLy){
-                    return cLy.LINGYU_ID == parentLy.LINGYU_ID;
-                  });
-                if(!chd_lyHasInOriginDataAdd){
-                  if(!chd_lyHasInChangArrDataAdd){
-                    parentLy.itemStat = 'add';
-                    selectLingYuChangedArr.push(parentLy);
-                  }
-                }
-              }
-              Lazy($scope.jgSelectLingYu).each(function(ly, idx, lst){
-                if(ly.LINGYU_ID == parentLyId){
-                  ly.CHILDREN.push(nd);
-                }
-              });
-              //所选领域存在原始数据里
-              if(ifInOriginSelectLingYu){
-                if(ifInChangLingYuArr){ //存在于变动数组里面
-                  selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly){
-                    return ly.LINGYU_ID == targetId;
-                  }).toArray();
-                }
-              }
-              //所选领域不存在原始数据里
-              else{
-                nd.itemStat = 'add';
-                selectLingYuChangedArr.push(nd);
-              }
-            }
-          }
-          else{ //删除
-            if(nd.PARENT_LINGYU_ID == 0){ // 父领域
-              //存在原始数据里
-              if(ifInOriginSelectLingYu){
-                var lyHasInChangArrDataP = Lazy(selectLingYuChangedArr).find(function(cLy){
-                  return cLy.LINGYU_ID == targetId;
-                });
-                if(!lyHasInChangArrDataP){
-                  nd.itemStat = 'del';
-                  selectLingYuChangedArr.push(nd);
-                }
-                if(nd.CHILDREN && nd.CHILDREN.length > 0){
-                  Lazy(nd.CHILDREN).each(function(sLy, sIdx, sLst){
-                    var lyHasInOriginData = Lazy(originSelectLingYuArr).find(function(sLyId){
-                        return sLyId == sLy.LINGYU_ID;
-                      }),
-                      lyHasInChangArrDataC = Lazy(selectLingYuChangedArr).find(function(cLy){
-                        return cLy.LINGYU_ID == sLy.LINGYU_ID;
-                      });
-                    if(lyHasInOriginData){
-                      if(!lyHasInChangArrDataC){
-                        sLy.itemStat = 'del';
-                        selectLingYuChangedArr.push(sLy);
-                      }
-                    }
-                    else{
-                      if(lyHasInChangArrDataC){
-                        selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly) {
-                          return ly.LINGYU_ID == sLy.LINGYU_ID;
-                        });
-                      }
-                    }
-                  })
-                }
-              }
-              //不在原始数据里
-              else{
-                Lazy(nd).each(function(ly){
-                  var lyHasInChangArrDataP = Lazy(selectLingYuChangedArr).find(function(cLy){
-                    return cLy.LINGYU_ID == ly.LINGYU_ID;
-                  });
-                  if(lyHasInChangArrDataP){
-                    selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(cLy) {
-                      return cLy.LINGYU_ID == ly.LINGYU_ID;
-                    }).toArray();
-                  }
-                  if(ly.CHILDREN && ly.CHILDREN.length > 0){
-                    Lazy(ly.CHILDREN).each(function(sLy){
-                      var lyHasInChangArrDataC = Lazy(selectLingYuChangedArr).find(function(cLy){
-                        return cLy.LINGYU_ID == sLy.LINGYU_ID;
-                      });
-                      if(lyHasInChangArrDataC){
-                        selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(cLy) {
-                          return cLy.LINGYU_ID == sLy.LINGYU_ID;
-                        });
-                      }
-                    })
-                  }
-                });
-              }
-              if(nd.CHILDREN.length){ //操作已选领域的代码
-                Lazy(nd.CHILDREN).each(function(ly,idx,lst){
-                  Lazy($scope.jgSelectLingYu).each(function(sly, sIdx, sLst){
-                    if(sly.LINGYU_ID == nd.LINGYU_ID){
-                      $scope.jgSelectLingYu.splice(sIdx, 1);
-                    }
-                    if(sly.LINGYU_ID == ly.LINGYU_ID){
-                      $scope.jgSelectLingYu.splice(sIdx, 1);
-                    }
-                  });
-                });
-                $(event.target).closest('.media-body').find('.media input[type="checkbox"]').prop("checked", false);
-              }
-            }
-            else{ //子领域
-              //子领域全部不选的时候，父领域也不选
-              if(parentLy){
-                var isAllLyUnChecked = true,
-                  lyClass, ifLyChecked;
-                Lazy(parentLy.CHILDREN).each(function(ly){
-                  lyClass = '.checkbox' + ly.LINGYU_ID;
-                  ifLyChecked = $(lyClass).prop('checked');
-                  if(ifLyChecked){
-                    isAllLyUnChecked = false;
-                  }
-                });
-                if(isAllLyUnChecked){
-                  var parentLyClass = '.checkbox' + parentLy.LINGYU_ID;
-                  $(parentLyClass).prop('checked', false);
-                  //所有的子都不选的时候，将父也去除
-                  var chd_lyHasInOriginDataDel = Lazy(originSelectLingYuArr).find(function(sLyId){
-                      return sLyId == parentLy.LINGYU_ID;
-                    }),
-                    chd_lyHasInChangArrDataDel = Lazy(selectLingYuChangedArr).find(function(cLy){
-                      return cLy.LINGYU_ID == parentLy.LINGYU_ID;
-                    });
-                  if(chd_lyHasInOriginDataDel){
-                    if(!chd_lyHasInChangArrDataDel){
-                      parentLy.itemStat = 'del';
-                      selectLingYuChangedArr.push(parentLy);
-                    }
-                  }
-                }
-              }
-              Lazy($scope.jgSelectLingYu).each(function(sly, idx, lst){
-                if(sly.LINGYU_ID == targetId){
-                  $scope.jgSelectLingYu.splice(idx, 1);
-                }
-                else{
-                  if(sly.CHILDREN && sly.CHILDREN.length >0){
-                    Lazy(sly.CHILDREN).each(function(secSly, secIdx, secLst){
-                      if(secSly.LINGYU_ID == targetId){
-                        $scope.jgSelectLingYu[idx].CHILDREN.splice(secIdx, 1);
-                      }
-                    });
-                  }
-                }
-              });
-              //所选领域存在原始数据里
-              if(ifInOriginSelectLingYu){
-                nd.itemStat = 'del';
-                selectLingYuChangedArr.push(nd);
-              }
-              //所选领域不存在原始数据里
-              else{
-                if(ifInChangLingYuArr){ //存在于变动数组里面
-                  selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly){
-                    return ly.LINGYU_ID == targetId;
-                  }).toArray();
-                }
-              }
-            }
-          }
-        };
-
-        /**
-         * 从已选科目删除领域
-         */
-        $scope.deleteSelectedLingYu = function(sly, idx, pIdx){
-//          $scope.loadingImgShow = true; //rz_selectLingYu.html
-          var targetClass = '.checkbox' + sly.LINGYU_ID,
-//            slyObj = {},
-            isAllCheckBoxUnChecked = true,
-            findLyArr = '',
-            checkBoxParm,
-            parentCheckBoxElm,
-            checkBoxElm,
-            targetId = sly.LINGYU_ID,
-            ifInOriginSelectLy,
-            ifInChangSelectLy;
-          ifInOriginSelectLy = Lazy(originSelectLingYuArr).find(function(lyId){
-            return lyId == targetId;
-          });
-          if(selectLingYuChangedArr && selectLingYuChangedArr.length > 0){
-            ifInChangSelectLy = Lazy(selectLingYuChangedArr).find(function(cgLy){
-              return cgLy.LINGYU_ID == targetId;
-            });
-          }
-          //选择要操作的领域数据
-          Lazy($scope.lingyu_list[0].CHILDREN).each(function(ply){
-            if(ply.LINGYU_ID == sly.LINGYU_ID){
-              findLyArr = ply;
+        $scope.addKeMuToSelect = function(ly, km){
+          if(km){ //点击的为科目
+            km.ckd = !km.ckd;
+            if(km.ckd){
+              $scope.jgSelectKeMu.push(km);
             }
             else{
-              Lazy(ply.CHILDREN).each(function(ly){
-                if(ly.LINGYU_ID == sly.LINGYU_ID){
-                  findLyArr = ply;
-                }
-              });
-            }
-          });
-          //操作已选的领域数据
-          if(findLyArr.CHILDREN.length){
-            $('.media').find(targetClass).prop('checked', false);
-            Lazy(findLyArr.CHILDREN).each(function(ly){
-              checkBoxParm = '.checkbox' + ly.LINGYU_ID;
-              checkBoxElm = $(checkBoxParm).prop('checked');
-              if(checkBoxElm){
-                isAllCheckBoxUnChecked = false;
-              }
-            });
-            if(isAllCheckBoxUnChecked){
-              parentCheckBoxElm = '.checkbox' + findLyArr.LINGYU_ID;
-              $(parentCheckBoxElm).prop('checked', false);
-            }
-          }
-          else{
-            $('.media').find(targetClass).prop('checked', false);
-          }
-          //新代码
-          if(ifInOriginSelectLy){
-            sly.itemStat = 'del';
-            selectLingYuChangedArr.push(sly);
-          }
-          else{
-            if(ifInChangSelectLy){
-              selectLingYuChangedArr = Lazy(selectLingYuChangedArr).reject(function(ly){
-                return ly.LINGYU_ID == targetId;
+              $scope.jgSelectKeMu = Lazy($scope.jgSelectKeMu).reject(function(item){
+                return item['科目ID'] == km['科目ID'];
               }).toArray();
             }
+            var lyCkd = Lazy(ly['科目']).find(function(kemu){
+              return kemu.ckd == true;
+            });
+            ly.ckd = lyCkd ? true : false;
           }
-          $scope.jgSelectLingYu[pIdx].CHILDREN.splice(idx, 1);
-//          lingYuData.shuju = [];
-//          slyObj.JIGOU_ID = jigouid;
-//          slyObj.LINGYU_ID = sly.LINGYU_ID;
-//          slyObj.ZHUANGTAI = -1;
-//          slyObj.LEIBIE = sly.LEIBIE;
-//          lingYuData.shuju.push(slyObj);
-//          $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
-//            if(data.result){
-//              $scope.jgSelectLingYu[pIdx].CHILDREN.splice(idx, 1);
-//              $scope.loadingImgShow = false; //rz_selectLingYu.html
-//              console.log(originSelectLingYuArr);
-//            }
-//            else{
-//              $scope.loadingImgShow = false; //rz_selectLingYu.html
-//              DataService.alertInfFun('err', data.error);
-//            }
-//          });
+          else{ //点击的为领域
+            ly.ckd = !ly.ckd;
+            Lazy(ly['科目']).each(function(kemu){
+              if(ly.ckd){
+                kemu.ckd = true;
+                $scope.jgSelectKeMu.push(kemu);
+              }
+              else{
+                kemu.ckd = false;
+                $scope.jgSelectKeMu = Lazy($scope.jgSelectKeMu).reject(function(item){
+                  return item['科目ID'] == kemu['科目ID'];
+                }).toArray();
+              }
+            });
+          }
+        };
+
+        /**
+         * 从已选科目删除领域 --
+         */
+        $scope.deleteSelectedKeMu = function(idx, km){
+          $scope.jgSelectKeMu.splice(idx, 1);
+          var fdLy = Lazy($scope.lingyu_list).find(function(ly){
+            return ly['领域ID'] == km['领域ID'];
+          });
+          var count = 0;
+          Lazy(fdLy['科目']).each(function(kemu){
+            if(kemu['科目ID'] == km['科目ID']){
+              kemu.ckd = false;
+            }
+            if(kemu.ckd){
+              count ++;
+            }
+          });
+          fdLy.ckd = count ? true : false;
         };
 
         /**
@@ -1140,56 +831,22 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 保存已选的领域
+         * 保存已选的领域 --
          */
-        $scope.saveChooseLingYu = function(){
-          $scope.loadingImgShow = true; //rz_selectLingYu.html
-          lingYuData.shuju = [];
-          Lazy(selectLingYuChangedArr).each(function(sly){
-            var slyObj = {};
-            slyObj.JIGOU_ID = jigouid;
-            slyObj.LINGYU_ID = sly.LINGYU_ID;
-            if(sly.itemStat && sly.itemStat == 'add'){
-              slyObj.ZHUANGTAI = 1;
+        $scope.saveChooseKeMu = function(){
+          var obj = {};
+          obj['科目'] = Lazy($scope.jgSelectKeMu).map(function(km){
+            return km['科目ID'];
+          }).toArray();
+          obj['学校ID'] = jdID;
+          $http.post(xueXiaoKeMuUrl, obj).success(function(data){
+            if(data.result){
+              DataService.alertInfFun('suc', '保存成功！');
             }
-            if(sly.itemStat && sly.itemStat == 'del'){
-              slyObj.ZHUANGTAI = -1;
+            else{
+              DataService.alertInfFun('err', data.error);
             }
-            slyObj.LEIBIE = sly.LEIBIE;
-            lingYuData.shuju.push(slyObj);
           });
-          if(lingYuData.shuju && lingYuData.shuju.length > 0){
-            $http.post(modifyJiGouLingYuUrl, lingYuData).success(function(data){
-              if(data.result){
-                saveTiKuFun();
-                alterShiJuanMuLu();
-                Lazy(selectLingYuChangedArr).each(function(sly){
-                  var hasInOriginSelectLy = Lazy(originSelectLingYuArr).find(function(lyId){
-                    return lyId == sly.LINGYU_ID;
-                  });
-                  if(hasInOriginSelectLy){
-                    if(sly.itemStat && sly.itemStat == 'del'){
-                      originSelectLingYuArr = Lazy(originSelectLingYuArr).reject(function(lyId){
-                        return lyId == sly.LINGYU_ID;
-                      }).toArray();
-                    }
-                  }
-                  else{
-                    if(sly.itemStat && sly.itemStat == 'add'){
-                      originSelectLingYuArr.push(sly.LINGYU_ID);
-                    }
-                  }
-                });
-                DataService.alertInfFun('suc', '保存成功！');
-                $scope.loadingImgShow = false; //rz_selectLingYu.html
-              }
-              else{
-                $scope.loadingImgShow = false; //rz_selectLingYu.html
-                DataService.alertInfFun('err', data.error);
-              }
-            });
-          }
-
         };
 
         /**
@@ -1654,7 +1311,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
                   $scope.selectTiXingLiYing = childLyArr;
                   $scope.allTiXing = allTx;
                   $scope.loadingImgShow = false; //rz_selectTiXing.html
-                  $scope.isShenHeBox = false; //判断是不是审核页面
+                  $scope.isShenHeBox = false; //判断是不是审核页面？
                   $scope.adminSubWebTpl = 'views/renzheng/rz_selectTiXing.html';
                 }
                 else{
