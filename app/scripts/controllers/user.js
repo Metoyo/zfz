@@ -315,6 +315,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           if(!($scope.jigou_list && $scope.jigou_list.length)){
             getJgList(1);
           }
+          $scope.isShenHeBox = false;
           $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGou.html';
         };
 
@@ -527,86 +528,200 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 展示科目设置(领域)
+         * 展示科目设置(领域) --
          */
         $scope.renderLingYuSetTpl = function(){
-          $scope.loadingImgShow = true; //rz_setLingYu.html
-          // 查询机领域
-          $http.get(qryLingYuUrl).success(function(data) {
-            if(data.length){
-              isLingYuSet = true;
-              $scope.lingyu_list = data;
-              $scope.loadingImgShow = false; //rz_setLingYu.html
-              $scope.isShenHeBox = false; //判断是不是审核页面
-              $scope.adminSubWebTpl = 'views/renzheng/rz_setLingYu.html';
+          $scope.loadingImgShow = true;
+          $http.get(lingYuUrl).success(function(allLy){
+            if(allLy.result){
+              $http.get(keMuUrl).success(function(allKm){
+                if(allKm.result){
+                  //数据组合
+                  var allKmSortObj = Lazy(allKm.data).groupBy(function(km){
+                    return km['领域ID'];
+                  }).toObject();
+                  Lazy(allLy.data).each(function(ly){
+                    ly['科目'] = allKmSortObj[ly['领域ID']];
+                  });
+                  $scope.lingyu_list = allLy.data;
+                  $scope.isShenHeBox = false;
+                  $scope.lyKmSetPageShow = false;
+                  $scope.lyOrKmSet = {
+                    name: '',
+                    type: '',
+                    val: ''
+                  };
+                  $scope.adminSubWebTpl = 'views/renzheng/rz_setLingYu.html';
+                }
+                else{
+                  DataService.alertInfFun('err', allKm.error);
+                }
+              });
             }
             else{
-              $scope.lingyu_list = '';
-              $scope.loadingImgShow = false; //rz_setLingYu.html
-              DataService.alertInfFun('err', '没用相关的领域！');
+              DataService.alertInfFun('err', allLy.error);
             }
+            $scope.loadingImgShow = false;
           });
         };
 
         /**
-         * 添加领域
+         * 添加领域 --
          */
-        $scope.addNd = function(nd) {
-          var newNd = {};
-          newNd.LINGYU_ID = '';
-          newNd.LINGYUMINGCHENG = '';
-          newNd.BIANMA = '';
-          newNd.ZHUANGTAI = 1;
-          newNd.CHILDREN = [];
-          switch (nd.LEIBIE){
-            case 0:
-              newNd.LEIBIE = 1;
-              break;
-            case 1:
-              newNd.LEIBIE = 2;
-              break;
+        $scope.addLy = function() {
+          $scope.lyOrKmSet.type = 'nl';
+          $scope.lyKmSetPageShow = true;
+        };
+
+        /**
+         * 修改领域 --
+         */
+        $scope.alterLy = function(ly) {
+          $scope.lyOrKmSet.type = 'al';
+          $scope.lyOrKmSet.name = ly['领域名称'];
+          $scope.lyOrKmSet.val = ly;
+          $scope.lyKmSetPageShow = true;
+        };
+
+        /**
+         * 删除领域 --
+         */
+        $scope.deleteLy = function(ly) {
+
+        };
+
+        /**
+         * 添加科目 --
+         */
+        $scope.addKm = function(ly) {
+          $scope.lyOrKmSet.type = 'nk';
+          $scope.lyOrKmSet.val = ly;
+          $scope.lyKmSetPageShow = true;
+        };
+
+        /**
+         * 修改科目 --
+         */
+        $scope.alterKm = function(km) {
+          $scope.lyOrKmSet.type = 'ak';
+          $scope.lyOrKmSet.val = km;
+          $scope.lyOrKmSet.name = km['科目名称'];
+          $scope.lyKmSetPageShow = true;
+        };
+
+        /**
+         * 删除科目 --
+         */
+        $scope.deleteKm = function(ly, km) {
+
+        };
+
+        /**
+         * 关闭领域和科目的添加和修改
+         */
+        $scope.closeAddLMPage = function(){
+          $scope.lyOrKmSet = {
+            name: '',
+            type: '',
+            val: ''
+          };
+          $scope.lyKmSetPageShow = false;
+        };
+
+        /**
+         * 保存领域和科目的添加和修改
+         */
+        $scope.saveAddLM = function(){
+          var obj = {method: '', url: '', data: ''};
+          if($scope.lyOrKmSet.type == 'nl'){ //添加领域
+            obj.method = 'PUT';
+            obj.url = lingYuUrl;
+            if($scope.lyOrKmSet.name){
+              obj.data = {'领域名称': $scope.lyOrKmSet.name};
+            }
+            else{
+              DataService.alertInfFun('pmt', '缺少领域名称！');
+              return ;
+            }
           }
-          nd.CHILDREN.push(newNd);
-        };
-
-        /**
-         * 删除领域
-         */
-        $scope.removeNd = function(parentNd, thisNd, idx) {
-          lingYuData.shuju = [];
-          thisNd.ZHUANGTAI = -1;
-          lingYuData.shuju.push(thisNd);
-          $scope.loadingImgShow = true; //rz_setLingYu.html
-          $http.post(modifyLingYuUrl, lingYuData).success(function(data){
-            if(data.result){
-              parentNd.CHILDREN.splice(idx, 1);
-              $scope.loadingImgShow = false; //rz_setLingYu.html
+          if($scope.lyOrKmSet.type == 'al'){ //修改领域
+            obj.method = 'POST';
+            obj.url = lingYuUrl;
+            if($scope.lyOrKmSet.name && $scope.lyOrKmSet.name != $scope.lyOrKmSet.val['领域名称']){
+              obj.data = {
+                '领域名称': $scope.lyOrKmSet.name,
+                '领域ID': $scope.lyOrKmSet.val['领域ID']
+              };
             }
             else{
-              $scope.loadingImgShow = false; //rz_setLingYu.html
+              DataService.alertInfFun('pmt', '缺少领域名称或者领域名称没有变化！');
+              return ;
+            }
+          }
+          if($scope.lyOrKmSet.type == 'nk'){ //添加科目
+            obj.method = 'PUT';
+            obj.url = keMuUrl;
+            if($scope.lyOrKmSet.name){
+              obj.data = {
+                '科目名称': $scope.lyOrKmSet.name,
+                '领域ID': $scope.lyOrKmSet.val['领域ID']
+              };
+            }
+            else{
+              DataService.alertInfFun('pmt', '缺少科目名称！');
+              return ;
+            }
+          }
+          if($scope.lyOrKmSet.type == 'ak'){ //修改科目
+            obj.method = 'POST';
+            obj.url = keMuUrl;
+            if($scope.lyOrKmSet.name && $scope.lyOrKmSet.name != $scope.lyOrKmSet.val['科目名称']){
+              obj.data = {
+                '科目名称': $scope.lyOrKmSet.name,
+                '科目ID': $scope.lyOrKmSet.val['科目ID']
+              };
+            }
+            else{
+              DataService.alertInfFun('pmt', '缺少科目名称或者科目名称没有变化');
+              return ;
+            }
+          }
+          $http(obj).success(function(data){
+            if(data.result){
+              if($scope.lyOrKmSet.type == 'nl'){
+                $scope.lingyu_list.push({
+                  '领域ID': data.data['领域ID'],
+                  '领域名称': $scope.lyOrKmSet.name,
+                  '科目': []
+                });
+              }
+              if($scope.lyOrKmSet.type == 'al'){
+                $scope.lyOrKmSet.val['领域名称'] = $scope.lyOrKmSet.name;
+              }
+              if($scope.lyOrKmSet.type == 'nk'){
+                $scope.lyOrKmSet.val['科目'] = $scope.lyOrKmSet.val['科目'] || [];
+                $scope.lyOrKmSet.val['科目'].push({
+                  '科目ID': data.data['科目ID'],
+                  '科目名称': $scope.lyOrKmSet.name,
+                  '领域ID': $scope.lyOrKmSet.val['领域ID'],
+                  '领域名称': $scope.lyOrKmSet.val['领域名称']
+                });
+              }
+              if($scope.lyOrKmSet.type == 'ak'){
+                $scope.lyOrKmSet.val['科目名称'] = $scope.lyOrKmSet.name;
+              }
+              $scope.lyOrKmSet = {
+                name: '',
+                type: '',
+                val: ''
+              };
+              DataService.alertInfFun('suc', '成功！');
+            }
+            else{
               DataService.alertInfFun('err', data.error);
             }
           });
-        };
-
-        /**
-         * 保存修改过后的领域数据
-         */
-        $scope.saveLingYuChange = function(){
-          lingYuData.shuju = [];
-          $scope.loadingImgShow = true; //rz_setLingYu.html
-          lingYuData.shuju = $scope.lingyu_list;
-          $http.post(modifyLingYuUrl, lingYuData).success(function(data){
-            if(data.result){
-              isLingYuSet = false;
-              DataService.alertInfFun('suc', '保存成功！');
-              $scope.loadingImgShow = false; //rz_setLingYu.html
-            }
-            else{
-              $scope.loadingImgShow = false; //rz_setLingYu.html
-              DataService.alertInfFun('err', data.error);
-            }
-          });
+          $scope.lyKmSetPageShow = false;
         };
 
         /**

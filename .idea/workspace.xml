@@ -24,10 +24,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
+      <file leaf-file-name="main.scss" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="15.076923" vertical-offset="2864" max-vertical-offset="78960">
+              <caret line="130" column="5" selection-start-line="130" selection-start-column="1" selection-end-line="130" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="zj_addNewShiJuan.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/zujuan/zj_addNewShiJuan.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.403846" vertical-offset="4059" max-vertical-offset="4768">
+              <caret line="281" column="8" selection-start-line="255" selection-start-column="2" selection-end-line="281" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="router.js" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/Documents/TAT/svn/KaoshiWeb/routes/router.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="304" max-vertical-offset="1104">
+            <state vertical-scroll-proportion="0.0" vertical-offset="447" max-vertical-offset="1104">
               <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding>
                 <element signature="e#841#1104#0" expanded="false" />
@@ -66,21 +86,22 @@
       <file leaf-file-name="user.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/scripts/controllers/user.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3063209" vertical-offset="10627" max-vertical-offset="31312">
-              <caret line="691" column="41" selection-start-line="0" selection-start-column="0" selection-end-line="1981" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.6832298" vertical-offset="10536" max-vertical-offset="32512">
+              <caret line="701" column="78" selection-start-line="701" selection-start-column="78" selection-end-line="701" selection-end-column="78" />
               <folding>
                 <element signature="e#6489#6919#0" expanded="false" />
-                <element signature="e#25429#25894#0" expanded="false" />
+                <element signature="e#25484#27271#0" expanded="false" />
+                <element signature="e#28801#29266#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rz_selectLingYu.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/renzheng/rz_selectLingYu.html">
+      <file leaf-file-name="rz_setLingYu.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/views/renzheng/rz_setLingYu.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.12" vertical-offset="261" max-vertical-offset="960">
-              <caret line="29" column="100" selection-start-line="29" selection-start-column="100" selection-end-line="29" selection-end-column="100" />
+            <state vertical-scroll-proportion="-11.96" vertical-offset="165" max-vertical-offset="944">
+              <caret line="29" column="86" selection-start-line="29" selection-start-column="79" selection-end-line="29" selection-end-column="86" />
               <folding />
             </state>
           </provider>
@@ -91,8 +112,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/views/partials/zddownload.html" />
-        <option value="$PROJECT_DIR$/app/views/partials/zddownloadda.html" />
         <option value="$PROJECT_DIR$/app/scripts/main.js" />
         <option value="$PROJECT_DIR$/app/index.html" />
         <option value="$PROJECT_DIR$/dist/scripts/controllers/renzheng.js" />
@@ -132,7 +151,6 @@
         <option value="$PROJECT_DIR$/app/JMEditor-0.9.4/111.html" />
         <option value="$PROJECT_DIR$/app/JMEditor-0.9.4/jmeditor/ckeditor/plugins/reset/dialogs/reset.js" />
         <option value="$PROJECT_DIR$/app/JMEditor-0.9.4/jmeditor/ckeditor/config.js" />
-        <option value="$PROJECT_DIR$/app/styles/main.scss" />
         <option value="$PROJECT_DIR$/app/JMEditor-0.9.4/index.html" />
         <option value="$PROJECT_DIR$/app/JMEditor-0.9.4/jmeditor/ckeditor/plugins/jme/dialogs/dialog.js" />
         <option value="$USER_HOME$/Documents/TAT/编辑器/JMEditor-0.9.4/jmeditor/ckeditor/ckeditor.js" />
@@ -141,6 +159,9 @@
         <option value="$USER_HOME$/Downloads/ux_1458638169_9566364/demo.html" />
         <option value="$PROJECT_DIR$/app/tk/template.html" />
         <option value="$PROJECT_DIR$/app/views/renzheng/rz_selectLingYu.html" />
+        <option value="$PROJECT_DIR$/Gruntfile.js" />
+        <option value="$PROJECT_DIR$/app/styles/main.scss" />
+        <option value="$PROJECT_DIR$/app/views/renzheng/rz_setLingYu.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/user.js" />
       </list>
     </option>
@@ -157,7 +178,7 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="28" />
+    <option name="x" value="29" />
     <option name="y" value="23" />
     <option name="width" value="1254" />
     <option name="height" value="777" />
@@ -214,24 +235,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zhifz" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zhifz" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tk" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -323,25 +326,26 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="28" y="23" width="1254" height="777" extended-state="0" />
+    <frame x="29" y="23" width="1254" height="777" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5051095" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32947975" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5459854" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21287128" sideWeight="0.5007299" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21287128" sideWeight="0.32554746" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.50218976" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21287128" sideWeight="0.49927008" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21287128" sideWeight="0.67445254" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5459854" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -389,11 +393,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/scripts/controllers/user.js</url>
-          <line>835</line>
-          <option name="timeStamp" value="35" />
+          <line>532</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/app/scripts/controllers/user.js</url>
+          <line>633</line>
+          <option name="timeStamp" value="38" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="36" />
+      <option name="time" value="39" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -402,6 +411,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.8156028" vertical-offset="0" max-vertical-offset="672">
           <caret line="32" column="76" selection-start-line="32" selection-start-column="23" selection-end-line="32" selection-end-column="76" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -423,13 +433,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2144">
           <caret line="13" column="81" selection-start-line="13" selection-start-column="56" selection-end-line="13" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33602583" vertical-offset="0" max-vertical-offset="78912">
-          <caret line="13" column="14" selection-start-line="13" selection-start-column="14" selection-end-line="13" selection-end-column="14" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -447,41 +453,6 @@
             <marker date="1458625062000" expanded="true" signature="-1:-1" placeholder="..." />
             <marker date="1458625062000" expanded="true" signature="-1:-1" placeholder="..." />
             <marker date="1458625062000" expanded="true" signature="-1:-1" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/TAT/svn/KaoshiWeb/routes/router.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="304" max-vertical-offset="1104">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <element signature="e#841#1104#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Documents/TAT/svn/KaoshiWeb/routes/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1920" max-vertical-offset="7328">
-          <caret line="251" column="0" selection-start-line="251" selection-start-column="0" selection-end-line="251" selection-end-column="0" />
-          <folding>
-            <element signature="e#958#2930#0" expanded="false" />
-            <element signature="e#2983#5881#0" expanded="false" />
-            <element signature="e#5963#6562#0" expanded="false" />
-            <element signature="e#6621#7024#0" expanded="false" />
-            <element signature="e#7091#7183#0" expanded="false" />
-            <element signature="e#7253#7753#0" expanded="false" />
-            <element signature="e#7823#8365#0" expanded="false" />
-            <element signature="e#8437#8980#0" expanded="false" />
-            <element signature="e#9056#9556#0" expanded="false" />
-            <element signature="e#9642#11685#0" expanded="false" />
-            <element signature="e#11753#16256#0" expanded="false" />
-            <element signature="e#12366#16236#0" expanded="false" />
-            <element signature="e#16330#17136#0" expanded="false" />
-            <element signature="e#17303#17843#0" expanded="false" />
-            <element signature="e#18090#18699#0" expanded="false" />
-            <element signature="e#20284#20581#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -526,32 +497,97 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/tk/template.html">
+    <entry file="file://$PROJECT_DIR$/Gruntfile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.84491116" vertical-offset="9061" max-vertical-offset="9680">
-          <caret line="665" column="0" selection-start-line="665" selection-start-column="0" selection-end-line="665" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#head#0;n#html#1;n#DOCTYPE#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#1;n#DOCTYPE#0;n#!!top" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.11490683" vertical-offset="934" max-vertical-offset="7968">
+          <caret line="63" column="6" selection-start-line="63" selection-start-column="6" selection-end-line="63" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/renzheng/rz_selectLingYu.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.12" vertical-offset="261" max-vertical-offset="960">
-          <caret line="29" column="100" selection-start-line="29" selection-start-column="100" selection-end-line="29" selection-end-column="100" />
+        <state vertical-scroll-proportion="0.46526656" vertical-offset="144" max-vertical-offset="960">
+          <caret line="27" column="63" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="63" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/TAT/svn/KaoshiWeb/routes/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1920" max-vertical-offset="7328">
+          <caret line="251" column="0" selection-start-line="251" selection-start-column="0" selection-end-line="251" selection-end-column="0" />
+          <folding>
+            <element signature="e#958#2930#0" expanded="false" />
+            <element signature="e#2983#5881#0" expanded="false" />
+            <element signature="e#5963#6562#0" expanded="false" />
+            <element signature="e#6621#7024#0" expanded="false" />
+            <element signature="e#7091#7183#0" expanded="false" />
+            <element signature="e#7253#7753#0" expanded="false" />
+            <element signature="e#7823#8365#0" expanded="false" />
+            <element signature="e#8437#8980#0" expanded="false" />
+            <element signature="e#9056#9556#0" expanded="false" />
+            <element signature="e#9642#11685#0" expanded="false" />
+            <element signature="e#11753#16256#0" expanded="false" />
+            <element signature="e#12366#16236#0" expanded="false" />
+            <element signature="e#16330#17136#0" expanded="false" />
+            <element signature="e#17303#17843#0" expanded="false" />
+            <element signature="e#18090#18699#0" expanded="false" />
+            <element signature="e#20284#20581#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/TAT/svn/KaoshiWeb/routes/router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="304" max-vertical-offset="1104">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding>
+            <element signature="e#841#1104#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/renzheng/rz_admin.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7468355" vertical-offset="344" max-vertical-offset="976">
+          <caret line="51" column="21" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/zujuan/zj_addNewShiJuan.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.403846" vertical-offset="4059" max-vertical-offset="4768">
+          <caret line="281" column="8" selection-start-line="255" selection-start-column="2" selection-end-line="281" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="15.076923" vertical-offset="2864" max-vertical-offset="78960">
+          <caret line="130" column="5" selection-start-line="130" selection-start-column="1" selection-end-line="130" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/renzheng/rz_setLingYu.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.96" vertical-offset="165" max-vertical-offset="944">
+          <caret line="29" column="86" selection-start-line="29" selection-start-column="79" selection-end-line="29" selection-end-column="86" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/controllers/user.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3063209" vertical-offset="10627" max-vertical-offset="31312">
-          <caret line="691" column="41" selection-start-line="0" selection-start-column="0" selection-end-line="1981" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.6832298" vertical-offset="10536" max-vertical-offset="32512">
+          <caret line="701" column="78" selection-start-line="701" selection-start-column="78" selection-end-line="701" selection-end-column="78" />
           <folding>
             <element signature="e#6489#6919#0" expanded="false" />
-            <element signature="e#25429#25894#0" expanded="false" />
+            <element signature="e#25484#27271#0" expanded="false" />
+            <element signature="e#28801#29266#0" expanded="false" />
           </folding>
         </state>
       </provider>

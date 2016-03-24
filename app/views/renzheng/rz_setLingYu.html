@@ -1,57 +1,53 @@
 <h4>领域设置</h4>
 <div class="dagangInput">
-    <div ng-repeat="ly in lingyu_list" class="media dagangBox dgLevel_0">
-        <div class="media-body">
-            <div class="media-heading">
-                <div class="col-md-6">
-                    <div class="form-control radius4 dagangName">
-                        {{ly.REMARK}}
-                        <button class="btn btn-default dgAddBtn dgAddBtn_0" ng-click="addNd(ly)" type="button">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- 二级 -->
-            <div ng-repeat="nd1 in ly.CHILDREN" class="media dgLevel_1">
-                <a class="media-object pull-left"></a>
-                <div class="media-body">
-                    <div class="media-heading">
-                        <div class="input-group col-md-6">
-                            <input type="text" class="form-control" ng-model="nd1.LINGYUMINGCHENG">
-                            <span class="input-group-btn">
-                                 <button class="btn btn-default dgAddBtn dgAddBtn_1" ng-click="addNd(nd1)" type="button">
-                                     <span class="glyphicon glyphicon-plus"> </span>
-                                 </button>
-                                 <button class="btn btn-default dgDeleteBtn" type="button"
-                                         ng-click="removeNd(ly, nd1, $index)">
-                                     <span class="glyphicon glyphicon-trash"> </span>
-                                 </button>
-                            </span>
-                        </div>
-                    </div>
-                    <!-- 三级 -->
-                    <div ng-repeat="nd2 in nd1.CHILDREN" class="media dgLevel_2">
-                        <a class="media-object pull-left"></a>
-                        <div class="media-body">
-                            <div class="media-heading">
-                                <div class="input-group col-md-6">
-                                    <input type="text" class="form-control" ng-model="nd2.LINGYUMINGCHENG">
-                                    <span class="input-group-btn">
-                                         <button class="btn btn-default dgDeleteBtn" type="button"
-                                                 ng-click="removeNd(nd1, nd2, $index)">
-                                             <span class="glyphicon glyphicon-trash"> </span>
-                                         </button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  <table class="table table-bordered">
+    <tr>
+      <th>
+        <span>领域</span>
+        <a href="javascript:void(0)" ng-click="addLy()" class="pull-right">
+          <span class="glyphicon glyphicon-plus"> </span>
+        </a>
+      </th>
+      <th>科目</th>
+      <th width="80px" class="text-center">操作</th>
+    </tr>
+    <tr ng-repeat="ly in lingyu_list">
+      <td class="vtag">
+        <span ng-bind="ly['领域名称']"></span>
+        <a href="javascript:void(0)" title="删除" class="pull-right ml15 co676767" ng-click="deleteLy(ly)">
+          <span class="glyphicon glyphicon-trash"></span>
+        </a>
+        <a href="javascript:void(0)" title="修改" class="pull-right" ng-click="alterLy(ly)">
+          <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+      </td>
+      <td>
+        <p class="bdb plr10" ng-repeat="km in ly['科目']">
+          <span ng-bind="km['科目名称']"></span>
+          <a href="javascript:void(0)" title="删除" class="pull-right ml15 co676767" ng-click="deleteKm(ly, km)">
+            <span class="glyphicon glyphicon-trash"></span>
+          </a>
+          <a href="javascript:void(0)" title="修改" class="pull-right" ng-click="alterKm(km)">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </p>
+      </td>
+      <td class="text-center vtag">
+        <a href="javascript:void(0)" ng-click="addKm(ly)">添加科目</a>
+      </td>
+    </tr>
+  </table>
 </div>
-<div class="save-box">
-    <button class="btn btn-primary" ng-click="saveLingYuChange()">保存</button>
+<div class="popup-wrap popup-wrap-350" ng-show="lyKmSetPageShow">
+  <div class="popup-wrap-inner no-header">
+    <div class="pwi-body">
+      <div class="form-group">
+        <input type="text" class="form-control wp90 mlp5 mt65" ng-model="lyOrKmSet.name">
+      </div>
+    </div>
+    <div class="pwi-footer plr10 text-center">
+      <button type="button" class="btn btn-danger mt5" ng-click="closeAddLMPage()">取消</button>
+      <button type="button" class="btn btn-primary mt5 ml15" ng-click="saveAddLM()">确定</button>
+    </div>
+  </div>
 </div>
