@@ -14,7 +14,7 @@
     <tr ng-repeat="ly in lingyu_list">
       <td class="vtag">
         <span ng-bind="ly['领域名称']"></span>
-        <a href="javascript:void(0)" title="删除" class="pull-right ml15 co676767" ng-click="deleteLy(ly)">
+        <a href="javascript:void(0)" title="删除" class="pull-right ml15 co676767" ng-click="deleteLyKm($index, ly)">
           <span class="glyphicon glyphicon-trash"></span>
         </a>
         <a href="javascript:void(0)" title="修改" class="pull-right" ng-click="alterLy(ly)">
@@ -24,7 +24,7 @@
       <td>
         <p class="bdb plr10" ng-repeat="km in ly['科目']">
           <span ng-bind="km['科目名称']"></span>
-          <a href="javascript:void(0)" title="删除" class="pull-right ml15 co676767" ng-click="deleteKm(ly, km)">
+          <a href="javascript:void(0)" title="删除" class="pull-right ml15 co676767" ng-click="deleteLyKm($index, ly, km)">
             <span class="glyphicon glyphicon-trash"></span>
           </a>
           <a href="javascript:void(0)" title="修改" class="pull-right" ng-click="alterKm(km)">

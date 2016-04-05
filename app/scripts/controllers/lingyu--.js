@@ -8,10 +8,10 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) { // 00
          * 定义变量和初始化
          */
         var currentPath = $location.$$path;
-        var session = $rootScope.session;
-        var lingyu = $cookieStore.get('lingyuCk');
+        //var session = $rootScope.session;
+        //var lingyu = $cookieStore.get('lingyuCk');
         var urlArr = [];
-        $scope.linyuInfo = lingyu.lingyu;
+        //$scope.linyuInfo = lingyu.lingyu;
 
         /**
          * 设置默认的领域

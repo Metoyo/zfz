@@ -2,9 +2,8 @@
   <div class="bg">
   </div>
   <div class="lingYuWrap text-center">
-    <button type="button" class="btn btn-success" ng-repeat="ly in linyuInfo"
-            ng-click="goToTargetWeb(ly)">
-        {{ly.LINGYUMINGCHENG}}
+    <button type="button" class="btn btn-success" ng-repeat="km in usrKeMu" ng-click="moduleMake(km)">
+        {{km['科目名称']}}
     </button>
   </div>
 </div>

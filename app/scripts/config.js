@@ -66,11 +66,11 @@ define( "config", [], function () {
         controller: 'KaowuCtrl',
         requireLogin: true
       },
-      '/lingyu': {
-        templateUrl: '../views/renzheng/selectLingYu.html',
-        controller: 'LingyuCtrl',
-        requireLogin: true
-      },
+      //'/lingyu': {
+      //  templateUrl: '../views/renzheng/selectLingYu.html',
+      //  controller: 'RenzhengCtrl',
+      //  requireLogin: true
+      //},
       '/tongji': {
         templateUrl: '../views/tongji/tongji.html',
         controller: 'TongjiCtrl',
@@ -102,60 +102,42 @@ define( "config", [], function () {
         requireLogin: true
       }
     },
-    quanxianObj: [ //得到角色是数组
+    moduleObj: [ //得到角色是数组
       {
-        jsArr: [],
-        targetUrl: '/dagang',
-        navName : 'dagang',
-        hanName: '大纲'
+        myUrl : 'dagang',
+        urlName: '大纲'
       },
       {
-        jsArr: [],
-        targetUrl: '/mingti',
-        navName : 'mingti',
-        hanName: '命题'
+        myUrl : 'mingti',
+        urlName: '命题'
       },
       {
-        jsArr: [],
-        targetUrl: '/zujuan',
-        navName : 'zujuan',
-        hanName: '组卷'
+        myUrl : 'zujuan',
+        urlName: '组卷'
       },
       {
-        jsArr: [],
-        targetUrl: '/kaowu',
-        navName : 'kaowu',
-        hanName: '考务'
+        myUrl : 'kaowu',
+        urlName: '考务'
       },
       {
-        jsArr: [],
-        targetUrl: '/tongji',
-        navName : 'tongji',
-        hanName: '统计'
+        myUrl : 'tongji',
+        urlName: '统计'
       },
       {
-        jsArr: [],
-        targetUrl: '/baoming',
-        navName : 'baoming',
-        hanName: '报名'
+        myUrl : 'guanli',
+        urlName: '管理'
       },
       {
-        jsArr: [],
-        targetUrl: '/chengji',
-        navName : 'chengji',
-        hanName: '成绩'
+        myUrl : 'baoming',
+        urlName: '报名'
       },
       {
-        jsArr: [],
-        targetUrl: '/guanli',
-        navName : 'guanli',
-        hanName: '管理'
+        myUrl : 'chengji',
+        urlName: '成绩'
       },
       {
-        jsArr: [],
-        targetUrl: '/weiluke',
-        navName : 'weiluke',
-        hanName: '微课'
+        myUrl : 'weiluke',
+        urlName: '微课'
       }
     ],
     tiXingNameArr: [

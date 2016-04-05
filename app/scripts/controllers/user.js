@@ -2,8 +2,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
   'use strict';
 
   angular.module('zhifzApp.controllers.UserCtrl', [])
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService', '$timeout',
-      function ($rootScope, $scope, $http, $location, DataService, $timeout) {
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService',
+      function ($rootScope, $scope, $http, $location, DataService) {
 
         $scope.addedContainerClass = 'userBox';
         $scope.shenheList = [];
@@ -20,21 +20,12 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var baseSmAPIUrl = config.apiurl_sm; //扫描的api
         var token = config.token; //token的值
         var caozuoyuan = 0;//登录的用户的UID
-        //var caozuoyuan = userInfo.UID;//登录的用户的UID
         var jigouid = 0;
-        //var jigouid = userInfo.JIGOU[0].JIGOU_ID;
         var lingyuid = 0;
         var session = $rootScope.session;
-        //var lingyuid = $rootScope.session.defaultLyId;
-        //var session = $rootScope.session;
-        var dshyhjsUrl = baseRzAPIUrl + 'daishenhe_yonghu_juese?token=' + token + '&caozuoyuan=' + 0; //待审核用户角色url
-        //var dshyhjsUrl = baseRzAPIUrl + 'daishenhe_yonghu_juese?token=' + token + '&caozuoyuan=' + session.info.UID; //待审核用户角色url
         var shyhjsUrl = baseRzAPIUrl + 'shenhe_yonghu_juese'; //审核用户角色
         var qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
-        var modifyJiGouUrl = baseRzAPIUrl + 'modify_jigou'; //修改机构数据
         var qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token; //查询领域的url
-        var modifyLingYuUrl = baseRzAPIUrl + 'modify_lingyu'; //修改领域数据
-        var modifyJiGouLingYuUrl = baseRzAPIUrl + 'modify_jigou_lingyu'; //修改机构领域
         var jiGouData = { //新增机构的数据
           token: token,
           caozuoyuan: caozuoyuan,
@@ -47,13 +38,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           shuju:{}
         };
         //var whichJiGouAddAdmin = ''; //那个机构添加管理员
-        var lingYuData = { //定义一个空的object用来存放需要保存的领域数据
-          token: token,
-          caozuoyuan: caozuoyuan,
-          shuju:[]
-        };
-        var selectedLyStr = ''; //已选择的领域ID
-        var selectedLyArr = []; //已选择的领域ID
         var qryTiXingUrl = baseMtAPIUrl + 'chaxun_tixing?token=' + token; //查询全部题型的url
         var qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
           jigouid + '&lingyuid='; //查询科目包含什么题型的url
@@ -121,7 +105,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var keMuUrl = '/kemu'; //科目URL
         var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目
         var loginUsr = $rootScope.loginUsr;
-        var jdID = loginUsr['学校ID'];
+        var jgID = loginUsr['学校ID']; //登录用户学校
+        var logUid = loginUsr.UID; //登录用户的UID
 
         $scope.adminParams = {
           selected_dg: '',
@@ -153,9 +138,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           case 1:
             $scope.shenHeTpl = 'views/renzheng/rz_xxgly.html';
             break;
-          //case 3:
-          //  $scope.shenHeTpl = 'views/renzheng/rz_shenHeRen.html';
-          //  break;
         }
 
         /**
@@ -166,42 +148,99 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 设置权限，审核权限
+         * 设置权限，审核权限 --
          */
-        $scope.setPermissions = function() {
-          $scope.loadingImgShow = true; //user.html
-          var hasShenHe = [], //定义一个已经通过审核的数组
-            notShenHe = []; //定义一个待审核的数组
-          $http.get(dshyhjsUrl).success(function(data) {
-            if(data){
-              Lazy(data).each(function(sh, indx, lst) {
-                sh.AUTH_BTN_HIDE = true;
-                var zeroLength = 0; //判断有几个未审核的角色
-                Lazy(sh.JUESE).each(function(js, indx, jsLst) {
-                  js.JUESE_CHECKED = js.ZHUANGTAI > -1;
-                  if(js.ZHUANGTAI === 0) {
-                    sh.AUTH_BTN_HIDE = false;
-                    zeroLength ++;
-                  }
+        $scope.renderPerm = function() {
+          $scope.loadingImgShow = true;
+          var obj = {method: 'GET', url: yongHuJueSeUrl, params: ''};
+          $scope.shenHeList = [];
+          obj.params = {
+            '学校ID': jgID,
+            '状态': 0
+          };
+          $http(obj).success(function(data) {
+            if(data.result){
+              var distByUid = Lazy(data.data).groupBy(function(usr){return usr.UID;}).toObject();
+              Lazy(distByUid).each(function(v, k, l){ //通过UID排序
+                var temp = {
+                  UID: k,
+                  '用户名': v[0]['用户名'],
+                  '姓名': v[0]['姓名'],
+                  btn: false,
+                  '待审': []
+                };
+                var count = 0;
+                var distByKm = Lazy(v).groupBy(function(ds){return ds['科目ID']});
+                Lazy(distByKm).each(function(v1, k1, l1){ //通过科目排序
+                  var kmTemp = {
+                    '科目ID': k1,
+                    '科目名称': v1[0]['科目名称'],
+                    '角色': ''
+                  };
+                  var jsArr = [
+                    {
+                      '学校ID': v1[0]['学校ID'],
+                      '领域ID': v1[0]['领域ID'],
+                      '科目ID': v1[0]['科目ID'],
+                      '角色ID': 2,
+                      '状态': -1,
+                      '角色名称': '科目负责人',
+                      ckd: false
+                    },
+                    {
+                      '学校ID': v1[0]['学校ID'],
+                      '领域ID': v1[0]['领域ID'],
+                      '科目ID': v1[0]['科目ID'],
+                      '角色ID': 4,
+                      '状态': -1,
+                      '角色名称': '阅卷组长',
+                      ckd: false
+                    },
+                    {
+                      '学校ID': v1[0]['学校ID'],
+                      '领域ID': v1[0]['领域ID'],
+                      '科目ID': v1[0]['科目ID'],
+                      '角色ID': 3,
+                      '状态': -1,
+                      '角色名称': '任课老师',
+                      ckd: false
+                    },
+                    {
+                      '学校ID': v1[0]['学校ID'],
+                      '领域ID': v1[0]['领域ID'],
+                      '科目ID': v1[0]['科目ID'],
+                      '角色ID': 5,
+                      '状态': -1,
+                      '角色名称': '助教',
+                      ckd: false
+                    }
+                  ];
+                  Lazy(jsArr).each(function(ojs){
+                    var findJs = Lazy(v1).find(function(js){return js['角色ID'] == ojs['角色ID']});
+                    if(findJs){
+                      ojs.ckd = true;
+                      ojs['状态'] = findJs['状态'];
+                      if(findJs['状态'] == 0){
+                        count ++;
+                      }
+                    }
+                  });
+                  kmTemp['角色'] = jsArr;
+                  temp['待审'].push(kmTemp);
                 });
-                if(zeroLength){
-                  notShenHe.push(sh);
+                if(count > 0){
+                  temp.btn = true;
                 }
-                else{
-                  hasShenHe.push(sh);
-                }
+                $scope.shenHeList.push(temp);
               });
-              $scope.loadingImgShow = false; //user.html
-              $scope.hasShenHeList = hasShenHe;
-              $scope.notShenHeList = notShenHe;
-              $scope.isShenHeBox = true; //判断是不是审核页面
+              console.log($scope.shenHeList);
+              $scope.isShenHeBox = true;
               $scope.adminSubWebTpl = 'views/renzheng/rz_shenHe.html';
-
             }
             else{
               DataService.alertInfFun('err', data.error);
-              $scope.loadingImgShow = false; //user.html
             }
+            $scope.loadingImgShow = false;
           });
         };
 
@@ -225,50 +264,46 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           $scope.isShenHeBox = true; //判断是不是审核页面
         };
 
-        $scope.jueseClicked = function(shenhe, juese) {
-          shenhe.AUTH_BTN_HIDE = false;
+        /**
+         * 已经通过审核的科目，点击或者选中后通过按钮显示 --
+         */
+        $scope.jueseClicked = function(js) {
+          js.ckd = !js.ckd;
         };
 
         /**
-         * 通过审核的按钮
+         * 通过审核的按钮 --
          */
-        $scope.authPerm = function(shenhe) {
-          var juese = [];
-          var authParam = {
-            token: config.token,
-            caozuoyuan: session.info.UID,
-            yonghujuese: [{
-              yonghuid: shenhe.UID,
-              jigou: shenhe.JIGOU_ID,
-              lingyu: shenhe.LINGYU_ID
-            }]
-          };
-          Lazy(shenhe.JUESE).each(function(js, indx, lst) {
-            var tmpJS = {};
-            if(js.JUESE_CHECKED && (js.ZHUANGTAI === -1 || js.ZHUANGTAI === 0)) {
-              tmpJS.juese_id = js.JUESE_ID;
-              tmpJS.zhuangtai = 1;
-            } else if(!js.JUESE_CHECKED && js.ZHUANGTAI === 1) {
-              tmpJS.juese_id = js.JUESE_ID;
-              tmpJS.zhuangtai = 0;
-            } else if(js.JUESE_CHECKED && js.ZHUANGTAI === 1) {
-              tmpJS.juese_id = js.JUESE_ID;
-              tmpJS.zhuangtai = 1;
-            }
-            if(tmpJS.juese_id) {
-              juese.push(tmpJS);
-            }
+        $scope.authPerm = function(usr) {
+          var obj = {method: 'POST', url: yongHuJueSeUrl, data: {UID: usr.UID, '角色': []}};
+          var dsArr = [];
+          Lazy(usr['待审']).each(function(km){
+            Lazy(km['角色']).each(function(js){
+              if(js.ckd){
+                var temp = {
+                  '学校ID': js['学校ID'],
+                  '领域ID': js['领域ID'],
+                  '科目ID': js['科目ID'],
+                  '角色ID': js['角色ID'],
+                  '状态': 1
+                };
+                dsArr.push(temp);
+              }
+            });
           });
-          if(juese && juese.length > 0){
-            authParam.yonghujuese[0].juese = juese;
-            $http.post(shyhjsUrl, authParam).success(function(data) {
-              if(data.result) {
-                shenhe.AUTH_BTN_HIDE = true;
+          if(dsArr && dsArr.length > 0){
+            obj.data['角色'] = JSON.stringify(dsArr);
+            $http(obj).success(function(data){
+              if(data.result){
+                usr.btn = false;
               }
               else{
                 DataService.alertInfFun('err', data.error);
               }
             });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择需要通过审核的角色！');
           }
         };
 
@@ -289,16 +324,17 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
                         return js['学校ID'] == sch['学校ID'];
                       }).toArray();
                     });
-                    $scope.jigou_list = schools.data;
+                    //$scope.jigou_list = schools.data;
                   }
-                  else{
-                    DataService.alertInfFun('err', data.error);
-                  }
+                  //else{
+                  //  DataService.alertInfFun('err', data.error);
+                  //}
                 });
               }
               else{
-                $scope.jigou_list = schools.data;
+                //$scope.jigou_list = schools.data;
               }
+              $scope.jigou_list = schools.data;
             }
             else{
               $scope.jigou_list = '';
@@ -584,13 +620,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 删除领域 --
-         */
-        $scope.deleteLy = function(ly) {
-
-        };
-
-        /**
          * 添加科目 --
          */
         $scope.addKm = function(ly) {
@@ -612,8 +641,38 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         /**
          * 删除科目 --
          */
-        $scope.deleteKm = function(ly, km) {
-
+        $scope.deleteLyKm = function(idx, ly, km) {
+          var obj = {method: 'POST', url: '', data: ''};
+          if(km){
+            obj.url = keMuUrl;
+            obj.data = {
+              '科目ID': km['科目ID'],
+              '状态': -1
+            };
+          }
+          else{
+            obj.url = lingYuUrl;
+            obj.data = {
+              '领域ID': ly['领域ID'],
+              '状态': -1
+            };
+          }
+          if(confirm('确定要删除吗？')){
+            $http(obj).success(function(data){
+              if(data.result){
+                if(km){
+                  ly['科目'] = ly['科目'].splice(idx, 1);
+                }
+                else{
+                  $scope.lingyu_list.splice(idx, 1);
+                }
+                DataService.alertInfFun('suc', '删除成功');
+              }
+              else{
+                DataService.alertInfFun('pmt', data.error);
+              }
+            });
+          }
         };
 
         /**
@@ -738,7 +797,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
                     km.ckd = false;
                   });
                   var obj = {};
-                  obj['学校ID'] = jdID;
+                  obj['学校ID'] = jgID;
                   $http({method: 'GET', url: xueXiaoKeMuUrl, params: obj}).success(function(xxKm){
                     if(xxKm.result){
                       if(xxKm.data && xxKm.data.length > 0){
@@ -953,7 +1012,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           obj['科目'] = Lazy($scope.jgSelectKeMu).map(function(km){
             return km['科目ID'];
           }).toArray();
-          obj['学校ID'] = jdID;
+          obj['学校ID'] = jgID;
           $http.post(xueXiaoKeMuUrl, obj).success(function(data){
             if(data.result){
               DataService.alertInfFun('suc', '保存成功！');
@@ -2092,5 +2151,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           }
         };
 
-      }]);
+
+    }]);
 });

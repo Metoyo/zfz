@@ -12,7 +12,7 @@ define([
   'controllers/register',
   'controllers/zujuan',
   'controllers/kaowu',
-  'controllers/lingyu',
+  //'controllers/lingyu--',
   'controllers/tongji',
   'controllers/student',
   'controllers/guanli',
@@ -28,7 +28,7 @@ define([
   'directives/repeatdone',
   'services/dataservice'
 ], function (angular, config, lazy, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, RegisterCtrl,
-             ZujuanCtrl, KaowuCtrl, LingyuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
+             ZujuanCtrl, KaowuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
              ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
              HoverslideDirective, FileuploadDirective, RepeatdoneDirective, DataServiceService) {
   'use strict';
@@ -42,7 +42,7 @@ define([
     'zhifzApp.controllers.RegisterCtrl',
     'zhifzApp.controllers.ZujuanCtrl',
     'zhifzApp.controllers.KaowuCtrl',
-    'zhifzApp.controllers.LingyuCtrl',
+    //'zhifzApp.controllers.LingyuCtrl',
     'zhifzApp.controllers.TongjiCtrl',
     'zhifzApp.controllers.StudentCtrl',
     'zhifzApp.controllers.GuanLiCtrl',

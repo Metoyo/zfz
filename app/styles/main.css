@@ -1258,7 +1258,7 @@ label.checkbox {
   .renzhengWrapper .loginInfo h4 {
     margin: 30px 0; }
   .renzhengWrapper .entries h4 {
-    margin-top: 34px; }
+    margin-top: 20px; }
   .renzhengWrapper .entries li {
     float: left;
     padding: 0 5px;
@@ -1273,14 +1273,8 @@ label.checkbox {
   .renzhengWrapper .registerBox h4.logo {
     margin-top: 20px;
     margin-bottom: 0; }
-  .renzhengWrapper .registerBox .infoBox .table {
-    color: #000; }
-    .renzhengWrapper .registerBox .infoBox .table td {
-      border: 0; }
-  .renzhengWrapper .registerBox .infoBox .register-hero {
-    color: #46b8da;
-    font-size: 18px;
-    margin-top: 100px; }
+  .renzhengWrapper .registerBox .checkbox-inline, .renzhengWrapper .registerBox .radio-inline {
+    margin-left: 10px; }
   .renzhengWrapper .registerBox .help-block {
     margin-top: 0;
     color: red;
@@ -1313,8 +1307,7 @@ label.checkbox {
     width: 100%;
     background-color: #fff; }
   .renzhengWrapper .tab-pane {
-    padding: 20px 10px 5px 10px;
-    display: none; }
+    padding: 20px 10px 5px 10px; }
   .renzhengWrapper .nextBtn span, .renzhengWrapper .prevBtn span, .renzhengWrapper .submitBtn span {
     float: right;
     width: 16px;

@@ -8,15 +8,6 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var baseRzAPIUrl = config.apiurl_rz;
         var baseBmAPIUrl = config.apiurl_bm; //报名的api
         var token = config.token;
-        var apiUrlLy = baseRzAPIUrl + 'lingYu?token=' + token + '&jigouid='; //lingYu 学科领域的api
-        var apiLyKm = baseRzAPIUrl + 'lingYu?token=' + token + '&parentid='; //由lingYu id 的具体的学科
-        var apiUrlJueSe = baseRzAPIUrl + 'jueSe?token=' + token; //jueSe 查询科目权限的数据的api
-        var select_juese = []; //得到已选择的角色[{jigou: id, lingyu: id, juese: id}, {jigou: id, lingyu: id, juese: id}]
-        var registerDate = {}; // 注册时用到的数据
-        var jigouId; //所选的机构ID
-        var registerUrl = baseRzAPIUrl + 'zhuce'; //提交注册信息的url
-        var objAndRightList = []; //已经选择的科目和单位
-        var checkUserUrlBase = baseRzAPIUrl + 'check_user?token=' + token; //检测用户是否存在的url
         var qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token; //检查考生是否在报名表里
         var checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid='; //检查考生是否在报名表里
         var delBlankReg = /\s/g; //去除空格的正则表达
@@ -24,6 +15,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
         //新方法用到的变量
         var xueXiaoUrl = '/xuexiao';
+        var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目
+        var yongHuUrl = '/yonghu'; //用户的增删改查
 
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
@@ -34,13 +27,6 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $scope.objectWrap = false;
         $scope.stepTwo = false; //第二步的显示和隐藏
         $scope.stepThree = false; //第三步的显示和隐藏
-        $scope.stuRegisterInfo = { //学生注册信息
-          jigouid: '',
-          xuehao: '',
-          xingming: '',
-          youxiang: '',
-          mima: ''
-        };
         $scope.ifTheStuHasRegister = false;
         $scope.studentInfo = '';
         $scope.stuIfPswTheSame = false;
@@ -50,20 +36,6 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         }
 
         /**
-         * 显示教师注册
-         */
-        $scope.teacherRegister = function(){
-          $scope.rzTpl = 'views/renzheng/rz_regTeacher.html';
-        };
-
-        /**
-         * 显示学生注册
-         */
-        $scope.studentRegister = function(){
-          $scope.rzTpl = 'views/renzheng/rz_regStudent.html';
-        };
-
-        /**
          * 返回
          */
         $scope.registerBackTo = function(step){
@@ -71,20 +43,10 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             $scope.rzTpl = 'views/renzheng/rz_registerSelect.html';
           }
         };
-
-        /**
-         * 注册信息的第一步，个人详情信息
-         */
-        $scope.personalInfo = {
-          yonghuming: '',
-          mima: '',
-          youxiang: '',
-          xingming: '',
-          shouji: ''
-        };
-        registerDate = $scope.personalInfo;
         $scope.registerParam = {
-          selectJiGouId: ''
+          selectJgId: '',
+          selectJgName: '',
+          isSelectJs: false //对应的科目是否选择了角色
         };
         $scope.stuRegisterInfo = {
           jigouid: '',
@@ -99,40 +61,25 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          * 检查输入的邮箱或者是用户名，在数据库中是否存在
          */
         $scope.checkUsrExist = function(nme, info){
-          var checkUserUrl = checkUserUrlBase + '&' + nme + '=' + info;
-          $http.get(checkUserUrl).success(function(data){
-            if(nme == 'yonghuming'){
-              if(data.result){
-                $scope.yonghumingExist = true;
-              }
-              else{
-                $scope.yonghumingExist = false;
-              }
-            }
-            else{
-              if(data.result){
-                $scope.youxiangExist = true;
-              }
-              else{
-                $scope.youxiangExist = false;
-              }
-            }
-          });
+          //var checkUserUrl = checkUserUrlBase + '&' + nme + '=' + info;
+          //$http.get(checkUserUrl).success(function(data){
+          //  if(nme == 'yonghuming'){
+          //    $scope.yonghumingExist = data.result;
+          //  }
+          //  else{
+          //    $scope.youxiangExist = data.result;
+          //  }
+          //});
         };
 
         /**
          * 检查密码是否一致
          */
         $scope.checkPassword = function(){
-          var psw = $scope.personalInfo.mima,
-            pswConfirm = $scope.personalInfo.mima_verify;
+          var psw = $scope.teacherInfo['密码'];
+          var pswConfirm = $scope.teacherInfo['确认密码'];
           if(pswConfirm){
-            if(psw == pswConfirm){
-              $scope.ifPswTheSame = false;
-            }
-            else{
-              $scope.ifPswTheSame = true;
-            }
+            $scope.stuIfPswTheSame = (psw != pswConfirm);
           }
           else{
             $scope.ifPswTheSame = false;
@@ -146,12 +93,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           var psw = $scope.stuRegisterInfo.mima,
             pswConfirm = $scope.stuRegisterInfo.mima_verify;
           if(pswConfirm){
-            if(psw == pswConfirm){
-              $scope.stuIfPswTheSame = false;
-            }
-            else{
-              $scope.stuIfPswTheSame = true;
-            }
+            $scope.stuIfPswTheSame = (psw != pswConfirm);
           }
           else{
             $scope.stuIfPswTheSame = false;
@@ -161,222 +103,203 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 个人详情信息完整后，去第二步
          */
-        $scope.validatePersonalInfo = function(){
+        $scope.validateTeacherInfo = function(){
           $scope.stepTwo = true;
-          $('.nav-tabs li').removeClass('active').eq(1).addClass('active');
-          $('.tab-pane').removeClass('active').eq(1).addClass('active');
-        };
-
-        /**
-         /重新选择时，删除已选择的科目和角色
-         */
-        var deleteAllSelectedKmAndJs = function(){
-          objAndRightList = [];
-          $scope.objAndRight = objAndRightList;
-          $scope.ifKuMuListNull = false;
+          $scope.stepNum = 2;
         };
 
         /**
          * 机构查询 --
          */
         var getJgList = function(){
-          $scope.loadingImgShow = true;
-          $http.get(xueXiaoUrl).success(function(schools){
-            if(schools.result){
-              $scope.jigou_list = schools.data;
-            }
-            else{
-              $scope.jigou_list = '';
-              DataService.alertInfFun('err', schools.error);
-            }
-            $scope.loadingImgShow = false;
-          });
+          if(!($scope.jigou_list && $scope.jigou_list.length > 0)){
+            $scope.loadingImgShow = true;
+            $http.get(xueXiaoUrl).success(function(schools){
+              if(schools.result){
+                $scope.jigou_list = schools.data;
+              }
+              else{
+                $scope.jigou_list = '';
+                DataService.alertInfFun('err', schools.error);
+              }
+              $scope.loadingImgShow = false;
+            });
+          }
         };
 
         /**
-         * 得到机构id
+         * 得到机构id --
          */
         $scope.getJgId = function(jgId){
-          $scope.keMuListLengthExist = false;
-          $scope.lingyu_list = ''; //重置领域
-          $scope.selected_ly = '';
-          jigouId = jgId;
-          registerDate.jiGouName = $(".subOrganization  option:selected").text();
-          qryParentLingYu(jgId);
+          $scope.xxkm_list = ''; //重置领域
+          $scope.registerParam.selectJgId = jgId || '';
+          $scope.registerParam.isSelectJs = false;
+          qryJgKeMu(jgId);
         };
 
         /**
-         * 查询父领域的代码
+         * 查询科目代码 --
          */
-        var qryParentLingYu = function(jgId){
-          $http.get(apiUrlLy + jgId).success(function(data) {
-            if(data.length){
-              $scope.lingyu_list = data;
-            }
-            else{
-              $scope.lingyu_list = '';
-              DataService.alertInfFun('err', '没有相关领域！');
-            }
-          });
-        };
-
-        /**
-         * 有父领域查询子领域领域（即科目）
-         */
-        $scope.getKemuList = function(lyId){
-          var qryLyKmUrl;
-          if($scope.selected_jg){
-            if(lyId){
-              qryLyKmUrl = apiLyKm + lyId + '&jigouid=' + $scope.selected_jg;
-              $http.get(qryLyKmUrl).success(function(data) {
-                if(data.length){
-                  $scope.kemu_list = data;
-                  $scope.keMuSelectBox = true;
-                  $scope.keMuListLengthExist = true;
-                  deleteAllSelectedKmAndJs();
-                }
-                else{
-                  $scope.kemu_list = '';
-                  $scope.keMuSelectBox = false;
-                  $scope.keMuListLengthExist = false;
-                  DataService.alertInfFun('err', '没有对应的科目！');
-                }
-              });
-            }
-            else{
-              $scope.kemu_list = '';
-              $scope.keMuSelectBox = false;
-              $scope.keMuListLengthExist = false;
-            }
-          }
-          else{
-            DataService.alertInfFun('pmt', '机构ID不能为空！');
+        var qryJgKeMu = function(jgId){
+          if(jgId){
+            var obj = {method: 'GET', url: xueXiaoKeMuUrl, params: ''};
+            obj.params = {
+              '学校ID': jgId
+            };
+            $http(obj).success(function(data) {
+              if(data.result){
+                $scope.xxkm_list = data.data;
+              }
+              else{
+                $scope.xxkm_list = '';
+                DataService.alertInfFun('err', '没有相关领域！');
+              }
+            });
           }
         };
 
         /**
-         *  查询角色的代码
+         *  查询角色的代码 --
          */
-        $http.get(apiUrlJueSe).success(function(data) {
-          if(data && data.length > 0){
-            $scope.juese_list = data;
-          }
-          else{
-            DataService.alertInfFun('err', '没有对应的角色！');
-          }
-        });
+        var qryJueSe = function(){
+          $scope.juese_list = [
+            {
+              "角色ID": 3,
+              "角色名称": "任课教师",
+              ckd: false
+            },
+            {
+              "角色ID": 5,
+              "角色名称": "助教",
+              ckd: false
+            }
+          ];
+        };
 
         /**
-         * 添加科目和权限
+         * 显示教师注册 --
          */
-        $scope.getObjectAndRight = function(){
-          var objAndRightObj = {
-            lingyu:'',
-            juese:{
-              jueseId: '',
-              jueseName: ''
-            }
+        $scope.teacherRegister = function(){
+          getJgList();
+          qryJueSe();
+          $scope.select_km = '';
+          $scope.stepNum = 1;
+          $scope.teacherInfo = {
+            '用户名': '',
+            '密码': '',
+            '邮箱': '',
+            '姓名': '',
+            '手机': '',
+            '确认密码': '',
+            '用户类别' : 1,
+            '学校ID': '',
+            '角色': []
           };
-          objAndRightObj.lingyu = $scope.kemu_list.splice(selectedLingYuIndex, 1);
-          objAndRightObj.juese.jueseId = selectJueseIdArr;
-          objAndRightObj.juese.jueseName = selectJueseNameArr;
-          objAndRightList.push(objAndRightObj);
-          $scope.objAndRight = objAndRightList;
-          $('input[name=rightName]:checked').prop('checked', false);
-          $scope.jueseValue = false;
-          $scope.linyuValue = false;
-          if(!$scope.kemu_list.length){
-            $scope.ifKuMuListNull = true; //添加按钮的显示和隐藏
-          }
+          $scope.rzTpl = 'views/renzheng/rz_regTeacher.html';
         };
 
         /**
-         * 获得领域lingyu（选择科目）的值
+         * 显示学生注册 --
          */
-        var selectedLingYuIndex;
-        $scope.getLingYuVal = function(idx){
-          selectedLingYuIndex = '';
-          selectedLingYuIndex = idx;
-          $scope.linyuValue = idx >=0 ? true : false;
+        $scope.studentRegister = function(){
+          getJgList();
+          qryJueSe();
+          $scope.rzTpl = 'views/renzheng/rz_regStudent.html';
         };
 
         /**
-         * 获得角色juese（科目权限）的代码
+         * 检查是否选择角色
          */
-        var selectJueseIdArr = [],
-            selectJueseNameArr = [];
-        $scope.getJueSeArr = function(){
-          selectJueseIdArr = [];
-          selectJueseNameArr = [];
-          var jueseItem = $('input[name=rightName]:checked');
-          Lazy(jueseItem).each(function(js, idx, lst){
-            selectJueseIdArr.push(js.value);
-            var ne = js.nextElementSibling;
-            if(ne){
-              selectJueseNameArr.push(ne.innerText);
+        var checkHaveJs = function(){
+          var count = 0;
+          Lazy($scope.xxkm_list).each(function(xkm){
+            if(xkm['角色'] && xkm['角色'].length > 0){
+              count ++;
             }
           });
-          $scope.jueseValue = selectJueseIdArr.length;
+          $scope.registerParam.isSelectJs = (count > 0);
         };
 
         /**
-         *  删除一条已选科目
+         * 获得科目 --
          */
-        $scope.delSelectedObject = function(idx){
-          var deleteObjectAndRight = $scope.objAndRight.splice(idx, 1);
-          $scope.kemu_list.push(deleteObjectAndRight[0].lingyu[0]);
-          if($scope.kemu_list.length){
-            $scope.ifKuMuListNull = false;
-          }
+        $scope.getKeMuVal = function(km){
+          km['角色'] = km['角色'] || [];
+          $scope.select_km = km;
+          Lazy($scope.juese_list).each(function(js){
+            var ifIn = Lazy(km['角色']).find(function(k){
+              return k['角色ID'] == js['角色ID'];
+            });
+            js.ckd = ifIn ? true : false;
+          });
+          checkHaveJs();
         };
 
         /**
-         * 回到填写个人信息页面
+         * 获得角色juese（科目权限）的代码 --
+         */
+        $scope.getJueSe = function(js){
+          js.ckd = !js.ckd;
+          var jsId = [];
+          Lazy($scope.juese_list).each(function(js){
+            if(js.ckd){
+              jsId.push(js);
+            }
+          });
+          $scope.select_km['角色'] = jsId;
+          checkHaveJs();
+        };
+
+        /**
+         * 回到填写个人信息页面 --
          */
         $scope.goToPersonInfo = function(){
-          $('.nav-tabs li').removeClass('active').eq(0).addClass('active');
-          $('.tab-pane').removeClass('active').eq(0).addClass('active');
+          $scope.stepNum = 1;
         };
 
         /**
-         * 去提交个人信息页面
+         * 去提交个人信息页面 --
          */
         $scope.goToSubmit = function(){
-          select_juese = [];
-          Lazy(objAndRightList).each(function(oar, indx, lst){
-            Lazy(oar.juese.jueseId).each(function(jsid, idx, lst){
-              var jueseObg = {
-                jigou: jigouId,
-                lingyu: '',
-                juese: ''
-              };
-              jueseObg.lingyu = oar.lingyu[0].LINGYU_ID;
-              jueseObg.juese = jsid;
-              select_juese.push(jueseObg);
-            });
+          var findXx = Lazy($scope.jigou_list).find(function(xx){
+            return xx['学校ID'] == $scope.registerParam.selectJgId;
           });
-          registerDate.juese = select_juese;
-          $scope.registerDate = registerDate;
+          $scope.registerParam.selectJgName = findXx['学校名称'];
+          $scope.teacherInfo['学校ID'] = $scope.registerParam.selectJgId;
+          $scope.teacherInfo['角色'] = [];
+          Lazy($scope.xxkm_list).each(function(km){
+            if(km['角色'] && km['角色'].length > 0){
+              Lazy(km['角色']).each(function(js){
+                var item = {
+                  '学校ID': km['学校ID'],
+                  '领域ID': km['领域ID'],
+                  '科目ID': km['科目ID'],
+                  '角色ID': ''
+                };
+                item['角色ID'] = js['角色ID'];
+                $scope.teacherInfo['角色'].push(item);
+              });
+            }
+          });
           $scope.stepThree = true;
-          $('.nav-tabs li').removeClass('active').eq(2).addClass('active');
-          $('.tab-pane').removeClass('active').eq(2).addClass('active');
+          $scope.stepNum = 3;
         };
 
         /**
-         * 去提交个人信息页面 getObjectAndRight
+         * 去提交个人信息页面 --
          */
         $scope.goToJueSe = function(){
-          $('.nav-tabs li').removeClass('active').eq(1).addClass('active');
-          $('.tab-pane').removeClass('active').eq(1).addClass('active');
+          $scope.stepNum = 2;
         };
 
         /**
-         * 提交个人信息
+         * 提交个人信息 --
          */
         $scope.submitRegisterInfo = function(){
-          registerDate.token = token;
-          registerDate.YONGHULEIBIE = 1;
-          $http.post(registerUrl, registerDate).success(function(data){
+          delete $scope.teacherInfo['确认密码'];
+          $scope.teacherInfo['角色'] = JSON.stringify($scope.teacherInfo['角色']);
+          var obj = {method: 'PUT', url: yongHuUrl, data: $scope.teacherInfo};
+          $http(obj).success(function(data){
             if(data.result){
               DataService.alertInfFun('suc', '提交成功！');
               $scope.stepTwo = false;
