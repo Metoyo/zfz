@@ -17,6 +17,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var xueXiaoUrl = '/xuexiao';
         var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目
         var yongHuUrl = '/yonghu'; //用户的增删改查
+        var chkEmailUrl = '/exists_youxiang'; //检查邮箱url
+        var chkUserNameUrl = '/exists_yonghuming'; //检查用户名url
 
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
@@ -58,22 +60,40 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 检查输入的邮箱或者是用户名，在数据库中是否存在
+         * 检查输入的邮箱或者是用户名，在数据库中是否存在 --
          */
-        $scope.checkUsrExist = function(nme, info){
-          //var checkUserUrl = checkUserUrlBase + '&' + nme + '=' + info;
-          //$http.get(checkUserUrl).success(function(data){
-          //  if(nme == 'yonghuming'){
-          //    $scope.yonghumingExist = data.result;
-          //  }
-          //  else{
-          //    $scope.youxiangExist = data.result;
-          //  }
-          //});
+        $scope.checkUsrExist = function(type, info){
+          if(info){
+            var obj = {method:'GET', url: '', params: {}};
+            if(type == 'youxiang'){
+              obj.url = chkEmailUrl;
+              obj.params['邮箱'] = info;
+            }
+            if(type == 'yonghuming'){
+              obj.url = chkUserNameUrl;
+              obj.params['用户名'] = info;
+            }
+            $http(obj).success(function(data){
+              if(data.result){
+                if(type == 'yonghuming'){
+                  $scope.yonghumingExist = data.data['存在'];
+                }
+                else{
+                  $scope.youxiangExist = data.data['存在'];
+                }
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '输入的邮箱或者用户名为空！');
+          }
         };
 
         /**
-         * 检查密码是否一致
+         * 检查密码是否一致 --
          */
         $scope.checkPassword = function(){
           var psw = $scope.teacherInfo['密码'];

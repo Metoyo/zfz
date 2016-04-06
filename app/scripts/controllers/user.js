@@ -23,7 +23,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var jigouid = 0;
         var lingyuid = 0;
         var session = $rootScope.session;
-        var shyhjsUrl = baseRzAPIUrl + 'shenhe_yonghu_juese'; //审核用户角色
         var qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
         var qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token; //查询领域的url
         var jiGouData = { //新增机构的数据
@@ -1572,29 +1571,28 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 修改密码
+         * 修改管理员的密码 --
          */
         $scope.modifyAdminPassWord = function(){
-          var newPsdData = {
-              token: token,
-              yonghuid: '',
-              mima: ''
-            },
-            userInfo = $rootScope.session.userInfo;
-          newPsdData.yonghuid = userInfo.UID;
-          newPsdData.mima = $scope.adminParams.newPsd;
-          $http.post(alterYongHu, newPsdData).success(function(data){
-            if(data.result){
-              DataService.alertInfFun('suc', '密码修改成功!');
-            }
-            else{
-              DataService.alertInfFun('err', data.error);
-            }
-          });
+          var obj = {method: 'POST', url: yongHuUrl, data: {UID: logUid, '密码': ''}};
+          if($scope.adminParams.newPsd){
+            obj.data['密码'] = $scope.adminParams.newPsd;
+            $http(obj).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '密码修改成功!');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请输入新密码！');
+          }
         };
 
         /**
-         * 修改知识点--查询领域
+         * 修改知识点
          */
         $scope.renderZhiShiDianSetTpl = function(){
           $scope.setZsdLingYu = '';

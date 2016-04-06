@@ -3,14 +3,25 @@
     返回
   </button>
 </div>
-<div class="col-md-3 logoutInfo">
+<div class="col-md-3 logoutInfo" ng-init="showAlterAdminBox = false">
   <h4>
-    您好，<a href="javascript:void(0)" ng-bind="loginUsr['用户名']"></a>
+    您好，<a href="javascript:void(0)" ng-bind="loginUsr['用户名']" ng-click="showAlterAdminBox = !showAlterAdminBox"></a>
     <span class="hide userUID" ng-bind="loginUsr['UID']"></span>
   </h4>
   <h4>
     <a type="button" href="javascript:void(0)" ng-click="signOut()" class="btn btn-success">注销</a>
   </h4>
+  <div class="mt15 pull-left" ng-show="showAlterAdminBox">
+    <span>请输入新密码：</span>
+    <input type="text" class="newPassWord form-control" ng-model="adminParams.newPsd"/>
+    <button type="button" class="btn btn-danger mt5 ml15 pull-right" ng-click="showAlterAdminBox = !showAlterAdminBox">
+      取消
+    </button>
+    <button type="button" class="btn btn-primary mt5 pull-right" ng-click="modifyAdminPassWord()"
+            ng-disabled="!adminParams.newPsd">修改
+    </button>
+    <p class="adminMiMaInfo"></p>
+  </div>
 </div>
 <div class="col-md-9 entries" ng-show="isShenHeBox">
   <h4>请选择您要进行的操作：</h4>
@@ -31,6 +42,5 @@
 </div>
 <!-- 审核权限开始  -->
 <div class="shenheBox" ng-class="{row:isShenHeBox, 'col-md-9':!isShenHeBox}" ng-include="adminSubWebTpl">
-
 </div>
 <!-- 审核权限结束  -->

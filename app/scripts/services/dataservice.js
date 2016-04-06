@@ -88,7 +88,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             urlRedirect.goTo($location.$$path, '/renzheng');
           }
           else{
-            DataService.alertInfFun('err', data.error);
+            alertFun('err', data.error);
           }
         });
       };
