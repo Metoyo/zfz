@@ -13,7 +13,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         /**
          * 定义变量
          */
-        //var userInfo = $rootScope.session.userInfo;
         var baseRzAPIUrl = config.apiurl_rz; //renzheng的api;
         var baseMtAPIUrl = config.apiurl_mt; //mingti的api
         var baseKwAPIUrl = config.apiurl_kw; //考务的api
@@ -22,7 +21,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var caozuoyuan = 0;//登录的用户的UID
         var jigouid = 0;
         var lingyuid = 0;
-        var session = $rootScope.session;
         var qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
         var qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token; //查询领域的url
         var jiGouData = { //新增机构的数据
@@ -77,7 +75,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           '&jigouid=' + jigouid + '&zhishidianid='; //根据知识点查科目
         var modifyZsdLy = baseMtAPIUrl + 'xiugai_zhishidian_lingyu'; //修改知识点领域
         var qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid='; //查询此题目
-        var qryTeacherUrl = baseRzAPIUrl + 'query_teacher?token=' + token + '&jigouid=' + jigouid; //查询本机构下教师
         var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='+ caozuoyuan; //查询考试列表的url
         var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询考试
         var scannerBaseUrl = baseSmAPIUrl + 'yuejuan/transfer_from_omr?omr_set='; //扫描的url
@@ -103,6 +100,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var lingYuUrl = '/lingyu'; //领域URL
         var keMuUrl = '/kemu'; //科目URL
         var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目
+        var tiXingUrl = '/tixing'; //题型
+        var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
         var loginUsr = $rootScope.loginUsr;
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr.UID; //登录用户的UID
@@ -232,7 +231,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
                 }
                 $scope.shenHeList.push(temp);
               });
-              console.log($scope.shenHeList);
               $scope.isShenHeBox = true;
               $scope.adminSubWebTpl = 'views/renzheng/rz_shenHe.html';
             }
@@ -307,7 +305,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 机构查询
+         * 机构查询 --
          */
         var getJgList = function(jsid){
           $scope.loadingImgShow = true;
@@ -323,15 +321,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
                         return js['学校ID'] == sch['学校ID'];
                       }).toArray();
                     });
-                    //$scope.jigou_list = schools.data;
                   }
-                  //else{
-                  //  DataService.alertInfFun('err', data.error);
-                  //}
                 });
-              }
-              else{
-                //$scope.jigou_list = schools.data;
               }
               $scope.jigou_list = schools.data;
             }
@@ -1464,110 +1455,94 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 科目题型选择
+         * 科目题型选择 --
          */
         $scope.renderTiXingSelectTpl = function(){
           $scope.loadingImgShow = true; //rz_selectTiXing.html
-          var qryLingYuByJiGou = qryLingYuUrl + '&jigouid=' + userInfo.JIGOU[0].JIGOU_ID,
-            childLyArr = [];
-          $http.get(qryLingYuByJiGou).success(function(jgLy) { //查询本机构下的领域
-            if(jgLy.length){
-              Lazy(jgLy).each(function(ply, idx, lst){
-                if(ply.CHILDREN.length){
-                  Lazy(ply.CHILDREN).each(function(cly, cidx, clst){
-                    childLyArr.push(cly);
-                  });
-                }
-              });
-              $http.get(qryTiXingUrl).success(function(allTx){
-                if(allTx.length){
-                  $scope.selectTiXingLiYing = childLyArr;
-                  $scope.allTiXing = allTx;
-                  $scope.loadingImgShow = false; //rz_selectTiXing.html
-                  $scope.isShenHeBox = false; //判断是不是审核页面？
-                  $scope.adminSubWebTpl = 'views/renzheng/rz_selectTiXing.html';
+          var objXxKm = {method: 'GET', url: xueXiaoKeMuUrl, params: {'学校ID': jgID}};
+          $http(objXxKm).success(function(xxkm) { //查询本机构下的科目
+            if(xxkm.result){
+              var objTx = {method: 'GET', url: tiXingUrl};
+              $http(objTx).success(function(txData){
+                if(txData.result){
+                  $scope.allTiXing = txData.data;
                 }
                 else{
-                  $scope.loadingImgShow = false; //rz_selectTiXing.html
-                  DataService.alertInfFun('err', allTx.error);
+                  DataService.alertInfFun('err', txData.error);
                 }
               });
-            }
-            else{
-              $scope.loadingImgShow = false; //rz_selectTiXing.html
-              $scope.isShenHeBox = false; //判断是不是审核页面
+              $scope.xueXiaoKeMu = xxkm.data;
+              $scope.isShenHeBox = false;
               $scope.adminSubWebTpl = 'views/renzheng/rz_selectTiXing.html';
-              DataService.alertInfFun('err', jgLy.error);
-            }
-          });
-        };
-
-        /**
-         * 那个领域被选中
-         */
-        var originKmtx;
-        $scope.whichLingYuActive = function(lyId){
-          originKmtx = '';
-          $scope.activeLingYu = lyId;
-          $http.get(qryKmTx + lyId).success(function(data){
-            if(data.error){
-              DataService.alertInfFun('err', data.error);
             }
             else{
-              $scope.kmtxList = data;
-              originKmtx = Lazy(data).map(function(tx){return tx.TIXING_ID}).toArray();
-              $scope.selectedTxLyStr = Lazy(data).map(function(tx){return 'tx' + tx.TIXING_ID + ';'}).toArray().join();
+              DataService.alertInfFun('err', xxkm.error);
             }
+            $scope.loadingImgShow = false;
           });
         };
 
         /**
-         * 添加或者删除题型
+         * 那个领域被选中 --
          */
-        $scope.addOrRemoveTiXing = function(event, tx){
-          tiXingData.shuju = [];
-          var hasIn = Lazy(originKmtx).contains(tx.TIXING_ID),
-            ifCheckOrNot = $(event.target).prop('checked');
-          if(ifCheckOrNot){
-            $scope.kmtxList.push(tx);
+        $scope.whichLingYuActive = function(kmID){
+          if(kmID){
+            $scope.activeKeMu = kmID;
+            var obj = {method: 'GET', url: xueXiaoKeMuTiXingUrl, params: {'学校ID': jgID, '科目ID': kmID}};
+            $http(obj).success(function(xxkmtx){
+              if(xxkmtx.result){
+                Lazy($scope.allTiXing).each(function(atx){
+                  var findXxKmTx = Lazy(xxkmtx.data).find(function(tx){return tx['题型ID'] == atx['题型ID']});
+                  atx.ckd = findXxKmTx ? true : false;
+                });
+              }
+              else{
+                Lazy($scope.allTiXing).each(function(atx){
+                  atx.ckd = false;
+                });
+                DataService.alertInfFun('err', xxkmtx.error);
+              }
+            });
           }
           else{
-            if(hasIn){
-              var indexInOkt = Lazy(originKmtx).indexOf(tx.TIXING_ID);
-              $scope.kmtxList[indexInOkt].ZHUANGTAI = -1;
-            }
-            else{
-              $scope.kmtxList = Lazy($scope.kmtxList).reject(function(kmtx){
-                return kmtx.TIXING_ID == tx.TIXING_ID;
-              }).toArray();
-            }
+            $scope.activeKeMu = '';
+            DataService.alertInfFun('pmt', '请选择领域！');
           }
         };
 
+
         /**
-         * 保存已选的题型
+         * 添加或者删除题型 --
+         */
+        $scope.addOrRemoveTiXing = function(tx){
+          tx.ckd = !tx.ckd;
+        };
+
+        /**
+         * 保存已选的题型 --
          */
         $scope.saveSelectTiXing = function(){
-          $scope.loadingImgShow = true; //rz_selectTiXing.html
-          tiXingData.shuju = [];
-          Lazy($scope.kmtxList).each(function(kmtx, idx, lst){
-            var txObj = {};
-            txObj.TIXING_ID = kmtx.TIXING_ID;
-            txObj.JIGOU_ID = jigouid;
-            txObj.LINGYU_ID = $scope.activeLingYu;
-            txObj.ZHUANGTAI = kmtx.ZHUANGTAI >= -1 ? kmtx.ZHUANGTAI : 1;
-            tiXingData.shuju.push(txObj);
-          });
-          $http.post(modifyTxJgLyUrl, tiXingData).success(function(data){
-            if(data.result){
-              DataService.alertInfFun('err', '保存成功！');
-              $scope.loadingImgShow = false; //rz_selectTiXing.html
-            }
-            else{
-              $scope.loadingImgShow = false; //rz_selectTiXing.html
-              DataService.alertInfFun('err', data.error);
+          var obj = {method: 'POST', url: xueXiaoKeMuTiXingUrl, data: {'学校ID': jgID, '科目ID': $scope.activeKeMu}};
+          var txArr = [];
+          Lazy($scope.allTiXing).each(function(atx){
+            if(atx.ckd){
+              txArr.push(atx['题型ID']);
             }
           });
+          if(txArr && txArr.length > 0){
+            obj.data['题型'] = txArr;
+            $http(obj).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '保存成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择题型!');
+          }
         };
 
         /**
@@ -1846,40 +1821,19 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 本机构下教师管理
+         * 本机构下教师管理 --
          */
         $scope.renderTeacherTpl = function(){
-          DataService.getData(qryTeacherUrl).then(function(data){
-            if(data && data.length){
-              var groupByUid = Lazy(data).groupBy(function(teach){ return teach.UID; }).toObject();
-              var groupByLy;
-              var teachData = [];
-              Lazy(groupByUid).each(function(v, k, lst){
-                var teachObj = {
-                  JIGOUMINGCHENG: k[0].JIGOUMINGCHENG,
-                  JIGOU_ID: v[0].JIGOU_ID,
-                  lingyu: [],
-                  SHOUJI: v[0].SHOUJI,
-                  UID: k,
-                  XINGMING: v[0].XINGMING,
-                  YONGHUHAO: v[0].YONGHUHAO,
-                  YONGHUMING: v[0].YONGHUMING,
-                  YOUXIANG: v[0].YOUXIANG
-                };
-                groupByLy = Lazy(v).groupBy(function(tah){ return tah.LINGYU_ID; }).toObject();
-                Lazy(groupByLy).each(function(sv, sk, slst){
-                  var lyObj = {
-                    LINGYU_ID: sk,
-                    LINGYUMINGCHENG: sv[0].LINGYUMINGCHENG,
-                    juese: Lazy(sv).map(function(th){return th.JUESEMINGCHENG;}).toArray().join(';')
-                  };
-                  teachObj.lingyu.push(lyObj);
-                });
-                teachData.push(teachObj);
-              });
-              $scope.teacherData = teachData;
+          var obj = {method: 'GET', url: yongHuUrl, params: {'学校ID': jgID, '用户类别': 1}};
+          $http(obj).success(function(data){
+            if(data.result){
+              $scope.teacherData = data.data;
               $scope.isShenHeBox = false; //判断是不是审核页面
               $scope.adminSubWebTpl = 'views/renzheng/rz_setTeacher.html';
+            }
+            else{
+              $scope.teacherData = '';
+              DataService.alertInfFun('err', data.error);
             }
           });
         };
