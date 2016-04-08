@@ -1,60 +1,70 @@
 <h4 class="admin-title">公共知识点设置</h4>
 <div class="dagangInput setDaGangBox">
-    <div class="row">
-        <div class="col-md-6">
-            <select class="form-control" ng-model="ly_id" ng-change="getKeMuOfSelectLy(ly_id)"
-                    ng-options="ly.LINGYU_ID as ly.LINGYUMINGCHENG for ly in setZsdLingYu">
-                <option value="">请选择领域</option>
-            </select>
-        </div>
-        <div class="col-md-6">
-            <div class="form-control fakeMutiSelect">
-                <div ng-click="adminParams.fakeSelectShow = true" class="pleaseSelect">
-                    <input type="text" ng-model="adminParams.fakePlaceHolder" class="bd0 wp90"/>
-                </div>
-                <div class="fakeOptionList" ng-show="adminParams.fakeSelectShow">
-                    <div class="options">
-                        <label class="checkbox" ng-repeat="km in selectedKeMu">
-                            <input type="checkbox" ng-click="getKeMuId($event, km, true)"> {{km.LINGYUMINGCHENG}}
-                        </label>
-                    </div>
-                    <div class="btns">
-                        <a href="javascript:void(0)" ng-click="getKeMuPubZsdData()">确定</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-md-12">
+      <select class="form-control" ng-model="ly_id" ng-change="getPublicZsd(ly_id)"
+              ng-options="ly['领域ID'] as ly['领域名称'] for ly in setZsdLingYu">
+        <option value="">请选择领域</option>
+      </select>
     </div>
-    <div class="row zsdWrap mt15">
-        <ul class="col-md-8 list-unstyled plr10">
-            <li ng-repeat="zsd in zsdSetZsdData">
-                <p ng-click="showModifyZsdBox($index, zsd.ZHISHIDIAN_ID, zsd.ZHISHIDIANMINGCHENG)" class="zsd"
-                   ng-bind="zsd.ZHISHIDIANMINGCHENG" ng-class="{active: adminParams.pubZsdTabOn == $index}"></p>
-            </li>
-        </ul>
-        <div class="col-md-4" ng-show="adminParams.zsdWrapShow">
-            <div class="keMuWrap">
-                <label class="checkbox" ng-repeat="km in selectedKeMu">
-                    <input type="checkbox" name="zsdKeMuCb" class="{{'keMu' + km.LINGYU_ID}}"
-                           ng-click="getKeMuId($event, km, false)"> {{km.LINGYUMINGCHENG}}
-                </label>
-            </div>
-            <div class="btns">
-                <button type="button" class="btn btn-default" ng-click="deletePubZsd()">删除知识点</button>
-                <button type="button" class="btn btn-primary ml10" ng-click="submitZsdKeMuModify()">提交修改</button>
-            </div>
-            <div class="btns">
-              <h5 class="text-center mt30">
-                修改知识点名称
-              </h5>
-              <p>
-                <input type="text" class="form-control" ng-model="adminParams.zsdNewName"/>
-              </p>
-              <p class="text-center">
-                <button type="button" class="btn btn-primary" ng-click="modifyZsdName()">修改</button>
-                <!--<button type="button" class="btn btn-default ml10">取消</button>-->
-              </p>
-            </div>
-        </div>
-    </div>
+  </div>
+  <div class="row zsdWrap mt15">
+    <ul class="col-md-12 list-unstyled plr10">
+      <li class="plr10 bdb mt10" ng-repeat="zsd in zsdSetZsdData">
+        <span ng-bind="zsd['知识点名称']"></span>
+        <span class="pull-right">
+          <a href="javascript:void(0)" title="修改" class="mr10">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+          <span class="glyphicon glyphicon-trash"></span>
+        </span>
+      </li>
+    </ul>
+    <!--<div class="col-md-4" ng-show="adminParams.zsdWrapShow">-->
+      <!--<div class="keMuWrap">-->
+        <!--<label class="checkbox" ng-repeat="km in selectedKeMu">-->
+          <!--<input type="checkbox" name="zsdKeMuCb" class="{{'keMu' + km.LINGYU_ID}}"-->
+                 <!--ng-click="getKeMuId($event, km, false)"> {{km.LINGYUMINGCHENG}}-->
+        <!--</label>-->
+      <!--</div>-->
+      <!--<div class="btns">-->
+        <!--<button type="button" class="btn btn-default" ng-click="deletePubZsd()">删除知识点</button>-->
+        <!--<button type="button" class="btn btn-primary ml10" ng-click="submitZsdKeMuModify()">提交修改</button>-->
+      <!--</div>-->
+      <!--<div class="btns">-->
+        <!--<h5 class="text-center mt30">-->
+          <!--修改知识点名称-->
+        <!--</h5>-->
+        <!--<p>-->
+          <!--<input type="text" class="form-control" ng-model="adminParams.zsdNewName"/>-->
+        <!--</p>-->
+        <!--<p class="text-center">-->
+          <!--<button type="button" class="btn btn-primary" ng-click="modifyZsdName()">修改</button>-->
+        <!--</p>-->
+      <!--</div>-->
+    <!--</div>-->
+  </div>
+  <div class="paging" ng-if="pageParam.pageArr.length">
+    <ul class="pagination pagination-sm" style="width:95%;margin-left:5%;">
+      <li ng-class="{disabled: currentPage == 1}">
+        <a href ng-click="publicZsdDist(1)">首页</a>
+      </li>
+      <li ng-class="{disabled: currentPage == 1}">
+        <a href ng-click="publicZsdDist(prevPg = currentPage > 1 ? currentPage - 1 : 1)">
+          上一页
+        </a>
+      </li>
+      <li ng-repeat="pg in pages" ng-class="{active: currentPage == pg}">
+        <a href ng-click="publicZsdDist(pg)">{{pg}}</a>
+      </li>
+      <li ng-class="{disabled: currentPage == pageParam.lastPage}">
+        <a href ng-click="publicZsdDist(nextPg = currentPage < pageParam.lastPage ? currentPage + 1 : pageParam.lastPage)">
+          下一页
+        </a>
+      </li>
+      <li ng-class="{disabled: currentPage == pageParam.lastPage}">
+        <a href ng-click="publicZsdDist(pageParam.lastPage)">尾页</a>
+      </li>
+    </ul>
+  </div>
 </div>
