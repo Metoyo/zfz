@@ -11,7 +11,7 @@ require.config({
     bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
     markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
     setJs: '../../bower_components/markitup/set.min',
-    mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS_HTML-full',
+    mathjax: '../../bower_components/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full',
     datepicker: '../../bower_components/intimidatetime/intimidatetime',
     lazy: '../../bower_components/lazy.js/lazy',
     polyv: '../../bower_components/polyv/polyvplayer_v2.0.min',

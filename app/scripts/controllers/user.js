@@ -4,17 +4,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
   angular.module('zhifzApp.controllers.UserCtrl', [])
     .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService',
       function ($rootScope, $scope, $http, $location, DataService) {
-
-        $scope.addedContainerClass = 'userBox';
-        $scope.shenheList = [];
-        $scope.showShenhe = false;
-        $scope.isShenHeBox = true; //判断是不是审核页面
-
         /**
          * 定义变量
          */
         var baseRzAPIUrl = config.apiurl_rz; //renzheng的api;
-        var baseMtAPIUrl = config.apiurl_mt; //mingti的api
         var baseKwAPIUrl = config.apiurl_kw; //考务的api
         var baseSmAPIUrl = config.apiurl_sm; //扫描的api
         var token = config.token; //token的值
@@ -22,40 +15,8 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var jigouid = 0;
         var lingyuid = 0;
         var qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
-        var qryLingYuUrl = baseRzAPIUrl + 'lingyu?token=' + token; //查询领域的url
-        var jiGouData = { //新增机构的数据
-          token: token,
-          caozuoyuan: caozuoyuan,
-          shuju:[]
-        };
-        var modifyJiGouAdminUrl = baseRzAPIUrl + 'modify_jigou_admin'; //修改机构管理员
-        var adminData = { //新增机构管理员的数据
-          token: token,
-          caozuoyuan: caozuoyuan,
-          shuju:{}
-        };
-        var qryZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-          + jigouid + '&leixing=1' + '&gen=0' + '&lingyuid='; //查询公共知识点的url
-        var qryZsdgBaseUrl = baseMtAPIUrl + 'chaxun_gonggong_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-          + '&lingyuid='; //查询公共知识大纲的url
-        var deletePublicDaGangBaseUrl = baseMtAPIUrl + 'shanchu_gonggong_zhishidagang'; //删除公共知识大纲的url
-        var qryZsdgZsdBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' + caozuoyuan
-          + '&jigouid=' + jigouid + '&lingyuid='; //查询知识大纲知识点的url
-        var daGangData = { //定义一个空的大纲数据
-          token: token,
-          caozuoyuan: caozuoyuan,
-          jigouid: jigouid,
-          shuju:{}
-        };
-        var daGangJieDianData = []; //定义一个大纲节点的数据
-        var modifyZsdgUrl = baseMtAPIUrl + 'xiugai_zhishidagang'; //保存知识大纲
         var isDaGangSet = false; //是否是大纲设置
         var isLingYuSet = false; //是否是领域设置
-        var qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-          '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询题目列表的url
-        var alterZsdUrl = baseMtAPIUrl + 'xiugai_zhishidian'; //修改知识点的url
-        var modifyZsdLy = baseMtAPIUrl + 'xiugai_zhishidian_lingyu'; //修改知识点领域
-        var qryZsdTiMuNumBase = baseMtAPIUrl + 'chaxun_timu_count?token=' + token + '&zhishidianid='; //查询此题目
         var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='+ caozuoyuan; //查询考试列表的url
         var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询考试
         var scannerBaseUrl = baseSmAPIUrl + 'yuejuan/transfer_from_omr?omr_set='; //扫描的url
@@ -84,18 +45,23 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var tiXingUrl = '/tixing'; //题型
         var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
         var zhiShiDianUrl = '/zhishidian'; //知识点
+        var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
         var loginUsr = $rootScope.loginUsr;
-        var jgID = loginUsr['学校ID']; //登录用户学校
+        var jgID = loginUsr['学校ID'] || 0; //登录用户学校
         var logUid = loginUsr.UID; //登录用户的UID
-
+        $scope.shenheList = [];
+        $scope.isShenHeBox = true; //判断是不是审核页面
         $scope.adminParams = {
+          selectKeMu: '',
           selected_dg: '',
+          lastLyId: '',
           saveDGBtnDisabled: false,
           newPsd: '',
           selectLinYuId: '',
           selectZsdId: '',
           zsdOldName: '', //知识
-          zsdNewName: '' //知识点修改新名称
+          zsdNewName: '', //知识点修改新名称
+          activeNd: '' //公共大纲那个输入框被激活了
         };
         $scope.pageParam = {
           currentPage: '',
@@ -396,7 +362,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
             $http({method: 'delete', url: xueXiaoUrl, params: obj}).success(function(data){
               if(data.result){
                 DataService.alertInfFun('suc', '删除成功！');
-                jiGouData.shuju = [];
                 getJgList();
               }
               else{
@@ -512,24 +477,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           {
             psw += Math.floor(Math.random()*10);
           }
-          adminData.shuju.ADMINISTRATORS[0].UID = adm.UID;
-          adminData.shuju.ADMINISTRATORS[0].YONGHUMING = adm.YONGHUMING;
-          adminData.shuju.ADMINISTRATORS[0].MIMA = psw;
-          adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
-          $http.post(modifyJiGouAdminUrl, adminData).success(function(data){
-            if(data.result){
-              $scope.jgAdminName = adm.YONGHUMING;
-              $scope.jgAmdinNewPsw = psw;
-              $scope.isResetJgAdminPsw = true;
-              adminData.shuju.ADMINISTRATORS[0].UID = '';
-              adminData.shuju.ADMINISTRATORS[0].YONGHUMING = '';
-              adminData.shuju.ADMINISTRATORS[0].MIMA = '';
-              adminData.shuju.ADMINISTRATORS[0].ZHUANGTAI = 1;
-            }
-            else{
-              DataService.alertInfFun('err', data.error);
-            }
-          });
         };
 
         /**
@@ -897,304 +844,188 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 大纲设置
+         * 大纲设置 --
          */
         $scope.renderDaGangSetTpl = function(){
-          $scope.loadingImgShow = true; //rz_setDaGang.html
-          var lingYuChildArr = [];
-          $scope.dgZsdList = ''; //重置公共知识大纲知识点
-          $scope.pubDaGangList = ''; //重置所有所有公共知识大纲
-          $scope.publicKnowledge = ''; //重置公共知识点
-          // 查询领域
-          $http.get(qryLingYuUrl).success(function(data) {
-            if(data.length){
-              Lazy(data[0].CHILDREN).each(function(sub1, idx1, lst1){
-                Lazy(sub1.CHILDREN).each(function(sub2, idx2, lst2){
-                  lingYuChildArr.push(sub2);
-                });
-              });
-              $scope.lingYuChild = lingYuChildArr;
-              $scope.loadingImgShow = false; //rz_setDaGang.html
-              $scope.isShenHeBox = false; //判断是不是审核页面
-              $scope.adminSubWebTpl = 'views/renzheng/rz_setDaGang.html';
+          $scope.loadingImgShow = true;
+          $scope.pubZsdgList = '';
+          $scope.allPubZsdgData = '';
+          $scope.pubZsdgData = '';
+          $scope.adminParams.lastLyId = '';
+          $scope.adminParams.selectKeMu = '';
+          $scope.allPublicZsdData = '';
+          var obj = {method:'GET', url:keMuUrl};
+          $http(obj).success(function(data){
+            if(data.result){
+              $scope.keMuList = data.data;
             }
             else{
-              $scope.lingyu_list = '';
-              $scope.loadingImgShow = false; //rz_setDaGang.html
-              $scope.adminSubWebTpl = 'views/renzheng/rz_setDaGang.html';
-              DataService.alertInfFun('err', '没用相关的领域！');
+              DataService.alertInfFun('err', data.error);
             }
+            $scope.loadingImgShow = false;
+            $scope.isShenHeBox = false;
+            $scope.adminSubWebTpl = 'views/renzheng/rz_setDaGang.html';
           });
         };
 
         /**
-         * 减去知识点
+         * 由科目获得大纲数据 --
          */
-        var dgLyId = '',
-          publicKnowledgeData, //存放公共知识点数据的变量
-          pubDgZsdIdArr = [], //存放公共知识大纲知识点的数据
-          pubZsdIdArr = []; //存放公共知识点id的数组
-        var minusZsdFun = function(){
-          var diffZsdIdArr, //存放不同知识点id的变量
-            singleZsdData, //存放一条公共知识点数据的变量
-            pubZsdList = []; //存放多条公共知识点的变量
-          //从已有的公共知识点中减去知识大纲知识点
-          diffZsdIdArr = Lazy(pubZsdIdArr).without(pubDgZsdIdArr).toArray();
-          //得到相对应的公共知识大纲知识点
-          Lazy(diffZsdIdArr).each(function(zsdId, idx, lst){
-            singleZsdData = Lazy(publicKnowledgeData).findWhere({ ZHISHIDIAN_ID: zsdId });
-            pubZsdList.push(singleZsdData);
-          });
-          Lazy($scope.pubDaGangList).each(function(pdg, idx, lst){
-            pubZsdList =  Lazy(pubZsdList).reject(function(pzsd){
-              return pzsd.ZHISHIDIANMINGCHENG == pdg.ZHISHIDAGANGMINGCHENG ;
-            }).toArray();
-          });
-          $scope.publicKnowledge = pubZsdList;
-        };
-
-        //查询此领域下的所有公共知识点
-        $scope.qryPubZsdByKeMu = function(lyId){
-          if(lyId){
-            var qryPubLyZsdUrl = qryZsdBaseUrl + lyId;
-            $http.get(qryPubLyZsdUrl).success(function(zsd){
-              $scope.loadingImgShow = true; //rz_setDaGang.html
-              if(zsd.error){
-                $scope.loadingImgShow = false; //rz_setDaGang.html
-                DataService.alertInfFun('err', '此领域下没有公共知识点！');
-                publicKnowledgeData = '';
+        $scope.getPubDaGangList = function(kmid, cf){
+          if(kmid){
+            var objDg = {method:'GET', url:zhiShiDaGangUrl, params:{'科目ID':kmid, '类型':1}};
+            $scope.pubZsdgList = [];
+            $http(objDg).success(function(data){ //获得大纲数据
+              if(data.result){
+                Lazy(data.data).each(function(dg){
+                  var dgObj = {
+                    '知识大纲ID': dg['知识大纲ID'],
+                    '知识大纲名称': dg['知识大纲名称']
+                  };
+                  $scope.pubZsdgList.push(dgObj);
+                });
+                $scope.allPubZsdgData = data.data;
               }
               else{
-                $scope.loadingImgShow = false; //rz_setDaGang.html
-                publicKnowledgeData = zsd;
-                //得到此领域下的公共知识点id的数组
-                pubZsdIdArr = Lazy(zsd).map(function(szsd){
-                  return szsd.ZHISHIDIAN_ID;
-                }).toArray();
-                if($scope.dgZsdList && $scope.dgZsdList.length > 0){
-                  minusZsdFun();
-                }
-
+                DataService.alertInfFun('err', data.error);
               }
             });
-          }
-        };
-
-        /**
-         * 由领域获得大纲数据
-         */
-        $scope.getPubDaGangList = function(lyId){
-          if(lyId){
-            var qryZsdgUrl = qryZsdgBaseUrl + lyId,
-              pubZsdgArr = []; //存放公共知识大纲的数组
-            $scope.loadingImgShow = true; //rz_setDaGang.html
-            dgLyId = lyId;
-            $scope.dgZsdList = ''; //重置公共知识大纲知识点
-            $scope.pubDaGangList = ''; //重置所有所有公共知识大纲
-            $scope.publicKnowledge = ''; //重置公共知识点
-            daGangData.lingyuid = lyId;
-            //查询知识大纲
-            $http.get(qryZsdgUrl).success(function(zsdg){
-              //有知识大纲
-              if(zsdg && zsdg.length > 0){
-                $scope.loadingImgShow = false; //rz_setDaGang.html
-                Lazy(zsdg).each(function(dg, idx, lst){
-                  if(dg.LEIXING == 1){
-                    pubZsdgArr.push(dg);
+            var find = Lazy($scope.keMuList).find(function(km){
+              return km['科目ID'] == kmid;
+            });
+            if(find){
+              var getNewPubZsd = false;
+              $scope.adminParams.selectKeMu = find;
+              if(find['领域ID'] != $scope.adminParams.lastLyId){ //领域ID变化重现查询公共知识点
+                $scope.adminParams.lastLyId = angular.copy(find['领域ID']);
+                getNewPubZsd = true;
+              }
+              else{
+                if(cf == 'savedg'){
+                  getNewPubZsd = true;
+                }
+                else{
+                  getNewPubZsd = $scope.allPublicZsdData.length <= 0;
+                }
+              }
+              if(getNewPubZsd){
+                var objZsd = {method:'GET', url:zhiShiDianUrl, params:{'领域ID':$scope.adminParams.lastLyId, '类型': 1}};
+                $http(objZsd).success(function(data){
+                  if(data.result){
+                    $scope.allPublicZsdData = angular.copy(data.data);
+                    $scope.publicKnowledge = data.data;
+                  }
+                  else{
+                    $scope.allPublicZsdData = '';
+                    $scope.publicKnowledge = '';
+                    DataService.alertInfFun('err', data.error);
                   }
                 });
-                //有公共知识大纲
-                if(pubZsdgArr.length){
-                  $scope.pubDaGangList = pubZsdgArr;
-                  $scope.adminParams.selected_dg = '';
-                }
-                //没有公共知识大纲
-                else{
-                  DataService.alertInfFun('pmt', '没有公共知识大纲，请新增一个！');
-                }
-                //查询此领域下的所有公共知识点
-                $scope.qryPubZsdByKeMu(lyId);
               }
-              //没有知识大纲
-              else{
-                $scope.loadingImgShow = false; //rz_setDaGang.html
-                DataService.alertInfFun('pmt', '没有公共知识大纲，请新增一个！');
-              }
-            });
-          }
-          else{
-            $scope.dgZsdList = ''; //重置公共知识大纲知识点
-            $scope.pubDaGangList = ''; //重置所有所有公共知识大纲
-            $scope.publicKnowledge = ''; //重置公共知识点
-            $scope.adminParams.selected_dg = '';
-          }
-        };
-
-        /**
-         * 由所选的知识大纲，得到知识点
-         */
-        $scope.getPubDgZsdData = function(dgId){
-          //得到知识大纲知识点id的递归函数
-          function _do(item) {
-            pubDgZsdIdArr.push(item.ZHISHIDIAN_ID);
-            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-              Lazy(item.ZIJIEDIAN).each(_do);
-            }
-          }
-          if(dgId){
-            var qryZsdgZsdUrl = qryZsdgZsdBaseUrl + dgLyId + '&zhishidagangid=' + dgId, //查询知识大纲知识点的url
-            //pubDgZsdIdArr = [], //存放公共知识大纲知识点id的数组
-            //diffZsdIdArr, //存放不同知识点id的变量
-            //singleZsdData, //存放一条公共知识点数据的变量
-            //pubZsdList = [], //存放多条公共知识点的变量
-              selectDgDetail; //存放所选知识大纲的详细信息
-            pubDgZsdIdArr = [];
-            $scope.loadingImgShow = true; //rz_setDaGang.html
-            $scope.publicKnowledge = ''; //重置公共知识点
-            //得到所选的知识大纲的详细信息
-            selectDgDetail =  Lazy($scope.pubDaGangList).findWhere({ ZHISHIDAGANG_ID: dgId });
-            if(Lazy(selectDgDetail).size()){
-              daGangData.shuju.ZHISHIDAGANG_ID = selectDgDetail.ZHISHIDAGANG_ID;
-              daGangData.shuju.ZHISHIDAGANGMINGCHENG = selectDgDetail.ZHISHIDAGANGMINGCHENG;
-              daGangData.shuju.DAGANGSHUOMING = selectDgDetail.DAGANGSHUOMING;
-              daGangData.shuju.GENJIEDIAN_ID = selectDgDetail.GENJIEDIAN_ID;
-              daGangData.shuju.LEIXING = 1;
-              daGangData.shuju.ZHUANGTAI = selectDgDetail.ZHUANGTAI;
-              daGangData.shuju.JIEDIAN = [];
-              isAddNewPubDg = false; //是否是新建知识大纲
-            }
-            //查询此公共知识大纲下的知识点
-            $http.get(qryZsdgZsdUrl).success(function(dgZsd){
-              if(dgZsd.length){
-                $scope.loadingImgShow = false; //rz_setDaGang.html
-                $scope.dgZsdList = dgZsd;
-                //从公共知识点中去除大纲中已有的知识点
-                //得到知识大纲知识点的数组
-                Lazy(dgZsd).each(_do);
-
-                //从已有的公共知识点中减去知识大纲知识点
-                minusZsdFun();
-                //diffZsdIdArr = Lazy(pubZsdIdArr).without(pubDgZsdIdArr);
-                ////得到相对应的公共知识大纲知识点
-                //Lazy(diffZsdIdArr).each(function(zsdId, idx, lst){
-                //  singleZsdData = Lazy(publicKnowledgeData).findWhere({ ZHISHIDIAN_ID: zsdId });
-                //  pubZsdList.push(singleZsdData);
-                //});
-                //Lazy($scope.pubDaGangList).each(function(pdg, idx, lst){
-                //  pubZsdList = Lazy(pubZsdList).reject(function(pzsd){
-                //    return pzsd.ZHISHIDIANMINGCHENG == pdg.ZHISHIDAGANGMINGCHENG ;
-                //  }).toArray();
-                //});
-                //$scope.publicKnowledge = pubZsdList;
-                isDaGangSet = true;
-              }
-              else{
-                $scope.loadingImgShow = false; //rz_setDaGang.html
-                $scope.dgZsdList = '';
-              }
-            });
-          }
-          else{
-            $scope.dgZsdList = '';
-          }
-        };
-
-        /**
-         * 添加知识点
-         */
-        $scope.dgAddNd = function(nd) {
-          var newNd = {};
-          newNd.JIEDIAN_ID = '';
-          newNd.ZHISHIDIAN_ID = '';
-          newNd.ZHISHIDIANMINGCHENG = '';
-          newNd.ZHISHIDIAN_LEIXING = 1;
-          newNd.JIEDIANLEIXING = 1;
-          newNd.JIEDIANXUHAO = nd.ZIJIEDIAN.length + 1;
-          newNd.ZHUANGTAI = 1;
-          newNd.ZIJIEDIAN = [];
-          newNd.JIGOU_ID = 0; //公共知识大纲的机构id都为0
-          nd.ZIJIEDIAN.push(newNd);
-        };
-
-        /**
-         * 删除知识点
-         */
-        $scope.dgRemoveNd = function(parentNd, nd, idx) {
-          var cfmInfo = confirm("确定要删除知识点吗？");
-          function getPubZsd(item) {
-            if(item.ZHISHIDIAN_ID){
-              var pubZsdObj = Lazy(publicKnowledgeData).findWhere({ ZHISHIDIAN_ID: item.ZHISHIDIAN_ID });
-              $scope.publicKnowledge.push(pubZsdObj);
-              if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
-                Lazy(item.ZIJIEDIAN).each(getPubZsd);
-              }
-            }
-          }
-          if(cfmInfo){
-            getPubZsd(nd);
-            parentNd.ZIJIEDIAN.splice(idx, 1);
-          }
-        };
-
-        /**
-         * 那一个输入框被选中了
-         */
-        var targetInput, targetNd;
-        $scope.getInputIndex = function(event, nd){
-          targetInput = $(event.target);
-          targetNd = nd;
-        };
-
-        /**
-         * 将公共知识点添加到知识大纲
-         */
-        $scope.addToDaGang = function(zsd, idx){
-          targetNd.ZHISHIDIAN_ID = zsd.ZHISHIDIAN_ID;
-          targetNd.ZHISHIDIANMINGCHENG = zsd.ZHISHIDIANMINGCHENG;
-          //        targetInput.focus();  //此处有问题先注释掉
-          targetNd = '';
-          $scope.publicKnowledge.splice(idx, 1);
-        };
-
-        /**
-         * 删除公共知识大纲知识点
-         */
-        $scope.deletePubDgZsd = function(zsdId, idx){
-          var qrytimuliebiao = qrytimuliebiaoBase + '&zhishidian_id=' + zsdId,
-            zsdObj = {
-              token: token,
-              caozuoyuan: caozuoyuan,
-              jigouid: 0,
-              lingyuid: 0,
-              shuju: {
-                ZHISHIDIAN_ID: zsdId,
-                ZHUANGTAI: -1
-              }
-            };
-          if(confirm('确定要删除此公共知识点？')){
-            if(zsdId){
-              //先查询此知识点下面有没有
-              $http.get(qrytimuliebiao).success(function(tmIds){
-                if(tmIds.length){
-                  DataService.alertInfFun('pmt', '此知识点下有试题，禁止删除！');
-                }
-                else{
-                  $http.post(alterZsdUrl, zsdObj).success(function(data){
-                    if(data.result){
-                      DataService.alertInfFun('suc', '删除成功！');
-                      $scope.publicKnowledge.splice(idx, 1);
-                    }
-                    else{
-                      DataService.alertInfFun('err', data.error);
-                    }
-                  });
-                }
-              });
             }
             else{
-              DataService.alertInfFun('err', '请选择要删除知识点！');
+              $scope.adminParams.selectKeMu = '';
             }
           }
+          else{
+            DataService.alertInfFun('pmt', '请选择科目！');
+          }
+        };
+
+        /**
+         * 由所选的知识大纲，得到知识点 --
+         */
+        $scope.getPubDgZsdData = function(dgId){
+          //得到知识大纲知识点的递归函数
+          $scope.adminParams.activeNd = '';
+          var selectDgZsd = [];
+          function _do(item) {
+            var zsdId = item['知识点ID'];
+            selectDgZsd.push(zsdId);
+            $scope.publicKnowledge = Lazy($scope.publicKnowledge).reject(function(pgz){
+              return pgz['知识点ID'] == zsdId;
+            }).toArray();
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          var find = Lazy($scope.allPubZsdgData).find(function(dg){
+            return dg['知识大纲ID'] == dgId;
+          });
+          if(find){
+            Lazy(find['节点']).each(_do);
+            $scope.pubZsdgData = find;
+          }
+          else{
+            $scope.pubZsdgData = '';
+            $scope.adminParams.saveDGBtnDisabled = false;
+            DataService.alertInfFun('pmt', '请选择大纲！');
+          }
+        };
+
+        /**
+         * 添加知识点 --
+         */
+        $scope.dgAddNd = function(nd, ndl) {
+          var newNd = {};
+          newNd['知识点名称'] = '';
+          newNd['子节点'] = [];
+          if(ndl && ndl == 'jd'){
+            nd['节点'] = nd['节点'] || [];
+            nd['节点'].push(newNd);
+          }
+          else{
+            nd['子节点'] = nd['子节点'] || [];
+            nd['子节点'].push(newNd);
+          }
+        };
+
+        /**
+         * 删除知识点 --
+         */
+        $scope.dgRemoveNd = function(parentNd, nd, idx) {
+          function _do(item) {
+            if(item['知识点ID']){
+              var zsd = {
+                '知识点ID': item['知识点ID'],
+                '知识点名称': item['知识点名称'],
+                '领域ID': $scope.adminParams.lastLyId,
+                '学校ID': 0,
+                '类型': 1,
+                '状态': 1
+              };
+              $scope.publicKnowledge.push(zsd);
+            }
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          if(confirm("确定要删除知识点吗？")){
+            _do(nd);
+            //将删除的知识节点添加到公共知识点里
+            if(parentNd['节点'] && parentNd['节点'].length > 0){
+              parentNd['节点'].splice(idx, 1);
+            }
+            else{
+              parentNd['子节点'].splice(idx, 1);
+            }
+          }
+        };
+
+        /**
+         * 那一个输入框被选中了 --
+         */
+        $scope.getInputIndex = function(nd){
+          $scope.adminParams.activeNd = nd;
+        };
+
+        /**
+         * 将公共知识点添加到知识大纲 --
+         */
+        $scope.addToDaGang = function(zsd, idx){
+          $scope.adminParams.activeNd['知识点ID'] = zsd['知识点ID'];
+          $scope.adminParams.activeNd['知识点名称'] = zsd['知识点名称'];
+          $scope.publicKnowledge.splice(idx, 1);
         };
 
         /**
@@ -1214,127 +1045,84 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 新增公共知识大纲
+         * 新增公共知识大纲 --
          */
-        var isAddNewPubDg = false; //是不是新建知识大纲
         $scope.addNewPubDaGang = function(){
-          var jieDianObj = {},
-            selectLyText = $(".daGangLySelect").find("option:selected").text();
-          $scope.dgZsdList = ''; //重置公共知识大纲知识点
-          daGangJieDianData = []; //定义一个大纲节点的数据
-          //保存大纲是用到的第一级子节点
-          jieDianObj.JIEDIAN_ID = '';
-          jieDianObj.ZHISHIDIAN_ID = '';
-          jieDianObj.ZHISHIDIANMINGCHENG = selectLyText + '新建公共知识大纲';
-          jieDianObj.ZHISHIDIAN_LEIXING = 1;
-          jieDianObj.JIEDIANLEIXING = 0;
-          jieDianObj.JIEDIANXUHAO = 1;
-          jieDianObj.ZHUANGTAI = 1;
-          jieDianObj.ZIJIEDIAN = [];
-          jieDianObj.GEN = 1; //表示为跟知识点
-          jieDianObj.JIGOU_ID = 0; //为知识点添加机构ID，admin的机构id为0
-          daGangJieDianData.push(jieDianObj);
-          isAddNewPubDg = true;
-          $scope.dgZsdList = daGangJieDianData;
-
-          //保存大纲其他数据赋值
-          daGangData.shuju.ZHISHIDAGANG_ID = '';
-          daGangData.shuju.ZHISHIDAGANGMINGCHENG = '';
-          daGangData.shuju.DAGANGSHUOMING = selectLyText + '新建公共知识大纲';
-          daGangData.shuju.GENJIEDIAN_ID = '';
-          daGangData.shuju.LEIXING = 1;
-          daGangData.shuju.ZHUANGTAI = 1;
-          daGangData.shuju.ZHUANGTAI2 = 1; //添加了是否是默认大纲的状态的参数
-          daGangData.shuju.JIEDIAN = [];
-
-          //重新加载公共知识点
-          $scope.publicKnowledge = publicKnowledgeData;
+          var pdgObj = {
+            '知识大纲名称': '',
+            '学校ID': 0,
+            '科目ID': '',
+            '类型': 1,
+            '节点': []
+          };
+          if($scope.adminParams.selectKeMu){
+            $scope.publicKnowledge = angular.copy($scope.allPublicZsdData);
+            $scope.adminParams.selected_dg = '请选择大纲';
+            pdgObj['科目ID'] = $scope.adminParams.selectKeMu['科目ID'];
+            $scope.pubZsdgData = pdgObj;
+          }
+          else{
+            DataService.alertInfFun('err', '请选择科目！');
+          }
         };
 
         /**
-         * 保存知识大纲
+         * 保存知识大纲 --
          */
         $scope.saveDaGangData = function() {
-          var countEmpty = true;
           $scope.adminParams.saveDGBtnDisabled = true;
-          function _do(item) {
-            if(!item.LEIXING){
-              item.ZHISHIDIAN_LEIXING = 1;
-            }
-            //item.ZHISHIDIANMINGCHENG = item.ZHISHIDIANMINGCHENG.replace(/\s+/g,"");
-            if(!item.ZHISHIDIANMINGCHENG){
-              countEmpty = false;
-            }
-            if (item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0) {
-              Lazy(item.ZIJIEDIAN).each(_do);
-            }
-          }
-          if($scope.dgZsdList){
-            daGangData.shuju.JIEDIAN = $scope.dgZsdList;
-            daGangData.shuju.ZHISHIDAGANGMINGCHENG = $scope.dgZsdList[0].ZHISHIDIANMINGCHENG;
-            if(!daGangData.shuju.ZHUANGTAI2){
-              daGangData.shuju.ZHUANGTAI2 = 1;
-            }
-            Lazy(daGangData.shuju.JIEDIAN).each(_do);
-            $scope.loadingImgShow = true; //rz_setDaGang.html
-            //保存知识大纲
-            if(countEmpty){
-              $http.post(modifyZsdgUrl, daGangData).success(function(data) {
-                if(data.result){
-                  $scope.loadingImgShow = false; //rz_setDaGang.html
-                  DataService.alertInfFun('suc', '保存成功！');
-                  $scope.getPubDaGangList(dgLyId); //重新查询此领域下的大纲
-                  isDaGangSet = false;
-                  $scope.adminParams.selected_dg = '';
-                  $scope.adminParams.saveDGBtnDisabled = false;
-                }
-                else{
-                  $scope.loadingImgShow = false; //rz_setDaGang.html
-                  $scope.adminParams.saveDGBtnDisabled = false;
-                  DataService.alertInfFun('err', data.error);
-                }
-              });
-            }
-            else{
-              $scope.loadingImgShow = false; //rz_setDaGang.html
-              $scope.adminParams.saveDGBtnDisabled = false;
-              DataService.alertInfFun('pmt', '知识点名称不能为空！');
-            }
+          $scope.loadingImgShow = true;
+          if($scope.pubZsdgData){
+            $scope.pubZsdgData['节点'] = JSON.stringify($scope.pubZsdgData['节点']);
+            var obj = {method:'', url:zhiShiDaGangUrl, data:$scope.pubZsdgData};
+            obj.method = $scope.pubZsdgData['知识大纲ID'] ? 'POST' : 'PUT';
+            console.log(obj);
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.allPubZsdgData = '';
+                $scope.pubZsdgData = '';
+                $scope.getPubDaGangList($scope.adminParams.selectKeMu['科目ID'], 'savedg');
+                DataService.alertInfFun('suc', '大纲保存成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
           }
           else{
-            $scope.loadingImgShow = false; //rz_setDaGang.html
             $scope.adminParams.saveDGBtnDisabled = false;
             DataService.alertInfFun('err', '请选择您要保存的大纲！');
           }
+          $scope.loadingImgShow = false;
         };
 
         /**
          * 删除公共知识大纲
          */
         $scope.deletePublicDaGang = function(){
-          if($scope.adminParams.selected_dg){
-            var pubDgDataObj = {
-              token: token,
-              caozuoyuan: caozuoyuan,
-              zhishidagangid: $scope.adminParams.selected_dg
-            };
-            if(confirm('确定要删除此公共知识大纲吗？')){
-              $http.post(deletePublicDaGangBaseUrl, pubDgDataObj).success(function(data){
-                if(data.result){
-                  DataService.alertInfFun('suc', '删除公共知识大纲成功！');
-                  $scope.pubDaGangList = Lazy($scope.pubDaGangList).reject(function(pdg){
-                    return pdg.ZHISHIDAGANG_ID == $scope.adminParams.selected_dg;
-                  }).toArray();
-                  $scope.adminParams.selected_dg = '';
-                  $scope.dgZsdList = '';
-                  $scope.publicKnowledge = ''; //重置公共知识点
-                }
-                else{
-                  DataService.alertInfFun('err', data.error);
-                }
-              });
-            }
-          }
+          //if($scope.adminParams.selected_dg){
+          //  var pubDgDataObj = {
+          //    token: token,
+          //    caozuoyuan: caozuoyuan,
+          //    zhishidagangid: $scope.adminParams.selected_dg
+          //  };
+          //  if(confirm('确定要删除此公共知识大纲吗？')){
+          //    $http.post(deletePublicDaGangBaseUrl, pubDgDataObj).success(function(data){
+          //      if(data.result){
+          //        DataService.alertInfFun('suc', '删除公共知识大纲成功！');
+          //        $scope.pubDaGangList = Lazy($scope.pubDaGangList).reject(function(pdg){
+          //          return pdg.ZHISHIDAGANG_ID == $scope.adminParams.selected_dg;
+          //        }).toArray();
+          //        $scope.adminParams.selected_dg = '';
+          //        $scope.dgZsdList = '';
+          //        $scope.publicKnowledge = ''; //重置公共知识点
+          //      }
+          //      else{
+          //        DataService.alertInfFun('err', data.error);
+          //      }
+          //    });
+          //  }
+          //}
         };
 
         /**
@@ -1457,11 +1245,14 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
           $scope.loadingImgShow = true;
           $scope.zsdSetZsdData = '';
           $scope.allPublicZsdData = '';
-          //$scope.adminParams.zsdWrapShow = false;
+          $scope.currentPage = '';
+          $scope.pageParam.pageArr = [];
+          $scope.pages = [];
+          $scope.adminParams.zsdWrapShow = false;
           var obj = {method:'GET', url: lingYuUrl};
           $http(obj).success(function(data){
             if(data.result){
-              $scope.isShenHeBox = false; //判断是不是审核页面
+              $scope.isShenHeBox = false;
               $scope.setZsdLingYu = data.data;
               $scope.adminSubWebTpl = 'views/renzheng/rz_setPubZsd.html';
             }
@@ -1473,7 +1264,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 分页处理函数
+         * 分页处理函数 --
          */
         var pageMake = function(data){
           var perNumOfPage = 15; //每页15条数据
@@ -1501,6 +1292,10 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
               }
               else{
                 $scope.allPublicZsdData = '';
+                $scope.zsdSetZsdData = '';
+                $scope.currentPage = '';
+                $scope.pageParam.pageArr = [];
+                $scope.pages = [];
                 DataService.alertInfFun('err', data.error);
               }
             });
@@ -1512,7 +1307,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 公共知识点分页
+         * 公共知识点分页 --
          */
         $scope.publicZsdDist = function(pg){
           var cPg = pg || 1;
@@ -1538,167 +1333,81 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 添加或删除科目IDs --
+         * 显示知识点修改 --
          */
-        //$scope.getKeMuId = function(keMu){
-        //  keMu.ckd = !keMu.ckd;
-        //  if(keMu.ckd){
-        //    $scope.adminParams.selectKeMuIds.push(keMu['科目ID']);
-        //    $scope.adminParams.selectKeMuName.push(keMu['科目名称']);
-        //  }
-        //  else{
-        //    $scope.adminParams.selectKeMuIds = Lazy($scope.adminParams.selectKeMuIds).without(keMu['科目ID']).toArray();
-        //    $scope.adminParams.selectKeMuName = Lazy($scope.adminParams.selectKeMuName).without(keMu['科目名称']).toArray();
-        //  }
-        //};
-
-        /**
-         * 由所选科目查询所对应的知识点 --
-         */
-        //$scope.getKeMuPubZsdData = function(){
-        //  //$scope.adminParams.fakeSelectShow = false;
-        //  $scope.adminParams.pubZsdTabOn = -1;
-        //  $scope.adminParams.zsdWrapShow = false;
-        //  $scope.adminParams.selectZsdId = '';
-        //  if($scope.adminParams.selectKeMuIds && $scope.adminParams.selectKeMuIds.length > 0){
-        //    var obj = {method:'GET', url:zhiShiDianUrl, params:{'领域ID': $scope.adminParams.selectKeMuIds}};
-        //    $http(obj).success(function(data){
-        //      if(data.result){
-        //        $scope.zsdSetZsdData = data.data;
-        //      }
-        //      else{
-        //        DataService.alertInfFun('err', '此科目下没有知识点');
-        //      }
-        //    });
-        //  }
-        //  if($scope.adminParams.selectKeMuName && $scope.adminParams.selectKeMuName.length > 0){
-        //    //$scope.adminParams.fakePlaceHolder = $scope.adminParams.selectKeMuName.join();
-        //  }
-        //  else{
-        //    //$scope.adminParams.fakePlaceHolder = '请选择科目';
-        //  }
-        //};
-
-        /**
-         * 显示知识点的修改页面 --
-         */
-        //$scope.pubZsdTabOn = function(activeIdx, zsdId, zsdName){
-        //  if(zsdId){
-        //    var cxLyOfZsd = cxLyOfZsdBase + zsdId;
-        //    //$scope.adminParams.zsdKeMuArr = [];
-        //    $scope.adminParams.pubZsdTabOn = activeIdx;
-        //    $scope.adminParams.selectZsdId = zsdId;
-        //    $scope.adminParams.zsdOldName = zsdName;
-        //    $scope.adminParams.zsdNewName = zsdName;
-        //    $('input[name="zsdKeMuCb"]').prop('checked', false);
-        //    $http.get(cxLyOfZsd).success(function(kmData){
-        //      if(kmData){
-        //        Lazy(kmData).each(function(km, idx, lst){
-        //          var kmcss = '.keMu' + km.LINGYU_ID;
-        //          $(kmcss).prop('checked', true);
-        //          km.origin = true;
-        //          km.changeStat = false;
-        //          //$scope.adminParams.zsdKeMuArr.push(km);
-        //        });
-        //      }
-        //      else{
-        //        DataService.alertInfFun('err', kmData.error);
-        //      }
-        //    });
-        //    $scope.adminParams.zsdWrapShow = true;
-        //  }
-        //  else{
-        //    //$scope.adminParams.zsdKeMuArr = [];
-        //    $scope.adminParams.selectZsdId = '';
-        //  }
-        //};
-
-        /**
-         * 删除所选的公共知识点
-         */
-        $scope.deletePubZsd = function(){
-          var zsdData = {
-            token: token,
-            caozuoyuan: caozuoyuan,
-            jigouid: 0,
-            lingyuid: 0,
-            shuju:{
-              ZHISHIDIAN_ID: $scope.adminParams.selectZsdId,
-              ZHUANGTAI: -1
-            }
-          };
-          if(zsdData.shuju.ZHISHIDIAN_ID){
-            if(confirm('你确定要删除此知识大纲吗？')){
-              var qryZsdTiMuNum = qryZsdTiMuNumBase + $scope.adminParams.selectZsdId;
-              $http.get(qryZsdTiMuNum).success(function(count){
-                if(count && count.result > 0){
-                  DataService.alertInfFun('pmt', '此知识点下有' + count.result + '道题，因此不能删除此知识点');
-                }
-                else{
-                  $http.post(alterZsdUrl, zsdData).success(function(data){
-                    if(data.result){
-                      //$scope.adminParams.zsdWrapShow = false;
-                      $('input[name="zsdKeMuCb"]').prop('checked', false);
-                      $scope.zsdSetZsdData = Lazy($scope.zsdSetZsdData).reject(function(zsd){
-                        return zsd.ZHISHIDIAN_ID  == data.id;
-                      });
-                      //$scope.adminParams.pubZsdTabOn = -1;
-                      $scope.adminParams.zsdOldName = '';
-                      $scope.adminParams.zsdNewName = '';
-                      DataService.alertInfFun('suc', '删除成功！');
-                    }
-                    else{
-                      DataService.alertInfFun('err', data.error);
-                    }
-                  });
-                }
-              });
-            }
+        $scope.showModifyZsd = function(zsd){
+          $scope.adminParams.zsdWrapShow = true;
+          if(zsd){ //修改知识点
+            $scope.adminParams.selectZsdId = zsd['知识点ID'];
+            $scope.adminParams.zsdOldName = zsd['知识点名称'];
+            $scope.adminParams.zsdNewName = angular.copy(zsd['知识点名称']);
+          }
+          else{ //新增知识点
+            $scope.adminParams.selectZsdId = '';
+            $scope.adminParams.zsdOldName = '';
+            $scope.adminParams.zsdNewName = '';
           }
         };
 
         /**
-         * 提交知识点和科目关系的修改
+         * 删除所选的公共知识点 --
          */
-        $scope.submitZsdKeMuModify = function(){
-          var zsdLingYuObj = {
-            token: token,
-            caozuoyuan: caozuoyuan,
-            jigouid: jigouid,
-            lingyuid: $scope.adminParams.selectLinYuId,
-            shuju: []
-          };
-          Lazy($scope.adminParams.zsdKeMuArr).each(function(sltKm){
-            var mdfObj = {
-              ZHISHIDIAN_ID: $scope.adminParams.selectZsdId,
-              JIGOU_ID: jigouid,
-              LINGYU_ID: '',
-              ZHUANGTAI: ''
-            };
-            if(sltKm.origin){
-              if(sltKm.changeStat){
-                mdfObj.LINGYU_ID = sltKm.LINGYU_ID;
-                mdfObj.ZHUANGTAI = -1;
-                zsdLingYuObj.shuju.push(mdfObj);
-              }
-            }
-            else{
-              mdfObj.LINGYU_ID = sltKm.LINGYU_ID;
-              mdfObj.ZHUANGTAI = 1;
-              zsdLingYuObj.shuju.push(mdfObj);
-            }
-          });
-          if(zsdLingYuObj.shuju.length > 0){
-            $http.post(modifyZsdLy, zsdLingYuObj).success(function(data){
+        $scope.deletePubZsd = function(zsd){
+          if(confirm('你确定要删除此公共点吗？')){
+            var obj = {method:'DELETE', url:zhiShiDianUrl, params:{'知识点ID':zsd['知识点ID']}};
+            $http(obj).success(function(data){
               if(data.result){
-                //$scope.adminParams.zsdWrapShow = false;
+                DataService.alertInfFun('suc', '删除成功！');
               }
               else{
                 DataService.alertInfFun('err', data.error);
               }
             });
           }
+        };
 
+        /**
+         * 修改知识点 --
+         */
+        $scope.modifyPubZsd = function(){
+          var obj = {method:'', url:zhiShiDianUrl, data:''};
+          if($scope.adminParams.selectZsdId && $scope.adminParams.zsdOldName){ //修改知识点
+            if($scope.adminParams.zsdNewName !== $scope.adminParams.zsdOldName){ //名称没变
+              obj.method = 'POST';
+              obj.data = {
+                '知识点ID':$scope.adminParams.selectZsdId,
+                '知识点名称':$scope.adminParams.zsdNewName
+              };
+            }
+            else{
+              DataService.alertInfFun('pmt', '请修改知识点名称！');
+              return ;
+            }
+          }
+          else{ //新增知识点
+            if($scope.adminParams.zsdNewName){
+              obj.method = 'PUT';
+              obj.data = {
+                '知识点名称':$scope.adminParams.zsdNewName,
+                '学校ID':jgID,
+                '领域ID':$scope.adminParams.selectLinYuId,
+                '类型': 1
+              };
+            }
+            else{
+              DataService.alertInfFun('pmt', '请填写知识点名称！');
+              return ;
+            }
+          }
+          $http(obj).success(function(data){
+            if(data.result){
+              $scope.getPublicZsd($scope.adminParams.selectLinYuId);
+              DataService.alertInfFun('suc', '知识点保存成功！');
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
         };
 
         /**
@@ -1720,41 +1429,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 修改知识点
-         */
-        $scope.modifyZsdName = function(){
-          var zsdName = {
-              token: token,
-              caozuoyuan: caozuoyuan,
-              jigouid: 0,
-              lingyuid: 0,
-              shuju: {
-                ZHISHIDIAN_ID: $scope.adminParams.selectZsdId,
-                ZHISHIDIANMINGCHENG: $scope.adminParams.zsdNewName
-              }
-            };
-            //idx = $scope.adminParams.pubZsdTabOn;
-
-          if($scope.adminParams.selectZsdId && $scope.adminParams.zsdNewName &&
-            $scope.adminParams.zsdNewName !== $scope.adminParams.zsdOldName){
-            $http.post(alterZsdUrl, zsdName).success(function(data){
-              if(data.result){
-                if(idx >= 0){
-                  $scope.zsdSetZsdData[idx].ZHISHIDIANMINGCHENG = $scope.adminParams.zsdNewName;
-                }
-                DataService.alertInfFun('suc', '修改成功！');
-              }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-            });
-          }
-          else{
-            DataService.alertInfFun('pmt', '请选择要修改的知识点，并输入新名称！');
-          }
-        };
-
-        /**
          *  扫描设定
          */
         $scope.renderScannerSetTpl = function(){
@@ -1771,30 +1445,30 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         /**
          * 由所选机构，得到相应的科目
          */
-        $scope.getKeMuList = function(jgid){
-          if(jgid){
-            var qryLy = qryLingYuUrl + '&jigouid=' + jgid,
-              dataArr = [];
-            $scope.kemu_list = '';
-            $scope.kaoChangList = '';
-            $scope.scanner.selectInfo.kmid = '';
-            DataService.getData(qryLy).then(function(lyData){
-              Lazy(lyData).each(function(ly, idx, lst){
-                Lazy(ly.CHILDREN).each(function(km, kmIdx, kmLst){
-                  dataArr.push(km);
-                });
-              });
-              $scope.kemu_list = dataArr;
-            });
-          }
-          else{
-            $scope.kemu_list = '';
-            DataService.alertInfFun('pmt', '请选择机构ID');
-          }
-        };
+        //$scope.getKeMuList = function(jgid){
+        //  if(jgid){
+        //    //var qryLy = qryLingYuUrl + '&jigouid=' + jgid,
+        //    //  dataArr = [];
+        //    //$scope.kemu_list = '';
+        //    //$scope.kaoChangList = '';
+        //    //$scope.scanner.selectInfo.kmid = '';
+        //    //DataService.getData(qryLy).then(function(lyData){
+        //    //  Lazy(lyData).each(function(ly, idx, lst){
+        //    //    Lazy(ly.CHILDREN).each(function(km, kmIdx, kmLst){
+        //    //      dataArr.push(km);
+        //    //    });
+        //    //  });
+        //    //  $scope.kemu_list = dataArr;
+        //    //});
+        //  }
+        //  else{
+        //    $scope.kemu_list = '';
+        //    DataService.alertInfFun('pmt', '请选择机构ID');
+        //  }
+        //};
 
         /**
-         * 由所选科目，查询考试组 + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid
+         * 由所选科目，查询考试组
          */
         $scope.getKaoShiZuList = function(kmId){
           var kaoShiZuListUrl = qryKaoShiZuListUrl;
@@ -1985,5 +1659,5 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
 
-    }]);
+      }]);
 });
