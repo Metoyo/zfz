@@ -1,6 +1,5 @@
 define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular, config, datepicker, $, lazy) {
   'use strict';
-
   angular.module('zhifzApp.controllers.UserCtrl', [])
     .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService',
       function ($rootScope, $scope, $http, $location, DataService) {
@@ -44,9 +43,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
         var zhiShiDianUrl = '/zhishidian'; //知识点
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
-        var loginUsr = $rootScope.loginUsr;
-        var jgID = loginUsr['学校ID'] || 0; //登录用户学校
-        var logUid = loginUsr.UID; //登录用户的UID
+        var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
+        var jgID = loginUsr['学校ID']; //登录用户学校
+        var logUid = loginUsr['UID']; //登录用户的UID
         $scope.shenheList = [];
         $scope.isShenHeBox = true; //判断是不是审核页面
         $scope.adminParams = {

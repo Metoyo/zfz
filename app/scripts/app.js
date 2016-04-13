@@ -79,13 +79,25 @@ define([
          */
         $rootScope.$on("$locationChangeStart", function (event, next, current) {
           var routes = config.routes;
-          var  nextUrlPattern;
-          var  nextRoute;
-          var  currentUrlParser = document.createElement('a'); // 使用浏览器内置的a标签进行url的解析判断
-          var  nextUrlParser = document.createElement('a');
-          var  nextPath;
-          var  currentPath;
-          //var  session = {
+          var nextUrlPattern;
+          var nextRoute;
+          var currentUrlParser = document.createElement('a'); // 使用浏览器内置的a标签进行url的解析判断
+          var nextUrlParser = document.createElement('a');
+          var nextPath;
+          var currentPath;
+          var urlArr = $cookieStore.get('ckUrl');
+          var lgUsr = $cookieStore.get('ckUsr');
+          var loginUsr = '';
+          if(urlArr && urlArr.length > 0){
+            $rootScope.urlArrs = JSON.parse(urlArr);
+          }
+          else{
+            $rootScope.urlArrs = [];
+          }
+          if(lgUsr){
+            loginUsr = JSON.parse(lgUsr);
+          }
+          //var session = {
           //    defaultLyId: '',
           //    defaultLyName: '',
           //    quanxianStr: '',
@@ -130,8 +142,7 @@ define([
           //}
           currentUrlParser.href = current; // current为当前的url地址
           nextUrlParser.href = next; // next为即将要访问的url地址
-          if (currentUrlParser.protocol === nextUrlParser.protocol
-            && currentUrlParser.host === nextUrlParser.host) { // 确保current与next的url地址都是属于同一个网站的链接地址
+          if (currentUrlParser.protocol === nextUrlParser.protocol && currentUrlParser.host === nextUrlParser.host) { // 确保current与next的url地址都是属于同一个网站的链接地址
             nextPath = nextUrlParser.hash.substr(1); // 因为我们使用的是hash即#开头的浏览器端路由， 在这儿解析的时候要去掉#
             /**
              * 测试即将要访问的路由是否已经在我们的angular.js程序中定义
@@ -151,11 +162,11 @@ define([
               /**
                * 判断即将要访问的路由是否需要登陆验证， 并且确保如果当前用户没有登陆的话，将用户重定向至登陆界面
                */
-              //if (nextRoute && nextRoute.requireLogin && !($rootScope.session && $rootScope.session.info)) {
-              //  event.preventDefault(); // 取消访问下一个路由地址
-              //  currentPath = $location.$$path;
-              //  urlRedirect.goTo(currentPath, '/renzheng');
-              //}
+              if (nextRoute && nextRoute.requireLogin && !(loginUsr['UID'] >= 0)) {
+                event.preventDefault(); // 取消访问下一个路由地址
+                currentPath = $location.$$path;
+                urlRedirect.goTo(currentPath, '/renzheng');
+              }
             }
           }
         });

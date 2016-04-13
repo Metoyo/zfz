@@ -16,7 +16,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           userName: '',
           password: ''
         };
-        //var session = {};
         var urlArr = [];
         var currentPath = $location.$$path;
         var checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token; //检测用户是否存在的url
@@ -24,8 +23,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         var resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
         var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目URL
         var module = config.moduleObj;
-
-        //$rootScope.session = session;
         $scope.login = login;
         $scope.stuLogin = stuLogin;
         $rootScope.isPromiseAlterOthersTimu = false;
@@ -71,12 +68,18 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           config.userJs = '';
           $http.get(loginUrl).success(function(data){
             if(data.result){
+              var usrInfo = { //登录用户的cookies
+                UID: data.data['UID'],
+                '学校ID': data.data['学校ID']
+              };
+              $cookieStore.put('ckUsr', JSON.stringify(usrInfo));
               if(data.data['用户类别'] == 2){ //判断是否是学生
                 urlArr.push(module[6]);
                 urlArr.push(module[7]);
                 urlArr.push(module[8]);
                 $rootScope.loginUsr = data.data;
                 $rootScope.urlArrs = urlArr;
+                $cookieStore.put('ckUrl', JSON.stringify(urlArr));
               }
               else{
                 var qxArr = Lazy(data.data['权限']).reject(function(qx){ //去除阅卷组长4，助教5的权限
@@ -141,6 +144,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           var kmId = km['科目ID'];
           var usr = $rootScope.loginUsr;
           var jsArr = [];
+          $rootScope.defaultKm = km;
+          $cookieStore.put('ckKeMu', JSON.stringify(km));
           Lazy(usr['权限']).each(function(qx){
             if(qx['科目ID'] == kmId){
               jsArr.push(qx['角色ID']);
@@ -150,15 +155,15 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           var rkjsQx = Lazy(jsArr).contains(3); //判断任课教师
           if(kmfzrQx){ //科目负责人有全部模块
             for(var i = 0; i < 6; i++){
-              $rootScope.urlArrs.push(module[i]);
+              urlArr.push(module[i]);
             }
             urlRedirect.goTo(currentPath, '/mingti');
           }
           else{
             if(rkjsQx){ //任课教师模块
-              $rootScope.urlArrs.push(module[1]);
-              $rootScope.urlArrs.push(module[2]);
-              $rootScope.urlArrs.push(module[4]);
+              urlArr.push(module[1]);
+              urlArr.push(module[2]);
+              urlArr.push(module[4]);
               urlRedirect.goTo(currentPath, '/mingti');
             }
             else{
@@ -166,6 +171,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               DataService.alertInfFun('err', '您没有权限查看相应的权限！');
             }
           }
+          $rootScope.urlArrs = urlArr;
+          $cookieStore.put('ckUrl', JSON.stringify(urlArr));
         };
 
         /**

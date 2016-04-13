@@ -3,7 +3,7 @@
   <div id="dagangListWrap" class="subDashboard">
     <div class="plr10">
       <h2 class="sdb-title">科目名称</h2>
-      <p ng-bind="session.defaultLyName" class="sdb-cont cYell"></p>
+      <p ng-bind="defaultKeMu['科目名称']" class="sdb-cont cYell"></p>
     </div>
     <div class="plr10">
       <h2 class="sdb-title">题库默认大纲</h2>
@@ -63,8 +63,8 @@
                  ng-class="{active:txSelectenIdx == 0}">全部题型</a>
             </li>
             <li ng-repeat="kmtx in kmtxList">
-              <a href="javascript:void(0)" ng-click="getTiXingId(kmtx.TIXING_ID)"
-                 ng-class="{active:txSelectenIdx == kmtx.TIXING_ID}">{{ kmtx.TIXINGMINGCHENG }}</a>
+              <a href="javascript:void(0)" ng-click="getTiXingId(kmtx['题型ID'])"
+                 ng-class="{active:txSelectenIdx == kmtx['题型ID']}">{{kmtx['题型名称']}}</a>
             </li>
           </ul>
         </div>

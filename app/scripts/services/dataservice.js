@@ -79,9 +79,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $http.get(paramUrl).success(function(data){
           if(data.result){
             delete $rootScope.session;
-            //$cookieStore.remove('logged');
-            //$cookieStore.remove('lingyuCk');
-            //$cookieStore.remove('lastUrl');
+            $cookieStore.remove('ckUrl');
+            $cookieStore.remove('ckKeMu');
+            $cookieStore.remove('ckUsr');
             //$cookieStore.remove('quanXianCk');
             config.userJs = '';
             $rootScope.loginUsr = '';
