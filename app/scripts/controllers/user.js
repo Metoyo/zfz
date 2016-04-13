@@ -15,8 +15,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var jigouid = 0;
         var lingyuid = 0;
         var qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
-        var isDaGangSet = false; //是否是大纲设置
-        var isLingYuSet = false; //是否是领域设置
         var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='+ caozuoyuan; //查询考试列表的url
         var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询考试
         var scannerBaseUrl = baseSmAPIUrl + 'yuejuan/transfer_from_omr?omr_set='; //扫描的url
@@ -187,21 +185,9 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 关闭审核页面
+         * 关闭审核页面 --
          */
         $scope.closeShenheBox = function() {
-          if(isDaGangSet){
-            if(confirm('您将要退出大纲设置，是否保存当前大纲？')){
-              $scope.saveDaGangData();
-            }
-          }
-          if(isLingYuSet){
-            if(confirm('您将要退出领域设置，是否保存当前领域？')){
-              $scope.saveLingYuChange();
-            }
-          }
-          isDaGangSet = false; //是否是大纲设置
-          isLingYuSet = false; //是否是领域设置
           $scope.adminSubWebTpl = '';
           $scope.isShenHeBox = true; //判断是不是审核页面
         };
@@ -466,17 +452,6 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          */
         $scope.closeManageAdmin = function(){
           $scope.isAddNewAdminBoxShow = false;
-        };
-
-        /**
-         * 重置机构管理员密码
-         */
-        $scope.resetJgAdminName = function(adm){
-          var psw="";
-          for(var i = 0; i < 6; i++)
-          {
-            psw += Math.floor(Math.random()*10);
-          }
         };
 
         /**
@@ -938,6 +913,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         $scope.getPubDgZsdData = function(dgId){
           //得到知识大纲知识点的递归函数
           $scope.adminParams.activeNd = '';
+          $scope.adminParams.selected_dg = dgId;
           var selectDgZsd = [];
           function _do(item) {
             var zsdId = item['知识点ID'];
@@ -1032,15 +1008,14 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          * 当输入介绍后检查公共知识大纲中是否已经存在知识点
          */
         $scope.compareInputVal = function(nd){
-          var str  = nd.ZHISHIDIANMINGCHENG;
-          str = str.replace(/\s+/g,"");
-          var result = Lazy($scope.publicKnowledge).findWhere({ ZHISHIDIANMINGCHENG: str });
-          if(result){
-            nd.ZHISHIDIAN_ID = result.ZHISHIDIAN_ID;
-            nd.ZHISHIDIANMINGCHENG = result.ZHISHIDIANMINGCHENG;
-            $scope.publicKnowledge = Lazy($scope.publicKnowledge).reject(function(pkg){
-              return pkg.ZHISHIDIAN_ID == result.ZHISHIDIAN_ID;
-            }).toArray();
+          var zsdName = nd['知识点名称'];
+          if(zsdName){
+            var find = Lazy($scope.publicKnowledge).find(function(zsd){
+              return zsd['知识点名称'] == zsdName;
+            });
+            if(find){
+              DataService.alertInfFun('pmt', '您输入的知识点名称与已有知识点名称相同！请修改！');
+            }
           }
         };
 
@@ -1100,29 +1075,25 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
          * 删除公共知识大纲
          */
         $scope.deletePublicDaGang = function(){
-          //if($scope.adminParams.selected_dg){
-          //  var pubDgDataObj = {
-          //    token: token,
-          //    caozuoyuan: caozuoyuan,
-          //    zhishidagangid: $scope.adminParams.selected_dg
-          //  };
-          //  if(confirm('确定要删除此公共知识大纲吗？')){
-          //    $http.post(deletePublicDaGangBaseUrl, pubDgDataObj).success(function(data){
-          //      if(data.result){
-          //        DataService.alertInfFun('suc', '删除公共知识大纲成功！');
-          //        $scope.pubDaGangList = Lazy($scope.pubDaGangList).reject(function(pdg){
-          //          return pdg.ZHISHIDAGANG_ID == $scope.adminParams.selected_dg;
-          //        }).toArray();
-          //        $scope.adminParams.selected_dg = '';
-          //        $scope.dgZsdList = '';
-          //        $scope.publicKnowledge = ''; //重置公共知识点
-          //      }
-          //      else{
-          //        DataService.alertInfFun('err', data.error);
-          //      }
-          //    });
-          //  }
-          //}
+          if(confirm('你确定要删除此公共大纲吗？')){
+            var obj = {method:'POST', url:zhiShiDaGangUrl, data:{'知识大纲ID': '', '状态': -1}};
+            if($scope.adminParams.selected_dg){
+              obj.data['知识大纲ID'] = $scope.adminParams.selected_dg;
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.getPubDaGangList($scope.adminParams.selectKeMu['科目ID'], 'savedg');
+                  DataService.alertInfFun('suc', '删除成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('err', '请选择要删出的大纲');
+            }
+
+          }
         };
 
         /**
@@ -1219,22 +1190,31 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         /**
          * 修改管理员的密码 --
          */
-        $scope.modifyAdminPassWord = function(){
-          var obj = {method: 'POST', url: yongHuUrl, data: {UID: logUid, '密码': ''}};
-          if($scope.adminParams.newPsd){
-            obj.data['密码'] = $scope.adminParams.newPsd;
-            $http(obj).success(function(data){
-              if(data.result){
-                DataService.alertInfFun('suc', '密码修改成功!');
-              }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-            });
+        $scope.modifyAdminPassWord = function(adm){
+          var obj = {method: 'POST', url: yongHuUrl, data: {UID:'', '密码':''}};
+          if(adm){
+            obj.data.UID = adm['UID'];
+            obj.data['密码'] = 'tat12345';
           }
           else{
-            DataService.alertInfFun('pmt', '请输入新密码！');
+            obj.data.UID = logUid;
+            if($scope.adminParams.newPsd){
+              obj.data['密码'] = $scope.adminParams.newPsd;
+            }
+            else{
+              DataService.alertInfFun('pmt', '请输入新密码！');
+              return ;
+            }
           }
+          $http(obj).success(function(data){
+            if(data.result){
+              DataService.alertInfFun('suc', '密码修改成功!');
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+
         };
 
         /**
@@ -1443,29 +1423,29 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         };
 
         /**
-         * 由所选机构，得到相应的科目
+         * 由所选机构，得到相应的科目，扫描设定
          */
-        //$scope.getKeMuList = function(jgid){
-        //  if(jgid){
-        //    //var qryLy = qryLingYuUrl + '&jigouid=' + jgid,
-        //    //  dataArr = [];
-        //    //$scope.kemu_list = '';
-        //    //$scope.kaoChangList = '';
-        //    //$scope.scanner.selectInfo.kmid = '';
-        //    //DataService.getData(qryLy).then(function(lyData){
-        //    //  Lazy(lyData).each(function(ly, idx, lst){
-        //    //    Lazy(ly.CHILDREN).each(function(km, kmIdx, kmLst){
-        //    //      dataArr.push(km);
-        //    //    });
-        //    //  });
-        //    //  $scope.kemu_list = dataArr;
-        //    //});
-        //  }
-        //  else{
-        //    $scope.kemu_list = '';
-        //    DataService.alertInfFun('pmt', '请选择机构ID');
-        //  }
-        //};
+        $scope.getKeMuList = function(jgid){
+          if(jgid){
+            //var qryLy = qryLingYuUrl + '&jigouid=' + jgid,
+            //  dataArr = [];
+            //$scope.kemu_list = '';
+            //$scope.kaoChangList = '';
+            //$scope.scanner.selectInfo.kmid = '';
+            //DataService.getData(qryLy).then(function(lyData){
+            //  Lazy(lyData).each(function(ly, idx, lst){
+            //    Lazy(ly.CHILDREN).each(function(km, kmIdx, kmLst){
+            //      dataArr.push(km);
+            //    });
+            //  });
+            //  $scope.kemu_list = dataArr;
+            //});
+          }
+          else{
+            $scope.kemu_list = '';
+            DataService.alertInfFun('pmt', '请选择机构ID');
+          }
+        };
 
         /**
          * 由所选科目，查询考试组
