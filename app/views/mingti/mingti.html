@@ -7,38 +7,42 @@
     </div>
     <div class="plr10">
       <h2 class="sdb-title">题库默认大纲</h2>
-      <p ng-bind="dgList[0].ZHISHIDAGANGMINGCHENG" class="sdb-cont-dg cYell"></p>
+      <select class="form-control" ng-model="mingTiParam.slt_dg" ng-change="getDgZsdData(mingTiParam.slt_dg)"
+              ng-options="dg['知识大纲ID'] as dg['知识大纲名称'] for dg in dgList">
+        <option value="">请选择大纲</option>
+      </select>
+      <!--<p ng-bind="kowledgeList['知识大纲名称']" class="sdb-cont-dg cYell"></p>-->
     </div>
     <div class="pointTree">
       <ul class="list-unstyled levelOne" id="daGangList">
-        <li ng-repeat="zsd in kowledgeList">
-          <div class="foldBtn pull-left" ng-class="{unfoldBtn: zsd.fld}" ng-show="zsd.ZIJIEDIAN.length" ng-click="toggleChildNode(zsd)"></div>
+        <li ng-repeat="zsd in kowledgeList['节点']">
+          <div class="foldBtn pull-left" ng-class="{unfoldBtn: zsd.fld}" ng-show="zsd['子节点'].length" ng-click="toggleChildNode(zsd)"></div>
           <div class="checkbox">
-            <label>{{zsd.ZHISHIDIANMINGCHENG}}</label>
+            <label>{{zsd['知识点名称']}}</label>
           </div>
           <ul class="list-unstyled" ng-show="zsd.fld">
-            <li ng-repeat="nd2 in zsd.ZIJIEDIAN">
-              <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd2.fld}" ng-show="nd2.ZIJIEDIAN.length" ng-click="toggleChildNode(nd2)"></div>
+            <li ng-repeat="nd2 in zsd['子节点']">
+              <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd2.fld}" ng-show="nd2['子节点'].length" ng-click="toggleChildNode(nd2)"></div>
               <div class="checkbox">
                 <label><input type="checkbox" name="point" ng-checked="nd2.ckd" ng-click="toggleSelection(nd2)"/>
-                  {{nd2.ZHISHIDIANMINGCHENG}}
+                  {{nd2['知识点名称']}}
                 </label>
               </div>
               <ul class="list-unstyled" ng-show="nd2.fld">
-                <li ng-repeat="nd3 in nd2.ZIJIEDIAN">
-                  <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd3.fld}" ng-show="nd3.ZIJIEDIAN.length" ng-click="toggleChildNode(nd3)"></div>
+                <li ng-repeat="nd3 in nd2['子节点']">
+                  <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd3.fld}" ng-show="nd3['子节点'].length" ng-click="toggleChildNode(nd3)"></div>
                   <div class="checkbox">
                     <label>
                       <input type="checkbox" name="point" ng-checked="nd3.ckd" ng-click="toggleSelection(nd3)"/>
-                      {{nd3.ZHISHIDIANMINGCHENG}}
+                      {{nd3['知识点名称']}}
                     </label>
                   </div>
                   <ul class="list-unstyled levelFour" ng-show="nd3.fld">
-                    <li ng-repeat="nd4 in nd3.ZIJIEDIAN">
+                    <li ng-repeat="nd4 in nd3['子节点']">
                       <div class="checkbox">
                         <label>
                           <input type="checkbox" name="point" ng-checked="nd4.ckd" ng-click="toggleSelection(nd4)"/>
-                          {{nd4.ZHISHIDIANMINGCHENG}}
+                          {{nd4['知识点名称']}}
                         </label>
                       </div>
                     </li>

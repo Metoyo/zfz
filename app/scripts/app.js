@@ -97,49 +97,6 @@ define([
           if(lgUsr){
             loginUsr = JSON.parse(lgUsr);
           }
-          //var session = {
-          //    defaultLyId: '',
-          //    defaultLyName: '',
-          //    quanxianStr: '',
-          //    info: {},
-          //    userInfo: {}
-          //  };
-          //cookies 代码
-          //$cookieStore.put('lastUrl', current);
-          //var loggedInfo = $cookieStore.get('logged'),
-          //  lastUrl = $cookieStore.get('lastUrl'),
-          //  quanXianIds = $cookieStore.get('quanXianCk'),
-          //  tiKuInfo = $cookieStore.get('tiKuCk'),
-          //  isKeMuManage,
-          //  myUrl = $cookieStore.get('myUrlCk');
-          //$rootScope.urlArrs = myUrl.myUrl;
-          //if (quanXianIds) {
-          //  if (quanXianIds.quanXianId && quanXianIds.quanXianId.length > 0) {
-          //    isKeMuManage = Lazy(quanXianIds.quanXianId).contains('2032');
-          //  }
-          //}
-          //if (loggedInfo && loggedInfo.UID) {
-          //  $rootScope.session = session;
-          //  $rootScope.session.defaultLyId = loggedInfo.defaultLyId;
-          //  $rootScope.session.defaultLyName = loggedInfo.defaultLyName;
-          //  $rootScope.session.quanxianStr = loggedInfo.quanxianStr;
-          //  $rootScope.session.info.UID = loggedInfo.UID;
-          //  $rootScope.session.info.XINGMING = loggedInfo.XINGMING;
-          //  $rootScope.session.userInfo.UID = loggedInfo.UID;
-          //  $rootScope.session.userInfo.XINGMING = loggedInfo.XINGMING;
-          //  $rootScope.session.userInfo.JIGOU = loggedInfo.JIGOU;
-          //  $rootScope.session.userInfo.JUESE = loggedInfo.JUESE;
-          //  $rootScope.session.userInfo.xuehao = loggedInfo.xuehao;
-          //}
-          //if (tiKuInfo && $rootScope.session) {
-          //  $rootScope.session.defaultTiKuLyId = tiKuInfo.tkLingYuId;
-          //}
-          //if (isKeMuManage) { //判断科目负责人
-          //  $rootScope.isPromiseAlterOthersTimu = true;
-          //}
-          //else {
-          //  $rootScope.isPromiseAlterOthersTimu = false;
-          //}
           currentUrlParser.href = current; // current为当前的url地址
           nextUrlParser.href = next; // next为即将要访问的url地址
           if (currentUrlParser.protocol === nextUrlParser.protocol && currentUrlParser.host === nextUrlParser.host) { // 确保current与next的url地址都是属于同一个网站的链接地址
