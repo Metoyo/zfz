@@ -148,7 +148,6 @@ define( "config", [], function () {
     videoType: ['.ogv', '.mp4', '.avi', '.mkv', '.wmv'],
     audioType: ['.ogg', '.mp3', '.wav'],
     uploadFileSizeLimit: 2097152, //上传文件的大小限制2MB
-    userJs: '', //用户角色
     loginUsr: '' //登录用户
   };
 });

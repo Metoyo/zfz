@@ -1,8 +1,8 @@
 define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
   'use strict';
   angular.module('zhifzApp.controllers.UserCtrl', [])
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService', '$cookieStore',
-      function ($rootScope, $scope, $http, $location, DataService, $cookieStore) {
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService', '$cookieStore', 'urlRedirect',
+      function ($rootScope, $scope, $http, $location, DataService, $cookieStore, urlRedirect) {
         /**
          * 定义变量
          */
@@ -47,6 +47,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
+        var jsArr = JSON.parse($cookieStore.get('ckJs'));
         $scope.shenheList = [];
         $scope.isShenHeBox = true; //判断是不是审核页面
         $scope.adminParams = {
@@ -68,18 +69,27 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
         $scope.scanner = scannerInfo;
         $scope.cnNumArr = config.cnNumArr; //题支的序号
+        $scope.usrInfo = loginUsr;
 
         /**
          * 导向本页面时，判读展示什么页面，admin, xxgly --
          */
-        switch (config.userJs[0]){
-          case 0:
+        var goToWhere = function(){
+          var find0 = Lazy(jsArr).contains(0); //学校管理员
+          var find1 = Lazy(jsArr).contains(1); //机构管理员
+          if(find0){
             $scope.shenHeTpl = 'views/renzheng/rz_admin.html';
-            break;
-          case 1:
-            $scope.shenHeTpl = 'views/renzheng/rz_xxgly.html';
-            break;
-        }
+          }
+          else{
+            if(find1){
+              $scope.shenHeTpl = 'views/renzheng/rz_xxgly.html';
+            }
+            else{
+              urlRedirect.goTo($location.$$path, '/renzheng');
+            }
+          }
+        };
+        goToWhere();
 
         /**
          * 退出程序 --

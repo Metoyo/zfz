@@ -65,19 +65,19 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.signIn = function() {
           var loginUrl = '/login?用户名=' + login.userName + '&密码=' + login.password;
           urlArr = [];
-          config.userJs = '';
           $http.get(loginUrl).success(function(data){
             if(data.result){
               var usrInfo = { //登录用户的cookies
                 UID: data.data['UID'],
-                '学校ID': data.data['学校ID']
+                '学校ID': data.data['学校ID'],
+                '用户名': data.data['用户名']
               };
               $cookieStore.put('ckUsr', JSON.stringify(usrInfo));
               if(data.data['用户类别'] == 2){ //判断是否是学生
                 urlArr.push(module[6]);
                 urlArr.push(module[7]);
                 urlArr.push(module[8]);
-                $rootScope.loginUsr = data.data;
+                config.loginUsr = data.data;
                 $rootScope.urlArrs = urlArr;
                 $cookieStore.put('ckUrl', JSON.stringify(urlArr));
               }
@@ -86,7 +86,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   return qx['角色ID'] == 4 || qx['角色ID'] == 5;
                 }).toArray();
                 data.data['权限'] = qxArr;
-                $rootScope.loginUsr = data.data;
+                config.loginUsr = data.data;
                 if(qxArr && qxArr.length > 0){ //判断是否通过审批
                   var lyTpArr = [], kmTpArr = [], jsTpArr = [], lyArr = '', kmArr = '', jsArr = '';
                   Lazy(qxArr).each(function(qx){
@@ -99,9 +99,9 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   jsArr = Lazy(jsTpArr).sortBy(function(js){ return js; }).uniq().toArray(); //得到角色的数组
                   var adminQx = Lazy(jsArr).contains(0); //判断系统管理员
                   var xxglyQx = Lazy(jsArr).contains(1); //判断学校管理员
+                  $cookieStore.put('ckJs', JSON.stringify(jsArr));
                   if(adminQx || xxglyQx){ //判断管理员
                     var navUrl = '/user/' + data.data['用户名']; //导向的URL
-                    config.userJs = jsArr;
                     urlRedirect.goTo(currentPath, navUrl);
                   }
                   else{
@@ -142,7 +142,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          */
         $scope.moduleMake = function(km){
           var kmId = km['科目ID'];
-          var usr = $rootScope.loginUsr;
+          var usr = config.loginUsr;
           var jsArr = [];
           $rootScope.defaultKm = km;
           $cookieStore.put('ckKeMu', JSON.stringify(km));
