@@ -1,0 +1,40 @@
+<h4>题库管理</h4>
+<div class="dagangInput">
+  <table class="table table-bordered">
+    <tr>
+      <th>领域</th>
+      <th>题库</th>
+      <th>操作</th>
+    </tr>
+    <tr ng-repeat="tk in tiKuList">
+      <td ng-bind="tk['领域名称']"></td>
+      <td>
+        <p class="bdb plr10" ng-repeat="tkInfo in tk['题库']">
+          <span ng-bind="tkInfo['题库名称']"></span>
+          <a href="javascript:void(0)" title="删除" class="pull-right ml15 co676767" ng-click="deleteTiKu($index, tk, tkInfo)">
+            <span class="glyphicon glyphicon-trash"></span>
+          </a>
+          <a href="javascript:void(0)" title="修改" class="pull-right" ng-click="alterTiKu(tkInfo)">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </p>
+      </td>
+      <td>
+        <a href="javascript:void(0)" ng-click="addTiKu(tk)">新增题库</a>
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="popup-wrap popup-wrap-350" ng-show="tkSetPageShow">
+  <div class="popup-wrap-inner no-header">
+    <div class="pwi-body">
+      <div class="form-group">
+        <input type="text" class="form-control wp90 mlp5 mt65" ng-model="tiKuSet.name">
+      </div>
+    </div>
+    <div class="pwi-footer plr10 text-center">
+      <button type="button" class="btn btn-danger mt5" ng-click="closeAddTkPage()">取消</button>
+      <button type="button" class="btn btn-primary mt5 ml15" ng-click="saveAddTk()">确定</button>
+    </div>
+  </div>
+</div>

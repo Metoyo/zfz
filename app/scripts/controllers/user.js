@@ -1,8 +1,8 @@
-define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular, config, datepicker, $, lazy) {
+define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
   'use strict';
   angular.module('zhifzApp.controllers.UserCtrl', [])
-    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService',
-      function ($rootScope, $scope, $http, $location, DataService) {
+    .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService', '$cookieStore',
+      function ($rootScope, $scope, $http, $location, DataService, $cookieStore) {
         /**
          * 定义变量
          */
@@ -43,6 +43,7 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
         var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
         var zhiShiDianUrl = '/zhishidian'; //知识点
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
+        var tiKuUrl = '/tiku'; //题库
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
@@ -1405,6 +1406,91 @@ define(['angular', 'config', 'datepicker', 'jquery', 'lazy'], function (angular,
               DataService.alertInfFun('err', data.error);
             }
           });
+        };
+
+        /**
+         * 题库管理 --
+         */
+        $scope.renderTiKu = function(){
+          $scope.tiKuList = '';
+          $scope.tkSetPageShow = false;
+          $scope.tiKuSet = {name: ''};
+          var objLy = {method: 'GET', url: lingYuUrl, params: {'学校ID': jgID}};
+          $http(objLy).success(function(xxLy){ //查询学校领域
+            if(xxLy.result){
+              var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID}};
+              $http(obj).success(function(tiku){ //得到题目
+                if(tiku.result){
+                  var distTkByLy = Lazy(tiku.data).groupBy('领域ID').toObject();
+                  Lazy(xxLy.data).each(function(ly){
+                    var tkArr = distTkByLy[ly['领域ID']];
+                    if(tkArr && tkArr.length > 0){
+                      ly['题库'] = tkArr;
+                    }
+                    else{
+                      ly['题库'] = [];
+                    }
+                    $scope.tiKuList = xxLy.data;
+                    console.log(xxLy.data);
+                  });
+                  $scope.isShenHeBox = false; //判断是不是审核页面
+                  $scope.adminSubWebTpl = 'views/renzheng/rz_setTiKu.html';
+                }
+                else{
+                  DataService.alertInfFun('err', tiku.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('err', xxLy.error);
+            }
+          });
+        };
+
+        /**
+         * 新增题库 --
+         */
+        $scope.addTiKu = function(){
+          $scope.tkSetPageShow = true;
+        };
+
+        /**
+         * 删除题库 --
+         */
+        $scope.deleteTiKu = function(){
+
+        };
+
+        /**
+         * 修改题库 --
+         */
+        $scope.alterTiKu = function(){
+          $scope.tkSetPageShow = true;
+        };
+
+        /**
+         * 保存题库 --
+         */
+        $scope.saveAddTk = function(){
+          var obj = {method:'', url:tiKuUrl};
+          $http(obj).success(function(data){
+            if(data.result){
+
+              $scope.tkSetPageShow = false;
+              $scope.tiKuSet.name = '';
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
+
+        /**
+         * 取消题库添加页 --
+         */
+        $scope.closeAddTkPage = function(){
+          $scope.tkSetPageShow = false;
+          $scope.tiKuSet.name = '';
         };
 
         /**
