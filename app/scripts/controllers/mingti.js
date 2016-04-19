@@ -85,6 +85,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
         var tiMuUrl = '/timu'; //题目的URL
+        var luTiRenUrl = '/lutiren'; //录题人
+        var chuTiRenUrl = '/chutiren'; //出题人
         var tiMuIdArr = []; //获得查询题目ID的数组
         var pageArr = []; //根据得到的数据定义一个分页数组
         var qryTmPar = { //查询题目参数对象
@@ -114,7 +116,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           isFirstEnterMingTi: true,
           tiMuLaiYuan: '', //存放题目来源的数据
           panDuanDaAn: '', //判断题的答案
-          slt_dg: '' //默认大纲
+          slt_dg: '', //默认大纲
+          tiMuLen: '' //题目数量
         };
         $scope.tiXingIdArr = [ //题型转换数组
           {txId: 9, txName: '计算题'},
@@ -125,6 +128,33 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           lastPage: '',
           pageArr: []
         };
+        $scope.nanDuList = [
+          {
+            '难度ID': 1,
+            '难度名称': '容易',
+            ckd: false
+          },
+          {
+            '难度ID': 2,
+            '难度名称': '较易',
+            ckd: false
+          },
+          {
+            '难度ID': 3,
+            '难度名称': '一般',
+            ckd: false
+          },
+          {
+            '难度ID': 4,
+            '难度名称': '较难',
+            ckd: false
+          },
+          {
+            '难度ID': 5,
+            '难度名称': '困难',
+            ckd: false
+          }
+        ];
 
         /**
          * 查询科目题型 --
@@ -202,120 +232,117 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         /**
          * 点击展开和收起的按钮子一级显示和隐藏
          */
-//        $scope.toggleChildNode = function(nd) {
-//          function _do(item) {
-//            item.fld = nd.fld;
-//            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-//              Lazy(item.ZIJIEDIAN).each(_do);
-//            }
-//          }
-//          nd.fld = !nd.fld;
-//          Lazy(nd.ZIJIEDIAN).each(_do);
-//        };
-//
-//        /**
-//         整理选中的知识点的ID和名称
-//         */
-//        var selectZsdFun = function(){ //用于将选择的知识点变成字符串
-//          var zsdName = [];
-//          var zsdNameStr = '';
-//          selectZsd = [];
-//          function _do(item) {
-//            if(item.ckd){
-//              selectZsd.push(item.ZHISHIDIAN_ID);
-//              zsdName.push(item.ZHISHIDIANMINGCHENG);
-//            }
-//            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-//              Lazy(item.ZIJIEDIAN).each(_do);
-//            }
-//          }
-//          Lazy($scope.kowledgeList[0].ZIJIEDIAN).each(_do);
-//          zhishidian_id = selectZsd.toString();
-//          zsdNameStr = zsdName.join('】【');
-//          $scope.selectZhiShiDian = zsdNameStr;
-//        };
-//
-//        /**
-//         点击checkbox得到checkbox的值
-//         */
-//        $scope.toggleSelection = function(zsd) {
-//          function _do(item) {
-//            item.ckd = zsd.ckd;
-//            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-//              Lazy(item.ZIJIEDIAN).each(_do);
-//            }
-//          }
-//          if($scope.kmTxWrap){ //查题阶段
-//            zsd.ckd = !zsd.ckd;
-//            Lazy(zsd.ZIJIEDIAN).each(_do);
-//            selectZsdFun();
-//            $scope.qryTestFun();
-//          }
-//          else{ //出题阶段
-//            zsd.ckd = !zsd.ckd;
-//            Lazy($scope.kowledgeList[0].ZIJIEDIAN).each(function(nd2){
-//              if(nd2.ZHISHIDIAN_ID == zsd.ZHISHIDIAN_ID){
-//                $scope.kowledgeList[0].ckd = zsd.ckd;
-//              }
-//              else{
-//                if(nd2.ZIJIEDIAN && nd2.ZIJIEDIAN.length > 0){
-//                  Lazy(nd2.ZIJIEDIAN).each(function(nd3){
-//                    if(nd3.ZHISHIDIAN_ID == zsd.ZHISHIDIAN_ID){
-//                      $scope.kowledgeList[0].ckd = zsd.ckd;
-//                      nd2.ckd = zsd.ckd;
-//                    }
-//                    else{
-//                      if(nd3.ZIJIEDIAN && nd3.ZIJIEDIAN.length > 0){
-//                        Lazy(nd3.ZIJIEDIAN).each(function(nd4){
-//                          if(nd4.ZHISHIDIAN_ID == zsd.ZHISHIDIAN_ID){
-//                            $scope.kowledgeList[0].ckd = zsd.ckd;
-//                            nd2.ckd = zsd.ckd;
-//                            nd3.ckd = zsd.ckd;
-//                          }
-//                        })
-//                      }
-//                      else{
-//
-//                      }
-//                    }
-//                  })
-//                }
-//              }
-//            });
-//            selectZsdFun();
-//          }
-//        };
-//
-//        /**
-//         * 获得题型查询条件
-//         */
-//        $scope.getTiXingId = function(qrytxId){
-//          if(qrytxId >= 1){
-//            tixing_id = qrytxId;
-//            $scope.txSelectenIdx = qrytxId;
-//          }
-//          else{
-//            tixing_id = '';
-//            $scope.txSelectenIdx = 0;
-//          }
-//          $scope.mingTiParam.tiMuId = '';
-//          $scope.qryTestFun();
-//        };
-//
+        $scope.toggleChildNode = function(nd) {
+          function _do(item) {
+            item.fld = nd.fld;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          nd.fld = !nd.fld;
+          Lazy(nd['子节点']).each(_do);
+        };
+
+        /**
+         整理选中的知识点的ID和名称
+         */
+        var selectZsdFun = function(){ //用于将选择的知识点变成字符串
+          var zsdName = [];
+          qryTmPar.zsd = [];
+          function _do(item) {
+            if(item.ckd){
+              qryTmPar.zsd.push(item['知识点ID']);
+              zsdName.push(item['知识点名称']);
+            }
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          Lazy($scope.kowledgeList[0]['子节点']).each(_do);
+          $scope.selectZhiShiDian = zsdName.join('】【');
+        };
+
+        /**
+         点击checkbox得到checkbox的值
+         */
+        $scope.toggleSelection = function(zsd) {
+          function _do(item) {
+            item.ckd = zsd.ckd;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          if($scope.kmTxWrap){ //查题阶段
+            zsd.ckd = !zsd.ckd;
+            Lazy(zsd['子节点']).each(_do);
+            selectZsdFun();
+            $scope.qryTestFun();
+          }
+          else{ //出题阶段
+            zsd.ckd = !zsd.ckd;
+            Lazy($scope.kowledgeList[0]['子节点']).each(function(nd2){
+              if(nd2.ZHISHIDIAN_ID == zsd.ZHISHIDIAN_ID){
+                $scope.kowledgeList[0].ckd = zsd.ckd;
+              }
+              else{
+                if(nd2['子节点'] && nd2['子节点'].length > 0){
+                  Lazy(nd2['子节点']).each(function(nd3){
+                    if(nd3.ZHISHIDIAN_ID == zsd.ZHISHIDIAN_ID){
+                      $scope.kowledgeList[0].ckd = zsd.ckd;
+                      nd2.ckd = zsd.ckd;
+                    }
+                    else{
+                      if(nd3['子节点'] && nd3['子节点'].length > 0){
+                        Lazy(nd3['子节点']).each(function(nd4){
+                          if(nd4.ZHISHIDIAN_ID == zsd.ZHISHIDIAN_ID){
+                            $scope.kowledgeList[0].ckd = zsd.ckd;
+                            nd2.ckd = zsd.ckd;
+                            nd3.ckd = zsd.ckd;
+                          }
+                        })
+                      }
+                      else{
+
+                      }
+                    }
+                  })
+                }
+              }
+            });
+            selectZsdFun();
+          }
+        };
+
+        /**
+         * 获得题型查询条件 --
+         */
+        $scope.getTiXingId = function(qrytxId){
+          if(qrytxId >= 1){
+            qryTmPar.tx = qrytxId;
+            $scope.txSelectenIdx = qrytxId;
+          }
+          else{
+            qryTmPar.tx = '';
+            $scope.txSelectenIdx = 0;
+          }
+          $scope.mingTiParam.tiMuId = '';
+          $scope.qryTestFun();
+        };
+
         /**
          * 获得难度查询条件 --
          */
-        $scope.getNanDuId = function(qryndId){
-          if(qryndId >= 1){
-            qryTmPar.nd = qryndId;
-            $scope.ndSelectenIdx = qryndId;
-          }
-          else{
-            qryTmPar.nd = '';
-            $scope.ndSelectenIdx = 0;
-          }
+        $scope.getNanDuId = function(nd){
+          var ndArr = [];
+          nd.ckd = !nd.ckd;
+          Lazy($scope.nanDuList).each(function(nd){
+            if(nd.ckd){
+              ndArr.push(nd['难度ID']);
+            }
+          });
+          qryTmPar.nd = ndArr.length ? JSON.stringify(ndArr) : '';
           $scope.mingTiParam.tiMuId = '';
-          //$scope.qryTestFun();
+          $scope.qryTestFun();
         };
 
 //        /**
@@ -333,6 +360,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           var perNumOfPage = 15; //每页15条数据
           var dataLen = data.length; //数据长度
           var lastPage = Math.ceil(dataLen/perNumOfPage); //最后一页
+          $scope.mingTiParam.tiMuLen = dataLen;
           $scope.pageParam.pageArr = Lazy.generate(function(i) { return i + 1; }, lastPage).toArray();
           $scope.pageParam.lastPage = lastPage;
           $scope.pageParam.currentPage = 1;
@@ -391,7 +419,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          */
         $scope.qryTestFun = function(pg){
           $scope.loadingImgShow = true;
-          //var chuangJianRenUidArr = []; //创建人UID数组
           tiMuIdArr = [];
           pageArr = [];
           var obj = {method:'GET', url:tiMuUrl, params:{'学校ID':jgID, '科目ID':keMuId, '返回题目内容':false}};
@@ -425,142 +452,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               $scope.currentPage = '';
               $scope.pageParam.pageArr = [];
               $scope.pages = [];
+              $scope.timuDetails = '';
+              $scope.mingTiParam.tiMuLen = '';
               DataService.alertInfFun('err', tmlb.error);
             }
             $scope.loadingImgShow = false;
           });
-          //查询题库
-          //$http(obj).success(function(tiku){
-          //  if(tiku.length){
-              //查询题目列表
-              //$http.get(qrytimuliebiao).success(function(tmlb){
-              //  if(tmlb.length){
-              //    $scope.testListId = tmlb;
-              //    Lazy(tmlb).each(function(tm, idx, lst){
-              //      tiMuIdArr.push(tm.TIMU_ID);
-              //      chuangJianRenUidArr.push(tm.CHUANGJIANREN_UID);
-              //    });
-              //    //获得一共多少页的代码开始
-              //    totalPage = Math.ceil(tmlb.length/itemNumPerPage);
-              //    for(var i = 1; i <= totalPage; i++){
-              //      pageArr.push(i);
-              //    }
-              //    $scope.lastPageNum = totalPage; //最后一页的数值
-              //    //得到创建人uid和姓名的数组
-              //    chuangJianRenUidArr = Lazy(chuangJianRenUidArr).uniq().sortBy().join();
-              //    var getUserNameUrl = getUserNameBase + chuangJianRenUidArr;
-              //    if($scope.mingTiParam.isFirstEnterMingTi){
-              //      $http.get(getUserNameUrl).success(function(users){
-              //        if(users && users.length > 0){
-              //          $scope.chuTiRens = users;//创建人数组，临时性的 {uid: 1122, name: '邓继'}, {UID: 1122, XINGMING: '邓继'}
-              //          $scope.chuTiRens.unshift({UID: 'allUsr', XINGMING: '全部出题人'});
-              //          $scope.mingTiParam.isFirstEnterMingTi = false;
-              //          //查询数据开始
-              //          $scope.getThisPageData(pg);
-              //        }
-              //        else{
-              //          $scope.chuTiRens = [];
-              //          $scope.timuDetails = null;
-              //          DataService.alertInfFun('err', '查询创建人名称失败！'); //
-              //          $scope.loadingImgShow = false; //testList.html loading
-              //        }
-              //      });
-              //    }
-              //    else{
-              //      //查询数据开始
-              //      $scope.getThisPageData(pg);
-              //    }
-              //  }
-              //  else{
-              //    tiMuIdArr = [];
-              //    pageArr = [];
-              //    totalPage = 0;
-              //    $scope.lastPageNum = 0;
-              //    $scope.pages = [];
-              //    $scope.timuDetails = '';
-              //    $scope.testListId = [];
-              //    DataService.alertInfFun('err', '没有相应的题目！'); //
-              //    $scope.loadingImgShow = false; //testList.html loading
-              //  }
-              //});
-          //  }
-          //  else{
-          //    DataService.alertInfFun('err', '没有题库！'); //
-          //    $scope.loadingImgShow = false; //testList.html loading
-          //  }
-          //});
         };
-
-        /**
-         * 分页的代码
-         */
-        //$scope.getThisPageData = function(pg){
-        //  $scope.loadingImgShow = true; //testList.html loading
-        //  var qrytimuxiangqing,
-        //    pgNum = pg - 1,
-        //    timu_id,
-        //    currentPage = pgNum ? pgNum : 0;
-        //  //得到分页数组的代码
-        //  var currentPageNum = $scope.currentPageNum = pg ? pg : 1;
-        //  if(totalPage <= paginationLength){
-        //    $scope.pages = pageArr;
-        //  }
-        //  if(totalPage > paginationLength){
-        //    if(currentPageNum > 0 && currentPageNum <= 6 ){
-        //      $scope.pages = pageArr.slice(0, paginationLength);
-        //    }
-        //    else if(currentPageNum > totalPage - 5 && currentPageNum <= totalPage){
-        //      $scope.pages = pageArr.slice(totalPage - paginationLength);
-        //    }
-        //    else{
-        //      $scope.pages = pageArr.slice(currentPageNum - 5, currentPageNum + 5);
-        //    }
-        //  }
-        //  //查询数据的代码
-        //  if($scope.mingTiParam.tiMuId){
-        //    timu_id = $scope.mingTiParam.tiMuId;
-        //    $scope.pages = [1];
-        //  }
-        //  else{
-        //    timu_id = tiMuIdArr.slice(currentPage * itemNumPerPage, (currentPage + 1) * itemNumPerPage).toString();
-        //  }
-        //  qrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + timu_id; //查询详情url
-        //  $http.get(qrytimuxiangqing).success(function(data){
-        //    if(data.length){
-        //      //在此将答案和题干转换
-        //      Lazy(data).each(function(tm, idx, lst){
-        //        DataService.formatDaAn(tm);
-        //        //件创建人的姓名加入到题目里面
-        //        Lazy($scope.chuTiRens).each(function(usr, subidx, sublst){
-        //          if(usr.UID == tm.CHUANGJIANREN_UID){
-        //            tm.chuangjianren = usr.XINGMING;
-        //          }
-        //        });
-        //      });
-        //      $scope.loadingImgShow = false; //testList.html loading
-        //      $scope.timuDetails = data;
-        //      $scope.caozuoyuan = caozuoyuan;
-        //    }
-        //    else{
-        //      DataService.alertInfFun('err', '没有相关题目！'); //
-        //      $scope.loadingImgShow = false; //testList.html loading
-        //    }
-        //  });
-        //};
-
-//        /**
-//         * 得到特定页面的数据
-//         */
-//        $scope.getFixedPageData = function(){
-//          var goToPage = parseInt($scope.mingTiParam.goToPageNum);
-//          if(goToPage && goToPage > 0 && goToPage <= $scope.lastPageNum){
-//            $scope.getThisPageData(goToPage);
-//          }
-//          else{
-//            DataService.alertInfFun('pmt', '请输入正确的跳转的页码！');
-//          }
-//        };
-//
+        
 //        /**
 //         * 通过题目ID查询试题
 //         */
@@ -576,7 +475,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
 //            $scope.lastPageNum = totalPage; //最后一页的数值
 //            $scope.mingTiParam.tiMuAuthorId = ''; //互斥
 //            //题型和难度选题重置
-//            tixing_id = '';
+//            qryTmPar.nd = '';
 //            $scope.txSelectenIdx = 0;
 //            qryTmPar.nd = '';
 //            $scope.ndSelectenIdx = 0;
@@ -653,11 +552,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
 //          zhishidian_id = '';
 //          function _do(item) {
 //            item.ckd = false;
-//            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-//              Lazy(item.ZIJIEDIAN).each(_do);
+//            if(item['子节点'] && item['子节点'].length > 0){
+//              Lazy(item['子节点']).each(_do);
 //            }
 //          }
-//          Lazy($scope.kowledgeList[0].ZIJIEDIAN).each(_do);
+//          Lazy($scope.kowledgeList[0]['子节点']).each(_do);
 //          $scope.qryTestFun($scope.currentPageNum);
 //          $scope.txTpl = 'views/mingti/testList.html';
 //        };
@@ -847,11 +746,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
 //          selectZsd = [];
 //          function _do(item) {
 //            item.ckd = false;
-//            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-//              Lazy(item.ZIJIEDIAN).each(_do);
+//            if(item['子节点'] && item['子节点'].length > 0){
+//              Lazy(item['子节点']).each(_do);
 //            }
 //          }
-//          Lazy($scope.kowledgeList[0].ZIJIEDIAN).each(_do);
+//          Lazy($scope.kowledgeList[0]['子节点']).each(_do);
 //          loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];
 //          $scope.loopArr = loopArr;
 //          $scope.mingTiParam.panDuanDaAn = '';
@@ -1479,8 +1378,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
 //            if(item.ZHISHIDIAN_ID == onZsd.ZHISHIDIAN_ID){
 //              item.ckd = true;
 //            }
-//            if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-//              Lazy(item.ZIJIEDIAN).each(_do);
+//            if(item['子节点'] && item['子节点'].length > 0){
+//              Lazy(item['子节点']).each(_do);
 //            }
 //          }
 //          //var selectZsdStr = '';
@@ -1490,7 +1389,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
 //          Lazy(tmxq.ZHISHIDIAN).each(function(zsd, idx, lst){
 //            onZsd = zsd;
 //            //selectZsd.push(zsd.ZHISHIDIAN_ID);
-//            Lazy($scope.kowledgeList[0].ZIJIEDIAN).each(_do);
+//            Lazy($scope.kowledgeList[0]['子节点']).each(_do);
 //            //selectZsdStr += 'select' + zsd.ZHISHIDIAN_ID + ',';
 //          });
 //          //$scope.selectZsdStr = selectZsdStr; //用于控制大纲结束

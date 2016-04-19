@@ -140,10 +140,7 @@ define( "config", [], function () {
         urlName: '微课'
       }
     ],
-    tiXingNameArr: [
-      '单选题', '多选题','双选题','判断题','是非题','填空题','单词翻译题','单词解释题','计算题','问答题','简答题','论述题','翻译题',
-      '作文题','证明题','作图题','解答题'
-    ],
+    tiXingNameArr: ['单选题', '多选题','判断题','填空题','计算题','证明题','解答题'],
     imgType: ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
     videoType: ['.ogv', '.mp4', '.avi', '.mkv', '.wmv'],
     audioType: ['.ogg', '.mp3', '.wav'],

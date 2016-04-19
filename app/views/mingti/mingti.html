@@ -72,27 +72,13 @@
             </li>
           </ul>
         </div>
-        <div class="nanduBox" ng-init="ndSelectenIdx = 0">
-          <ul class="list-inline kmTxNdList pull-left getNanDuIdList">
-            <li>
-              <a href="javascript:void(0)" ng-click="getNanDuId()" ng-class="{active:ndSelectenIdx == 0}">全部难度</a>
-            </li>
-            <li class="nanDuId_1">
-              <a href="javascript:void(0)" ng-click="getNanDuId(1)" ng-class="{active:ndSelectenIdx == 1}">容易</a>
-            </li>
-            <li class="nanDuId_2">
-              <a href="javascript:void(0)" ng-click="getNanDuId(2)" ng-class="{active:ndSelectenIdx == 2}">较易</a>
-            </li>
-            <li class="nanDuId_3">
-              <a href="javascript:void(0)" ng-click="getNanDuId(3)" ng-class="{active:ndSelectenIdx == 3}">一般</a>
-            </li>
-            <li class="nanDuId_4">
-              <a href="javascript:void(0)" ng-click="getNanDuId(4)" ng-class="{active:ndSelectenIdx == 4}">较难</a>
-            </li>
-            <li class="nanDuId_5">
-              <a href="javascript:void(0)" ng-click="getNanDuId(5)" ng-class="{active:ndSelectenIdx == 5}">困难</a>
-            </li>
-          </ul>
+        <div class="nanduBox">
+          <label class="checkbox-inline mr10 active" style="padding-left: 10px;">
+            题目难度
+          </label>
+          <label class="checkbox-inline mr15" ng-repeat="nd in nanDuList">
+            <input type="checkbox" value="nd['难度ID']" ng-checked="nd.ckd" ng-click="getNanDuId(nd)"> {{nd['难度名称']}}
+          </label>
         </div>
       </div>
       <ul class="patternList list-unstyled list-inline"

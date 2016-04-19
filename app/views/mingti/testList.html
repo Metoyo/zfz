@@ -10,7 +10,7 @@
       </a>
     </div>
     <div class="pull-left allTestNums">
-      共<strong ng-bind="testListId.length"></strong>题
+      共<strong ng-bind="mingTiParam.tiMuLen"></strong>题
     </div>
     <div class="pull-right">
       <div class="pull-left">
@@ -50,7 +50,10 @@
           难易度：<span class="pull-right level-star-{{tm['难度']}}"></span>
         </p>
         <p class="knowledge-point">
-          出题人：<span class="pull-right" ng-bind="tm['出题人']"></span>
+          出题人：<span class="pull-right" ng-bind="tm['出题人姓名']"></span>
+        </p>
+        <p class="knowledge-point">
+          录题人：<span class="pull-right" ng-bind="tm['录题人姓名']"></span>
         </p>
         <p class="knowledge-point">
           ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
