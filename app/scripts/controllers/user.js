@@ -1424,7 +1424,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.renderTiKu = function(){
           $scope.tiKuList = '';
           $scope.tkSetPageShow = false;
-          $scope.tiKuSet = {name: ''};
+          $scope.tiKuSet = {name: '', step: '', select: ''};
           var objLy = {method: 'GET', url: lingYuUrl, params: {'学校ID': jgID}};
           $http(objLy).success(function(xxLy){ //查询学校领域
             if(xxLy.result){
@@ -1441,7 +1441,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                       ly['题库'] = [];
                     }
                     $scope.tiKuList = xxLy.data;
-                    console.log(xxLy.data);
                   });
                   $scope.isShenHeBox = false; //判断是不是审核页面
                   $scope.adminSubWebTpl = 'views/renzheng/rz_setTiKu.html';
@@ -1460,39 +1459,71 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          * 新增题库 --
          */
-        $scope.addTiKu = function(){
+        $scope.addTiKu = function(ly){
           $scope.tkSetPageShow = true;
+          $scope.tiKuSet.step = 'add';
+          $scope.tiKuSet.select = ly;
         };
 
         /**
          * 删除题库 --
          */
-        $scope.deleteTiKu = function(){
-
+        $scope.deleteTiKu = function(idx, ly, tk){
+          if(confirm('确定要删除此题库吗？')){
+            var obj = {method: 'DELETE', url: tiKuUrl, params: {'题库ID': tk['题库ID']}};
+            $http(obj).success(function(data){
+              if(data.result){
+                ly['题库'].splice(idx, 1);
+                DataService.alertInfFun('suc', '删除成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
         };
 
         /**
          * 修改题库 --
          */
-        $scope.alterTiKu = function(){
+        $scope.alterTiKu = function(tk){
           $scope.tkSetPageShow = true;
+          $scope.tiKuSet.step = 'alt';
+          $scope.tiKuSet.select = tk;
         };
 
         /**
          * 保存题库 --
          */
         $scope.saveAddTk = function(){
-          var obj = {method:'', url:tiKuUrl};
-          $http(obj).success(function(data){
-            if(data.result){
-
-              $scope.tkSetPageShow = false;
-              $scope.tiKuSet.name = '';
+          var tkName = $scope.tiKuSet.name;
+          var tkInfo = $scope.tiKuSet.select;
+          if(tkName){
+            var obj = {method:'', url:tiKuUrl};
+            if($scope.tiKuSet.step == 'add'){
+              obj.method = 'PUT';
+              obj.data = {'学校ID':jgID, '领域ID':tkInfo['领域ID'], '题库名称':tkName};
             }
-            else{
-              DataService.alertInfFun('err', data.error);
+            if($scope.tiKuSet.step == 'alt'){
+              obj.method = 'POST';
+              obj.data = {'题库ID':tkInfo['题库ID'], '题库名称':tkName};
             }
-          });
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.tkSetPageShow = false;
+                $scope.tiKuSet.name = '';
+                $scope.tiKuSet.step = '';
+                $scope.tiKuSet.select = '';
+                $scope.renderTiKu();
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请输入题库名称！');
+          }
         };
 
         /**
@@ -1501,6 +1532,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.closeAddTkPage = function(){
           $scope.tkSetPageShow = false;
           $scope.tiKuSet.name = '';
+          $scope.tiKuSet.step = '';
         };
 
         /**
