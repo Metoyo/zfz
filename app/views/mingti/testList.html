@@ -16,16 +16,20 @@
       <div class="pull-left">
         <form>
           <input type="text" ng-model="mingTiParam.tiMuId" placeholder="题目ID" class="pull-left w80 mr5 h28"
-                 onkeyup="if(isNaN(value))execCommand('undo')"
-                 onafterpaste="if(isNaN(value))execCommand('undo')"/>
+                 onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
           <button type="submit" class="btn btn-primary" ng-click="qryTestByTiMuId()">查询</button>
         </form>
       </div>
       <div class="pull-left ml10">
-        <select ng-model="mingTiParam.tiMuAuthorId" class="form-control pull-right w200 h28 mr5"
-                ng-change="qryTiMuByChuTiRenId()"
-                ng-options="ctr.UID as ctr.XINGMING for ctr in chuTiRens">
+        <select ng-model="mingTiParam.ctr" class="form-control pull-right h28 mr5" ng-change="qryTiMuByChuTiRenId()"
+                ng-options="ctr.UID as ctr['姓名'] for ctr in chuTiRens">
           <option value="">请选择出题人</option>
+        </select>
+      </div>
+      <div class="pull-left ml10">
+        <select ng-model="mingTiParam.ltr" class="form-control pull-right h28 mr5" ng-change="qryTiMuByLuTiRenId()"
+                ng-options="ltr.UID as ltr['姓名'] for ltr in luTiRens">
+          <option value="">请选择录题人</option>
         </select>
       </div>
     </div>
