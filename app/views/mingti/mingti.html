@@ -15,13 +15,15 @@
     </div>
     <div class="pointTree">
       <ul class="list-unstyled levelOne" id="daGangList">
-        <li ng-repeat="zsd in kowledgeList['节点']">
-          <div class="foldBtn pull-left" ng-class="{unfoldBtn: zsd.fld}" ng-show="zsd['子节点'].length" ng-click="toggleChildNode(zsd)"></div>
+        <li ng-repeat="nd1 in kowledgeList['节点']">
+          <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd1.fld}" ng-show="nd1['子节点'].length" ng-click="toggleChildNode(nd1)"></div>
           <div class="checkbox">
-            <label>{{zsd['知识点名称']}}</label>
+            <label><input type="checkbox" name="point" ng-checked="nd1.ckd" ng-click="toggleSelection(nd1)"/>
+              {{nd1['知识点名称']}}
+            </label>
           </div>
-          <ul class="list-unstyled" ng-show="zsd.fld">
-            <li ng-repeat="nd2 in zsd['子节点']">
+          <ul class="list-unstyled" ng-show="nd1.fld">
+            <li ng-repeat="nd2 in nd1['子节点']">
               <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd2.fld}" ng-show="nd2['子节点'].length" ng-click="toggleChildNode(nd2)"></div>
               <div class="checkbox">
                 <label><input type="checkbox" name="point" ng-checked="nd2.ckd" ng-click="toggleSelection(nd2)"/>
@@ -63,12 +65,10 @@
         <div class="kmTxBox" ng-init="txSelectenIdx = 0">
           <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
             <li>
-              <a href="javascript:void(0)" ng-click="getTiXingId()"
-                 ng-class="{active:txSelectenIdx == 0}">全部题型</a>
+              <a href="javascript:void(0)" ng-click="getTiXingId()" ng-class="{active:txSelectenIdx == 0}">全部题型</a>
             </li>
             <li ng-repeat="kmtx in kmtxList">
-              <a href="javascript:void(0)" ng-click="getTiXingId(kmtx['题型ID'])"
-                 ng-class="{active:txSelectenIdx == kmtx['题型ID']}">{{kmtx['题型名称']}}</a>
+              <a href="javascript:void(0)" ng-click="getTiXingId(kmtx['题型ID'])" ng-class="{active:txSelectenIdx == kmtx['题型ID']}">{{kmtx['题型名称']}}</a>
             </li>
           </ul>
         </div>
@@ -81,21 +81,19 @@
           </label>
         </div>
       </div>
-      <ul class="patternList list-unstyled list-inline"
-          ng-init="patternListToggle = false" ng-show="patternListToggle">
+      <ul class="patternList list-unstyled list-inline" ng-init="patternListToggle = false" ng-show="patternListToggle">
         <li>
           <a>请选择你要添加的题型：</a>
         </li>
-        <li class="{{ntx.ntxClass}}" ng-repeat="ntx in newShiTiTiXing">
-          <a href="javascript:void(0)" ng-click="addNewShiTiFun(ntx.TIXING_ID)">{{ntx.TIXINGMINGCHENG}}</a>
+        <li ng-repeat="kmtx in kmtxList" ng-class="{active:newTiMuId == kmtx['题型ID']}">
+          <a href="javascript:void(0)" ng-click="addTiMuTpl(kmtx['题型ID'])">{{kmtx['题型名称']}}</a>
         </li>
       </ul>
       <div class="alterTiXingBox" ng-show="alterTiXingBox">
         <span>目前你修改的题型为：<strong class="active">{{alterTiMuTiXing}}</strong></span>
       </div>
       <div class="addNewTiMuBtn">
-        <button type="button" class="btn btn-danger" ng-show="patternListToggle || alterTiXingBox"
-                ng-click="cancelAddPattern()">返回
+        <button type="button" class="btn btn-danger" ng-show="patternListToggle || alterTiXingBox" ng-click="cancelAddPattern()">返回
         </button>
       </div>
     </div>

@@ -10,7 +10,7 @@
           <label class="col-sm-1 control-label">题目来源</label>
           <div class="col-sm-8">
             <select class="form-control" ng-model="duoXuanData.shuju.TIMULAIYUAN_ID"
-                    ng-options="tmly.TIMULAIYUAN_ID as tmly.LAIYUANMINGCHENG for tmly in mingTiParam.tiMuLaiYuan">
+                    ng-options="tmly['题目来源ID'] as tmly['题目来源名称'] for tmly in mingTiParam.tiMuLaiYuan">
               <option value="">请选择题目来源</option>
             </select>
           </div>
