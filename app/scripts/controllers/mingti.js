@@ -238,6 +238,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             var obj = {method:'GET', url:tiMuUrl, params:{'题目ID':JSON.stringify(tmArr)}};
             $http(obj).success(function(data){ //查询题目详情
               if(data.result){
+                Lazy(data.data).each(function(tm, idx, lst){
+                  tm = DataService.formatDaAn(tm);
+                });
                 $scope.timuDetails = data.data;
               }
               else{
@@ -491,7 +494,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           }
           $http(obj).success(function(tmlb){ //查询题目列表
             if(tmlb.result){
-              allTiMuIds = angular.copy(tmlb.data);
+              var timuliebiao = Lazy(tmlb.data).reverse().toArray();
+              allTiMuIds = angular.copy(timuliebiao);
               pageMake(tmlb.data);
             }
             else{
@@ -610,6 +614,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          */
         $scope.addTiMuTpl = function(txId){
           $scope.newTiMuId = txId;
+          $scope.timu['题型ID'] = txId;
           $scope.loopArr = '';
           $scope.loadingImgShow = true;
           var tpl = '';
@@ -644,7 +649,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           };
           if(txId == 1 || txId == 2){
             $scope.timu['题目内容']['选项'] = '';
-            $scope.loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];;
+            $scope.loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];
           }
           $scope.selectZhiShiDian = ''; //知识大纲名称清空
           renderTpl(tpl);
@@ -673,7 +678,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             '出题人UID': '',
             '知识点': ''
           };
-          //zhishidian_id = '';
           function _do(item) {
             item.ckd = false;
             if(item['子节点'] && item['子节点'].length > 0){
@@ -681,6 +685,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             }
           }
           Lazy($scope.kowledgeList['节点']).each(_do);
+          qryTmPar.zsd = [];
           $scope.qryTestFun($scope.currentPage);
           $scope.txTpl = 'views/mingti/testList.html';
         };
@@ -728,7 +733,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
 //        };
 
         /**
-         * 添加题干编辑器
+         * 添加题干编辑器 --
          */
         $scope.addTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
@@ -736,7 +741,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 添加题支编辑器
+         * 添加题支编辑器 --
          */
         $scope.addTiZhiEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
@@ -744,14 +749,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 移除题干编辑器
+         * 移除题干编辑器 --
          */
         $scope.removeTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp('remove');
         };
 
         /**
-         * 移除题支编辑器
+         * 移除题支编辑器 --
          */
         $scope.removeTiZhiEditor = function(tx){
           if(tx >= 9){
@@ -765,7 +770,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示单选题题干编辑器
+         * 显示单选题题干编辑器 --
          */
         $scope.showDanXuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
@@ -773,28 +778,28 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示单选题题支编辑器
+         * 显示单选题题支编辑器 --
          */
         $scope.showDanXuanTiZhiEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
         };
 
         /**
-         * 给题支选项赋值
+         * 给题支选项赋值 --
          */
         $scope.fuZhiFun = function(idx){
           $('.tizhiWrap .tiZhi').eq(idx).val($('.formulaEditTiZhi').val());
         };
 
         /**
-         * 填空题题支选项赋值
+         * 填空题题支选项赋值 --
          */
         $scope.fuZhiFunTk = function(parentIdx, idx){
           $('.tizhiWrap').eq(parentIdx).find('input.subTiZhi').eq(idx).val($('.formulaEditTiZhi').val());
         };
 
         /**
-         * 显示多选题题干编辑器
+         * 显示多选题题干编辑器 --
          */
         $scope.showDuoXuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
@@ -802,14 +807,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示多选题题支编辑器
+         * 显示多选题题支编辑器 --
          */
         $scope.showDuoXuanTiZhiEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
         };
 
         /**
-         * 显示计算题干编辑器
+         * 显示计算题干编辑器 --
          */
         $scope.showJiSuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
@@ -817,7 +822,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示计算题答案编辑器
+         * 显示计算题答案编辑器 --
          */
         $scope.showJiSuanDaAnEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
@@ -825,7 +830,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 多选题选择答案的效果的代码
+         * 多选题选择答案的效果的代码 --
          */
         $scope.chooseDaAn = function(da, stat){
           if(stat == 'dan'){
@@ -837,16 +842,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 判断题选择答案的效果的代码
+         * 判断题选择答案的效果的代码 --
          */
         $scope.choosePanDuanDaan = function(idx){
-          //var tgt = '.answer' + idx,
-          //  tgtElement = $(tgt);
-          //$('div.radio').removeClass('radio-select');
-          //tgtElement.addClass('radio-select');
-          //tgtElement.find("input[name='rightAnswer']").prop('checked',true);
-          //pandu_data.shuju.DAAN = tgtElement.find("input[name='rightAnswer']").val();
           $scope.mingTiParam.panDuanDaAn = idx;
+          $scope.timu['题目内容']['答案'] = idx ? true : false;
         };
 
         /**
@@ -1024,22 +1024,21 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 点击删除按钮删除一道题
+         * 点击删除按钮删除一道题 --
          */
         $scope.deleteItem = function(tmid, idx){
-          //var truthBeDel = window.confirm('确定要删除此题吗？');
-          //if (truthBeDel) {
-          //  deleteTiMuData.timu_id = tmid;
-          //  $http.post(deleteTiMuUrl, deleteTiMuData).success(function(data){
-          //    if(data.result){
-          //      $scope.timuDetails.splice(idx, 1);
-          //      DataService.alertInfFun('suc', '删除成功！');
-          //    }
-          //    else{
-          //      DataService.alertInfFun('pmt', data.error);
-          //    }
-          //  });
-          //}
+          if (confirm('确定要删除此题吗？')) {
+            var obj = {method:'DELETE', url:tiMuUrl, params:{'题目ID':tmid}};
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.timuDetails.splice(idx, 1);
+                DataService.alertInfFun('suc', '删除成功！');
+              }
+              else{
+                DataService.alertInfFun('pmt', data.error);
+              }
+            });
+          }
         };
 
 //        /**
@@ -1394,7 +1393,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
 //        };
 
         /**
-         * 显示题干预览
+         * 显示题干预览 --
          */
         $scope.previewTiGan = function(){
           var tgCont = $('.formulaEditTiGan').val();
@@ -1404,7 +1403,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示题干预览
+         * 显示题干预览 --
          */
         $scope.previewTiZhi = function(){
           var tzCont = $('.formulaEditTiZhi').val();
@@ -1419,6 +1418,23 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.saveTiMu = function(){
           var mis = [];
           var tiMuData = angular.copy($scope.timu);
+          if($scope.newTiMuId == 1 || $scope.newTiMuId == 2){ //整理单选和多选题答案
+            var tzArr = [];
+            var daArr = [];
+            Lazy($scope.loopArr).each(function(tz, idx, lst){
+              tz.itemVal ? tzArr.push(tz.itemVal) : mis.push('题支' + (idx + 1));
+              if(tz.ckd){
+                daArr.push(idx);
+              }
+            });
+            tiMuData['题目内容']['选项'] = tzArr.length ? JSON.stringify(tzArr) : '';
+            if(daArr && daArr.length > 0){
+              tiMuData['题目内容']['答案'] = $scope.newTiMuId == 1 ? daArr[0] : JSON.stringify(daArr);
+            }
+            else{
+              mis.push('答案');
+            }
+          }
           Lazy(tiMuData).each(function(v, k, l){ //判断必要字段
             if(k == '题库ID' || k == '科目ID' || k == '题型ID' || k == '难度' || k == '知识点'){
               if(!v){
@@ -1440,6 +1456,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             DataService.alertInfFun('pmt', '缺少' + mis.join(',') + '。');
           }
           else{
+            tiMuData['题目内容'] = JSON.stringify(tiMuData['题目内容']);
             var obj = {method:'', url:tiMuUrl, data:tiMuData};
             if($scope.mingTiParam.isAddTiMu){
               obj.method = 'PUT';
@@ -1454,6 +1471,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                   '答案': '',
                   '提示': ''
                 };
+                if($scope.newTiMuId < 3){
+                  $scope.loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];
+                }
+                DataService.alertInfFun('suc', '保存成功！');
               }
               else{
                 DataService.alertInfFun('err', data.error);

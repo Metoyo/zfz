@@ -9,9 +9,22 @@
         <div class="form-group">
           <label class="col-sm-1 control-label">题目来源</label>
           <div class="col-sm-8">
-            <select class="form-control" ng-model="duoXuanData.shuju.TIMULAIYUAN_ID"
-                    ng-options="tmly['题目来源ID'] as tmly['题目来源名称'] for tmly in mingTiParam.tiMuLaiYuan">
+            <select class="form-control" ng-model="timu['题目来源ID']" ng-options="tmly['题目来源ID'] as tmly['题目来源名称'] for tmly in mingTiParam.tiMuLaiYuan">
               <option value="">请选择题目来源</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-1 control-label">出题人</label>
+          <div class="col-sm-3">
+            <select ng-model="timu['出题人UID']" class="form-control" ng-options="ctr.UID as ctr['姓名'] for ctr in chuTiRens">
+              <option value="">请选择出题人</option>
+            </select>
+          </div>
+          <label class="col-sm-1 control-label">题库</label>
+          <div class="col-sm-4">
+            <select ng-model="timu['题库ID']" class="form-control" ng-options="tk['题库ID'] as tk['题库名称'] for tk in tiKuList">
+              <option value="">请选择题库</option>
             </select>
           </div>
         </div>
@@ -26,10 +39,9 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="col-sm-1 control-label">题目</label>
+          <label class="col-sm-1 control-label">题干</label>
           <div class="col-sm-8">
-            <textarea class="form-control formulaEditTiGan" rows="5" ng-model="duoXuanData.shuju.TIGAN"
-                      placeholder="请输入题干" ng-change="previewTiGan()"></textarea>
+            <textarea class="form-control formulaEditTiGan" rows="5" ng-model="timu['题目内容']['题干']" placeholder="请输入题干" ng-change="previewTiGan()"></textarea>
             <div class="previewBox" ng-show="hideDuoXuanEdt">
               <h4 class="title">
                 <span class="pull-left">内容预览：</span>
@@ -113,16 +125,11 @@
             <span class="glyphicon glyphicon-plus-sign"></span> </a>
         </div>
         <div class="form-group nandu-select">
-          <label class="col-sm-1 control-label">难度：</label>
+          <label class="col-sm-1 control-label">难度</label>
           <div class="col-sm-5">
-            <div class="nandu-star-box" nandu-star>
-              <a href="javascript:void(0)"></a>
-              <a href="javascript:void(0)"></a>
-              <a href="javascript:void(0)"></a>
-              <a href="javascript:void(0)"></a>
-              <a href="javascript:void(0)"></a>
-              <input type="text" class="hide nandu-input" value="">
-            </div>
+            <label class="radio-inline" ng-repeat="nd in nanDuList">
+              <input type="radio" name="nandu" value="{{nd['难度ID']}}" ng-model="timu['难度']"> {{nd['难度名称']}}
+            </label>
           </div>
           <div class="col-sm-3 text-right pt10" ng-init="showRemarkInput=false">
             <a href="javascript:void(0)" ng-hide="showRemarkInput" ng-click="showRemarkInput=true">备注</a>
@@ -131,15 +138,13 @@
         </div>
         <div class="form-group" ng-show="showRemarkInput">
           <label class="col-sm-1 control-label">备注</label>
-          <div class="col-sm-8">
-            <textarea class="form-control" rows="5" ng-model="duoXuanData.shuju.REMARK" placeholder="备注"></textarea>
+          <div class="col-sm-8 remark">
+            <textarea class="form-control" rows="5" ng-model="timu['题目内容']['提示']" placeholder="提示"></textarea>
           </div>
         </div>
         <div class="form-group">
           <div class="col-sm-offset-1 col-sm-8 text-right">
-            <button type="button" class="btn btn-primary" ng-click="addDuoxuanShiTi()">
-              保存
-            </button>
+            <button type="button" class="btn btn-primary" ng-click="saveTiMu()">保存</button>
           </div>
         </div>
       </div>

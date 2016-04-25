@@ -93,92 +93,68 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
       };
 
       //题目题干答案格式化
-      var letterArr = config.letterArr,
-        newCont,
-        daAnFormatReg = new RegExp('<\%{.*?}\%>', 'g');
       this.formatDaAn = function(tm){
-        if(tm.TIXING_ID <= 3){
-          var daanArr = tm.DAAN.split(','),
-            daanLen = daanArr.length,
-            daan = [];
-          for(var i = 0; i < daanLen; i++){
-            daan.push(letterArr[daanArr[i]]);
-          }
-          tm.DAAN = daan.join(',');
-        }
-        else if(tm.TIXING_ID == 4){
-          if(tm.DAAN == 1){
-            tm.DAAN = '对';
+        var letterArr = config.letterArr;
+        if(tm['题型ID'] <= 2){ //修改选择题答案
+          var daanStr = tm['题目内容']['答案'];
+          var tzStr = tm['题目内容']['选项'];
+          var daan = [];
+          if(tm['题型ID'] == 1){
+            daan.push(letterArr[daanStr]);
           }
           else{
-            tm.DAAN = '错';
+            var daanArr = [];
+            if(daanStr && typeof(daanStr) == 'string'){
+              daanArr = JSON.parse(daanStr);
+            }
+            var daanLen = daanArr.length || 0;
+            for(var i = 0; i < daanLen; i++){
+              daan.push(letterArr[daanArr[i]]);
+            }
+          }
+          tm['题目内容']['答案'] = daan.join(',');
+          if(tzStr && typeof(tzStr) == 'string'){
+            tm['题目内容']['选项'] = JSON.parse(tzStr);
           }
         }
-        else if(tm.TIXING_ID == 6 || tm.TIXING_ID == 19){ //填空题
-          //修改填空题的答案
-          var tkDaAnArr = [],
-            tkDaAn = JSON.parse(tm.DAAN),
-            tkDaAnStr;
-          Lazy(tkDaAn).each(function(da, idx, lst){
-            tkDaAnArr.push('第' + (idx + 1) + '个空：' + da.answer);
+        else if(tm['题型ID'] == 3){ //修改判断题答案
+          tm['题目内容']['答案'] = tm['题目内容']['答案'] ? '对' : '错';
+        }
+        else if(tm['题型ID'] == 4){ //修改填空题的答案
+          var tkTgStr = tm['题目内容']['题干'];
+          var daAnFormatReg = new RegExp('<\%{.*?}\%>', 'g');
+          var count = 1;
+          var daAnArr = [];
+          tm['题目内容']['原始答案'] = angular.copy(tm['题目内容']['答案']);
+          tm['题目内容']['题干'] = tkTgStr.replace(daAnFormatReg, function(arg) {
+            var text = arg.slice(2, -2);
+            var textJson = JSON.parse(text);
+            var _len = textJson['尺寸'];
+            var xhStr = '';
+            for(var i = 0; i < _len; i ++ ){
+              xhStr += '_';
+            }
+            daAnArr.push('第' + count + '个空' + textJson['答案'].join(','));
+            count ++;
+            return xhStr;
           });
-          tkDaAnStr = tkDaAnArr.join(';');
-          tm.DAAN = tkDaAnStr;
-          //修改填空题的题干
-          if(tm.KAOSHENGDAAN){
-            var tkKsDa = tm.KAOSHENGDAAN,
-              finalDaAn = [],
-              _len = '',
-              count = 0;
-            if(typeof(tkKsDa) == 'string'){
-              tkKsDa = JSON.parse(tkKsDa);
-            }
-            for(var key in tkKsDa){
-              finalDaAn.push(tkKsDa[key]);
-            }
-            _len = finalDaAn.length;
-            newCont = tm.TIGAN.tiGan.replace(daAnFormatReg, function(arg) {
-              var xhStr = '';
-              if(tm.TIXING_ID == 6){
-                xhStr = '<span class="ar-tk-da">' + finalDaAn[count] + '</span>';
-              }
-              else{
-                xhStr = '<span class="ar-tk-da">' + '        ' + '</span>';
-              }
-              count ++;
-              return xhStr;
-            });
-          }
-          else{
-            newCont = tm.TIGAN.tiGan.replace(daAnFormatReg, function(arg) {
-              var text = arg.slice(2, -2),
-                textJson = JSON.parse(text),
-                _len = textJson.size,
-                i, xhStr = '';
-              for(i = 0; i < _len; i ++ ){
-                xhStr += '_';
-              }
-              return xhStr;
-            });
-          }
-          tm.TIGAN.tiGan = newCont;
+          tm['题目内容']['答案'] = daAnArr.join('；');
         }
         else{
 
         }
         //作答重现的答案处理
         if(tm.KAOSHENGDAAN){
-          if(tm.TIXING_ID <= 3){
+          if(tm['题型ID'] <= 3){
             var ksDaanArr = tm.KAOSHENGDAAN.split(','),
               ksDaanLen = ksDaanArr.length,
               ksDaan = [];
             for(var j = 0; j < ksDaanLen; j++){
               ksDaan.push(letterArr[ksDaanArr[j]]);
-              //ksDaan.push('D');
             }
             tm.KAOSHENGDAAN = ksDaan.join(',');
           }
-          else if(tm.TIXING_ID == 4){
+          else if(tm['题型ID'] == 4){
             if(tm.KAOSHENGDAAN == 1){
               tm.KAOSHENGDAAN = '对';
             }
@@ -186,7 +162,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               tm.KAOSHENGDAAN = '错';
             }
           }
-          //else if(tm.TIXING_ID == 6) { //填空题
+          //else if(tm['题型ID'] == 6) { //填空题
           //  var tkKsDa = tm.KAOSHENGDAAN, cont = 1,
           //    finalDaAn = [];
           //  if(typeof(tkKsDa) == 'string'){
@@ -198,14 +174,15 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           //  }
           //  tm.KAOSHENGDAAN = finalDaAn.join(';');
           //}
-          else if(tm.TIXING_ID >= 9) {
-            var jstKsDa = tm.KAOSHENGDAAN,
-              jstKsFinalDaAn = [];
+          else if(tm['题型ID'] >= 5) {
+            var jstKsDa = tm.KAOSHENGDAAN;
+            var jstKsFinalDaAn = [];
             if(typeof(jstKsDa) == 'string'){
               jstKsDa = JSON.parse(jstKsDa);
             }
             for(var key in jstKsDa){
-              jstKsFinalDaAn.push('<img src="' + jstKsDa[key] + '"/>');
+              var bdDaObj = JSON.parse(jstKsDa[key]);
+              jstKsFinalDaAn.push('<img src="' + bdDaObj['用户答案'] + '"/>');
             }
             tm.KAOSHENGDAAN = jstKsFinalDaAn.join(' ');
           }
@@ -213,6 +190,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
 
           }
         }
+        return tm;
       };
 
       //文件上传

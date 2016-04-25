@@ -71,7 +71,8 @@
         <p>
           创建时间：{{tm['创建时间'] | myLocalDate | date : 'yyyy-MM-dd'}}
         </p>
-        <div class="editWrap" ng-show="tm['出题人UID'] == caozuoyuan || isPromiseAlterOthersTimu">
+        <div class="editWrap">
+          <!--<div class="editWrap" ng-show="tm['出题人UID'] == caozuoyuan || isPromiseAlterOthersTimu">-->
           <button type="button" class="btn btn-default" ng-click="deleteItem(tm['题目ID'], $index)">删除</button>
           <button type="button" class="btn btn-default" ng-click="patternListToggle = true; editItem(tm)">修改</button>
         </div>

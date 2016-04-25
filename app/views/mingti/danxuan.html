@@ -133,7 +133,7 @@
           <label class="col-sm-1 control-label">难度</label>
           <div class="col-sm-5">
             <label class="radio-inline" ng-repeat="nd in nanDuList">
-              <input type="radio" name="nandu" value="nd['难度ID']" ng-model="timu['难度']"> {{nd['难度名称']}}
+              <input type="radio" name="nandu" value="{{nd['难度ID']}}" ng-model="timu['难度']"> {{nd['难度名称']}}
             </label>
           </div>
           <div class="col-sm-3 text-right pt10" ng-init="showRemarkInput=false">
