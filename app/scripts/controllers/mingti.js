@@ -96,7 +96,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           panDuanDaAn: '', //判断题的答案
           slt_dg: '', //默认大纲
           tiMuLen: '', //题目数量
-          isAddTiMu: true //是否是编辑题目
+          isAddTiMu: true, //是否是编辑题目
+          xuanZheTiZhi: '' //选择题题支内容
         };
         $scope.tiXingIdArr = [ //题型转换数组
           {txId: 9, txName: '计算题'},
@@ -577,6 +578,19 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
+         * 得到特定页面的数据 --
+         */
+        $scope.getFixedPageData = function(){
+          var goToPage = parseInt($scope.mingTiParam.goToPageNum);
+          if(goToPage && goToPage > 0 && goToPage <= $scope.pageParam.lastPage){
+            $scope.pageGetData(goToPage);
+          }
+          else{
+            DataService.alertInfFun('pmt', '请输入正确的跳转的页码！');
+          }
+        };
+
+        /**
          * 添加新的试题 --
          */
         $scope.addNewShiTi = function(){
@@ -788,7 +802,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 给题支选项赋值 --
          */
         $scope.fuZhiFun = function(idx){
-          $('.tizhiWrap .tiZhi').eq(idx).val($('.formulaEditTiZhi').val());
+          $scope.loopArr[idx].itemVal = $scope.mingTiParam.xuanZheTiZhi;
+          //$('.tizhiWrap .tiZhi').eq(idx).val($('.formulaEditTiZhi').val());
         };
 
         /**
@@ -1008,7 +1023,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          */
         $scope.addOneItem = function(){
           var vObj = {itemVal: '', ckd: false};
-          loopArr.push(vObj);
+          $scope.loopArr.push(vObj);
         };
 
         /**
@@ -1019,7 +1034,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             DataService.alertInfFun('pmt', '此项为正确答案不能删除！');
           }
           else{
-            loopArr.splice(idx, 1);
+            $scope.loopArr.splice(idx, 1);
           }
         };
 
@@ -1396,17 +1411,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 显示题干预览 --
          */
         $scope.previewTiGan = function(){
-          var tgCont = $('.formulaEditTiGan').val();
+          var tgCont = $scope.timu['题目内容']['题干'];
           tgCont = tgCont.replace(/\n/g, '<br/>');
           $('#prevDoc').html(tgCont);
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
         };
 
         /**
-         * 显示题干预览 --
+         * 显示题支预览 --
          */
         $scope.previewTiZhi = function(){
-          var tzCont = $('.formulaEditTiZhi').val();
+          var tzCont = $scope.mingTiParam.xuanZheTiZhi;
           tzCont = tzCont.replace(/\n/g, '<br/>');
           $('#prevTiZhiDoc').html(tzCont);
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
