@@ -134,7 +134,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             for(var i = 0; i < _len; i ++ ){
               xhStr += '_';
             }
-            daAnArr.push('第' + count + '个空' + textJson['答案'].join(','));
+            daAnArr.push('第' + count + '个空:' + textJson['答案'].join(','));
             count ++;
             return xhStr;
           });
