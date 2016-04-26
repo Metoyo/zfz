@@ -101,8 +101,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           tianKongDaAn: '' //填空题答案
         };
         $scope.tiXingIdArr = [ //题型转换数组
-          {txId: 9, txName: '计算题'},
-          {txId: 17, txName: '解答题'}
+          {txId: 5, txName: '计算题'},
+          {txId: 6, txName: '证明题'},
+          {txId: 7, txName: '解答题'}
         ];
         $scope.pageParam = { //分页参数
           currentPage: '',
@@ -632,6 +633,15 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           $scope.timu['题型ID'] = txId;
           $scope.loopArr = '';
           $scope.loadingImgShow = true;
+          $('#prevDoc').html('');
+          $('#prevTiZhiDoc').html('');
+          function _do(item) {
+            item.ckd = false;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          Lazy($scope.kowledgeList['节点']).each(_do);
           var tpl = '';
           switch (txId){
             case 1:
@@ -780,13 +790,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 移除题支编辑器 --
          */
         $scope.removeTiZhiEditor = function(tx){
-          if(tx >= 9){
+          if(tx >= 5){
             $('.formulaEditTiZhi').markItUp('remove');
           }
           else{
             $('.formulaEditTiZhi').markItUp('remove').val('');
             $('#prevTiZhiDoc').html('');
-            $('input[name=fuzhi]').prop('checked', false);
           }
         };
 
@@ -816,7 +825,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 填空题题支选项赋值 --
          */
         $scope.fuZhiFunTk = function(tzCont, idx){
-          //$('.tizhiWrap').eq(parentIdx).find('input.subTiZhi').eq(idx).val($('.formulaEditTiZhi').val());
           tzCont.subTiZhiNum[idx].itmVal = $scope.mingTiParam.tianKongDaAn;
         };
 
@@ -1334,7 +1342,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 显示题支预览 --
          */
         $scope.previewTiZhi = function(){
-          var tzCont = $scope.mingTiParam.xuanZheTiZhi;
+          var tzCont = '';
+          if($scope.newTiMuId > 4){
+            tzCont = $scope.timu['题目内容']['答案'];
+          }
+          else{
+            tzCont = $scope.mingTiParam.xuanZheTiZhi;
+          }
           tzCont = tzCont.replace(/\n/g, '<br/>');
           $('#prevTiZhiDoc').html(tzCont);
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
