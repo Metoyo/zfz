@@ -61,7 +61,7 @@
   <div class="content">
     <!--题型和难度DOM元素， 开始-->
     <div class="kmTxWrap fixed-top">
-      <div ng-hide="patternListToggle || alterTiXingBox">
+      <div ng-hide="patternListToggle || alterTiMuTiXing">
         <div class="kmTxBox" ng-init="txSelectenIdx = 0">
           <ul class="list-inline kmTxNdList pull-left getTiXingIdList">
             <li>
@@ -85,15 +85,16 @@
         <li>
           <a>请选择你要添加的题型：</a>
         </li>
-        <li ng-repeat="kmtx in kmtxList" ng-class="{active:newTiMuId == kmtx['题型ID']}">
+        <li ng-repeat="kmtx in kmtxList" ng-class="{active:newTiXingId == kmtx['题型ID']}">
           <a href="javascript:void(0)" ng-click="addTiMuTpl(kmtx['题型ID'])">{{kmtx['题型名称']}}</a>
         </li>
       </ul>
-      <div class="alterTiXingBox" ng-show="alterTiXingBox">
+      <div class="alterTiXingBox" ng-if="alterTiMuTiXing">
         <span>目前你修改的题型为：<strong class="active">{{alterTiMuTiXing}}</strong></span>
       </div>
       <div class="addNewTiMuBtn">
-        <button type="button" class="btn btn-danger" ng-show="patternListToggle || alterTiXingBox" ng-click="cancelAddPattern()">返回
+        <button type="button" class="btn btn-danger" ng-show="patternListToggle || alterTiMuTiXing" ng-click="cancelAddPattern()">
+          返回
         </button>
       </div>
     </div>

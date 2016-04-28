@@ -126,6 +126,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           var count = 1;
           var daAnArr = [];
           tm['题目内容']['原始答案'] = angular.copy(tm['题目内容']['答案']);
+          tm['题目内容']['原始题干'] = angular.copy(tm['题目内容']['题干']);
           tm['题目内容']['题干'] = tkTgStr.replace(daAnFormatReg, function(arg) {
             var text = arg.slice(2, -2);
             var textJson = JSON.parse(text);
@@ -264,9 +265,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         return joinDate;
       };
 
-      /**
-       * 报名的日期格式化
-       */
+      //报名的日期格式化
       this.baoMingDateFormat = function(dataBegin, dataEnd){
         if(dataBegin && dataEnd){
           var bgDataNew = new Date(dataBegin),

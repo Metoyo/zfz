@@ -6,47 +6,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         /**
          * 声明变量
          */
-        //var baseMtAPIUrl = config.apiurl_mt; //mingti的api
-        //var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
-        //var token = config.token;
-        //var letterArr = config.letterArr;
-        //var chaxunzilingyu = true;
-        //var qryKnowledge = ''; //定义一个空的查询知识点的url
-        //var checkSchoolTiKu = caozuoyuan; //查看学校题库需要传的参数
-        //var zsdgZsdArr = []; //存放所有知识大纲知识点的数组
-        //var danxuan_data; //单选题数据模板
-        //var duoxuan_data; //多选题数据模板
-        //var jisuan_data; //计算题数据模板
-        //var jieda_data; //解答题数据模板
-        //var pandu_data; //判断题数据模板
-        //var tiankong_data; //填空题数据模板
-        //var yuedu_data; //阅读题数据模板
-        //var zhengming_data;//证明题数据模板
-        //var tkLoopArr = []; //用于填空题支循环的数组
-        //var tznrIsNull;//用了判断题支内容是否为空
-        //var deleteTiMuUrl = baseMtAPIUrl + 'shanchu_timu'; //删除题目的url
-        //var deleteTiMuData = { //删除题目的数据格式
-        //    token: config.token,
-        //    //caozuoyuan: userInfo.UID,
-        //    jigouid: jigouid,
-        //    lingyuid: lingyuid,
-        //    timu_id: ''
-        //  };
-        //var totalPage; //符合条件的数据一共有多少页
-        //var itemNumPerPage = 10; //每页显示多少条数据
-        //var paginationLength = 11; //分页部分，页码的长度，目前设定为11
-        //var testListStepZst; //用了保存查询试题阶段的知识点
-        //var isEditItemStep = true; //是否是编辑阶段
-        //var getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid='; //得到用户名的URL
-        //var isDanXuanType = false; //判断是否出单选题
-        //var isDuoXuanType = false; //判断是否出多选题
-        //var uploadFileUrl = baseMtAPIUrl + 'upload_file';//文件上传
-        //var showFileUrl =  '/show_file/';//文件显示
-        //var fileTypeReg = /\.\b\w+$\b/; // 匹配文件类型/\.(\w+)$/  \.\b\w+$\b
-        //var qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-        //    + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
-        //var queryTiMuSource = baseMtAPIUrl + 'query_timusource?token=' + token + '&jigouid=' + jigouid
-        //    + '&lingyuid=' + lingyuid; //查询题目来源
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
@@ -216,6 +175,20 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           else{
             $scope.timu['知识点'] = qryTmPar.zsd.length ? JSON.stringify(qryTmPar.zsd) : '';
           }
+        };
+
+        /**
+         * 知识点反选
+         */
+        var zsdFxFun = function(zsd){
+          function _do(item) {
+            var ifIn = Lazy(zsd).contains(item['知识点ID']);
+            item.ckd = ifIn ? true : false;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          Lazy($scope.kowledgeList['节点']).each(_do);
         };
 
         /**
@@ -598,12 +571,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.addNewShiTi = function(){
           $scope.mingTiParam.isAddTiMu = true;
           $scope.patternListToggle = true;
-          $scope.newTiMuId = 1;
+          $scope.newTiXingId = 1;
           $scope.mingTiParam.isConvertTiXing = false;
+          $scope.alterTiMuTiXing = '';
           $scope.timu = {
             '题库ID': '',
             '科目ID': keMuId,
-            '题型ID': $scope.newTiMuId,
+            '题型ID': $scope.newTiXingId,
             '题目内容': {
               '题干': '',
               '答案': '',
@@ -629,7 +603,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 题型模板加载 --
          */
         $scope.addTiMuTpl = function(txId){
-          $scope.newTiMuId = txId;
+          $scope.newTiXingId = txId;
           $scope.timu['题型ID'] = txId;
           $scope.loopArr = '';
           $scope.loadingImgShow = true;
@@ -693,7 +667,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.cancelAddPattern = function(){
           $scope.kmTxWrap = true;
           $scope.patternListToggle = false;
-          $scope.alterTiXingBox = false;
+          $scope.alterTiMuTiXing = '';
           $scope.mingTiParam.panDuanDaAn = '';
           $scope.timu = {
             '题库ID': '',
@@ -737,31 +711,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             });
           }
         };
-
-        /**
-         * 重置输入整个form和重置函数
-         */
-//        var resetFun = function(dataTpl){
-//          dataTpl.shuju.DAAN = ''; //重置难度
-//          dataTpl.shuju.TIGAN = ''; //重置题干
-//          dataTpl.shuju.TIZHINEIRONG = ''; //重置题支
-//          dataTpl.shuju.ZHISHIDIAN = '';
-//          $scope.selectZhiShiDian = '';
-//          selectZsd = [];
-//          function _do(item) {
-//            item.ckd = false;
-//            if(item['子节点'] && item['子节点'].length > 0){
-//              Lazy(item['子节点']).each(_do);
-//            }
-//          }
-//          Lazy($scope.kowledgeList[0]['子节点']).each(_do);
-//          loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];
-//          $scope.loopArr = loopArr;
-//          $scope.mingTiParam.panDuanDaAn = '';
-//        };
-//        $scope.resetForm = function(){
-//          resetFun();
-//        };
 
         /**
          * 添加题干编辑器 --
@@ -903,16 +852,37 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           var tgVal = $scope.timu['题目内容']['题干'];
           var loopArrObj;
           var cnum = countInstances(tgVal, '<span>');
-          tkLoopArr = [];
-          for(var i = 1; i <= cnum; i++){
-            loopArrObj = {
-              tiZhiNum: '',
-              subTiZhiNum: [{itmVal: '请输入答案'}]
-            };
-            loopArrObj.tiZhiNum = i;
-            tkLoopArr.push(loopArrObj);
+          if($scope.tkLoopArr && $scope.tkLoopArr.length > 0){
+            var tkl = $scope.tkLoopArr.length;
+            var diff = cnum - tkl;
+            if(diff >= 0){
+              for(var j = 0; j < diff; j++){
+                var tmpTkl = $scope.tkLoopArr.length;
+                loopArrObj = {
+                  tiZhiNum: tmpTkl + 1,
+                  subTiZhiNum: [{itmVal: '请输入答案'}]
+                };
+                $scope.tkLoopArr.push(loopArrObj);
+              }
+            }
+            else{
+              for(var k = 0; k < -diff; k++){
+                $scope.tkLoopArr.pop();
+              }
+            }
           }
-          $scope.tkLoopArr = tkLoopArr;
+          else{
+            tkLoopArr = [];
+            for(var i = 1; i <= cnum; i++){
+              loopArrObj = {
+                tiZhiNum: '',
+                subTiZhiNum: [{itmVal: '请输入答案'}]
+              };
+              loopArrObj.tiZhiNum = i;
+              tkLoopArr.push(loopArrObj);
+            }
+            $scope.tkLoopArr = tkLoopArr;
+          }
         };
 
         /**
@@ -977,251 +947,334 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           }
         };
 
-//        /**
-//         * 加载修改单多选题模板
-//         */
-//        var makeZsdSelect = function(tmxq){ //修改题目是用于反向选择知识大纲
-//          var onZsd = '';
-//          function _do(item) {
-//            if(item['知识点ID'] == onZsd['知识点ID']){
-//              item.ckd = true;
-//            }
-//            if(item['子节点'] && item['子节点'].length > 0){
-//              Lazy(item['子节点']).each(_do);
-//            }
-//          }
-//          //var selectZsdStr = '';
-//          //selectZsd = [];
-//          //$('ul.levelFour').css('display','block');//用于控制大纲 开始
-//          //$('.levelFour').closest('li').find('.foldBtn').addClass('unfoldBtn');
-//          Lazy(tmxq.ZHISHIDIAN).each(function(zsd, idx, lst){
-//            onZsd = zsd;
-//            //selectZsd.push(zsd['知识点ID']);
-//            Lazy($scope.kowledgeList[0]['子节点']).each(_do);
-//            //selectZsdStr += 'select' + zsd['知识点ID'] + ',';
-//          });
-//          //$scope.selectZsdStr = selectZsdStr; //用于控制大纲结束
-//          selectZsdFun();
-//        };
-
-//        var onceMakeWord = true;
-//        $scope.editItem = function(tmxq){
-//          var tpl, editDaAnArr = [], nanDuClass;
-//          testListStepZst = selectZsd; //保存选题阶段的知识点
-//          selectZsd = []; //new add
-//          $scope.selectZsdStr = '';
-//          isEditItemStep = false;
-//          $scope.mingTiParam.isAddTiMu = false;
-//          if(onceMakeWord){
-//            $('.pointTree').find('input[name=point]').prop('checked', false); //add new
-//          }
-//          loopArr = [];
-//          //生成题支编辑器的数组
-//          if(tmxq.TIXING_ID <= 3){
-//            Lazy(tmxq.TIGAN.tiZhiNeiRong).each(function(tznr){
-//              var vObj = {itemVal: tznr, ckd: false};
-//              loopArr.push(vObj);
-//            });
-//            var daAnArr = tmxq.DAAN.split(',');
-//            Lazy(daAnArr).each(function(da){
-//              var daLetter = Lazy(letterArr).indexOf(da);
-//              loopArr[daLetter].ckd = true;
-//            });
-//          }
-//          //单选题
-//          if(tmxq.TIXING_ID == 1){
-//            tpl = 'views/mingti/danxuanedit.html';
-//            danxuan_data = timu_data;
-//            $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
-//            danxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
-//            //danxuan_data.shuju.DAAN = tmxq.DAAN;
-//            danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
-//            danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-//            danxuan_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
-//            danxuan_data.shuju.REMARK = tmxq.REMARK;
-//            $scope.timudetail = tmxq;
-//            $scope.alterTiMuTiXing = '单选题';
-//            renderTpl(tpl); //render 修改过模板
-//          }
-//          //多选题
-//          if(tmxq.TIXING_ID == 2){
-//            tpl = 'views/mingti/duoxuanedit.html';
-//            duoxuan_data = timu_data;
-//            $scope.duoXuanData = duoxuan_data; //数据赋值和模板展示的顺序
-//            duoxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
-//            //duoxuan_data.shuju.DAAN = tmxq.DAAN;
-//            duoxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
-//            duoxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-//            duoxuan_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
-//            duoxuan_data.shuju.REMARK = tmxq.REMARK;
-//            $scope.timudetail = tmxq;
-//            $scope.alterTiMuTiXing = '多选题';
-//            renderTpl(tpl); //render 修改过模板
-//          }
-//          //判断题
-//          if(tmxq.TIXING_ID == 3){
-//            tpl = 'views/mingti/panduan.html';
-//            pandu_data = timu_data;
-//            $scope.panDuanData = pandu_data; //数据赋值和模板展示的顺序
-//            if(tmxq.DAAN == '对'){
-//              pandu_data.shuju.DAAN = 1;
-//            }
-//            else{
-//              pandu_data.shuju.DAAN = 0;
-//            }
-//            pandu_data.shuju.TIXING_ID = tmxq.TIXING_ID;
-//            pandu_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
-//            pandu_data.shuju.TIMU_ID = tmxq.TIMU_ID;
-//            pandu_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
-//            pandu_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-//            pandu_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
-//            pandu_data.shuju.REMARK = tmxq.REMARK;
-//            $scope.alterTiMuTiXing = '判断题';
-//            renderTpl(tpl); //render 修改过模板
-//            var daAnSelectFun = function() {
-//              if(pandu_data.shuju.DAAN == 1){
-//                $scope.choosePanDuanDaan(1);
-//              }
-//              else{
-//                $scope.choosePanDuanDaan(0);
-//              }
-//            };
-//            $timeout(daAnSelectFun, 500);
-//          }
-//          //填空题
-//          if(tmxq.TIXING_ID == 4){
-//            var tkEdReg = new RegExp('<%{.*?}%>', 'g'),
-//              dataFirst,
-//              tkqrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmxq.TIMU_ID; //查询详情url
-//            loopArr = [];
-//            tpl = 'views/mingti/tiankong.html';
-//            tiankong_data = timu_data;
-//            $scope.tianKongData = tiankong_data; //数据赋值和模板展示的顺序
-//            //查询填空题详情
-//            $http.get(tkqrytimuxiangqing).success(function(data){
-//              if(data.length){
-//                dataFirst = data[0];
-//                //题干转换
-//                tiankong_data.shuju.TIGAN = dataFirst.TIGAN.tiGan.replace(tkEdReg, function(arg) {
-//                  return '<span>_____</span>';
-//                });
-//                //答案转换
-//                tkLoopArr = [];
-//                Lazy(JSON.parse(dataFirst.DAAN)).each(function(da, idx, lst){
-//                  var loopArrObj = {
-//                    tiZhiNum: '',
-//                    subTiZhiNum: ''
-//                  };
-//                  if(typeof(da.answer) == 'string'){
-//                    loopArrObj.subTiZhiNum = [];
-//                    loopArrObj.subTiZhiNum[0] = da.answer;
-//                  }
-//                  else{
-//                    loopArrObj.subTiZhiNum = da.answer;
-//                  }
-//                  loopArrObj.tiZhiNum = parseInt(idx) + 1;
-//                  tkLoopArr.push(loopArrObj);
-//                });
-//                DataService.tiMuContPreview(tiankong_data.shuju.TIGAN);
-//              }
-//              else{
-//                DataService.alertInfFun('err', data.error);
-//              }
-//            });
-//            //赋值
-//            tiankong_data.shuju.TIXING_ID = tmxq.TIXING_ID;
-//            tiankong_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
-//            tiankong_data.shuju.TIMU_ID = tmxq.TIMU_ID;
-//            tiankong_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-//            tiankong_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
-//            tiankong_data.shuju.REMARK = tmxq.REMARK;
-//            if(tmxq.TIXING_ID == 6){
-//              $scope.alterTiMuTiXing = '填空题';
-//            }
-//            else{
-//              $scope.alterTiMuTiXing = '笔答填空题';
-//            }
-//            renderTpl(tpl); //render 修改过模板
-//            var addTianKongFun = function() {
-//              $('.formulaEditTiGan').markItUp(mySettings);
-//            };
-//            $timeout(addTianKongFun, 500);
-//          }
-//          //计算题
-//          if(tmxq.TIXING_ID == 5){
-//            tpl = 'views/mingti/jisuan.html';
-//            jisuan_data = timu_data;
-//            $scope.jiSuanData = jisuan_data; //数据赋值和模板展示的顺序
-//            jisuan_data.shuju.TIXING_ID = tmxq.TIXING_ID;
-//            jisuan_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
-//            jisuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
-//            jisuan_data.shuju.DAAN = tmxq.DAAN;
-//            jisuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
-//            jisuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-//            jisuan_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
-//            jisuan_data.shuju.REMARK = tmxq.REMARK;
-//            $scope.alterTiMuTiXing = '计算题';
-//            $scope.mingTiParam.isConvertTiXing = true;
-//            renderTpl(tpl); //render 修改过模板
-//          }
-//          //证明题
-//          if(tmxq.TIXING_ID == 6){
-//            tpl = 'views/mingti/zhengming.html';
-//            zhengming_data = timu_data;
-//            $scope.zhengMingData = zhengming_data; //数据赋值和模板展示的顺序
-//            zhengming_data.shuju.TIXING_ID = tmxq.TIXING_ID;
-//            zhengming_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
-//            zhengming_data.shuju.TIMU_ID = tmxq.TIMU_ID;
-//            zhengming_data.shuju.DAAN = tmxq.DAAN;
-//            zhengming_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
-//            zhengming_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-//            zhengming_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
-//            zhengming_data.shuju.REMARK = tmxq.REMARK;
-//            $scope.alterTiMuTiXing = '证明题';
-//            $scope.mingTiParam.isConvertTiXing = true;
-//            renderTpl(tpl); //render 修改过模板
-//          }
-//          //解答题
-//          if(tmxq.TIXING_ID == 7){
-//            tpl = 'views/mingti/jieda.html';
-//            jieda_data = timu_data;
-//            $scope.jieDaData = jieda_data; //数据赋值和模板展示的顺序
-//            jieda_data.shuju.TIXING_ID = tmxq.TIXING_ID;
-//            jieda_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
-//            jieda_data.shuju.TIMU_ID = tmxq.TIMU_ID;
-//            jieda_data.shuju.DAAN = tmxq.DAAN;
-//            jieda_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
-//            jieda_data.shuju.NANDU_ID = tmxq.NANDU_ID;
-//            jieda_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
-//            jieda_data.shuju.REMARK = tmxq.REMARK;
-//            $scope.alterTiMuTiXing = '解答题';
-//            $scope.mingTiParam.isConvertTiXing = true;
-//            renderTpl(tpl); //render 修改过模板
-//          }
-//          //反选知识点
-//          makeZsdSelect(tmxq);
-//          //难度反向选择代码
-//          var nanDuSelectFun = function() {
-//            nanDuClass = 'starClick' + tmxq.NANDU_ID;
-//            $('.nandu-star-box').addClass(nanDuClass);
-//            $('.nandu-input').val(tmxq.NANDU_ID);
-//            selectZsdFun(); //加载知识大纲名称
-//            if(tmxq.TIXING_ID == 6){
-//              var tkTiZhiArr = $('.tizhiWrap').find('input.tiZhi');
-//              var tkcnum;
-//              var tkEditDaAnArr = tmxq.DAAN.split(';');
-//              tkcnum = $scope.tkLoopArr.length;
-//              for(var i = 0; i < tkcnum; i++){
-//                tkTiZhiArr.eq(i).val(tkEditDaAnArr[i]);
-//              }
-//            }
-//            $scope.loopArr = loopArr;
-//          };
-//          qryTiMuSourceFun();
-//          $scope.alterTiXingBox = true;
-//          onceMakeWord = false;
-//          $timeout(nanDuSelectFun, 500);
-//        };
+        /**
+         * 题目修改
+         */
+        $scope.editItem = function(tm){
+          $scope.newTiXingId = tm['题型ID'];
+          $scope.timu = {
+            '题目ID': tm['题目ID'],
+            '题库ID': tm['题库ID'],
+            '科目ID': tm['科目ID'],
+            '题型ID': $scope.newTiXingId,
+            '题目内容': {
+              '题干': tm['题目内容']['题干'],
+              '答案': '',
+              '提示': tm['题目内容']['提示']
+            },
+            '难度': tm['难度'],
+            '题目来源ID': tm['题目来源ID'],
+            '出题人UID': tm['出题人UID'],
+            '录题人UID': tm['录题人UID'],
+            '知识点': ''
+          };
+          var zsdId = [];
+          var zsdMc = [];
+          Lazy(tm['知识点']).each(function(zsd){
+            zsdId.push(zsd['知识点ID']);
+            zsdMc.push(zsd['知识点名称']);
+          });
+          var zsdIdCopy = angular.copy(zsdId);
+          zsdFxFun(zsdIdCopy);
+          $scope.mingTiParam.panDuanDaAn = '';
+          $scope.timu['知识点'] = zsdId.length ? JSON.stringify(zsdId) : '';
+          $scope.selectZhiShiDian = zsdMc;
+          $scope.mingTiParam.isAddTiMu = false;
+          $scope.alterTiMuTiXing = $scope.tiXingNameArr[$scope.newTiXingId - 1];
+          qryTiMuSourceFun();
+          var dealWith = function(txId){
+            var daan = tm['题目内容']['答案'];
+            if(txId <= 2){
+              $scope.loopArr = [];
+              var daanArr = daan.split(',');
+              var xuanXiang = tm['题目内容']['选项'];
+              Lazy(xuanXiang).each(function(xx, idx, lst){
+                var tiZhiObj = {itemVal: xx, ckd: false};
+                if(txId == 1){
+                  if($scope.letterArr[idx] == daanArr[0]){
+                    tiZhiObj.ckd = true;
+                  }
+                }
+                else{
+                  var ifIn = Lazy(daanArr).contains($scope.letterArr[idx]);
+                  if(ifIn){
+                    tiZhiObj.ckd = true;
+                  }
+                }
+                $scope.loopArr.push(tiZhiObj);
+              });
+            }
+            if(txId == 3){
+              $scope.mingTiParam.panDuanDaAn = daan == '对' ? 1 : 0;
+            }
+            if(txId == 4){
+              var originDaAn = tm['题目内容']['原始答案'];
+              var tkEdReg = new RegExp('<%{.*?}%>', 'g');
+              $scope.timu['题目内容']['题干'] = tm['题目内容']['原始题干'].replace(tkEdReg, function(arg) {
+                return '<span>_____</span>';
+              });
+              tkLoopArr = [];
+              Lazy(originDaAn).each(function(oda, idx, lst){
+                var loopArrObj = {
+                  tiZhiNum: idx + 1,
+                  subTiZhiNum: []
+                };
+                Lazy(oda['答案']).each(function(da){
+                  var subArrObj = {itmVal: da};
+                  loopArrObj.subTiZhiNum.push(subArrObj);
+                });
+                tkLoopArr.push(loopArrObj);
+              });
+              $scope.tkLoopArr = tkLoopArr;
+            }
+          };
+          dealWith($scope.newTiXingId);
+          var tpl = '';
+          switch ($scope.newTiXingId){
+            case 1:
+              tpl = 'views/mingti/danxuan.html';
+              break;
+            case 2:
+              tpl = 'views/mingti/duoxuan.html';
+              break;
+            case 3:
+              tpl = 'views/mingti/panduan.html';
+              break;
+            case 4:
+              $scope.mingTiParam.tianKongDaAn = '';
+              var addTianKongFun = function() {
+                $('.formulaEditTiGan').markItUp(mySettings);
+              };
+              $timeout(addTianKongFun, 500);
+              tpl = 'views/mingti/tiankong.html';
+              break;
+            case 5:
+              tpl = 'views/mingti/jisuan.html';
+              break;
+            case 6:
+              tpl = 'views/mingti/zhengming.html';
+              break;
+            case 7:
+              tpl = 'views/mingti/jieda.html';
+              break;
+          }
+          renderTpl(tpl);
+          //var tpl, editDaAnArr = [], nanDuClass;
+          ////testListStepZst = selectZsd; //保存选题阶段的知识点
+          ////selectZsd = []; //new add
+          //$scope.selectZsdStr = '';
+          ////isEditItemStep = false;
+          //$scope.mingTiParam.isAddTiMu = false;
+          //if(onceMakeWord){
+          //  $('.pointTree').find('input[name=point]').prop('checked', false); //add new
+          //}
+          ////loopArr = [];
+          ////生成题支编辑器的数组
+          //if(tmxq.TIXING_ID <= 3){
+          //  Lazy(tmxq.TIGAN.tiZhiNeiRong).each(function(tznr){
+          //    var vObj = {itemVal: tznr, ckd: false};
+          //    loopArr.push(vObj);
+          //  });
+          //  var daAnArr = tmxq.DAAN.split(',');
+          //  Lazy(daAnArr).each(function(da){
+          //    var daLetter = Lazy(letterArr).indexOf(da);
+          //    loopArr[daLetter].ckd = true;
+          //  });
+          //}
+          ////单选题
+          //if(tmxq.TIXING_ID == 1){
+          //  tpl = 'views/mingti/danxuanedit.html';
+          //  //danxuan_data = timu_data;
+          //  $scope.danXuanData = danxuan_data; //数据赋值和模板展示的顺序
+          //  danxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          //  //danxuan_data.shuju.DAAN = tmxq.DAAN;
+          //  danxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+          //  danxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          //  danxuan_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+          //  danxuan_data.shuju.REMARK = tmxq.REMARK;
+          //  $scope.timudetail = tmxq;
+          //  $scope.alterTiMuTiXing = '单选题';
+          //  renderTpl(tpl); //render 修改过模板
+          //}
+          ////多选题
+          //if(tmxq.TIXING_ID == 2){
+          //  tpl = 'views/mingti/duoxuanedit.html';
+          //  //duoxuan_data = timu_data;
+          //  $scope.duoXuanData = duoxuan_data; //数据赋值和模板展示的顺序
+          //  duoxuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          //  //duoxuan_data.shuju.DAAN = tmxq.DAAN;
+          //  duoxuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+          //  duoxuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          //  duoxuan_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+          //  duoxuan_data.shuju.REMARK = tmxq.REMARK;
+          //  $scope.timudetail = tmxq;
+          //  $scope.alterTiMuTiXing = '多选题';
+          //  renderTpl(tpl); //render 修改过模板
+          //}
+          ////判断题
+          //if(tmxq.TIXING_ID == 3){
+          //  tpl = 'views/mingti/panduan.html';
+          //  //pandu_data = timu_data;
+          //  $scope.panDuanData = pandu_data; //数据赋值和模板展示的顺序
+          //  if(tmxq.DAAN == '对'){
+          //    pandu_data.shuju.DAAN = 1;
+          //  }
+          //  else{
+          //    pandu_data.shuju.DAAN = 0;
+          //  }
+          //  pandu_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+          //  pandu_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+          //  pandu_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          //  pandu_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+          //  pandu_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          //  pandu_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+          //  pandu_data.shuju.REMARK = tmxq.REMARK;
+          //  $scope.alterTiMuTiXing = '判断题';
+          //  renderTpl(tpl); //render 修改过模板
+          //  var daAnSelectFun = function() {
+          //    if(pandu_data.shuju.DAAN == 1){
+          //      $scope.choosePanDuanDaan(1);
+          //    }
+          //    else{
+          //      $scope.choosePanDuanDaan(0);
+          //    }
+          //  };
+          //  $timeout(daAnSelectFun, 500);
+          //}
+          ////填空题
+          //if(tmxq.TIXING_ID == 4){
+          //  var tkEdReg = new RegExp('<%{.*?}%>', 'g'),
+          //    dataFirst,
+          //    tkqrytimuxiangqing = qrytimuxiangqingBase + '&timu_id=' + tmxq.TIMU_ID; //查询详情url
+          //  //loopArr = [];
+          //  tpl = 'views/mingti/tiankong.html';
+          //  //tiankong_data = timu_data;
+          //  $scope.tianKongData = tiankong_data; //数据赋值和模板展示的顺序
+          //  //查询填空题详情
+          //  $http.get(tkqrytimuxiangqing).success(function(data){
+          //    if(data.length){
+          //      dataFirst = data[0];
+          //      //题干转换
+          //      tiankong_data.shuju.TIGAN = dataFirst.TIGAN.tiGan.replace(tkEdReg, function(arg) {
+          //        return '<span>_____</span>';
+          //      });
+          //      //答案转换
+          //      tkLoopArr = [];
+          //      Lazy(JSON.parse(dataFirst.DAAN)).each(function(da, idx, lst){
+          //        var loopArrObj = {
+          //          tiZhiNum: '',
+          //          subTiZhiNum: ''
+          //        };
+          //        if(typeof(da.answer) == 'string'){
+          //          loopArrObj.subTiZhiNum = [];
+          //          loopArrObj.subTiZhiNum[0] = da.answer;
+          //        }
+          //        else{
+          //          loopArrObj.subTiZhiNum = da.answer;
+          //        }
+          //        loopArrObj.tiZhiNum = parseInt(idx) + 1;
+          //        tkLoopArr.push(loopArrObj);
+          //      });
+          //      DataService.tiMuContPreview(tiankong_data.shuju.TIGAN);
+          //    }
+          //    else{
+          //      DataService.alertInfFun('err', data.error);
+          //    }
+          //  });
+          //  //赋值
+          //  tiankong_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+          //  tiankong_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+          //  tiankong_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          //  tiankong_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          //  tiankong_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+          //  tiankong_data.shuju.REMARK = tmxq.REMARK;
+          //  if(tmxq.TIXING_ID == 6){
+          //    $scope.alterTiMuTiXing = '填空题';
+          //  }
+          //  else{
+          //    $scope.alterTiMuTiXing = '笔答填空题';
+          //  }
+          //  renderTpl(tpl); //render 修改过模板
+          //  var addTianKongFun = function() {
+          //    $('.formulaEditTiGan').markItUp(mySettings);
+          //  };
+          //  $timeout(addTianKongFun, 500);
+          //}
+          ////计算题
+          //if(tmxq.TIXING_ID == 5){
+          //  tpl = 'views/mingti/jisuan.html';
+          //  //jisuan_data = timu_data;
+          //  $scope.jiSuanData = jisuan_data; //数据赋值和模板展示的顺序
+          //  jisuan_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+          //  jisuan_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+          //  jisuan_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          //  jisuan_data.shuju.DAAN = tmxq.DAAN;
+          //  jisuan_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+          //  jisuan_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          //  jisuan_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+          //  jisuan_data.shuju.REMARK = tmxq.REMARK;
+          //  $scope.alterTiMuTiXing = '计算题';
+          //  $scope.mingTiParam.isConvertTiXing = true;
+          //  renderTpl(tpl); //render 修改过模板
+          //}
+          ////证明题
+          //if(tmxq.TIXING_ID == 6){
+          //  tpl = 'views/mingti/zhengming.html';
+          //  //zhengming_data = timu_data;
+          //  $scope.zhengMingData = zhengming_data; //数据赋值和模板展示的顺序
+          //  zhengming_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+          //  zhengming_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+          //  zhengming_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          //  zhengming_data.shuju.DAAN = tmxq.DAAN;
+          //  zhengming_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+          //  zhengming_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          //  zhengming_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+          //  zhengming_data.shuju.REMARK = tmxq.REMARK;
+          //  $scope.alterTiMuTiXing = '证明题';
+          //  $scope.mingTiParam.isConvertTiXing = true;
+          //  renderTpl(tpl); //render 修改过模板
+          //}
+          ////解答题
+          //if(tmxq.TIXING_ID == 7){
+          //  tpl = 'views/mingti/jieda.html';
+          //  //jieda_data = timu_data;
+          //  $scope.jieDaData = jieda_data; //数据赋值和模板展示的顺序
+          //  jieda_data.shuju.TIXING_ID = tmxq.TIXING_ID;
+          //  jieda_data.shuju.TIMULEIXING_ID = tmxq.TIMULEIXING_ID;
+          //  jieda_data.shuju.TIMU_ID = tmxq.TIMU_ID;
+          //  jieda_data.shuju.DAAN = tmxq.DAAN;
+          //  jieda_data.shuju.TIGAN = tmxq.TIGAN.tiGan;
+          //  jieda_data.shuju.NANDU_ID = tmxq.NANDU_ID;
+          //  jieda_data.shuju.TIMULAIYUAN_ID = tmxq.TIMULAIYUAN_ID;
+          //  jieda_data.shuju.REMARK = tmxq.REMARK;
+          //  $scope.alterTiMuTiXing = '解答题';
+          //  $scope.mingTiParam.isConvertTiXing = true;
+          //  renderTpl(tpl); //render 修改过模板
+          //}
+          ////反选知识点
+          //makeZsdSelect(tmxq);
+          ////难度反向选择代码
+          //var nanDuSelectFun = function() {
+          //  nanDuClass = 'starClick' + tmxq.NANDU_ID;
+          //  $('.nandu-star-box').addClass(nanDuClass);
+          //  $('.nandu-input').val(tmxq.NANDU_ID);
+          //  selectZsdFun(); //加载知识大纲名称
+          //  if(tmxq.TIXING_ID == 6){
+          //    var tkTiZhiArr = $('.tizhiWrap').find('input.tiZhi');
+          //    var tkcnum;
+          //    var tkEditDaAnArr = tmxq.DAAN.split(';');
+          //    tkcnum = $scope.tkLoopArr.length;
+          //    for(var i = 0; i < tkcnum; i++){
+          //      tkTiZhiArr.eq(i).val(tkEditDaAnArr[i]);
+          //    }
+          //  }
+          //  $scope.loopArr = loopArr;
+          //};
+          //qryTiMuSourceFun();
+          //$scope.alterTiXingBox = true;
+          //onceMakeWord = false;
+          //$timeout(nanDuSelectFun, 500);
+        };
 //
 //        /**
 //         * 修改单选题
@@ -1343,7 +1396,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          */
         $scope.previewTiZhi = function(){
           var tzCont = '';
-          if($scope.newTiMuId > 4){
+          if($scope.newTiXingId > 4){
             tzCont = $scope.timu['题目内容']['答案'];
           }
           else{
@@ -1360,7 +1413,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.saveTiMu = function(){
           var mis = [];
           var tiMuData = angular.copy($scope.timu);
-          if($scope.newTiMuId == 1 || $scope.newTiMuId == 2){ //整理单选和多选题答案
+          if($scope.newTiXingId == 1 || $scope.newTiXingId == 2){ //整理单选和多选题答案
             var tzArr = [];
             var daArr = [];
             Lazy($scope.loopArr).each(function(tz, idx, lst){
@@ -1371,14 +1424,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             });
             tiMuData['题目内容']['选项'] = tzArr.length ? JSON.stringify(tzArr) : '';
             if(daArr && daArr.length > 0){
-              tiMuData['题目内容']['答案'] = $scope.newTiMuId == 1 ? daArr[0] : JSON.stringify(daArr);
+              tiMuData['题目内容']['答案'] = $scope.newTiXingId == 1 ? daArr[0] : JSON.stringify(daArr);
             }
             else{
               mis.push('答案');
             }
           }
-          if($scope.newTiMuId == 4){ //整理填空题
-            //var tiZhiArr = $('.tizhiWrap').find('input.subTiZhi');
+          if($scope.newTiXingId == 4){ //整理填空题
             var reg = new RegExp('<span>.*?</span>', 'g');
             var count = 1;
             var tgVal = tiMuData['题目内容']['题干'];
@@ -1447,7 +1499,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                   '答案': '',
                   '提示': ''
                 };
-                if($scope.newTiMuId < 3){
+                if($scope.newTiXingId < 3){
                   $scope.loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];
                 }
                 $('#prevDoc').html('');
@@ -1456,6 +1508,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                 tkLoopArr = [];
                 $scope.tkLoopArr = '';
                 DataService.alertInfFun('suc', '保存成功！');
+                if(!$scope.mingTiParam.isAddTiMu){
+                  $scope.cancelAddPattern();
+                }
               }
               else{
                 DataService.alertInfFun('err', data.error);
