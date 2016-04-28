@@ -1027,6 +1027,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               });
               $scope.tkLoopArr = tkLoopArr;
             }
+            else{
+              $scope.timu['题目内容']['答案'] = daan;
+            }
           };
           dealWith($scope.newTiXingId);
           var tpl = '';

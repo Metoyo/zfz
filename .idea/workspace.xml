@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/views/mingti/danxuanedit.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/views/mingti/duoxuanedit.html" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/dataservice.js" afterPath="$PROJECT_DIR$/app/scripts/services/dataservice.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/mingti.html" afterPath="$PROJECT_DIR$/app/views/mingti/mingti.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/mingti.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/testList.html" afterPath="$PROJECT_DIR$/app/views/mingti/testList.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="zhifz.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,35 +29,34 @@
       <file leaf-file-name="mingti.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/scripts/controllers/mingti.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="15034" max-vertical-offset="23712">
-              <caret line="1005" column="13" selection-start-line="0" selection-start-column="0" selection-end-line="1539" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="15483" max-vertical-offset="24000">
+              <caret line="1030" column="47" selection-start-line="1030" selection-start-column="14" selection-end-line="1030" selection-end-column="47" />
               <folding>
                 <element signature="e#9246#9670#0" expanded="false" />
-                <element signature="e#28640#29083#0" expanded="false" />
                 <element signature="e#29781#30480#0" expanded="false" />
                 <element signature="e#30506#30589#0" expanded="false" />
                 <element signature="e#30972#31335#0" expanded="false" />
-                <element signature="e#49680#49782#0" expanded="false" />
+                <element signature="e#49760#49862#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mingti.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="mingti.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/mingti.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8757764" vertical-offset="23756" max-vertical-offset="24720">
-              <caret line="1520" column="0" selection-start-line="1520" selection-start-column="0" selection-end-line="1520" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="16248" max-vertical-offset="24768">
+              <caret line="1030" column="47" selection-start-line="1030" selection-start-column="14" selection-end-line="1030" selection-end-column="47" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tiankong.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="tiankong.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/views/mingti/tiankong.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.64" vertical-offset="384" max-vertical-offset="2496">
-              <caret line="25" column="58" selection-start-line="40" selection-start-column="155" selection-end-line="40" selection-end-column="169" />
+            <state vertical-scroll-proportion="0.15508886" vertical-offset="384" max-vertical-offset="2496">
+              <caret line="30" column="16" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -983,33 +976,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/tiankong.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.64" vertical-offset="384" max-vertical-offset="2496">
-          <caret line="25" column="58" selection-start-line="40" selection-start-column="155" selection-end-line="40" selection-end-column="169" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/controllers/mingti.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="15034" max-vertical-offset="23712">
-          <caret line="1005" column="13" selection-start-line="0" selection-start-column="0" selection-end-line="1539" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="15483" max-vertical-offset="24000">
+          <caret line="1030" column="47" selection-start-line="1030" selection-start-column="14" selection-end-line="1030" selection-end-column="47" />
           <folding>
             <element signature="e#9246#9670#0" expanded="false" />
-            <element signature="e#28640#29083#0" expanded="false" />
             <element signature="e#29781#30480#0" expanded="false" />
             <element signature="e#30506#30589#0" expanded="false" />
             <element signature="e#30972#31335#0" expanded="false" />
-            <element signature="e#49680#49782#0" expanded="false" />
+            <element signature="e#49760#49862#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/mingti.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8757764" vertical-offset="23756" max-vertical-offset="24720">
-          <caret line="1520" column="0" selection-start-line="1520" selection-start-column="0" selection-end-line="1520" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="16248" max-vertical-offset="24768">
+          <caret line="1030" column="47" selection-start-line="1030" selection-start-column="14" selection-end-line="1030" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/tiankong.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15508886" vertical-offset="384" max-vertical-offset="2496">
+          <caret line="30" column="16" selection-start-line="30" selection-start-column="16" selection-end-line="30" selection-end-column="16" />
           <folding />
         </state>
       </provider>
