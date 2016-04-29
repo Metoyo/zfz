@@ -1,7 +1,7 @@
 <div class="row">
   <div class="pull-left wp56">
     <h4 class="pb10">
-      <span class="cYell">{{session.defaultLyName}}</span><span>课序号管理</span>
+      <span class="cYell" ng-bind="defaultKeMu['科目名称']"></span><span>课序号管理</span>
       <button type="button" class="btn btn-primary fz14 pull-right" ng-click="showKeXuHaoPop('addKeXuHao')">新增课序号</button>
     </h4>
     <div>
@@ -14,11 +14,13 @@
         <tr ng-repeat="kxh in keXuHaoData" class="cursorPointer">
           <td ng-click="chaXunKxhYongHu(kxh)">
             <span class="cursorPointer mr5">
-              {{kxh.KEXUHAO_MINGCHENG}}
+              {{kxh['课序号名称']}}
             </span>
-            <span>{{'('+kxh.STUDENTS+'人)'}}</span>
+            <span>{{'('+kxh['学生人数']+'人)'}}</span>
           </td>
-          <td class="text-right" ng-bind="kxh.jiaoShiStr"></td>
+          <td class="text-right">
+            <span ng-repeat="js in kxh['教师']" ng-bind="js['姓名']"></span>
+          </td>
           <td class="text-center">
             <a href="javascript:void(0)" ng-click="showKeXuHaoPop('modifyKeXuHao', kxh)">
               <span class="glyphicon glyphicon-pencil"></span>
@@ -142,8 +144,8 @@
             <span class="mt5 dpb">教师</span>
           </div>
           <div class="col-md-8 mt5">
-            <label class="checkbox-inline wp22" ng-repeat="tcr in jgLyTeachers">
-              <input type="checkbox" value="{{tcr.UID}}" ng-model="tcr.ckd"> {{tcr.XINGMING}}
+            <label class="checkbox-inline wp22" ng-repeat="tcr in jgKmTeachers">
+              <input type="checkbox" value="{{tcr.UID}}" ng-model="tcr.ckd"> {{tcr['姓名']}}
             </label>
           </div>
         </div>
@@ -171,8 +173,8 @@
             <span class="mt5 dpb">教师</span>
           </div>
           <div class="col-md-8 mt5">
-            <label class="checkbox-inline" ng-repeat="tcr in jgLyTeachers">
-              <input type="checkbox" value="{{tcr.UID}}" ng-model="tcr.ckd"> {{tcr.XINGMING}}
+            <label class="checkbox-inline" ng-repeat="tcr in jgKmTeachers">
+              <input type="checkbox" value="{{tcr.UID}}" ng-model="tcr.ckd"> {{tcr['姓名']}}
             </label>
           </div>
         </div>
