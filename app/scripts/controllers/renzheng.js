@@ -41,6 +41,12 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $rootScope.urlArrs = [];
         $rootScope.loginUsr = '';
 
+        delete $rootScope.session;
+        $cookieStore.remove('ckUrl');
+        $cookieStore.remove('ckKeMu');
+        $cookieStore.remove('ckUsr');
+        $cookieStore.remove('ckJs');
+
         /**
          * 显示找回密码页面
          */

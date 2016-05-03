@@ -59,8 +59,8 @@
     </div>
   </div>
   <div class="pull-right wp40">
-    <h4 class="pb10 positionRe" ng-show="selectKxh.KEXUHAO_MINGCHENG">
-      <span ng-bind="selectKxh.KEXUHAO_MINGCHENG"></span>
+    <h4 class="pb10 positionRe" ng-show="selectKxh['课序号名称']">
+      <span ng-bind="selectKxh['课序号名称']"></span>
       <span ng-bind="'(' + studentsOrgData.length + '人' + ')'"></span>
       <span class="pull-right">
         <span class="glyphicon glyphicon-align-justify cursorPointer" ng-click="showMoreBtnFun()"></span>
@@ -72,20 +72,20 @@
       </span>
       <span class="promptInfo" ng-bind="selectKxh.SETTINGS"></span>
     </h4>
-    <div ng-show="selectKxh.KEXUHAO_MINGCHENG">
+    <div ng-show="selectKxh['课序号名称']">
       <table class="table table-striped" ng-if="studentsData.length>0">
         <tr>
           <th class="text-center">序号</th>
           <th>学号</th>
           <th>姓名</th>
-          <th class="text-center">班级</th>
+          <!--<th class="text-center">班级</th>-->
           <th width="80px" class="text-center">操作</th>
         </tr>
         <tr ng-repeat="stu in studentsData">
-          <td class="text-center" ng-bind="stu.XUHAO"></td>
-          <td ng-bind="stu.YONGHUHAO"></td>
-          <td ng-bind="stu.XINGMING"></td>
-          <td class="text-center" ng-bind="stu.BANJI"></td>
+          <td class="text-center" ng-bind="stu['序号']"></td>
+          <td ng-bind="stu['学号']"></td>
+          <td ng-bind="stu['姓名']"></td>
+          <!--<td class="text-center" ng-bind="stu.BANJI"></td>-->
           <td class="text-center">
             <a href="javascript:void(0)" ng-click="deleteKxhYh(stu)">
               <span class="glyphicon glyphicon-trash"></span>
@@ -165,7 +165,7 @@
             <span class="mt5 dpb">课序号</span>
           </div>
           <div class="col-md-8">
-            <input type="text" class="form-control" placeholder="课序号" ng-model="guanliParams.modifyKxh.KEXUHAO_MINGCHENG"/>
+            <input type="text" class="form-control" placeholder="课序号" ng-model="guanliParams.modifyKxh['课序号名称']"/>
           </div>
         </div>
         <div class="clearfix mt15">
@@ -183,7 +183,7 @@
             <span class="mt5 dpb">备注</span>
           </div>
           <div class="col-md-8">
-            <input type="text" class="form-control" placeholder="备注" ng-model="guanliParams.modifyKxh.SETTINGS"/>
+            <input type="text" class="form-control" placeholder="备注" ng-model="guanliParams.modifyKxh['备注']"/>
           </div>
         </div>
       </div>
