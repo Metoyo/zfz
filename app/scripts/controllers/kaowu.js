@@ -980,17 +980,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             $scope.loadingImgShow = true;
             $scope.kaoshiData.shuju = JSON.stringify($scope.kaoshiData.shuju);
             submitFORMPost(addNewKaoShiUrl, $scope.kaoshiData, 'POST');
-            //$http.post(addNewKaoShiUrl, $scope.kaoshiData).success(function(data){
-            //  if(data.result){
-            //    $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
-            //    DataService.alertInfFun('suc', '新建成功！');
-            //  }
-            //  else{
-            //    DataService.alertInfFun('err', data.error);
-            //  }
-            //  $scope.kwParams.forbidBtn = false;
-            //  $scope.loadingImgShow = false;
-            //});
           };
 
           /**

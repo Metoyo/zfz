@@ -63,12 +63,8 @@
       <span ng-bind="selectKxh['课序号名称']"></span>
       <span ng-bind="'(' + studentsOrgData.length + '人' + ')'"></span>
       <span class="pull-right">
-        <span class="glyphicon glyphicon-align-justify cursorPointer" ng-click="showMoreBtnFun()"></span>
-        <button type="button" class="btn btn-primary ml10" ng-click="showKeXuHaoPop('addBatchStus')">批量新增</button>
-      </span>
-      <span class="glMoreBtnCont" ng-show="showMoreBtn">
-        <button type="button" class="btn btn-primary" ng-click="deleteKxhYh('all')">清空学生</button>
-        <button type="button" class="btn btn-primary mt10" ng-click="showKeXuHaoPop('addSingleStu')">新增学生</button>
+        <button type="button" class="btn btn-primary mr5" ng-click="deleteKxhYh('all')">清空学生</button>
+        <button type="button" class="btn btn-primary" ng-click="showKeXuHaoPop('addStus')">添加考生</button>
       </span>
       <span class="promptInfo" ng-bind="selectKxh.SETTINGS"></span>
     </h4>
@@ -78,14 +74,12 @@
           <th class="text-center">序号</th>
           <th>学号</th>
           <th>姓名</th>
-          <!--<th class="text-center">班级</th>-->
           <th width="80px" class="text-center">操作</th>
         </tr>
         <tr ng-repeat="stu in studentsData">
-          <td class="text-center" ng-bind="stu['序号']"></td>
+          <td class="text-center" ng-bind="stu['序号'] + 1"></td>
           <td ng-bind="stu['学号']"></td>
           <td ng-bind="stu['姓名']"></td>
-          <!--<td class="text-center" ng-bind="stu.BANJI"></td>-->
           <td class="text-center">
             <a href="javascript:void(0)" ng-click="deleteKxhYh(stu)">
               <span class="glyphicon glyphicon-trash"></span>
@@ -187,46 +181,78 @@
           </div>
         </div>
       </div>
-      <!--添加单个学生-->
-      <div class="row mt15" ng-if="glEditBoxShow=='addSingleStu'">
-        <div class="clearfix">
-          <div class="col-md-2 text-right">
-            <span class="mt5 dpb">姓名</span>
+      <div class="row mt15" style="padding-right: 100px" ng-if="glEditBoxShow=='addStus'">
+        <ul class="list-unstyled kxh-imp">
+          <li class="text-center cursorPointer" style="margin-top: 170px" ng-class="{active:impUsrStepNum=='one'}"
+              ng-click="impUsrStep('one')">单个导入</li>
+          <li class="text-center cursorPointer mt10" ng-class="{active:impUsrStepNum=='more'}"
+              ng-click="impUsrStep('more')">批量导入</li>
+          <li class="text-center cursorPointer mt10" ng-class="{active:impUsrStepNum=='list'}"
+              ng-click="impUsrStep('list')">显示名单</li>
+        </ul>
+        <div ng-if="impUsrStepNum=='list'">
+          <table class="table table-striped" ng-if="impStus.length>0">
+            <tr>
+              <th>学号</th>
+              <th>姓名</th>
+              <th width="80px" class="text-center">操作</th>
+            </tr>
+            <tr ng-repeat="stu in impStus">
+              <td ng-bind="stu['学号']"></td>
+              <td ng-bind="stu['姓名']"></td>
+              <td class="text-center">
+                <a href="javascript:void(0)" ng-click="deleteKxhYh(stu, 'imp')">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div ng-if="impUsrStepNum=='one'">
+          <div class="clearfix">
+            <div class="col-md-2 text-right">
+              <span class="mt5 dpb">姓名</span>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control" placeholder="姓名" ng-model="guanliParams.singleStuName"/>
+            </div>
           </div>
-          <div class="col-md-8">
-            <input type="text" class="form-control" placeholder="姓名" ng-model="guanliParams.singleStuName"/>
+          <div class="clearfix mt15">
+            <div class="col-md-2 text-right">
+              <span class="mt5 dpb">学号</span>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control" placeholder="学号" ng-model="guanliParams.singleStuID"/>
+            </div>
+          </div>
+          <div class="clearfix mt15">
+            <div class="col-md-2 text-right">
+              <span class="mt5 dpb">班级</span>
+            </div>
+            <div class="col-md-8">
+              <input type="text" class="form-control" placeholder="班级" ng-model="guanliParams.singleStuBanJi"/>
+            </div>
+          </div>
+          <div class="text-center mt15">
+            <button type="button" class="btn btn-success mt5" ng-click="impYongHu('single')">导入学生</button>
           </div>
         </div>
-        <div class="clearfix mt15">
-          <div class="col-md-2 text-right">
-            <span class="mt5 dpb">学号</span>
+        <div ng-if="impUsrStepNum=='more'">
+          <div class="clearfix">
+            <div class="col-md-2 text-right">
+              <span class="mt5 dpb"></span>
+            </div>
+            <div class="col-md-8">
+              <form id="importStudentForm" enctype="multipart/form-data" class="ng-pristine ng-valid">
+                <em>
+                  请选择上传人员信息的文件，格式为Excel格式
+                </em>
+                <input type="file" file-upload="" multiple="" class="pull-left mt15 addFileBtn">
+              </form>
+            </div>
           </div>
-          <div class="col-md-8">
-            <input type="text" class="form-control" placeholder="学号" ng-model="guanliParams.singleStuID"/>
-          </div>
-        </div>
-        <div class="clearfix mt15">
-          <div class="col-md-2 text-right">
-            <span class="mt5 dpb">班级</span>
-          </div>
-          <div class="col-md-8">
-            <input type="text" class="form-control" placeholder="班级" ng-model="guanliParams.singleStuBanJi"/>
-          </div>
-        </div>
-      </div>
-      <!--批量添加学生-->
-      <div class="row mt15" ng-if="glEditBoxShow=='addBatchStus'">
-        <div class="clearfix">
-          <div class="col-md-2 text-right">
-            <span class="mt5 dpb"></span>
-          </div>
-          <div class="col-md-8">
-            <form id="importStudentForm" class="ng-pristine ng-valid">
-              <em>
-                请选择上传人员信息的文件，格式为Excel格式
-              </em>
-              <input type="file" file-upload="" multiple="" class="pull-left mt15 addFileBtn">
-            </form>
+          <div class="text-center mt15">
+            <button type="button" class="btn btn-success mt5" ng-click="impYongHu('batch')">导入学生</button>
           </div>
         </div>
       </div>

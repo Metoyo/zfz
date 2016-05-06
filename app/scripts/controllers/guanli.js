@@ -40,7 +40,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         $scope.glEditBoxShow = ''; //弹出层显示那一部分内容
         $scope.jgKmTeachers = ''; //本机构科目下的老师
         $scope.keXuHaoPgData = ''; //课序号数据
-        //$scope.glSelectData = ''; //课序号保存是选中的课序号
         $scope.selectKxh = ''; //选中的课序号
         $scope.showMoreBtn = false; //课序号管理更多按钮
 
@@ -163,7 +162,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          */
         $scope.guanLiTabSlide = function (tab) {
           $scope.guanliParams.tabActive = '';
-          //$scope.glSelectData = '';
           $scope.keXuHaoPgData = '';
           keXuHaoPagesArr = [];
           keXuHaoStore = '';
@@ -184,35 +182,19 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
         $scope.guanLiTabSlide('kexuhao');
 
-
-        ///**
-        // * 文件上传
-        // */
-        //  //存放上传文件的数组
-        //$scope.uploadFiles = [];
-        //
-        ////将选择的文件加入到数组
-        //$scope.$on("fileSelected", function (event, args) {
-        //  $scope.$apply(function () {
-        //    $scope.uploadFiles.push(args.file);
-        //  });
-        //});
-
         /**
-         * 显示更多按钮 --
+         * 文件上传 --
          */
-        $scope.showMoreBtnFun = function(){
-          $scope.showMoreBtn = !$scope.showMoreBtn;
-        };
-        var showMoreBtnFun = function(){
-          if($scope.showMoreBtn){
-            $scope.showMoreBtn = false;
-          }
-        };
+        $scope.uploadFiles = []; //存放上传文件的数组
+        $scope.$on("fileSelected", function (event, args) { //将选择的文件加入到数组
+          $scope.$apply(function () {
+            $scope.uploadFiles.push(args.file);
+          });
+        });
 
         /**
-        * 显示弹出层 --
-        */
+         * 显示弹出层 --
+         */
         $scope.showKeXuHaoPop = function(item, data){
           $scope.showKeXuHaoManage = true;
           $scope.glEditBoxShow = item;
@@ -221,17 +203,18 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           if(item == 'addKeXuHao'){
             qryKeMuTeachers();
           }
-          if(item == 'modifyKeXuHao'){
+          else if(item == 'modifyKeXuHao'){
             $scope.guanliParams.modifyKxh = data;
             qryKeMuTeachers();
-            //$scope.glSelectData = data;
           }
-          showMoreBtnFun();
+          else{
+            $scope.impUsrStepNum = 'more';
+          }
         };
 
         /**
-        * 关闭课序号管理的弹出层 --
-        */
+         * 关闭课序号管理的弹出层 --
+         */
         $scope.closeKeXuHaoManage = function(){
           $scope.showKeXuHaoManage = false;
           $scope.glEditBoxShow = ''; //弹出层显示那一部分重置
@@ -263,15 +246,264 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             }
           }
           $scope.keXuHaoData = keXuHaoStore.slice(startPage, endPage);
-          showMoreBtnFun();
         };
 
         /**
-        * 课序号管理保存数据 --
+         * 删除课序号 --
+         */
+        $scope.deleteKeXuHao = function(kxh){
+          var obj = {method:'POST', url:keXuHaoUrl, data:{'课序号ID':'', '状态':-1}};
+          if(kxh){
+            obj.data['课序号ID'] = kxh['课序号ID'];
+            if(confirm('确定要删除此课序号吗？')){
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.studentsOrgData = '';
+                  $scope.studentsData = '';
+                  $scope.studentsPages = '';
+                  $scope.selectKxh = '';
+                  DataService.alertInfFun('suc', '删除成功！');
+                  queryKeXuHao();
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+          }
+        };
+
+        /**
+         * 导入用户的控制
+         */
+        $scope.impUsrStep = function(step){
+          $scope.impUsrStepNum = step;
+        };
+
+        /**
+         * 导入用户 --
+         */
+        $scope.impYongHu = function(kind){
+          var fd = new FormData();
+          var obj = {};
+          var allRight = true;
+          if(kind == 'single'){
+            if($scope.guanliParams.singleStuName){
+              if($scope.guanliParams.singleStuID){
+                var matchRule = $scope.guanliParams.singleStuID.match(regKxh);
+                if(matchRule && matchRule.length > 0){
+                  var sgStu = [{
+                    '姓名': $scope.guanliParams.singleStuName,
+                    '学号': $scope.guanliParams.singleStuID
+                  }];
+                  if($scope.guanliParams.singleStuBanJi){
+                    sgStu[0]['班级'] = $scope.guanliParams.singleStuBanJi;
+                  }
+                  obj['用户列表.json'] = JSON.stringify(sgStu);
+                }
+                else{
+                  allRight = false;
+                  $scope.guanliParams.errorInfo = '输入的学号格式不正确！';
+                }
+              }
+              else{
+                allRight = false;
+                DataService.alertInfFun('pmt', '缺少学号！');
+              }
+            }
+            else{
+              allRight = false;
+              DataService.alertInfFun('pmt', '缺少姓名！');
+            }
+            for(var key in obj){
+              if (obj.hasOwnProperty(key)) {
+                fd.append(key, obj[key]);
+              }
+              else {
+                console.log(key);
+              }
+            }
+          }
+          else{
+            var file = $scope.uploadFiles;
+            if(file && file.length > 0){
+              for(var j = 1; j <= file.length; j++){
+                fd.append('用户列表.excel', file[j - 1]);
+              }
+            }
+            else{
+              allRight = false;
+              DataService.alertInfFun('pmt', '请添加要上传的名单！');
+            }
+          }
+          if(allRight){
+            $scope.loadingImgShow = true;
+            var impUrl = impYongHuUrl + '/?' + '学校ID=' + jgID;
+            $http.post(impUrl, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}}).success(function(data){
+              if(data.result){
+                $scope.impStus = Lazy($scope.impStus).union(data.data['导入成功']).toArray();
+                $scope.impStus = Lazy($scope.impStus).uniq('UID').toArray();
+                $scope.impUsrStepNum = 'list';
+                if(kind == 'single'){
+                  $scope.guanliParams.singleStuName = '';
+                  $scope.guanliParams.singleStuID = '';
+                  $scope.guanliParams.singleStuBanJi = '';
+                }
+                else{
+                  $scope.uploadFiles = [];
+                }
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+            });
+          }
+        };
+
+        /**
+         * 查询课序号学生 --
+         */
+        $scope.chaXunKxhYongHu = function(kxh){
+          $scope.studentsData = '';
+          $scope.impStus = [];
+          var obj = {method:'GET', url:kxhXueShengUrl, params:{'课序号ID': ''}};
+          if(kxh){
+            $scope.selectKxh = kxh;
+            var idArr = [];
+            idArr.push(kxh['课序号ID']);
+            obj.params['课序号ID'] = JSON.stringify(idArr);
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.studentsOrgData = Lazy(data.data).sortBy('序号').toArray();
+                $scope.impStus = angular.copy($scope.studentsOrgData);
+                kxh['学生人数'] = data.data.length ? data.data.length : 0;
+                studentsPages(data.data);
+              }
+              else{
+                $scope.studentsOrgData = '';
+                $scope.studentsPages = '';
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '缺少课序号ID！');
+          }
+        };
+
+        /**
+         * 学生分页数码
+         */
+        var studentsPages = function(wks){
+          totalStuPage = [];
+          $scope.studentsPages = '';
+          $scope.lastStuPageNum = '';
+          if(wks && wks.length > 10){
+            var stusLength;
+            var stusLastPage;
+            stusLength = wks.length;
+            stusLastPage = Math.ceil(stusLength/numPerPage);
+            $scope.lastStuPageNum = stusLastPage;
+            for(var i = 1; i <= stusLastPage; i++){
+              totalStuPage.push(i);
+            }
+            $scope.studentPgDist(1);
+          }
+          else{
+            $scope.studentsData = $scope.studentsOrgData.slice(0);
+          }
+        };
+
+        /**
+         * 学生分页 --
+         */
+        $scope.studentPgDist = function(pg){
+          var startPage = (pg-1) * numPerPage;
+          var endPage = pg * numPerPage;
+          var lastPageNum = $scope.lastStuPageNum;
+          $scope.currentStuPageVal = pg;
+          //得到分页数组的代码
+          var currentPageNum = pg ? pg : 1;
+          if(lastPageNum <= paginationLength){
+            $scope.studentsPages = totalStuPage;
+          }
+          if(lastPageNum > paginationLength){
+            if(currentPageNum > 0 && currentPageNum <= 4 ){
+              $scope.studentsPages = totalStuPage.slice(0, paginationLength);
+            }
+            else if(currentPageNum > lastPageNum - 4 && currentPageNum <= lastPageNum){
+              $scope.studentsPages = totalStuPage.slice(lastPageNum - paginationLength);
+            }
+            else{
+              $scope.studentsPages = totalStuPage.slice(currentPageNum - 4, currentPageNum + 3);
+            }
+          }
+          $scope.studentsData = $scope.studentsOrgData.slice(startPage, endPage);
+        };
+
+        /**
+        * 删除课序号用户 --
         */
+        $scope.deleteKxhYh = function(yh, kind){
+          if(kind && kind == 'imp'){
+            $scope.impStus = Lazy($scope.impStus).reject(function(stu){
+              return stu['UID'] == yh['UID'];
+            }).toArray();
+          }
+          else{
+            var confirmInfo = '';
+            var obj = {
+              method:'POST',
+              url:kxhXueShengUrl,
+              data:{
+                '课序号ID': $scope.selectKxh['课序号ID'],
+                '学生': ''
+              }
+            };
+            if(yh){
+              if(yh == 'all'){
+                obj.data['学生'] = JSON.stringify('[]');
+                confirmInfo = '确定要删除此课序号下面的所有学生吗？';
+              }
+              else{
+                $scope.studentsOrgData = Lazy($scope.studentsOrgData).reject(function(wk){
+                  return wk['UID'] == yh['UID'];
+                }).toArray();
+                var usrIds = Lazy($scope.studentsOrgData).map(function(stu){
+                  return stu['UID'];
+                }).toArray();
+                obj.data['学生'] = JSON.stringify(usrIds);
+                confirmInfo = '确定要删除学生吗？';
+              }
+              if($scope.selectKxh){
+                if(confirm(confirmInfo)){
+                  $http(obj).success(function(data){
+                    if(data.result){
+                      $scope.chaXunKxhYongHu($scope.selectKxh);
+                      DataService.alertInfFun('suc', '删除成功！');
+                      $scope.showKeXuHaoManage = false;
+                    }
+                    else{
+                      DataService.alertInfFun('err', data.error);
+                    }
+                  });
+                }
+              }
+              else{
+                DataService.alertInfFun('pmt', '请选择要删除学生的专业！');
+              }
+            }
+            else{
+              DataService.alertInfFun('pmt', '请选择要删除的人员！');
+            }
+          }
+        };
+
+        /**
+         * 课序号管理保存数据 --
+         */
         $scope.saveKeXuHaoModify = function(){
           var saveType = $scope.glEditBoxShow;
-          var keXuHaoObj;
           var uidArr = [];
           var allTrue = true;
           $scope.guanliParams.errorInfo = '';
@@ -320,129 +552,35 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               checkJiaoShi();
             }
           }
-          //if(saveType == 'addSingleStu'){ //添加单个学生
-          //  if($scope.guanliParams.singleStuName){
-          //    if($scope.guanliParams.singleStuID){
-          //      var matchRule = $scope.guanliParams.singleStuID.match(regKxh);
-          //      if(matchRule && matchRule.length > 0){
-          //        //先去查询UID
-          //        var chaXunStuUrl = chaXunStuBaseUrl + '?token=' + token + '&jigouid=' + jigouid +
-          //          '&xuehao=' + $scope.guanliParams.singleStuID + '&xingming=' + $scope.guanliParams.singleStuName;
-          //        $http.get(chaXunStuUrl).success(function(data){
-          //          if(data && data.length > 0){
-          //            keXuHaoObj = {
-          //              token: token,
-          //              kexuhaoid: '',
-          //              users: [{uid: data[0].UID, zhuangtai: 1}]
-          //            };
-          //            if($scope.selectKxh){
-          //              keXuHaoObj.kexuhaoid = $scope.selectKxh.KEXUHAO_ID;
-          //              $http.post(modifyKxhYh, keXuHaoObj).success(function(addKxh){
-          //                if(addKxh.result){
-          //                  DataService.alertInfFun('suc', '添加用户成功!');
-          //                  $scope.renYuanAddType = '';
-          //                  $scope.glSelectData = '';
-          //                  $scope.showKeXuHaoManage = false;
-          //                  $scope.guanliParams.singleStuName = '';
-          //                  $scope.guanliParams.singleStuID = '';
-          //                  $scope.guanliParams.singleStuBanJi = '';
-          //                  $scope.chaXunKxhYongHu($scope.selectKxh);
-          //                }
-          //                else{
-          //                  DataService.alertInfFun('err', addKxh.error);
-          //                }
-          //              });
-          //            }
-          //            else{
-          //              DataService.alertInfFun('pmt', '课序号ID为空！');
-          //            }
-          //          }
-          //          else if(data && data.length == 0){
-          //            var singleYhObj = {
-          //              token: token,
-          //              YONGHULEIBIE: 2,
-          //              YONGHUHAO: $scope.guanliParams.singleStuID,
-          //              XINGMING: $scope.guanliParams.singleStuName,
-          //              BANJI: $scope.guanliParams.singleStuBanJi,
-          //              ZHUANGTAI: 1,
-          //              JIGOU: [{JIGOU_ID: jigouid, ZHUANGTAI: 1}],
-          //              KEXUHAO_ID: $scope.selectKxh.KEXUHAO_ID
-          //            };
-          //            $http.post(singleYhAddToKxh, singleYhObj).success(function(result){
-          //              if(result.result){
-          //                $scope.renYuanAddType = '';
-          //                $scope.glSelectData = '';
-          //                $scope.showKeXuHaoManage = false;
-          //                $scope.guanliParams.singleStuName = '';
-          //                $scope.guanliParams.singleStuID = '';
-          //                $scope.guanliParams.singleStuBanJi = '';
-          //                $scope.chaXunKxhYongHu($scope.selectKxh);
-          //                DataService.alertInfFun('suc', '添加用户成功!');
-          //              }
-          //              else{
-          //                DataService.alertInfFun('err', result.error);
-          //              }
-          //            });
-          //          }
-          //          else{
-          //            DataService.alertInfFun('err', data.error);
-          //          }
-          //        });
-          //        $scope.guanliParams.errorInfo = '';
-          //      }
-          //      else{
-          //        $scope.guanliParams.errorInfo = '输入的学号格式不正确！';
-          //      }
-          //    }
-          //    else{
-          //      DataService.alertInfFun('pmt', '缺少学号！');
-          //    }
-          //  }
-          //  else{
-          //    DataService.alertInfFun('pmt', '缺少姓名！');
-          //  }
-          //}
-          //if(saveType == 'addBatchStus'){ //批量添加学生
-          //  var file = $scope.uploadFiles;
-          //  var stusData = {
-          //    token: token,
-          //    jigouid: jigouid,
-          //    kexuhaoid: ''
-          //  };
-          //  if($scope.selectKxh){
-          //    stusData.kexuhaoid = $scope.selectKxh.KEXUHAO_ID;
-          //    $scope.loadingImgShow = true;
-          //    var fd = new FormData();
-          //    for(var j = 1; j <= file.length; j++){
-          //      fd.append('file' + j, file[j - 1]);
-          //    }
-          //    for(var key in stusData){
-          //      fd.append(key, stusData[key]);
-          //    }
-          //    $scope.loadingImgShow = true;
-          //    $http.post(modifyKxhYh, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}})
-          //      .success(function(data){
-          //        if(data.result){
-          //          $scope.showKeXuHaoManage = '';
-          //          DataService.alertInfFun('suc', '批量新增成功！');
-          //          $scope.chaXunKxhYongHu($scope.selectKxh);
-          //        }
-          //        else{
-          //          DataService.alertInfFun('err', data.error);
-          //        }
-          //        $scope.loadingImgShow = false;
-          //      });
-          //  }
-          //  else{
-          //    DataService.alertInfFun('pmt', '请选择课序号！');
-          //  }
-          //}
+          if(saveType == 'addStus'){ //添加学生
+            var stuIds = [];
+            if($scope.impStus && $scope.impStus.length > 0){
+              Lazy($scope.impStus).each(function(stu){
+                stuIds.push(stu['UID']);
+              });
+            }
+            if(stuIds.length > 0){
+              obj.method = 'POST';
+              obj.url = kxhXueShengUrl;
+              obj.data = {
+                '课序号ID': $scope.selectKxh['课序号ID'],
+                '学生':JSON.stringify(stuIds)
+              };
+            }
+            else{
+              allTrue = false;
+            }
+          }
           if(allTrue){
             $http(obj).success(function(data){
               if(data.result){
                 var objJs = '';
                 if(saveType == 'addKeXuHao'){ //新增课序号
-                  objJs = {method:'POST', url:kxhJiaoShiUrl, data:{'课序号ID':data.data['课序号ID'], '教师':JSON.stringify(uidArr)}};
+                  objJs = {
+                    method:'POST',
+                    url:kxhJiaoShiUrl,
+                    data:{'课序号ID':data.data['课序号ID'], '教师':JSON.stringify(uidArr)}
+                  };
                   $http(objJs).success(function(jsData){
                     if(data.result){
                       $scope.glEditBoxShow = ''; //弹出层显示那一部分内容重置
@@ -458,15 +596,18 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                     }
                   });
                 }
-                if(saveType == 'modifyKeXuHao'){ //修改课序号
-                  objJs = {method:'POST', url:kxhJiaoShiUrl, data:{'课序号ID':$scope.guanliParams.modifyKxh['课序号ID'], '教师':JSON.stringify(uidArr)}};
+                else if(saveType == 'modifyKeXuHao'){ //修改课序号
+                  objJs = {
+                    method:'POST',
+                    url:kxhJiaoShiUrl,
+                    data:{'课序号ID':$scope.guanliParams.modifyKxh['课序号ID'], '教师':JSON.stringify(uidArr)}
+                  };
                   $http(objJs).success(function(jsData){
                     if(data.result){
                       $scope.glEditBoxShow = ''; //弹出层显示那一部分内容重置
                       $scope.guanliParams.addNewKxh = ''; //课序号重置
                       $scope.guanliParams.addNewKxhSetting = '';
                       $scope.showKeXuHaoManage = false; //课序号重置
-                      $scope.glSelectData = '';
                       $scope.guanliParams.modifyKxh = '';
                       $scope.guanliParams.errorInfo = '';
                       queryKeXuHao();
@@ -477,6 +618,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                     }
                   });
                 }
+                else{ //课序号添加考生
+                  $scope.showKeXuHaoManage = false;
+                  $scope.chaXunKxhYongHu($scope.selectKxh);
+                  DataService.alertInfFun('suc', '课序号添加考生成功!');
+                }
               }
               else{
                 DataService.alertInfFun('err', data.error);
@@ -486,34 +632,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-        * 删除课序号 --
-        */
-        $scope.deleteKeXuHao = function(kxh){
-          var obj = {method:'POST', url:keXuHaoUrl, data:{'课序号ID':'', '状态':-1}};
-          if(kxh){
-            obj.data['课序号ID'] = kxh['课序号ID'];
-            if(confirm('确定要删除此课序号吗？')){
-              $http(obj).success(function(data){
-                if(data.result){
-                  $scope.studentsOrgData = '';
-                  $scope.studentsData = '';
-                  $scope.studentsPages = '';
-                  $scope.selectKxh = '';
-                  DataService.alertInfFun('suc', '删除成功！');
-                  queryKeXuHao();
-                }
-                else{
-                  DataService.alertInfFun('err', data.error);
-                }
-              });
-            }
-          }
-          showMoreBtnFun();
-        };
-
-        /**
-        * 查询考试组
-        */
+         * 查询考试组
+         */
         //var glQueryKaoShiZu = function(){
         //  var kaoShiState = [-3, 0, 1, 2, 3, 4, 5, 6];
         //  var qryKaoShiZuList = qryKaoShiZuListUrl + '&zhuangtai=' + kaoShiState;
@@ -566,145 +686,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         //  });
         //};
 
-        /**
-         * 查询课序号学生 --
-         */
-        $scope.chaXunKxhYongHu = function(kxh){
-          $scope.studentsData = '';
-          var obj = {method:'GET', url:kxhXueShengUrl, params:{'课序号ID': ''}};
-          if(kxh){
-            $scope.selectKxh = kxh;
-            var idArr = [];
-            idArr.push(kxh['课序号ID']);
-            obj.params['课序号ID'] = JSON.stringify(idArr);
-            $http(obj).success(function(data){
-              if(data.result){
-                $scope.studentsOrgData = Lazy(data.data).sortBy('序号').toArray();
-                kxh.STUDENTS = data.length;
-                studentsPages(data.data);
-              }
-              else{
-                $scope.studentsOrgData = '';
-                $scope.studentsPages = '';
-              }
-            });
-          }
-          else{
-            DataService.alertInfFun('pmt', '缺少课序号ID！');
-          }
-          showMoreBtnFun();
-        };
-
-        /**
-         * 学生分页数码
-         */
-        var studentsPages = function(wks){
-          totalStuPage = [];
-          $scope.studentsPages = '';
-          $scope.lastStuPageNum = '';
-          if(wks && wks.length > 10){
-            var stusLength;
-            var stusLastPage;
-            stusLength = wks.length;
-            stusLastPage = Math.ceil(stusLength/numPerPage);
-            $scope.lastStuPageNum = stusLastPage;
-            for(var i = 1; i <= stusLastPage; i++){
-              totalStuPage.push(i);
-            }
-            $scope.studentPgDist(1);
-          }
-          else{
-            $scope.studentsData = $scope.studentsOrgData.slice(0);
-          }
-        };
-
-        /**
-         * 学生分页 --
-         */
-        $scope.studentPgDist = function(pg){
-          var startPage = (pg-1) * numPerPage;
-          var endPage = pg * numPerPage;
-          var lastPageNum = $scope.lastStuPageNum;
-          $scope.currentStuPageVal = pg;
-          //得到分页数组的代码
-          var currentPageNum = pg ? pg : 1;
-          if(lastPageNum <= paginationLength){
-            $scope.studentsPages = totalStuPage;
-          }
-          if(lastPageNum > paginationLength){
-            if(currentPageNum > 0 && currentPageNum <= 4 ){
-              $scope.studentsPages = totalStuPage.slice(0, paginationLength);
-            }
-            else if(currentPageNum > lastPageNum - 4 && currentPageNum <= lastPageNum){
-              $scope.studentsPages = totalStuPage.slice(lastPageNum - paginationLength);
-            }
-            else{
-              $scope.studentsPages = totalStuPage.slice(currentPageNum - 4, currentPageNum + 3);
-            }
-          }
-          $scope.studentsData = $scope.studentsOrgData.slice(startPage, endPage);
-          showMoreBtnFun();
-        };
-
-        ///**
-        // * 删除课序号
-        // */
-        //$scope.deleteKxhYh = function(yh){
-        //  var confirmInfo = '';
-        //  if(yh){
-        //    var obj = {
-        //      token: token,
-        //      kexuhaoid: '',
-        //      users: ''
-        //    };
-        //    if(yh == 'all'){
-        //      obj.users = [];
-        //      Lazy($scope.studentsOrgData).each(function(wk){
-        //        var wkObj = {uid: wk.UID, zhuangtai: -1};
-        //        obj.users.push(wkObj);
-        //      });
-        //      confirmInfo = '确定要删除此课序号下面的所有学生吗？';
-        //    }
-        //    else{
-        //      obj.users = [{uid: yh.UID, zhuangtai: -1}];
-        //      confirmInfo = '确定要删除学生吗？';
-        //    }
-        //    if($scope.selectKxh){
-        //      obj.kexuhaoid = $scope.selectKxh.KEXUHAO_ID;
-        //      if(confirm(confirmInfo)){
-        //        $http.post(modifyKxhYh, obj).success(function(data){
-        //          if(data.result){
-        //            $scope.studentsOrgData = Lazy($scope.studentsOrgData).reject(function(wk){
-        //              return wk.UID == yh.UID;
-        //            }).toArray();
-        //            $scope.studentsData = Lazy($scope.studentsData).reject(function(wk){
-        //              return wk.UID == yh.UID;
-        //            }).toArray();
-        //            Lazy($scope.keXuHaoData).each(function(kxh){
-        //              if(kxh.KEXUHAO_ID == $scope.selectKxh.KEXUHAO_ID){
-        //                kxh.STUDENTS = 0;
-        //              }
-        //            });
-        //            $scope.chaXunKxhYongHu($scope.selectKxh);
-        //            DataService.alertInfFun('suc', '删除成功！');
-        //            $scope.showKeXuHaoManage = false;
-        //          }
-        //          else{
-        //            DataService.alertInfFun('err', data.error);
-        //          }
-        //        });
-        //      }
-        //    }
-        //    else{
-        //      DataService.alertInfFun('pmt', '请选择要删除学生的专业！');
-        //    }
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择要删除的人员！');
-        //  }
-        //  showMoreBtnFun();
-        //};
-        //
         ///**
         // * 重新加载mathjax
         // */
