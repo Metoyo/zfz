@@ -5,7 +5,7 @@
         <tr>
           <th>试卷名称</th>
           <th width="100px">出卷人</th>
-          <th width="100px">创建时间</th>
+          <th width="120px">创建时间</th>
           <th width="80px">操作</th>
         </tr>
       </table>
@@ -14,15 +14,12 @@
       <table class="table" bn-slide-show slide-show-target="more-info" slide-show-idx="{{$index}}">
         <tr>
           <td>
-            <a href="javascript:void(0)" ng-click="showPaperDetail(pld.SHIJUAN_ID)"
-               ng-bind="pld.SHIJUANMINGCHENG"></a>
+            <a href="javascript:void(0)" ng-click="showPaperDetail(pld['试卷组ID'])" ng-bind="pld['试卷组名称']"></a>
           </td>
-          <td width="100px" class="text-center" ng-bind="pld.chuangjianren"></td>
-          <td width="100px" class="text-center" ng-bind="pld.UPDATE_TIME | myLocalDate | date : 'yyyy-MM-dd'"></td>
+          <td width="100px" class="text-center" ng-bind="pld['创建人UID']"></td>
+          <td width="120px" class="text-center" ng-bind="pld['修改时间'] | myLocalDate | date : 'yyyy-MM-dd'"></td>
           <td width="80px" class="text-center">
-            <button type="button" class="btn btn-default"
-                    ng-click="deleteThisPaper(pld.SHIJUAN_ID, $index)">删除
-            </button>
+            <button type="button" class="btn btn-default" ng-click="deleteThisPaper(pld['试卷组ID'], $index)">删除</button>
           </td>
         </tr>
       </table>

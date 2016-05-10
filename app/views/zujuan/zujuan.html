@@ -8,68 +8,15 @@
     <div class="tiMuTongJi" ng-hide="zjDaGangListShow">
       <div class="plr10">
         <h2 class="sdb-title">科目名称</h2>
-        <p ng-bind="session.defaultLyName" class="sdb-cont cYell"></p>
+        <p ng-bind="defaultKeMu['科目名称']" class="sdb-cont cYell"></p>
       </div>
       <div class="plr10">
         <h2 class="sdb-title">题库默认大纲</h2>
-        <p ng-bind="dgList[0].ZHISHIDAGANGMINGCHENG" class="sdb-cont-dg cYell"></p>
+        <select class="form-control" ng-model="zuJuanParam.slt_dg" ng-change="getDgZsdData(zuJuanParam.slt_dg)"
+                ng-options="dg['知识大纲ID'] as dg['知识大纲名称'] for dg in dgList">
+          <option value="">请选择大纲</option>
+        </select>
       </div>
-      <!--<div class="plr10">-->
-        <!--<div class="selectedItems clearfix" ng-show="showBackToPaperListBtn">-->
-          <!--<h3 class="clearfix">-->
-            <!--<span class="pull-left">已选试题({{totalSelectedItmes ? totalSelectedItmes : 0}})</span>-->
-            <!--<a href="javascript:void(0)" class="pull-right">全部清空</a>-->
-          <!--</h3>-->
-          <!--<table class="table-bordered tixingTalbe">-->
-            <!--<tr>-->
-              <!--<th>题型</th>-->
-              <!--<th>数量</th>-->
-              <!--<th>占比</th>-->
-              <!--<th>分数</th>-->
-              <!--<th></th>-->
-            <!--</tr>-->
-            <!--<tr ng-repeat="kmtx in kmtxList">-->
-              <!--<td class="text-left">{{kmtx.TIXINGMINGCHENG}}</td>-->
-              <!--<td>{{kmtx.itemsNum}}</td>-->
-              <!--<td>{{kmtx.txPercentNum == 'NaN%' ? '0%' : kmtx.txPercentNum }}</td>-->
-              <!--<td>{{kmtx.datiScore}}</td>-->
-              <!--<td class="deleteBtn">-->
-                <!--<a href="javascript:void(0)" ng-click="deleteDaTiArr(kmtx.TIXING_ID)">-->
-                  <!--<span class="glyphicon glyphicon-trash"></span>-->
-                <!--</a>-->
-              <!--</td>-->
-            <!--</tr>-->
-          <!--</table>-->
-        <!--</div>-->
-        <!--<div class="selectedItems clearfix" ng-show="showBackToPaperListBtn">-->
-          <!--<table class="table-bordered nanduTable">-->
-            <!--<tr>-->
-              <!--<th>难度</th>-->
-              <!--<th>数量</th>-->
-              <!--<th>占比</th>-->
-              <!--<th>分数</th>-->
-            <!--</tr>-->
-            <!--<tr ng-repeat="ndtd in nanduTempData">-->
-              <!--<td class="text-left">{{ndtd.nanduName}}</td>-->
-              <!--<td>{{ndtd.nanduCount.length}}</td>-->
-              <!--<td>{{ndtd.ndPercentNum == 'NaN%' ? '0%' : ndtd.ndPercentNum}}</td>-->
-              <!--<td></td>-->
-            <!--</tr>-->
-          <!--</table>-->
-        <!--</div>-->
-        <!--<div class="right-pop-fixed" ng-show="zuJuanParam.xuanTiError.length">-->
-          <!--<h2 class="title">-->
-            <!--<span class="glyphicon glyphicon-remove" ng-click="closeRuleZuJuanTiMuNumErr()"></span>-->
-          <!--</h2>-->
-          <!--<div class="p10">-->
-            <!--<p ng-repeat="xtErr in zuJuanParam.xuanTiError">-->
-              <!--难度为 <span ng-bind="xtErr.errNanDu" class="clRed"></span>-->
-              <!--的<span ng-bind="xtErr.errTxName" class="clRed"></span>有-->
-              <!--<span ng-bind="xtErr.lessenVal" class="clRed"></span> 道题未选出。-->
-            <!--</p>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
     </div>
     <!-- 大纲列表 -->
     <div id="dagangListWrap" ng-show="zjDaGangListShow">
@@ -144,11 +91,11 @@
       <div class="contentWraps">
         <div class="sub-nav">
           <ul class="nav nav-tabs">
-            <li ng-class="{active: zj_tabActive == 'addNewShiJuan' }">
-              <a href="javascript:void(0)" ng-click="showZuJuanPage()">
-                新增试卷
-              </a>
-            </li>
+            <!--<li ng-class="{active: zj_tabActive == 'addNewShiJuan' }">-->
+              <!--<a href="javascript:void(0)" ng-click="showZuJuanPage()">-->
+                <!--新增试卷-->
+              <!--</a>-->
+            <!--</li>-->
             <li ng-class="{active: zj_tabActive == 'shiJuan' }">
               <a href="javascript:void(0)" ng-click="showPaperList()">
                 试卷列表
@@ -161,14 +108,9 @@
             </li>
             <li ng-class="{active: zj_tabActive == 'zjRule'}">
               <a href="javascript:void(0)" ng-click="showZuJuanRuleList()">
-                组卷规则
+                随机组卷
               </a>
             </li>
-            <!--<li>-->
-              <!--<a href="javascript:void(0)" ng-click="exportShiJuanToPdf('myPaper')">-->
-                <!--下载-->
-              <!--</a>-->
-            <!--</li>-->
           </ul>
         </div>
         <div class="tab-content" ng-include="zjTpl">
