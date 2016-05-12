@@ -29,9 +29,9 @@
             题型分布：
           </h5>
           <p>
-            <span ng-repeat="dati in pld.TIXING_DATA">
-              {{tiXingNameArr[dati.TIXING_ID -1]}}:
-              <b ng-show="dati.COUNT">固定{{dati.COUNT}}</b>  <b ng-show="dati.sjCount">随机{{dati.sjCount}}</b>
+            <span ng-repeat="dati in pld.TIXING_DATA">{{tiXingNameArr[dati.TIXING_ID -1]}}:
+              <b ng-show="dati.COUNT">固定{{dati.COUNT}}</b>
+              <b ng-show="dati.sjCount">随机{{dati.sjCount}}</b>
             </span>
           </p>
         </div>
@@ -49,27 +49,27 @@
     </li>
   </ul>
   <div class="paging text-right">
-    <ul class="pagination pagination-sm" ng-hide="!papertListIds">
-      <li ng-class="{disabled: currentPageVal == 1}">
-        <a href ng-click="getThisSjgyPageData(1)">首页</a>
+    <ul class="pagination pagination-sm" ng-if="sjzPage.pages.length>0">
+      <li ng-class="{disabled:sjzPage.currentPage == 1}">
+        <a href ng-click="getSjzPageData(1)">首页</a>
       </li>
-      <li ng-class="{disabled: currentPageVal == 1}">
+      <li ng-class="{disabled:sjzPage.currentPage == 1}">
         <a href
-           ng-click="getThisSjgyPageData(prevPg = currentPageVal > 1 ? currentPageVal - 1 : 1)">
+           ng-click="getSjzPageData(prevPg = sjzPage.currentPage > 1 ? sjzPage.currentPage - 1 : 1)">
           上一页
         </a>
       </li>
-      <li ng-repeat="pg in paperPages" ng-class="{active: currentPageVal == pg}">
-        <a href ng-click="getThisSjgyPageData(pg)">{{pg}}</a>
+      <li ng-repeat="pg in sjzPage.pages" ng-class="{active: sjzPage.currentPage == pg}">
+        <a href ng-click="getSjzPageData(pg)">{{pg}}</a>
       </li>
-      <li ng-class="{disabled: currentPageVal == lastPaperPageNum}">
+      <li ng-class="{disabled:sjzPage.currentPage == sjzPage.lastPage}">
         <a href
-           ng-click="getThisSjgyPageData(nextPg = currentPageVal < lastPaperPageNum ? currentPageVal + 1 : lastPaperPageNum)">
+           ng-click="getSjzPageData(nextPg = sjzPage.currentPage < sjzPage.lastPage ? sjzPage.currentPage + 1 : sjzPage.lastPage)">
           下一页
         </a>
       </li>
-      <li ng-class="{disabled: currentPageVal == lastPaperPageNum}">
-        <a href ng-click="getThisSjgyPageData(lastPaperPageNum)">尾页</a>
+      <li ng-class="{disabled:sjzPage.currentPage == sjzPage.lastPage}">
+        <a href ng-click="getSjzPageData(sjzPage.lastPage)">尾页</a>
       </li>
     </ul>
   </div>
