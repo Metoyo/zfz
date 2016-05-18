@@ -6,102 +6,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         /**
          * 声明变量
          */
-        //var userInfo = $rootScope.session.userInfo;
-        //var baseMtAPIUrl = config.apiurl_mt; //mingti的api
-        //var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
-        //var token = config.token;
-        //var caozuoyuan = userInfo.UID;//登录的用户的UID
-        //var jigouid = userInfo.JIGOU[0].JIGOU_ID;
-        //var lingyuid = $rootScope.session.defaultLyId;
-        //var tiKuLingYuId = $rootScope.session.defaultTiKuLyId;
-        //var chaxunzilingyu = true;
-        //var qryDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan
-        //    + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu;//查询大纲的url
-        //var qryKnowledgeBaseUrl = baseMtAPIUrl + 'chaxun_zhishidagang_zhishidian?token=' + token + '&caozuoyuan=' +
-        //    caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&zhishidagangid='; //查询知识点基础url
-        //var qryKnowledge = ''; //定义一个空的查询知识点的url
-        //var selectZsd = [];//定义一个选中知识点的变量（数组)
-        //var selectZsdName = [];//定义一个选中知识点的变量的名称（数组)
-        //var tixing_id = ''; //用于根据题型id查询题目的字符串
-        //var nandu_id = ''; //用于根据难度查询题目的字符串
-        //var zhishidian_id = ''; //用于根据知识点查询题目的字符串
-        //var qryKmTx = baseMtAPIUrl + 'chaxun_kemu_tixing?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid=' +
-        //    jigouid + '&lingyuid='; //查询科目包含什么题型的url
-        //var qrytimuliebiaoBase = baseMtAPIUrl + 'chaxun_timuliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-        //    '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询题目列表的url
-        //var qrytimuxiangqingBase = baseMtAPIUrl + 'chaxun_timuxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
-        //    '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询题目详情基础url
-        //var timudetails;//获得的题目数组
-        //var tiMuIdArr = []; //获得查询题目ID的数组
-        //var sjlbIdArrRev = []; //存放所有试卷ID的数组
-        //var pageArr = []; //根据得到的试题数据定义一个分页数组
-        //var paperPageArr = []; //定义试卷页码数组
-        //var totalPage; //符合条件的试题数据一共有多少页
-        //var totalPaperPage;//符合条件的试卷一共有多少页
-        //var nanduTempData = [ //存放题型难度的数组
-        //    {
-        //      nanduId: '1',
-        //      nanduName:'容易',
-        //      nanduCount: []
-        //    },
-        //    {
-        //      nanduId: '2',
-        //      nanduName:'较易',
-        //      nanduCount: []
-        //    },
-        //    {
-        //      nanduId: '3',
-        //      nanduName:'一般',
-        //      nanduCount: []
-        //    },
-        //    {
-        //      nanduId: '4',
-        //      nanduName:'较难',
-        //      nanduCount: []
-        //    },
-        //    {
-        //      nanduId: '5',
-        //      nanduName:'困难',
-        //      nanduCount: []
-        //    }
-        //  ];
-        //var nanduLength = nanduTempData.length; //难度数组的长度
-        //var deletelsmbData = { //删除临时模板的数据模型
-        //    token: token,
-        //    caozuoyuan: caozuoyuan,
-        //    jigouid: jigouid,
-        //    lingyuid: lingyuid,
-        //    muban_id: []
-        //  };
-        //var deletelsmbUrl = baseMtAPIUrl + 'shanchu_muban'; //删除临时模板的url
-        //var kmtxListLength; //获得科目题型的长度
-        //var qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-        //    '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询试卷列表url
-        //var qryPaperDetailUrlBase = baseMtAPIUrl + 'chaxun_shijuanxiangqing?token=' + token + '&caozuoyuan=' + caozuoyuan +
-        //    '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid=';//查询试卷列表url
-        //var paperDetailData; //定义一个存放试卷详情的字段，用于保存试卷详情用于生成答题卡
-        //var paperDetailId; //用来存放所选试卷的id
-        //var paperDetailName; //用来存放所选试卷的名称
-        //var zidongzujuan = baseMtAPIUrl + 'zidongzujuan'; //自动组卷的url
-        //var qryShiJuanGaiYaoBase = baseMtAPIUrl + 'chaxun_shijuangaiyao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-        //    '&jigouid=' + jigouid + '&lingyuid=' + lingyuid + '&shijuanid='; //查询试卷概要的基础URL
-        //var getUserNameBase = baseRzAPIUrl + 'get_user_name?token=' + token + '&uid='; //规则组卷
-        //var guiZeZuJuanUrl = baseMtAPIUrl + 'guizezujuan'; //规则组卷的url
-        //var updateXuanTiRule = baseMtAPIUrl + 'xiugai_xuantiguize'; //修改选题规则
-        //var updateRuleUseTimes = baseMtAPIUrl + 'touch_xuantiguize'; //更新选题规则使用次数
-        //var qryXuanTiRuleBase = baseMtAPIUrl + 'chaxun_xuantiguize?token=' + token + '&caozuoyuan=' + caozuoyuan; //更新选题规则使用次数
-        //var zuJuanRuleStr = ''; //存放组卷规则的字符串，有json数据格式转化而来
-        //var isComeFromRuleList = false; //是否由规则列表点进去的
-        //var comeFromRuleMakePaper = false; //是否由规则列表点进去的
-        //var comeFromRuleListData = ''; //存放已选组卷规则的变量
-        //var zsdgZsdArr = []; //存放所有知识大纲知识点的数组
-        //var qryTiKuUrl =  baseMtAPIUrl + 'chaxun_tiku?token=' + token + '&caozuoyuan=' + caozuoyuan +
-        //    '&jigouid=' + jigouid + '&lingyuid=' + tiKuLingYuId; //查询题库
-        //var qryMoRenDgUrl = baseMtAPIUrl + 'chaxun_zhishidagang?token=' + token + '&caozuoyuan=' + caozuoyuan + '&jigouid='
-        //    + jigouid + '&lingyuid=' + lingyuid + '&chaxunzilingyu=' + chaxunzilingyu + '&moren=1'; //查询默认知识大纲的url
-        //var queryZsdTiMuNumBaseUrl = baseMtAPIUrl + 'query_zhishidian_timucount?token=' + token + '&jigouid=' + jigouid
-        //  + '&lingyuid=' + lingyuid; //查询知识点题目数量
-        //var checkSchoolTiKu = caozuoyuan; //查看学校题库需要传的参数
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
@@ -110,52 +14,24 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         var lingYuId = dftKm['领域ID']; //默认的科目ID
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
         var shiJuanZuUrl = '/shijuanzu'; //试卷组
+        var zuJuanUrl = '/zujuan '; //组卷，用在规则组卷
         var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
         var tiKuUrl = '/tiku'; //题库
         var itemNumPerPage = 10; //每页显示多少条数据
         var paginationLength = 11; //分页部分，页码的长度，目前设定为11
         var originSjzData = ''; //存放试卷组原始数据的变量
         $scope.defaultKeMu = dftKm; //默认科目
-        //$scope.keMuList = true; //科目选择列表内容隐藏
-        //$scope.dgListBox = true; //大纲选择列表隐藏
-        //$scope.letterArr = config.letterArr; //题支的序号
-        //$scope.cnNumArr = config.cnNumArr; //汉语的大学数字
-        //$scope.shijuanData = shijuanData; // 试卷的数据
-        //$scope.mubanData = mubanData; // 模板的数据
-        //$scope.sjPreview = false; //试卷预览里面的试题列表
-        //$scope.nanduTempData = nanduTempData; //难度的数组
-        //$scope.shijuanyulanBtn = false; //试卷预览的按钮
-        //$scope.fangqibencizujuanBtn = false; //放弃本次组卷的按钮
-        //$scope.baocunshijuanBtn = false; //保存试卷的按钮
-        //$scope.shijuan_edit = false; //试卷编辑
-        //$scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
-        //$scope.txSelectenIdx = 0; //选择题型的索引
-        //$scope.ndSelectenIdx = 0; //选择难度的索引
-        //$scope.isSavePaperConfirm = false; //保存试卷前的确认
-        //$scope.showBackToPaperListBtn = false; //加载组卷页面是，返回试卷列表页面隐藏
-        //$scope.addMoreTiMuBtn = false; //添加更多试题的按钮
-        //$scope.zj_tabActive = 'shiJuan'; //初始化组卷页面的tab的显示和隐藏
         $scope.zuJuanParam = { //组卷参数
-          slt_dg: '' //默认大纲
-          //quChong: [
-          //  {qcTime: 1, qcName: '1 年'},
-          //  {qcTime: 2, qcName: '2 年'},
-          //  {qcTime: 3, qcName: '3 年'},
-          //  {qcTime: 4, qcName: '4 年'},
-          //  {qcTime: 5, qcName: '5 年'}
-          //],
-          //quChongNum: '',
-          //selectQuChongNum: '',
-          //inputQuChongNum: '',
-          //zjLastNd: '', //组卷最后选择的难度
-          //xuanTiError: [],
-          //tiMuSuiJi: false,
-          //xuanXiangSuiJi: false,
-          //goToPageNum: '',
-          //tiMuId: '', //题目ID
-          //tiMuAuthorId: '', //出题人ID
-          //isFirstEnterZuJuan: true,
-          //sjzj_zongfen: 0 //随机组卷的总分
+          slt_dg: '', //默认大纲
+          rlTxId: '', //组卷规则题型ID
+          rlTmNum: '', //组卷规则题目数量
+          rlTmFz: '', //组卷规则题目分值
+          rlTmc: false, //组卷规则是否使用题目池
+          rlNd: [], //组卷规则难度
+          rlTk: [], //组卷规则题库
+          rlZsd: [], //组卷规则知识点
+          rlZsdName: [], //组卷规则知识点名称
+          sjzName: '' //试卷组名称
         };
         $scope.sjzPage = { //试卷组分页参数
           lastPage: '',
@@ -163,20 +39,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           allPages: [],
           pages: []
         };
-        $scope.addSjz = { //添加试卷组的参数
-          addTmc: false,
-          tmcArr: [],
-          useTk: false,
-          tkInfo: {
-            '题库ID': '',
-            '题库名称': ''
-          }
-        };
-        //$scope.randomTestListShow = false; //随机组卷题目列表显示和隐藏
         $scope.zjDaGangListShow = false; //规则组卷的显示
         $scope.kmtxList = ''; //科目题型
         $scope.sjzKmtx = ''; //试卷组用到的科目题型
-        $scope.tmKmtx = ''; //题目用到的科目题型
 
         /**
          * 获得大纲数据
@@ -224,7 +89,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               tx.ckd = false;
             });
             $scope.sjzKmtx = angular.copy($scope.kmtxList);
-            $scope.tmKmtx = angular.copy($scope.kmtxList);
+            //$scope.tmKmtx = angular.copy($scope.kmtxList);
           }
           else{
             var obj = {method:'GET', url:xueXiaoKeMuTiXingUrl, params:{'学校ID':jgID, '科目ID':dftKm['科目ID']}};
@@ -235,12 +100,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 });
                 $scope.kmtxList = data.data;
                 $scope.sjzKmtx = angular.copy(data.data);
-                $scope.tmKmtx = angular.copy(data.data);
+                //$scope.tmKmtx = angular.copy(data.data);
               }
               else{
                 $scope.kmtxList = '';
                 $scope.sjzKmtx = '';
-                $scope.tmKmtx = '';
+                //$scope.tmKmtx = '';
                 DataService.alertInfFun('err', data.error);
               }
             });
@@ -278,36 +143,52 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             '组卷规则': []
           };
           $scope.sjArr = []; //试卷，可选，只有规则组卷该参数才有意义
+          $scope.addSjz = { //添加试卷组的参数
+            addTmc: false, //题目池
+            tmcArr: [],
+            useTk: false, //题库
+            tkInfo: {
+              '题库ID': '',
+              '题库名称': ''
+            },
+            sltDati: '', //选定的大题
+            sltTp: '' //选定的添加题目（固定 || 随机）
+          };
+          $scope.nanDuList = [
+            {
+              '难度ID': 1,
+              '难度名称': '容易',
+              ckd: false
+            },
+            {
+              '难度ID': 2,
+              '难度名称': '较易',
+              ckd: false
+            },
+            {
+              '难度ID': 3,
+              '难度名称': '一般',
+              ckd: false
+            },
+            {
+              '难度ID': 4,
+              '难度名称': '较难',
+              ckd: false
+            },
+            {
+              '难度ID': 5,
+              '难度名称': '困难',
+              ckd: false
+            }
+          ];
+          $scope.tmNanDuList = angular.copy($scope.nanDuList);
           kmTxData();
           qryTiKu();
         };
 
         /**
-         * 加载默认数据
+         *  查询试卷列表的函数，组卷页面加载时，查询数据
          */
-        getDaGangData();
-
-        /**
-         * 由所选的知识大纲，得到知识点 --
-         */
-        $scope.getDgZsdData = function(dgId){
-          function _do(item) {
-            item.ckd = false;
-            item.fld = true;
-            if(item['子节点'] && item['子节点'].length > 0){
-              Lazy(item['子节点']).each(_do);
-            }
-          }
-          var sltDg = Lazy($scope.allZsdgData).find(function(dg){
-            return dg['知识大纲ID'] == dgId;
-          });
-          Lazy(sltDg['节点']).each(_do);
-          $scope.kowledgeList = sltDg;
-        };
-
-        /**
-        *  查询试卷列表的函数，组卷页面加载时，查询数据
-        */
         var qryShiJuanList = function(){
           var obj = {method:'GET', url:shiJuanZuUrl, params:{'学校ID':jgID, '科目ID':keMuId}};
           $scope.loadingImgShow = true;
@@ -332,6 +213,79 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             }
             $scope.loadingImgShow = false;
           });
+        };
+
+        /**
+        * 查询知识点题目数量
+        */
+        var queryZsdTiMuNum = function(tx){
+
+        };
+
+        /**
+         整理选中的知识点的ID和名称 --
+         */
+        var selectZsdFun = function(){ //用于将选择的知识点变成字符串
+          var zsdName = [];
+          var zsdId = [];
+          function _do(item) {
+            if(item.ckd){
+              zsdId.push(item['知识点ID']);
+              zsdName.push(item['知识点名称']);
+            }
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          Lazy($scope.kowledgeList['节点']).each(_do);
+          $scope.zuJuanParam.rlZsd = zsdId;
+          $scope.zuJuanParam.rlZsdName = zsdName;
+        };
+
+        /**
+         * 添加单个规则后，重置所有的选择框
+         */
+        var resetSingleRule = function(){
+
+        };
+
+        /**
+         * 保存试卷组的通用函数
+         */
+        var addSjzFun = function(pars){
+          $http(pars).success(function(data){
+            if(data.result){
+              $scope.btnDisable = false;
+              DataService.alertInfFun('suc', '保存成功！');
+            }
+            else{
+              $scope.btnDisable = false;
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
+
+        /**
+         * 加载默认数据
+         */
+        getDaGangData();
+
+        /**
+         * 由所选的知识大纲，得到知识点 --
+         */
+        $scope.getDgZsdData = function(dgId){
+          function _do(item) {
+            item.ckd = false;
+            item.fld = true;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          var sltDg = Lazy($scope.allZsdgData).find(function(dg){
+            return dg['知识大纲ID'] == dgId;
+          });
+          Lazy(sltDg['节点']).each(_do);
+          $scope.kowledgeList = sltDg;
         };
 
         /**
@@ -370,7 +324,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           qryShiJuanList();
           $scope.zjTpl = 'views/zujuan/zj_paperList.html';
         };
-        $scope.showPaperList();
+        //$scope.showPaperList();
 
         /**
          * 规则组卷
@@ -383,7 +337,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.showBackToPaperListBtn = true;
           $scope.zjTpl = 'views/zujuan/zj_ruleMakePaper.html'; //加载规则组卷模板
         };
-        //$scope.ruleMakePaper();
+        $scope.ruleMakePaper();
 
         /**
          * 随机组卷
@@ -395,7 +349,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 选中试卷题型
+         * 试卷题型选择
          */
         $scope.checkTiXing = function(tx){
           tx.ckd = !tx.ckd;
@@ -429,77 +383,233 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 保存组卷规则
+         * 添加题目POP
          */
-        $scope.saveZjRule = function(){
-          var obj = {
-            method: 'PUT',
-            url: shiJuanZuUrl,
-            data: {
-              '试卷组名称': '',
-              '学校ID': jgID,
-              '科目ID': keMuId,
-              '试卷组设置': {},
-              '试卷': []
+        $scope.addTiMuPop = function(dt, tp){
+          $scope.addSjz.sltDati = dt || '';
+          $scope.addSjz.sltTp = tp || '';
+          if(tp == 'fiexd'){
+
+          }
+          if(tp == 'random'){
+            $scope.zuJuanParam.rlTmc = false;
+          }
+        };
+
+        /**
+         * 关闭添加题目POP
+         */
+        $scope.closeAddTiMuPop = function(){
+          $scope.addSjz.sltDati = '';
+        };
+
+        /**
+        * 规则组卷得到题型题型信息
+        */
+        $scope.rmpGetTxId = function(txId){
+
+          //queryZsdTiMuNum(txId);
+        };
+
+        /**
+         * 获得难度查询条件 --
+         */
+        $scope.getNanDuId = function(nd){
+          var ndArr = [];
+          nd.ckd = !nd.ckd;
+          Lazy($scope.nanDuList).each(function(ndl){
+            if(ndl.ckd){
+              ndArr.push(ndl['难度ID']);
             }
-          };
-          $http(obj).success(function(data){
-            if(data.result){
-              DataService.alertInfFun('suc', '保存成功！');
+          });
+          $scope.zuJuanParam.rlNd = ndArr;
+        };
+
+        /**
+         * 得到题库ID
+         */
+        $scope.getTiKuId = function(tk){
+          var tkArr = [];
+          tk.ckd = !tk.ckd;
+          Lazy($scope.tiKuList).each(function(tkl){
+            if(tkl.ckd){
+              tkArr.push(tkl['题库ID']);
+            }
+          });
+          $scope.zuJuanParam.rlTk = tkArr;
+        };
+
+        /**
+         * 清空题目池
+         */
+        $scope.cleanTiMuChi = function(){
+
+        };
+
+        /**
+         * 点击展开和收起的按钮子一级显示和隐藏
+         */
+        $scope.toggleChildNode = function(nd) {
+          function _do(item) {
+            item.fld = nd.fld;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          nd.fld = !nd.fld;
+          Lazy(nd['子节点']).each(_do);
+        };
+
+        /**
+         点击checkbox得到checkbox的值 --
+         */
+        $scope.toggleSelection = function(zsd) {
+          function _do(item) {
+            item.ckd = zsd.ckd;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          zsd.ckd = !zsd.ckd;
+          Lazy(zsd['子节点']).each(_do);
+          selectZsdFun();
+        };
+
+        /**
+        * 规则组卷将条件添加到相应的数组
+        */
+        $scope.addRule = function(){
+          if($scope.addSjz.sltDati){
+            var mis = [];
+            var singleRl = {
+              '题目分值': $scope.zuJuanParam.rlTmFz,
+              '题目数量': $scope.zuJuanParam.rlTmNum,
+              '使用题目池': $scope.zuJuanParam.rlTmc,
+              '限定题库': $scope.zuJuanParam.rlTk,
+              '题型': $scope.zuJuanParam.rlTxId,
+              '难度': $scope.zuJuanParam.rlNd,
+              '知识点': $scope.zuJuanParam.rlZsd
+            };
+            if(!$scope.zuJuanParam.rlTxId){
+              mis.push('题型');
+            }
+            if(!$scope.zuJuanParam.rlTmNum){
+              mis.push('题目数量');
+            }
+            if(!$scope.zuJuanParam.rlTmFz){
+              mis.push('题目分值');
+            }
+            if(!$scope.zuJuanParam.rlNd.length){
+              mis.push('难度');
+            }
+            if(!$scope.zuJuanParam.rlTk.length){
+              mis.push('题库');
+            }
+            if(!$scope.zuJuanParam.rlZsd.length){
+              mis.push('知识点');
+            }
+            if(mis && mis.length > 0){
+              DataService.alertInfFun('pmt', '缺少：' + mis.join('，'));
             }
             else{
+              $scope.addSjz.sltDati['随机题目'].push(singleRl);
+            }
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择大题！');
+          }
+        };
+
+        /**
+         * 生成试卷
+         */
+        $scope.generatePaper = function(pa){
+          var obj = {
+            method: 'POST',
+            url: zuJuanUrl,
+            data: {
+              '学校ID': jgID,
+              '科目ID': keMuId,
+              '返回题目内容': true,
+              '组卷规则': $scope.sjzSet
+            }
+          };
+          $scope.sjList = '';
+          if(pa){ //没有点击试卷预览
+            obj.data['返回题目内容'] = false;
+          }
+          $scope.btnDisable = true;
+          $http(obj).success(function(data){
+            if(data.result){
+              $scope.btnDisable = false;
+              if(pa){ //没有点击试卷预览
+                var objSjz = {
+                  method: 'PUT',
+                  url: shiJuanZuUrl,
+                  data: {
+                    '试卷组名称': $scope.zuJuanParam.sjzName,
+                    '学校ID': jgID,
+                    '科目ID': keMuId,
+                    '试卷组设置': $scope.sjzSet,
+                    '试卷': data.data
+                  }
+                };
+                addSjzFun(objSjz);
+              }
+              else{
+                $scope.sjList = data.data;
+              }
+            }
+            else{
+              $scope.btnDisable = false;
               DataService.alertInfFun('err', data.error);
             }
           });
         };
 
-        ///**
-        // * 查询知识点题目数量
-        // */
-        //var queryZsdTiMuNum = function(tx){
-        //  var tiMuNumArr;
-        //  var parentCount = 0;
-        //  function _do(item) {
-        //    var idVal = '';
-        //    var findItem = Lazy(tiMuNumArr).find(function(v, k, l){
-        //      if(k == item.ZHISHIDIAN_ID){
-        //        idVal = k;
-        //        return v;
-        //      }
-        //    });
-        //    if(findItem >= 0){
-        //      item.tiMuNum = findItem;
-        //      tiMuNumArr = Lazy(tiMuNumArr).reject(function(tm){
-        //        return tm.ZHISHIDIAN_ID == idVal;
-        //      });
-        //    }
-        //    if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-        //      Lazy(item.ZIJIEDIAN).each(_do);
-        //    }
-        //    else{
-        //      parentCount = 0;
-        //    }
-        //  }
-        //  var queryZsdTiMuNumUrl = queryZsdTiMuNumBaseUrl + '&zhishidianid=';
-        //  if(zsdgZsdArr && zsdgZsdArr.length > 0){
-        //    queryZsdTiMuNumUrl += zsdgZsdArr;
-        //    if(tx){
-        //      queryZsdTiMuNumUrl += '&tixingid=' + tx;
-        //    }
-        //    $http.get(queryZsdTiMuNumUrl).success(function(data){
-        //      if(data.error){
-        //        DataService.alertInfFun('err', data.error)
-        //      }
-        //      else{
-        //        tiMuNumArr = angular.copy(data);
-        //        Lazy($scope.kowledgeList).each(_do);
-        //      }
-        //    });
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择知识点');
-        //  }
-        //};
+        /**
+         * 保存组卷规则
+         */
+        $scope.saveZjRule = function(){
+          var mis = [];
+          var obj = {
+            method: 'PUT',
+            url: shiJuanZuUrl,
+            data: {
+              '试卷组名称': $scope.zuJuanParam.sjzName,
+              '学校ID': jgID,
+              '科目ID': keMuId,
+              '试卷组设置': $scope.sjzSet
+            }
+          };
+          if(!$scope.zuJuanParam.sjzName){
+            mis.push('试卷组名称');
+          }
+          if(mis && mis.length > 0){
+            DataService.alertInfFun('pmt', '缺少：' + mis.join('，'));
+          }
+          else{
+            $scope.btnDisable = true;
+            if($scope.sjzSet['组卷方式'] == '规则'){ //规则组卷
+              if($scope.sjList && $scope.sjList.length > 0){ //点击了试卷预览
+                Lazy($scope.sjList).each(function(dt){
+                  Lazy(dt['题目']).each(function(tm){
+                    delete tm['题目内容'];
+                  });
+                });
+                obj['试卷'] = $scope.sjList;
+                addSjzFun(obj);
+              }
+              else{ //没有点击试卷预览
+                $scope.generatePaper(true);
+              }
+            }
+            else{ //随机组卷，不需要预览试卷
+              addSjzFun(obj);
+            }
+          }
+        };
+
 
         ///**
         // * kmtx.datiScore的值清零
@@ -518,18 +628,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         //    $scope.dgListBox = $scope.dgListBox === false ? true: false; //点击是大纲列表展现
         //  }
         //};
-        //
-        ///**
-        // * 点击展开和收起的按钮子一级显示和隐藏
-        // */
-        //$scope.toggleChildNode = function(idx) {
-        //  var onClass = '.node' + idx,//得到那个button被点击了
-        //    gitThisBtn = $(onClass),//得到那个展开和隐藏按钮被点击了
-        //    getTargetChild = gitThisBtn.closest('li').find('>ul');//得到要隐藏的ul
-        //  gitThisBtn.toggleClass('unfoldBtn');
-        //  getTargetChild.toggle();//实现子元素的显示和隐藏
-        //};
-        //
+
         ///**
         // 点击checkbox得到checkbox的值(既是大纲知识点的值)
         // */
@@ -807,23 +906,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         //  queryZsdTiMuNum(qrytxId);
         //  $scope.qryTestFun();
         //};
-        //
-        ///**
-        // * 获得难度查询条件
-        // */
-        //$scope.getNanDuId = function(qryndId){
-        //  if(qryndId >= 1){
-        //    nandu_id = qryndId;
-        //    $scope.ndSelectenIdx = qryndId;
-        //  }
-        //  else{
-        //    nandu_id = '';
-        //    $scope.ndSelectenIdx = 0;
-        //  }
-        //  $scope.zuJuanParam.tiMuId = '';
-        //  $scope.qryTestFun();
-        //};
-        //
+
         ///**
         // * 提交临时模板的数据
         // */
@@ -893,14 +976,14 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         ///**
         // *  手动添加试题
         // */
-        //$scope.manualAddTm = function(txid){
+        $scope.manualAddTm = function(txid){
         //  $scope.showTestList(txid);
         //  $scope.shijuanyulanBtn = true; //试卷预览的按钮
         //  $scope.fangqibencizujuanBtn = true; //放弃本次组卷的按钮
         //  $scope.baocunshijuanBtn = true; //保存试卷的按钮
         //  zhishidian_id = '';
         //  $scope.zjDaGangListShow = true; //控制加载规则组卷的css
-        //};
+        };
 
         ///**
         // * 如果选出的题目没有达到规则规定的数量，运行的函数
@@ -1064,16 +1147,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         //    $scope.zjTpl = 'views/zujuan/paper_preview.html'; //加载试卷预览模板
         //  }
         //};
-        //
-        ///**
-        // * 规则组卷得到题型题型信息
-        // */
-        //var ruleMakePaperSelectTxid; //规则组卷，题型ID
-        //$scope.rmpGetTxId = function(txId){
-        //  ruleMakePaperSelectTxid = txId;
-        //  queryZsdTiMuNum(txId);
-        //};
-        //
+
         ///**
         // * 规则组卷将条件添加到相应的数组
         // */
