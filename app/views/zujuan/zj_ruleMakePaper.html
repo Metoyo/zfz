@@ -1,13 +1,14 @@
-<div class="ruleMakePaper">
-  <div class="loading-box text-center" ng-show="loadingImgShow">
-    <img src="/images/loading.gif" alt="" width="64" height="64"/>
-    <p>数据加载中，请耐心等待……</p>
-  </div>
+<div class="loading-box text-center" ng-show="loadingImgShow">
+  <img src="/images/loading.gif" alt="" width="64" height="64"/>
+  <p>数据加载中，请耐心等待……</p>
+</div>
+<!--组卷规则-->
+<div class="ruleMakePaper" ng-if="zuJuanParam.showTiMu==false">
   <div class="row ruleMakePaper-header">
     <div class="mt5">
       <span class="ml10">试卷题型：</span>
       <label class="checkbox-inline" ng-repeat="kmtx in sjzKmtx">
-        <input type="checkbox" name="sjTiXing" ng-checked="kmtx.ckd" ng-click="checkTiXing(kmtx)"> {{kmtx['题型名称']}}
+        <input type="checkbox" name="sjTiXing" ng-checked="kmtx.ckd" ng-click="checkTiXing(kmtx, 'zu')"> {{kmtx['题型名称']}}
       </label>
     </div>
   </div>
@@ -18,7 +19,7 @@
           <label class="col-sm-1 control-label">题型</label>
           <div class="col-sm-5">
             <select class="form-control ruleMakePaperSelectId" ng-model="zuJuanParam.rlTxId"
-                    ng-change="rmpGetTxId(ruleMakePaperTx.selectTx)" ng-options="tx['题型ID'] as tx['题型名称'] for tx in kmtxList">
+                    ng-change="rmpGetTxId(zuJuanParam.rlTxId)" ng-options="tx['题型ID'] as tx['题型名称'] for tx in kmtxList">
               <option value="">请选择题型</option>
             </select>
           </div>
@@ -37,7 +38,7 @@
           <label class="col-sm-1 control-label">难度</label>
           <div class="col-sm-5">
             <label class="checkbox-inline mr5" ng-repeat="nd in nanDuList">
-              <input type="checkbox" value="nd['难度ID']" ng-checked="nd.ckd" ng-click="getNanDuId(nd)"> {{nd['难度名称']}}
+              <input type="checkbox" value="nd['难度ID']" ng-checked="nd.ckd" ng-click="getNanDuId(nd, 'zu')"> {{nd['难度名称']}}
             </label>
           </div>
           <label class="col-sm-1 control-label">题库</label>
@@ -58,7 +59,7 @@
             题目池
           </div>
           <div class="col-sm-3" style="padding-top:8px">
-            <a href="javascript:void(0)" class="ml15" ng-click="cleanTiMuChi()">添加题目</a>
+            <a href="javascript:void(0)" class="ml15" ng-click="showTiMuList()">添加题目</a>
             <a href="javascript:void(0)" class="ml15" ng-click="cleanTiMuChi()">清空题目池</a>
           </div>
         </div>
@@ -76,9 +77,9 @@
       </h3>
       <div class="text-center">
         <label class="fz14">限定时间:</label>
-        <input type="date" name="sjzSet['限定时间']"/>
+        <input type="date" ng-model="sjzSet['限定时间']"/>
         <label class="fz14 ml15">试卷数量:</label>
-        <input type="text" class="w80" name="sjzSet['试卷数量']"/>
+        <input type="text" class="w80" ng-model="sjzSet['试卷数量']"/>
       </div>
       <div ng-repeat="tx in sjzSet['组卷规则']">
         <h4>
@@ -116,7 +117,7 @@
             </td>
           </tr>
         </table>
-        <ul class="list-unstyled testList" id="testList">
+        <ul class="list-unstyled testList" id="zjTestList">
           <li ng-repeat="tm in tx['固定题目']" repeat-done>
             <div class="item-cont">
               <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干']"></h3>
@@ -143,5 +144,130 @@
     <button type="button" class="btn btn-primary" ng-click="saveZjRule()" ng-disabled="btnDisable">
       保存试卷
     </button>
+  </div>
+</div>
+<!--组卷试题显示-->
+<div class="ruleMakePaper" ng-if="zuJuanParam.showTiMu==true">
+  <div class="row ruleMakePaper-header">
+    <div class="mt5">
+      <span class="ml10">题型：</span>
+      <label class="radio-inline">
+        <input type="radio" ng-model="zuJuanParam.txId" value="0" ng-change="qryTiMuByTxId()"> 全部题型
+      </label>
+      <label class="radio-inline" ng-repeat="kmtx in kmtxList">
+        <input type="radio" ng-model="zuJuanParam.txId" value="{{kmtx['题型ID']}}" ng-change="qryTiMuByTxId(tmTxId)"> {{kmtx['题型名称']}}
+      </label>
+    </div>
+    <div class="mt5">
+      <span class="ml10">难度：</span>
+      <label class="checkbox-inline mr15" ng-repeat="nd in tmNanDuList">
+        <input type="checkbox" value="nd['难度ID']" ng-checked="nd.ckd" ng-click="getNanDuId(nd, 'qr')"> {{nd['难度名称']}}
+      </label>
+    </div>
+    <div class="positionAb" style="top:10px;right:10px;">
+      <button type="button" class="btn btn-danger" ng-click="backToSjz()">返回</button>
+    </div>
+  </div>
+  <div class="row ruleMakePaper-body">
+    <div class="total-test clearfix">
+      <div class="pull-left allTestNums">
+        <span>共<strong ng-bind="zuJuanParam.tiMuLen"></strong>题</span>
+        <span>
+          <a href="javascript:void(0)" class="ml15" ng-click="addAllTmToTmc()">全部加入题池</a>
+          <a href="javascript:void(0)" class="ml15" ng-click="addPageTmToTmc()">本页入题池</a>
+        </span>
+      </div>
+      <div class="pull-right">
+        <div class="pull-left">
+          <select ng-model="zuJuanParam.tiKuId" class="form-control pull-right h28 mr5" ng-change="qryTiMuByTiKu()"
+                  ng-options="tk['题库ID'] as tk['题库名称'] for tk in tiKuList">
+            <option value="">请选择题库</option>
+          </select>
+        </div>
+        <div class="pull-left ml10">
+          <select ng-model="zuJuanParam.ctr" class="form-control pull-right h28 mr5" ng-change="qryTiMuByChuTiRenId()"
+                  ng-options="ctr.UID as ctr['姓名'] for ctr in chuTiRens">
+            <option value="">请选择出题人</option>
+          </select>
+        </div>
+        <div class="pull-left ml10">
+          <label class="fz14">创建时间起始:</label>
+          <input type="date" ng-model="zuJuanParam.cjsjKs" ng-change="qryTiMuByCjsj()"/>
+        </div>
+      </div>
+    </div>
+    <ul class="list-unstyled testList" id="testList">
+      <li ng-repeat="tm in timuDetails" class="delete_{{tm['题目ID']}} pr130" repeat-done>
+        <div class="item-sub-title pull-left">
+          <p class="knowledge-point">
+            题型：<span ng-bind="tiXingNameArr[tm['题型ID']-1]"></span>
+          </p>
+          <p class="knowledge-point-zsd">
+            知识点：<span ng-repeat="zsd in tm['知识点']">【{{zsd['知识点名称']}}】</span>
+          </p>
+          <p class="level-num">
+            难易度：<span class="pull-right level-star-{{tm['难度']}}"></span>
+          </p>
+          <p class="knowledge-point">
+            出题人：<span class="pull-right" ng-bind="tm['出题人姓名']"></span>
+          </p>
+          <p class="knowledge-point">
+            录题人：<span class="pull-right" ng-bind="tm['录题人姓名']"></span>
+          </p>
+          <p class="knowledge-point">
+            ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
+          </p>
+          <p>
+            创建时间：{{tm['创建时间'] | myLocalDate | date : 'yyyy-MM-dd'}}
+          </p>
+        </div>
+        <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
+          <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干']"></h3>
+          <div class="item-tizhi-wrap">
+            <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+              <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
+              <span class="tiZhiSpan" ng-bind-html="tz"></span>
+            </p>
+          </div>
+        </div>
+        <div class="answer-cont">
+          <div class="positionRe">
+            <span class="daAnLabel">答案：</span>
+            <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="paging text-right" ng-if="pageParam.pageArr.length">
+      <ul class="pagination pagination-sm">
+        <li ng-class="{disabled: currentPage == 1}">
+          <a href ng-click="pageGetData(1)">首页</a>
+        </li>
+        <li ng-class="{disabled: currentPage == 1}">
+          <a href ng-click="pageGetData(prevPg = currentPage > 1 ? currentPage - 1 : 1)">
+            上一页
+          </a>
+        </li>
+        <li ng-repeat="pg in pages" ng-class="{active: currentPage == pg}">
+          <a href ng-click="pageGetData(pg)">{{pg}}</a>
+        </li>
+        <li ng-class="{disabled: currentPage == pageParam.lastPage}">
+          <a href ng-click="pageGetData(nextPg = currentPage < pageParam.lastPage ? currentPage + 1 : pageParam.lastPage)">
+            下一页
+          </a>
+        </li>
+        <li ng-class="{disabled: currentPage == pageParam.lastPage}">
+          <a href ng-click="pageGetData(pageParam.lastPage)">尾页</a>
+        </li>
+      </ul>
+      <div>
+        <span>共 <strong ng-bind="lastPageNum"></strong> 页，</span>
+        <span>跳转到</span>
+        <input type="text" ng-model="zuJuanParam.goToPageNum" class="w110" onkeyup="if(isNaN(value))execCommand('undo')"
+               onafterpaste="if(isNaN(value))execCommand('undo')"/>
+        <span>页</span>
+        <button ng-click="getFixedPageData()">GO</button>
+      </div>
+    </div>
   </div>
 </div>
