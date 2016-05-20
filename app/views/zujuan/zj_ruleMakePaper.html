@@ -56,7 +56,12 @@
             </label>
           </div>
           <div class="col-sm-7" style="padding-top:8px">
-            题目池
+            <ul class="list-inline">
+              <li ng-repeat="tc in tiMuChi">
+                <span class="mr5">{{tc['题型名称']}}({{tc['题目数量']}})</span>
+                <span class="glyphicon glyphicon-remove"></span>
+              </li>
+            </ul>
           </div>
           <div class="col-sm-3" style="padding-top:8px">
             <a href="javascript:void(0)" class="ml15" ng-click="showTiMuList()">添加题目</a>
@@ -71,7 +76,7 @@
       <div class="row p10" ng-if="addSjz.sltTp=='fixed'">
       </div>
     </div>
-    <div class="paperBox">
+    <div class="paperBox" id="zjTestList">
       <h3 class="text-center mt10 fz20">
         <input type="text" placeholder="点击输入试卷名称" class="text-center wp100 bd0" ng-model="zuJuanParam.sjzName"/>
       </h3>
@@ -81,7 +86,7 @@
         <label class="fz14 ml15">试卷数量:</label>
         <input type="text" class="w80" ng-model="sjzSet['试卷数量']"/>
       </div>
-      <div ng-repeat="tx in sjzSet['组卷规则']">
+      <div ng-repeat="tx in sjzSet['组卷规则']" repeat-done>
         <h4>
           <span class="fz16" ng-bind="($index + 1) + '、' + tx['大题名称']"></span>
           <span class="fz14 ml15 cursorPointer" ng-click="addTiMuPop(tx, 'fiexd')">
@@ -117,10 +122,11 @@
             </td>
           </tr>
         </table>
-        <ul class="list-unstyled testList" id="zjTestList">
-          <li ng-repeat="tm in tx['固定题目']" repeat-done>
+        <ul class="list-unstyled testList">
+          <li ng-repeat="tm in tx['固定题目']">
             <div class="item-cont">
               <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干']"></h3>
+              <div>(分值：<input type="text" class="w40" ng-model="tm['分值']" placeholder="分值"/>)</div>
               <div class="item-tizhi-wrap">
                 <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
                   <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
@@ -148,14 +154,14 @@
 </div>
 <!--组卷试题显示-->
 <div class="ruleMakePaper" ng-if="zuJuanParam.showTiMu==true">
-  <div class="row ruleMakePaper-header">
+  <div class="row ruleMakePaper-header positionRe">
     <div class="mt5">
       <span class="ml10">题型：</span>
       <label class="radio-inline">
         <input type="radio" ng-model="zuJuanParam.txId" value="0" ng-change="qryTiMuByTxId()"> 全部题型
       </label>
       <label class="radio-inline" ng-repeat="kmtx in kmtxList">
-        <input type="radio" ng-model="zuJuanParam.txId" value="{{kmtx['题型ID']}}" ng-change="qryTiMuByTxId(tmTxId)"> {{kmtx['题型名称']}}
+        <input type="radio" ng-model="zuJuanParam.txId" value="{{kmtx['题型ID']}}" ng-change="qryTiMuByTxId()"> {{kmtx['题型名称']}}
       </label>
     </div>
     <div class="mt5">
@@ -164,7 +170,7 @@
         <input type="checkbox" value="nd['难度ID']" ng-checked="nd.ckd" ng-click="getNanDuId(nd, 'qr')"> {{nd['难度名称']}}
       </label>
     </div>
-    <div class="positionAb" style="top:10px;right:10px;">
+    <div class="positionAb" style="top:18px;right:10px;">
       <button type="button" class="btn btn-danger" ng-click="backToSjz()">返回</button>
     </div>
   </div>
@@ -172,9 +178,9 @@
     <div class="total-test clearfix">
       <div class="pull-left allTestNums">
         <span>共<strong ng-bind="zuJuanParam.tiMuLen"></strong>题</span>
-        <span>
-          <a href="javascript:void(0)" class="ml15" ng-click="addAllTmToTmc()">全部加入题池</a>
-          <a href="javascript:void(0)" class="ml15" ng-click="addPageTmToTmc()">本页入题池</a>
+        <span ng-if="zuJuanParam.tmlTp=='tmc'">
+          <a href="javascript:void(0)" class="ml15" ng-click="addTmToTmc('all')">全部加入题池</a>
+          <a href="javascript:void(0)" class="ml15" ng-click="addTmToTmc('page')">本页入题池</a>
         </span>
       </div>
       <div class="pull-right">
@@ -220,6 +226,16 @@
           <p>
             创建时间：{{tm['创建时间'] | myLocalDate | date : 'yyyy-MM-dd'}}
           </p>
+          <div class="editWrap">
+            <h3 class="item-title text-right" ng-if="zuJuanParam.tmlTp=='tmc'">
+              <button type="button" class="btn btn-primary" ng-click="addTmToTmc('sgl', tm)" ng-hide="tm.ckd">加入题目池 </button>
+              <button type="button" class="btn btn-default ng-hide" ng-click="removeOut(tm)" ng-show="tm.ckd">移除题目池 </button>
+            </h3>
+            <h3 class="item-title text-right" ng-if="zuJuanParam.tmlTp=='gdtm'">
+              <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入试卷 </button>
+              <button type="button" class="btn btn-default ng-hide" ng-click="removeOut(tm)" ng-show="tm.ckd">移出试卷 </button>
+            </h3>
+          </div>
         </div>
         <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
           <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干']"></h3>

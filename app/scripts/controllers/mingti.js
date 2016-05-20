@@ -479,6 +479,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               $scope.pages = [];
               $scope.timuDetails = '';
               $scope.mingTiParam.tiMuLen = '';
+              allTiMuIds = '';
               DataService.alertInfFun('err', tmlb.error);
             }
             $scope.loadingImgShow = false;
