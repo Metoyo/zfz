@@ -1,4 +1,4 @@
-<div class="innerWrap innerWrapperSubDs zujuanWrapper" ng-class="{paper_hand_form: paper_hand_form}">
+<div class="innerWrap innerWrapperSubDs zujuanWrapper" ng-class="{subDsShow: subDsShow}">
   <div class="loading-box text-center" ng-show="loadingImgShow">
     <img src="/images/loading.gif" alt="" width="64" height="64"/>
     <p>数据加载中，请耐心等待……</p>
@@ -72,11 +72,6 @@
       <div class="contentWraps">
         <div class="sub-nav">
           <ul class="nav nav-tabs">
-            <!--<li ng-class="{active: zj_tabActive == 'addNewShiJuan' }">-->
-              <!--<a href="javascript:void(0)" ng-click="showZuJuanPage()">-->
-                <!--新增试卷-->
-              <!--</a>-->
-            <!--</li>-->
             <li ng-class="{active: zj_tabActive == 'shiJuan' }">
               <a href="javascript:void(0)" ng-click="showPaperList()">
                 试卷列表

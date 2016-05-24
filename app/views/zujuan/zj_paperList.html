@@ -59,7 +59,7 @@
           上一页
         </a>
       </li>
-      <li ng-repeat="pg in sjzPage.pages" ng-class="{active: sjzPage.currentPage == pg}">
+      <li ng-repeat="pg in sjzPage.pages track by $index" ng-class="{active: sjzPage.currentPage == pg}">
         <a href ng-click="getSjzPageData(pg)">{{pg}}</a>
       </li>
       <li ng-class="{disabled:sjzPage.currentPage == sjzPage.lastPage}">

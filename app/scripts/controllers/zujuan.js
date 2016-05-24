@@ -40,6 +40,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         var txName = config.tiXingNameArr; //题型名称
         var gdtmTempIds = []; //临时存放固定题目ID的数组
         $scope.letterArr = config.letterArr; //题支的序号
+        $scope.cnNumArr = config.cnNumArr; //题支的序号
         $scope.defaultKeMu = dftKm; //默认科目
         $scope.zuJuanParam = { //组卷参数
           slt_dg: '', //默认大纲
@@ -56,7 +57,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           tiKuId: '', //题库ID
           ctr: '', //出题人ID
           cjsjKs: '', //题目创建时间开始
-          showTiMu: false, //显示题目列表
+          showTiMu: 'rulePage', //显示题目列表
           goToPageNum: '', //跳转页面
           txId: '', //查询题目的题型ID
           tmlTp: '' //题目列表类型
@@ -433,6 +434,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.zj_tabActive = 'shiJuan';
           $scope.showBackToPaperListBtn = false;
           $scope.zjDaGangListShow = false;
+          $scope.subDsShow = false;
           qryShiJuanList();
           $scope.zjTpl = 'views/zujuan/zj_paperList.html';
         };
@@ -448,6 +450,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.zjDaGangListShow = true; //控制加载规则组卷的css
           $scope.showBackToPaperListBtn = true;
           $scope.zjTpl = 'views/zujuan/zj_ruleMakePaper.html'; //加载规则组卷模板
+          $scope.subDsShow = true;
         };
         $scope.ruleMakePaper();
 
@@ -458,6 +461,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           resetFun();
           $scope.sjzSet['组卷方式'] = '随机';
           $scope.zj_tabActive = 'randomMakePaper';
+          $scope.subDsShow = true;
         };
 
         /**
@@ -499,21 +503,26 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         $scope.addTiMuPop = function(dt, tp){
           $scope.addSjz.sltDati = dt || '';
           $scope.addSjz.sltTp = tp || '';
+          $scope.zuJuanParam.rlTxId = dt['题型ID'];
           if(tp == 'fiexd'){
-            $scope.zuJuanParam.showTiMu = true;
+            $scope.zuJuanParam.showTiMu = 'tiMuPage';
             $scope.zuJuanParam.tmlTp = 'gdtm';
             Lazy($scope.kowledgeList['节点']).each(_zsdDo);
             qryTestFun(1);
           }
           if(tp == 'random'){
+            $scope.onlyShowAddRuleBox = true;
             $scope.zuJuanParam.rlTmc = false;
           }
+          $scope.subDsShow = false;
         };
 
         /**
          * 关闭添加题目POP
          */
         $scope.closeAddTiMuPop = function(){
+          $scope.subDsShow = true;
+          $scope.onlyShowAddRuleBox = false;
           $scope.addSjz.sltDati = '';
         };
 
@@ -568,9 +577,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          * 显示试题页面
          */
         $scope.showTiMuList = function(){
-          $scope.zuJuanParam.showTiMu = true;
+          $scope.zuJuanParam.showTiMu = 'tiMuPage';
           $scope.zuJuanParam.tmlTp = 'tmc';
           Lazy($scope.kowledgeList['节点']).each(_zsdDo);
+          $scope.subDsShow = false;
           qryTestFun(1);
         };
 
@@ -764,7 +774,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          * 返回规则组卷页面
          */
         $scope.backToSjz = function(){
-          $scope.zuJuanParam.showTiMu = false;
+          if($scope.zuJuanParam.tmlTp == 'gdtm'){
+            $scope.subDsShow = true;
+          }
+          $scope.zuJuanParam.showTiMu = 'rulePage';
         };
 
         /**
@@ -801,7 +814,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         */
         $scope.addToPaper = function(tm){
           tm.ckd = true;
-          tm['分值'] = '';
+          tm['分值'] = 1;
           $scope.addSjz.sltDati['固定题目'].push(tm);
         };
 
@@ -875,7 +888,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         /**
          * 生成试卷
          */
-        $scope.generatePaper = function(pa){
+        $scope.generatePaper = function(){
           var gzObj = angular.copy($scope.sjzSet);
           Lazy(gzObj['组卷规则']).each(function(dt){
             var gdtmArr = angular.copy(dt['固定题目']);
@@ -890,8 +903,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             dt['固定题目'] = newGdtm;
           });
           gzObj['试卷数量'] = parseInt(gzObj['试卷数量']);
-          //gzObj['题目池'] = JSON.stringify(gzObj['题目池']);
-          //gzObj['组卷规则'] = JSON.stringify(gzObj['组卷规则']);
           gzObj['限定时间'] = DataService.formatDateZh(gzObj['限定时间']);
           var obj = {
             method: 'POST',
@@ -904,30 +915,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             }
           };
           $scope.sjList = '';
-          if(pa){ //没有点击试卷预览
-            obj.data['返回题目内容'] = false;
-          }
           $scope.btnDisable = true;
           $http(obj).success(function(data){
             if(data.result){
               $scope.btnDisable = false;
-              if(pa){ //没有点击试卷预览
-                var objSjz = {
-                  method: 'PUT',
-                  url: shiJuanZuUrl,
-                  data: {
-                    '试卷组名称': $scope.zuJuanParam.sjzName,
-                    '学校ID': jgID,
-                    '科目ID': keMuId,
-                    '试卷组设置': JSON.stringify(gzObj),
-                    '试卷': JSON.stringify(data.data)
-                  }
-                };
-                addSjzFun(objSjz);
-              }
-              else{
-                $scope.sjList = data.data;
-              }
+              $scope.zuJuanParam.showTiMu = 'sjltPage';
+              $scope.sjList = data.data;
             }
             else{
               $scope.btnDisable = false;
@@ -954,8 +947,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             dt['固定题目'] = newGdtm;
           });
           gzObj['试卷数量'] = parseInt(gzObj['试卷数量']);
-          //gzObj['题目池'] = JSON.stringify(gzObj['题目池']);
-          //gzObj['组卷规则'] = JSON.stringify(gzObj['组卷规则']);
           gzObj['限定时间'] = DataService.formatDateZh(gzObj['限定时间']);
           var mis = [];
           var obj = {
@@ -976,32 +967,24 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
           else{
             $scope.btnDisable = true;
-            if($scope.sjzSet['组卷方式'] == '规则'){ //规则组卷
-              if($scope.sjList && $scope.sjList.length > 0){ //点击了试卷预览
-                Lazy($scope.sjList).each(function(sj){
-                  Lazy(sj['试卷题目']).each(function(tm){
-                    var oldStArr = angular.copy(tm['题目']);
-                    var newStArr = [];
-                    Lazy(oldStArr).each(function(st){
-                      var tmObj = {
-                        '题目ID': tm['题目ID'],
-                        '分值': parseInt(tm['分值'])
-                      };
-                      newStArr.push(tmObj);
-                    });
-                    tm['题目'] = newStArr;
+            if($scope.sjzSet['组卷方式'] == '规则' && $scope.sjList && $scope.sjList.length > 0){ //规则组卷
+              Lazy($scope.sjList).each(function(sj){
+                Lazy(sj['试卷题目']).each(function(tm){
+                  var oldStArr = angular.copy(tm['题目']);
+                  var newStArr = [];
+                  Lazy(oldStArr).each(function(st){
+                    var tmObj = {
+                      '题目ID': tm['题目ID'],
+                      '分值': parseInt(tm['分值'])
+                    };
+                    newStArr.push(tmObj);
                   });
+                  tm['题目'] = newStArr;
                 });
-                obj['试卷'] = JSON.stringify($scope.sjList);
-                addSjzFun(obj);
-              }
-              else{ //没有点击试卷预览
-                $scope.generatePaper(true);
-              }
+              });
+              obj['试卷'] = JSON.stringify($scope.sjList);
             }
-            else{ //随机组卷，不需要预览试卷
-              addSjzFun(obj);
-            }
+            addSjzFun(obj);
           }
         };
 

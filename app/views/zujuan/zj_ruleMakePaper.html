@@ -3,22 +3,22 @@
   <p>数据加载中，请耐心等待……</p>
 </div>
 <!--组卷规则-->
-<div class="ruleMakePaper" ng-if="zuJuanParam.showTiMu==false">
-  <div class="row ruleMakePaper-header">
+<div class="ruleMakePaper" ng-if="zuJuanParam.showTiMu=='rulePage'">
+  <div class="row ruleMakePaper-header" ng-if="!onlyShowAddRuleBox">
     <div class="mt5">
-      <span class="ml10">试卷题型：</span>
+      <span class="ml10">添加试卷大题：</span>
       <label class="checkbox-inline" ng-repeat="kmtx in sjzKmtx">
         <input type="checkbox" name="sjTiXing" ng-checked="kmtx.ckd" ng-click="checkTiXing(kmtx, 'zu')"> {{kmtx['题型名称']}}
       </label>
     </div>
   </div>
   <div class="row ruleMakePaper-body">
-    <div class="ruleBox" ng-if="addSjz.sltDati">
+    <div class="ruleBox" ng-if="onlyShowAddRuleBox">
       <div class="form-horizontal p10 bd1" ng-if="addSjz.sltTp=='random'">
         <div class="form-group">
           <label class="col-sm-1 control-label">题型</label>
           <div class="col-sm-5">
-            <select class="form-control ruleMakePaperSelectId" ng-model="zuJuanParam.rlTxId"
+            <select class="form-control ruleMakePaperSelectId" ng-model="zuJuanParam.rlTxId" disabled="disabled"
                     ng-change="rmpGetTxId(zuJuanParam.rlTxId)" ng-options="tx['题型ID'] as tx['题型名称'] for tx in kmtxList">
               <option value="">请选择题型</option>
             </select>
@@ -28,7 +28,7 @@
             <input type="text" class="form-control txNum" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
                    onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-model="zuJuanParam.rlTmNum"/>
           </div>
-          <label class="col-sm-1 control-label">分值</label>
+          <label class="col-sm-1 control-label">小题分值</label>
           <div class="col-sm-2">
             <input type="text" class="form-control txNum" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
                    onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-model="zuJuanParam.rlTmFz"/>
@@ -73,22 +73,42 @@
           <button type="button" class="btn btn-danger ml15" ng-click="closeAddTiMuPop()">关闭</button>
         </div>
       </div>
-      <div class="row p10" ng-if="addSjz.sltTp=='fixed'">
+      <div class="row p10" ng-if="addSjz.sltDati['随机题目'].length>0">
+        <table>
+          <tr>
+            <th>知识点</th>
+            <th>题型</th>
+            <th>数量</th>
+            <th>分值</th>
+            <th>难度</th>
+            <th>使用题目池</th>
+            <th>限定题库</th>
+            <th>删除</th>
+          </tr>
+          <tr ng-repeat="sjtm in addSjz.sltDati['随机题目']">
+            <td>
+              <input type="text" value="{{sjtm['知识点'].join('；')}}" disabled class="font-cut">
+            </td>
+            <td ng-bind="sjtm['题型']"></td>
+            <td ng-bind="sjtm['题目数量']"></td>
+            <td ng-bind="sjtm['题目分值']"></td>
+            <td ng-bind="sjtm['难度'].join(',')"></td>
+            <td ng-bind="sjtm['使用题目池']"></td>
+            <td ng-bind="sjtm['限定题库'].join(',')"></td>
+            <td>
+              <span class="glyphicon glyphicon-trash" ng-click="deleteRule(addSjz.sltDati['随机题目'], $index)"></span>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
-    <div class="paperBox" id="zjTestList">
-      <h3 class="text-center mt10 fz20">
+    <div class="paperBox" id="zjTestList" ng-if="!onlyShowAddRuleBox">
+      <h3 class="text-center mt10 fz20" style="font-weight: 500">
         <input type="text" placeholder="点击输入试卷名称" class="text-center wp100 bd0" ng-model="zuJuanParam.sjzName"/>
       </h3>
-      <div class="text-center">
-        <label class="fz14">限定时间:</label>
-        <input type="date" ng-model="sjzSet['限定时间']"/>
-        <label class="fz14 ml15">试卷数量:</label>
-        <input type="text" class="w80" ng-model="sjzSet['试卷数量']"/>
-      </div>
       <div ng-repeat="tx in sjzSet['组卷规则']" repeat-done>
         <h4>
-          <span class="fz16" ng-bind="($index + 1) + '、' + tx['大题名称']"></span>
+          <span style="font-weight: 500" ng-bind="cnNumArr[$index] + '、' + tx['大题名称']"></span>
           <span class="fz14 ml15 cursorPointer" ng-click="addTiMuPop(tx, 'fiexd')">
             <span class="glyphicon glyphicon-plus cBlue"></span>添加固定试题
           </span>
@@ -139,21 +159,31 @@
       </div>
     </div>
   </div>
-  <div class="zsdPreview">
-    <div class="zsdPreviewInner">
-    </div>
-  </div>
   <div class="row fixed-bottom">
-    <button type="button" class="btn btn-primary" ng-click="generatePaper()" ng-disabled="btnDisable" ng-if="sjzSet['组卷方式'] == '规则'">
-      预览试卷
-    </button>
-    <button type="button" class="btn btn-primary" ng-click="saveZjRule()" ng-disabled="btnDisable">
-      保存试卷
-    </button>
+    <table>
+      <tr>
+        <td>
+          <label class="fz14">限定时间:</label>
+          <input type="date" ng-model="sjzSet['限定时间']"/>
+        </td>
+        <td>
+          <label class="fz14 ml15">试卷数量:</label>
+          <input type="text" class="w80" ng-model="sjzSet['试卷数量']"/>
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary ml10" ng-click="generatePaper()" ng-disabled="btnDisable" ng-if="sjzSet['组卷方式'] == '规则'">
+            预览试卷
+          </button>
+          <button type="button" class="btn btn-primary ml10" ng-click="saveZjRule()" ng-disabled="btnDisable">
+            保存试卷
+          </button>
+        </td>
+      </tr>
+    </table>
   </div>
 </div>
 <!--组卷试题显示-->
-<div class="ruleMakePaper" ng-if="zuJuanParam.showTiMu==true">
+<div class="ruleMakePaper" ng-if="zuJuanParam.showTiMu=='tiMuPage'">
   <div class="row ruleMakePaper-header positionRe">
     <div class="mt5">
       <span class="ml10">题型：</span>
@@ -285,5 +315,16 @@
         <button ng-click="getFixedPageData()">GO</button>
       </div>
     </div>
+  </div>
+</div>
+<!--试卷预览-->
+<div class="ruleMakePaper" ng-if="zuJuanParam.showTiMu=='sjltPage'">
+  <!--试卷列表-->
+  <div>
+
+  </div>
+  <!--试卷详情-->
+  <div>
+
   </div>
 </div>
