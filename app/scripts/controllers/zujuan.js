@@ -493,8 +493,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         /**
         * 删除组卷的条件
         */
-        $scope.deleteRule = function(sjtm, idx){
-          sjtm.splice(idx, 1);
+        $scope.deleteRule = function(tx, idx){
+          tx['随机题目数量'] -= parseInt(tx['随机题目'][idx]['题目数量']);
+          tx['随机题目'].splice(idx, 1);
         };
 
         /**
@@ -591,6 +592,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           var data = [];
           if(tp == 'all'){
             data = allTiMuIds;
+            $scope.backToSjz();
           }
           if(tp == 'page'){
             data = $scope.timuDetails;
@@ -777,6 +779,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           if($scope.zuJuanParam.tmlTp == 'gdtm'){
             $scope.subDsShow = true;
           }
+          Lazy($scope.kowledgeList['节点']).each(_zsdDo);
           $scope.zuJuanParam.showTiMu = 'rulePage';
         };
 
@@ -878,6 +881,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             }
             else{
               $scope.addSjz.sltDati['随机题目'].push(singleRl);
+              $scope.addSjz.sltDati['随机题目数量'] = $scope.addSjz.sltDati['随机题目数量'] || 0;
+              $scope.addSjz.sltDati['随机题目数量'] += parseInt($scope.zuJuanParam.rlTmNum);
             }
           }
           else{
@@ -890,20 +895,35 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.generatePaper = function(){
           var gzObj = angular.copy($scope.sjzSet);
+          var mis = [];
           Lazy(gzObj['组卷规则']).each(function(dt){
             var gdtmArr = angular.copy(dt['固定题目']);
+            var sjtmArr = dt['随机题目'];
             var newGdtm = [];
-            Lazy(gdtmArr).each(function(tm){
-              var ntm = {
-                '题目ID': tm['题目ID'],
-                '分值': parseInt(tm['分值'])
-              };
-              newGdtm.push(ntm);
-            });
-            dt['固定题目'] = newGdtm;
+            if(gdtmArr && gdtmArr.length > 0){
+              Lazy(gdtmArr).each(function(tm){
+                var ntm = {
+                  '题目ID': tm['题目ID'],
+                  '分值': parseInt(tm['分值'])
+                };
+                newGdtm.push(ntm);
+              });
+              dt['固定题目'] = newGdtm;
+            }
+            else{
+              delete dt['固定题目'];
+            }
+            if(!(sjtmArr && sjtmArr.length > 0)){
+              delete dt['随机题目'];
+            }
           });
-          gzObj['试卷数量'] = parseInt(gzObj['试卷数量']);
-          gzObj['限定时间'] = DataService.formatDateZh(gzObj['限定时间']);
+          gzObj['试卷数量'] = parseInt(gzObj['试卷数量']) ? parseInt(gzObj['试卷数量']) : mis.push('试卷数量');
+          if(gzObj['限定时间']){
+            gzObj['限定时间'] = DataService.formatDateZh(gzObj['限定时间']);
+          }
+          else{
+            delete gzObj['限定时间'];
+          }
           var obj = {
             method: 'POST',
             url: zuJuanUrl,
@@ -916,17 +936,44 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           };
           $scope.sjList = '';
           $scope.btnDisable = true;
-          $http(obj).success(function(data){
-            if(data.result){
-              $scope.btnDisable = false;
-              $scope.zuJuanParam.showTiMu = 'sjltPage';
-              $scope.sjList = data.data;
-            }
-            else{
-              $scope.btnDisable = false;
-              DataService.alertInfFun('err', data.error);
-            }
+          if(mis && mis.length > 0){
+            $scope.btnDisable = false;
+            DataService.alertInfFun('err', '缺少：' + mis.join('；'));
+          }
+          else{
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.btnDisable = false;
+                $scope.zuJuanParam.showTiMu = 'sjltPage';
+                Lazy(data.data).each(function(sj, idx, lst){
+                  sj['试卷名称'] = $scope.zuJuanParam.sjzName + ' -- 卷' + (idx + 1);
+                  Lazy(sj['试卷题目']).each(function(dt){
+                    Lazy(dt['题目']).each(function(tm){
+                      tm = DataService.formatDaAn(tm);
+                    });
+                  });
+                });
+                $scope.sjList = data.data;
+              }
+              else{
+                $scope.btnDisable = false;
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+        };
+
+        /**
+         * 显示试卷详情
+         */
+        $scope.showShiJuanDtl = function(sj, idx){
+          Lazy(sj['试卷题目']).each(function(dt){
+            dt['大题分值'] = Lazy(dt['题目']).reduce(function(memo, tm){
+              return memo + parseInt(tm['分值']);
+            }, 0);
           });
+          $scope.paperDtl = sj || '';
+          $scope.shiJuanActive = idx > -1 ? idx : '';
         };
 
         /**
@@ -934,20 +981,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.saveZjRule = function(){
           var gzObj = angular.copy($scope.sjzSet);
-          Lazy(gzObj['组卷规则']).each(function(dt){
-            var gdtmArr = angular.copy(dt['固定题目']);
-            var newGdtm = [];
-            Lazy(gdtmArr).each(function(tm){
-              var ntm = {
-                '题目ID': tm['题目ID'],
-                '分值': parseInt(tm['分值'])
-              };
-              newGdtm.push(ntm);
-            });
-            dt['固定题目'] = newGdtm;
-          });
-          gzObj['试卷数量'] = parseInt(gzObj['试卷数量']);
-          gzObj['限定时间'] = DataService.formatDateZh(gzObj['限定时间']);
           var mis = [];
           var obj = {
             method: 'PUT',
@@ -959,6 +992,34 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               '试卷组设置': JSON.stringify(gzObj)
             }
           };
+          Lazy(gzObj['组卷规则']).each(function(dt){
+            var gdtmArr = angular.copy(dt['固定题目']);
+            var sjtmArr = dt['随机题目'];
+            var newGdtm = [];
+            if(gdtmArr && gdtmArr.length > 0){
+              Lazy(gdtmArr).each(function(tm){
+                var ntm = {
+                  '题目ID': tm['题目ID'],
+                  '分值': parseInt(tm['分值'])
+                };
+                newGdtm.push(ntm);
+              });
+              dt['固定题目'] = newGdtm;
+            }
+            else{
+              delete dt['固定题目'];
+            }
+            if(!(sjtmArr && sjtmArr.length > 0)){
+              delete dt['随机题目'];
+            }
+          });
+          gzObj['试卷数量'] = parseInt(gzObj['试卷数量']) ? parseInt(gzObj['试卷数量']) : mis.push('试卷数量');
+          if(gzObj['限定时间']){
+            gzObj['限定时间'] = DataService.formatDateZh(gzObj['限定时间']);
+          }
+          else{
+            delete gzObj['限定时间'];
+          }
           if(!$scope.zuJuanParam.sjzName){
             mis.push('试卷组名称');
           }
@@ -1001,6 +1062,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "daGangList"]);
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "zjTestList"]);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "paperWrap"]);
         });
 
         ///**
