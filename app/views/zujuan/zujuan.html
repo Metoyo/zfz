@@ -12,7 +12,7 @@
       </div>
       <div class="plr10">
         <h2 class="sdb-title">题库默认大纲</h2>
-        <select class="form-control" ng-model="zuJuanParam.slt_dg" ng-change="getDgZsdData(zuJuanParam.slt_dg)"
+        <select class="form-control" ng-model="slt_dg" ng-change="getDgZsdData(slt_dg)"
                 ng-options="dg['知识大纲ID'] as dg['知识大纲名称'] for dg in dgList">
           <option value="">请选择大纲</option>
         </select>
@@ -78,12 +78,12 @@
               </a>
             </li>
             <li ng-class="{active: zj_tabActive == 'ruleMakePaper' }">
-              <a href="javascript:void(0)" ng-click="ruleMakePaper()">
+              <a href="javascript:void(0)" ng-click="makePaper('规则')">
                 规则组卷
               </a>
             </li>
             <li ng-class="{active: zj_tabActive == 'randomMakePaper'}">
-              <a href="javascript:void(0)" ng-click="randomMakePaper()">
+              <a href="javascript:void(0)" ng-click="makePaper('随机')">
                 随机组卷
               </a>
             </li>

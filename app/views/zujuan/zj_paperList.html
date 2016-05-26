@@ -15,7 +15,7 @@
       <table class="table" bn-slide-show slide-show-target="more-info" slide-show-idx="{{$index}}">
         <tr>
           <td>
-            <a href="javascript:void(0)" ng-click="showPaperDetail(pld['试卷组ID'])" ng-bind="pld['试卷组名称']"></a>
+            <a href="javascript:void(0)" ng-click="showPaperDetail(pld)" ng-bind="pld['试卷组名称']"></a>
           </td>
           <td width="100px" class="text-center" ng-bind="pld['试卷组设置']['组卷方式']"></td>
           <td width="100px" class="text-center" ng-bind="pld['试卷组设置']['试卷数量']"></td>
@@ -37,16 +37,6 @@
             </span>
           </p>
         </div>
-        <!--<div>-->
-          <!--<h5>-->
-            <!--题型难度：-->
-          <!--</h5>-->
-          <!--<p>-->
-            <!--<span ng-repeat="nadu in pld.NANDU.daTiNanDuArr">-->
-                <!--{{tiXingNameArr[nadu.mubandati_id -1]}}:{{nadu.nanDu}}-->
-            <!--</span>-->
-          <!--</p>-->
-        <!--</div>-->
       </div>
     </li>
   </ul>

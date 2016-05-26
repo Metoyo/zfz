@@ -2468,6 +2468,18 @@ label.checkbox{
       padding: 5px;
     }
   }
+  .ruleMakePaper{
+    .testList{
+      float: left;
+      width: 100%;
+    }
+    .fenZhi{
+      position: absolute;
+      top: 10px;
+      right: 0;
+      font-size: 14px;
+    }
+  }
   .ruleMakePaper-header{
     border-bottom: 1px solid #ccc;
     padding: 5px;

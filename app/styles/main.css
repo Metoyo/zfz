@@ -1971,6 +1971,14 @@ label.checkbox {
   .zujuanWrapper .paperConfirmTable td {
     text-align: center;
     padding: 5px; }
+.zujuanWrapper .ruleMakePaper .testList {
+  float: left;
+  width: 100%; }
+.zujuanWrapper .ruleMakePaper .fenZhi {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  font-size: 14px; }
 .zujuanWrapper .ruleMakePaper-header {
   border-bottom: 1px solid #ccc;
   padding: 5px;
