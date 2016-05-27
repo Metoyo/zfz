@@ -204,7 +204,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             }
           }
           Lazy($scope.kowledgeList['节点']).each(_do);
-          if($scope.zuJuanParam.showTiMu){
+          if($scope.zuJuanParam.showTiMu == 'tiMuPage'){
             qryTmPar.zsd = zsdId;
             qryTestFun(1);
           }
@@ -493,11 +493,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.addSjz.sltDati = dt || '';
           $scope.addSjz.sltTp = tp || '';
           $scope.zuJuanParam.rlTxId = dt['题型ID'];
+          $scope.zuJuanParam.txId = dt['题型ID'];
           if(tp == 'fiexd'){
             $scope.zuJuanParam.showTiMu = 'tiMuPage';
             $scope.zuJuanParam.tmlTp = 'gdtm';
             Lazy($scope.kowledgeList['节点']).each(_zsdDo);
-            qryTestFun(1);
+            Lazy($scope.tmNanDuList).each(function(nd){
+              nd.ckd = false;
+            });
+            //qryTestFun(1);
+            $scope.qryTiMuByTxId();
           }
           if(tp == 'random'){
             $scope.onlyShowAddRuleBox = true;
@@ -575,7 +580,13 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.zuJuanParam.showTiMu = 'tiMuPage';
           $scope.zuJuanParam.tmlTp = 'tmc';
           Lazy($scope.kowledgeList['节点']).each(_zsdDo);
+          $scope.zuJuanParam.txId = '';
+          Lazy($scope.tmNanDuList).each(function(nd){
+            nd.ckd = false;
+          });
           $scope.subDsShow = false;
+          qryTmPar.tx = '';
+          qryTmPar.nd = '';
           qryTestFun(1);
         };
 
