@@ -1126,7 +1126,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
           else{
             $scope.btnDisable = true;
-            if($scope.sjzSet['组卷方式'] == '规则' && $scope.sjList && $scope.sjList.length > 0){ //规则组卷
+            if($scope.sjzSet['组卷方式'] == '规则' && $scope.sjList && $scope.sjList.length > 0 && !$scope.selectSjz){ //规则组卷
               Lazy($scope.sjList).each(function(sj){
                 Lazy(sj['试卷题目']).each(function(tm){
                   var oldStArr = angular.copy(tm['题目']);

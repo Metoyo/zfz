@@ -2,17 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/config.js" afterPath="$PROJECT_DIR$/app/scripts/config.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/dataservice.js" afterPath="$PROJECT_DIR$/app/scripts/services/dataservice.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/kaowu.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/kaowu.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.css" afterPath="$PROJECT_DIR$/app/styles/main.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.scss" afterPath="$PROJECT_DIR$/app/styles/main.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/mingti.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/testList.html" afterPath="$PROJECT_DIR$/app/views/mingti/testList.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/zujuan/zj_paperList.html" afterPath="$PROJECT_DIR$/app/views/zujuan/zj_paperList.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html" afterPath="$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" afterPath="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
     </list>
     <ignored path="zhifz.iws" />
@@ -40,8 +29,8 @@
       <file leaf-file-name="zujuan.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="16138" max-vertical-offset="17232">
-              <caret line="1173" column="10" selection-start-line="0" selection-start-column="0" selection-end-line="1244" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="15036" max-vertical-offset="16320">
+              <caret line="1132" column="36" selection-start-line="0" selection-start-column="0" selection-end-line="1244" selection-end-column="0" />
               <folding>
                 <element signature="e#1351#1644#0" expanded="false" />
                 <element signature="e#1990#2106#0" expanded="false" />
@@ -57,6 +46,7 @@
                 <element signature="e#32784#32840#0" expanded="false" />
                 <element signature="e#32927#32984#0" expanded="false" />
                 <element signature="e#33242#33411#0" expanded="false" />
+                <element signature="e#36783#38892#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -1142,8 +1132,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="16138" max-vertical-offset="17232">
-          <caret line="1173" column="10" selection-start-line="0" selection-start-column="0" selection-end-line="1244" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="15036" max-vertical-offset="16320">
+          <caret line="1132" column="36" selection-start-line="0" selection-start-column="0" selection-end-line="1244" selection-end-column="0" />
           <folding>
             <element signature="e#1351#1644#0" expanded="false" />
             <element signature="e#1990#2106#0" expanded="false" />
@@ -1159,6 +1149,7 @@
             <element signature="e#32784#32840#0" expanded="false" />
             <element signature="e#32927#32984#0" expanded="false" />
             <element signature="e#33242#33411#0" expanded="false" />
+            <element signature="e#36783#38892#0" expanded="false" />
           </folding>
         </state>
       </provider>
