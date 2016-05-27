@@ -978,59 +978,6 @@ a.add-btn:hover span {
     font-size: 12px;
     text-decoration: none; }
 
-/* 组卷规则难度选择图片 */
-.zj-style-star {
-  width: 200px;
-  height: 28px;
-  float: left;
-  background: url("../images/zjStar.png") no-repeat 0 0; }
-  .zj-style-star li {
-    float: left;
-    margin-right: 12px; }
-    .zj-style-star li a {
-      float: left;
-      width: 28px;
-      height: 28px; }
-  .zj-style-star .active a {
-    background-position: 0 -30px; }
-
-.zj-style-star-1 {
-  background-position: 0 -30px; }
-
-.zj-style-star-2 {
-  background-position: 0 -60px; }
-
-.zj-style-star-3 {
-  background-position: 0 -90px; }
-
-.zj-style-star-4 {
-  background-position: 0 -120px; }
-
-.zj-style-star-5 {
-  background-position: 0 -150px; }
-
-/*伪装的select复选框*/
-.fakeMutiSelect {
-  background: url("../images/selectBg.png") no-repeat right center; }
-  .fakeMutiSelect .fakeOptionList {
-    background-color: #F2F2F2;
-    padding: 10px 10px  0 10px;
-    position: relative;
-    top: -28px;
-    border-radius: 4px;
-    border: 1px solid #A9A9A9;
-    box-shadow: 0px 1px 4px #888888;
-    z-index: 100; }
-    .fakeMutiSelect .fakeOptionList .options {
-      max-height: 300px;
-      overflow-y: auto;
-      padding-left: 20px; }
-    .fakeMutiSelect .fakeOptionList .btns {
-      border-top: 1px solid #ccc;
-      text-align: center; }
-      .fakeMutiSelect .fakeOptionList .btns a {
-        text-decoration: none; }
-
 label.checkbox {
   font-weight: normal;
   color: #000; }
@@ -1684,35 +1631,6 @@ label.checkbox {
       .mingtiWrapper .panDuanFb .radio span {
         width: 15px;
         height: 15px; }
-  .mingtiWrapper .nandu-star-box {
-    width: 250px;
-    height: 32px;
-    background-image: url("../images/nadustar.png");
-    background-position: 0 0; }
-    .mingtiWrapper .nandu-star-box a {
-      width: 50px;
-      height: 32px;
-      float: left; }
-  .mingtiWrapper .starHover1 {
-    background-position: 0 -50px; }
-  .mingtiWrapper .starHover2 {
-    background-position: 0 -100px; }
-  .mingtiWrapper .starHover3 {
-    background-position: 0 -150px; }
-  .mingtiWrapper .starHover4 {
-    background-position: 0 -200px; }
-  .mingtiWrapper .starHover5 {
-    background-position: 0 -250px; }
-  .mingtiWrapper .starClick1 {
-    background-position: 0 -50px; }
-  .mingtiWrapper .starClick2 {
-    background-position: 0 -100px; }
-  .mingtiWrapper .starClick3 {
-    background-position: 0 -150px; }
-  .mingtiWrapper .starClick4 {
-    background-position: 0 -200px; }
-  .mingtiWrapper .starClick5 {
-    background-position: 0 -250px; }
   .mingtiWrapper .contentWraps {
     padding-top: 55px; }
 
@@ -1727,82 +1645,10 @@ label.checkbox {
   margin-top: 8px;
   color: red; }
 
-.zujuanWrapper .paper-title {
-  font-size: 24px;
-  padding: 10px 0;
-  margin: 0; }
-.zujuanWrapper .paper-sub-title {
-  font-size: 20px;
-  margin: 10px 0; }
-.zujuanWrapper .shijuantimu-list {
-  margin-top: 15px; }
-  .zujuanWrapper .shijuantimu-list .btn {
-    margin-left: 5px; }
-  .zujuanWrapper .shijuantimu-list .mubandati {
-    font-weight: bold;
-    line-height: 28px; }
-    .zujuanWrapper .shijuantimu-list .mubandati .dati-name-box {
-      display: inline; }
-      .zujuanWrapper .shijuantimu-list .mubandati .dati-name-box .dati-name {
-        cursor: pointer; }
-    .zujuanWrapper .shijuantimu-list .mubandati .dati-score-box {
-      display: inline;
-      cursor: pointer; }
-      .zujuanWrapper .shijuantimu-list .mubandati .dati-score-box p {
-        display: inline;
-        margin: 0;
-        padding: 0; }
-    .zujuanWrapper .shijuantimu-list .mubandati .btn {
-      margin-top: -2px; }
-    .zujuanWrapper .shijuantimu-list .mubandati .datiMoveBtns {
-      display: none; }
-    .zujuanWrapper .shijuantimu-list .mubandati:hover .datiMoveBtns {
-      display: inline; }
-  .zujuanWrapper .shijuantimu-list .testList li {
-    border: none; }
-    .zujuanWrapper .shijuantimu-list .testList li h5.item-title {
-      position: absolute;
-      top: 0;
-      right: 10px;
-      display: none; }
-    .zujuanWrapper .shijuantimu-list .testList li .item-cont {
-      margin-top: 0; }
-    .zujuanWrapper .shijuantimu-list .testList li:hover {
-      border: 1px solid #d8d8d8;
-      background-color: #F5F5F5; }
-      .zujuanWrapper .shijuantimu-list .testList li:hover h5.item-title {
-        display: block; }
-    .zujuanWrapper .shijuantimu-list .testList li .write-answer-region {
-      height: 150px; }
-.zujuanWrapper .nandu-dist h4 {
-  font-size: 14px; }
-  .zujuanWrapper .nandu-dist h4 em {
-    font-size: 12px; }
-.zujuanWrapper .nandu-dist .distBox {
-  position: relative; }
-.zujuanWrapper .nandu-dist .sliderBox {
-  width: 220px;
-  height: 10px;
-  margin: 3px 5px 0 5px;
-  background-color: #ddd; }
-.zujuanWrapper .nandu-dist .sliderItem {
-  width: 110px;
-  height: 10px;
-  background-color: darkseagreen;
-  position: relative; }
-  .zujuanWrapper .nandu-dist .sliderItem .sliderItemInner {
-    max-width: 220px; }
-.zujuanWrapper .nandu-dist .sliderBtn {
-  cursor: e-resize;
-  position: absolute;
-  height: 20px;
-  top: -5px;
-  right: 0;
-  width: 5px;
-  background-color: #f60;
-  z-index: 6; }
-.zujuanWrapper .nandu-dist .maskLabel {
-  font-size: 12px; }
+.zujuanWrapper .daTiName .datiMoveBtns {
+  display: none; }
+.zujuanWrapper .daTiName:hover .datiMoveBtns {
+  display: inline; }
 .zujuanWrapper .contentInner {
   position: relative; }
 .zujuanWrapper .contentWraps {
@@ -1826,109 +1672,6 @@ label.checkbox {
           padding: 0 5px 0 10px; }
   .zujuanWrapper .contentWraps .kmTxBox ul {
     margin-top: 10px; }
-.zujuanWrapper .preview-title {
-  height: 40px;
-  background-color: #ccc;
-  position: fixed;
-  width: 100%;
-  line-height: 40px;
-  padding: 0 10px; }
-.zujuanWrapper .paper-content {
-  margin-left: 10px;
-  color: #000; }
-  .zujuanWrapper .paper-content .secret-mark {
-    font-size: 14px; }
-  .zujuanWrapper .paper-content .paper-info {
-    font-size: 14px; }
-  .zujuanWrapper .paper-content .student-title {
-    font-size: 14px; }
-  .zujuanWrapper .paper-content .cent-box table {
-    margin: 0 auto; }
-    .zujuanWrapper .paper-content .cent-box table td {
-      border: 2px solid #666;
-      width: 50px;
-      line-height: 25px;
-      font-size: 14px;
-      text-align: center; }
-  .zujuanWrapper .paper-content .attention {
-    font-size: 12px; }
-  .zujuanWrapper .paper-content .sj-param-val {
-    width: 100%;
-    display: block; }
-  .zujuanWrapper .paper-content .alter-dati .pwi-body {
-    height: 410px;
-    margin-top: 10px; }
-  .zujuanWrapper .paper-content .alter-dati .xiaoTiScoreInput {
-    width: 94%;
-    margin: 15px 3%; }
-  .zujuanWrapper .paper-content .alter-dati .showAddFuBiaoTi {
-    padding-bottom: 5px; }
-    .zujuanWrapper .paper-content .alter-dati .showAddFuBiaoTi a {
-      text-decoration: none; }
-      .zujuanWrapper .paper-content .alter-dati .showAddFuBiaoTi a:hover {
-        text-decoration: none; }
-  .zujuanWrapper .paper-content .alter-dati .dati-box span {
-    position: absolute;
-    height: 34px;
-    line-height: 34px; }
-  .zujuanWrapper .paper-content .alter-dati .dati-box input {
-    width: 90%;
-    margin-left: 30px; }
-  .zujuanWrapper .paper-content .alter-dati .fenshu-box span {
-    position: absolute;
-    height: 34px;
-    line-height: 34px; }
-  .zujuanWrapper .paper-content .alter-dati .fenshu-box input {
-    width: 75%;
-    margin-left: 40px; }
-  .zujuanWrapper .paper-content .alter-dati input {
-    font-size: 14px;
-    margin-bottom: 10px; }
-  .zujuanWrapper .paper-content .alter-dati textarea {
-    font-size: 14px;
-    margin-bottom: 10px; }
-  .zujuanWrapper .paper-content .alter-dati h5 {
-    width: 100%;
-    text-align: right; }
-  .zujuanWrapper .paper-content .alter-dati .submit-edit-info {
-    height: 50px;
-    line-height: 50px;
-    border-top: 1px solid #cfcfcf; }
-    .zujuanWrapper .paper-content .alter-dati .submit-edit-info .btn {
-      margin-top: 0; }
-  .zujuanWrapper .paper-content .save-paper-box,
-  .zujuanWrapper .paper-content .back-to-paper-list {
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
-    z-index: 100;
-    background-color: #fff;
-    padding-left: 10px; }
-    .zujuanWrapper .paper-content .save-paper-box label,
-    .zujuanWrapper .paper-content .back-to-paper-list label {
-      font-weight: normal; }
-  .zujuanWrapper .paper-content .back-to-paper-list {
-    top: 10px;
-    height: 35px; }
-.zujuanWrapper .fixed-top {
-  top: 47px; }
-.zujuanWrapper .kmTxWrap {
-  padding-right: 100px;
-  width: 100%; }
-.zujuanWrapper .back-to-zujuan {
-  width: 100px;
-  position: absolute;
-  top: 0;
-  right: 10px; }
-  .zujuanWrapper .back-to-zujuan button {
-    float: right;
-    margin-top: 10px;
-    margin-left: 10px;
-    font-size: 12px; }
-.zujuanWrapper .test-list-wrap {
-  padding-top: 50px; }
-  .zujuanWrapper .test-list-wrap .mt15 {
-    margin-top: 15px; }
 .zujuanWrapper .paper-list {
   padding: 10px 15px; }
   .zujuanWrapper .paper-list ul {
@@ -1962,15 +1705,6 @@ label.checkbox {
       border-right: 1px solid #ddd; }
     .zujuanWrapper .paper-list .zj_list li:nth-child(odd) {
       background-color: #f9f9f9; }
-.zujuanWrapper .paperConfirmTable {
-  width: 96%;
-  margin: 20px 0 20px 2%; }
-  .zujuanWrapper .paperConfirmTable th {
-    text-align: center;
-    padding: 5px; }
-  .zujuanWrapper .paperConfirmTable td {
-    text-align: center;
-    padding: 5px; }
 .zujuanWrapper .ruleMakePaper .testList {
   float: left;
   width: 100%; }
@@ -2028,13 +1762,8 @@ label.checkbox {
   z-index: 3; }
 .zujuanWrapper .pointTree {
   top: 10px; }
-.zujuanWrapper .randomMakePaperWrap .test-list-wrap {
-  padding-top: 25px; }
 .zujuanWrapper .tab-content {
   padding-top: 47px; }
-.zujuanWrapper .myPaper .ruleMakePaper-header {
-  border: 1px solid #ccc;
-  margin-right: 10px; }
 
 .subDsShow .subDashboard {
   display: none; }
@@ -4117,18 +3846,6 @@ label.checkbox {
   margin-left: 10px; }
 .guanLiWrapper .paging {
   padding: 0; }
-.guanLiWrapper .glMoreBtnCont {
-  display: auto;
-  right: 102px;
-  top: 22px;
-  width: 105px;
-  position: absolute;
-  background-color: #FFFFFF;
-  border: 1px solid #AFC1CF;
-  padding: 10px;
-  text-align: right;
-  z-index: 1;
-  overflow: hidden; }
 .guanLiWrapper .promptInfo {
   font-size: 10px;
   position: absolute;

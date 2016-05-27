@@ -31,7 +31,7 @@
             题型分布：
           </h5>
           <p>
-            <span ng-repeat="dati in pld.TIXING_DATA">{{tiXingNameArr[dati.TIXING_ID -1]}}:
+            <span ng-repeat="dati in pld.TIXING_DATA">{{tiXingArr[dati.TIXING_ID -1]}}:
               <b ng-show="dati.COUNT">固定{{dati.COUNT}}</b>
               <b ng-show="dati.sjCount">随机{{dati.sjCount}}</b>
             </span>

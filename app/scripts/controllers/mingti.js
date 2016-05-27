@@ -42,7 +42,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.letterArr = config.letterArr; //题支的序号
         $scope.cnNumArr = config.cnNumArr;//大写汉字
         $scope.caozuoyuan = logUid;
-        $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
+        $scope.tiXingArr = config.tiXingArr; //题型名称数组
         $scope.mingTiParam = { //命题用到的参数
           tiMuId: '', //题目ID
           ctr: '', //出题人ID
@@ -980,7 +980,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           $scope.timu['知识点'] = zsdId.length ? JSON.stringify(zsdId) : '';
           $scope.selectZhiShiDian = zsdMc;
           $scope.mingTiParam.isAddTiMu = false;
-          $scope.alterTiMuTiXing = $scope.tiXingNameArr[$scope.newTiXingId - 1];
+          $scope.alterTiMuTiXing = $scope.tiXingArr[$scope.newTiXingId - 1];
           qryTiMuSourceFun();
           var dealWith = function(txId){
             var daan = tm['题目内容']['答案'];

@@ -1151,68 +1151,6 @@ a.add-btn:hover span {
     text-decoration: none;
   }
 }
-/* 组卷规则难度选择图片 */
-.zj-style-star{
-  width: 200px;
-  height: 28px;
-  float: left;
-  background: url('../images/zjStar.png') no-repeat 0 0;
-  li{
-    float: left;
-    margin-right: 12px;
-    a{
-      float: left;
-      width: 28px;
-      height: 28px;
-    }
-  }
-  .active{
-    a{
-      background-position: 0 -30px;
-    }
-  }
-}
-.zj-style-star-1{
-  background-position: 0 -30px;
-}
-.zj-style-star-2{
-  background-position: 0 -60px;
-}
-.zj-style-star-3{
-  background-position: 0 -90px;
-}
-.zj-style-star-4{
-  background-position: 0 -120px;
-}
-.zj-style-star-5{
-  background-position: 0 -150px;
-}
-/*伪装的select复选框*/
-.fakeMutiSelect{
-  background: url('../images/selectBg.png') no-repeat right center;
-  .fakeOptionList{
-    background-color: #F2F2F2;
-    padding: 10px 10px  0 10px;
-    position: relative;
-    top: -28px;
-    border-radius: 4px;
-    border: 1px solid #A9A9A9;
-    box-shadow: 0px 1px 4px #888888;
-    z-index: 100;
-    .options{
-      max-height: 300px;
-      overflow-y: auto;
-      padding-left: 20px;
-    }
-    .btns{
-      border-top: 1px solid #ccc;
-      text-align: center;
-      a{
-        text-decoration: none;
-      }
-    }
-  }
-}
 label.checkbox{
   font-weight: normal;
   color: #000;
@@ -2061,47 +1999,6 @@ label.checkbox{
       }
     }
   }
-  .nandu-star-box{
-    width: 250px;
-    height: 32px;
-    background-image: url('../images/nadustar.png');
-    background-position: 0 0;
-    a{
-      width: 50px;
-      height: 32px;
-      float: left;
-    }
-  }
-  .starHover1{
-    background-position: 0 -50px;
-  }
-  .starHover2{
-    background-position: 0 -100px;
-  }
-  .starHover3{
-    background-position: 0 -150px;
-  }
-  .starHover4{
-    background-position: 0 -200px;
-  }
-  .starHover5{
-    background-position: 0 -250px;
-  }
-  .starClick1{
-    background-position: 0 -50px;
-  }
-  .starClick2{
-    background-position: 0 -100px;
-  }
-  .starClick3{
-    background-position: 0 -150px;
-  }
-  .starClick4{
-    background-position: 0 -200px;
-  }
-  .starClick5{
-    background-position: 0 -250px;
-  }
   .contentWraps{
     padding-top: 55px;
   }
@@ -2125,110 +2022,14 @@ label.checkbox{
 }
 //组卷样式
 .zujuanWrapper{
-  .paper-title{
-    font-size: 24px;
-    padding: 10px 0;
-    margin: 0;
-  }
-  .paper-sub-title{
-    font-size: 20px;
-    margin: 10px 0;
-  }
-  .shijuantimu-list{
-    margin-top: 15px;
-    .btn{
-      margin-left: 5px;
+  .daTiName{
+    .datiMoveBtns{
+      display: none;
     }
-    .mubandati{
-      font-weight: bold;
-      line-height: 28px;
-      .dati-name-box{
-        display: inline;
-        .dati-name{
-          cursor: pointer;
-        }
-      }
-      .dati-score-box{
-        display: inline;
-        cursor: pointer;
-        p{
-          display: inline;
-          margin: 0;
-          padding: 0;
-        }
-      }
-      .btn{
-        margin-top: -2px;
-      }
+    &:hover{
       .datiMoveBtns{
-        display: none;
+        display: inline;
       }
-      &:hover{
-        .datiMoveBtns{
-          display: inline;
-        }
-      }
-    }
-    .testList li{
-      border: none;
-      h5.item-title{
-        position: absolute;
-        top: 0;
-        right: 10px;
-        display: none;
-      }
-      .item-cont{
-        margin-top: 0;
-      }
-      &:hover{
-        border: 1px solid #d8d8d8;
-        background-color: #F5F5F5;
-        h5.item-title{
-          display: block;
-        }
-      }
-      .write-answer-region{
-        height: 150px;
-      }
-    }
-  }
-  .nandu-dist{
-    h4{
-      font-size: 14px;
-      em{
-        font-size: 12px;
-      }
-    }
-    .distBox{
-      position: relative;
-    }
-    .sliderBox{
-      width: 220px;
-      height: 10px;
-      margin: 3px 5px 0 5px;
-      background-color: #ddd;
-    }
-    .sliderItem{
-      width: 110px;
-      height: 10px;
-      background-color: darkseagreen;
-      position: relative;
-      .sliderItemInner{
-        max-width: 220px;
-      }
-    }
-    .sliderBtn{
-      cursor: e-resize;
-      position: absolute;
-      height: 20px;
-      top: -5px;
-      right: 0;
-      width: 5px;
-      background-color: #f60;
-      z-index: 6;
-    }
-    .maskLabel {
-      font-size: 12px;
     }
   }
   .contentInner{
@@ -2264,148 +2065,6 @@ label.checkbox{
       ul{
         margin-top: 10px;
       }
-    }
-  }
-  .preview-title{
-    height: 40px;
-    background-color: #ccc;
-    position: fixed;
-    width: 100%;
-    line-height: 40px;
-    padding: 0 10px;
-  }
-  .paper-content{
-    margin-left: 10px;
-    color: #000;
-    .secret-mark{
-      font-size: 14px;
-    }
-    .paper-info{
-      font-size: 14px;
-    }
-    .student-title{
-      font-size: 14px;
-    }
-    .cent-box{
-      table{
-        margin: 0 auto;
-        td{
-          border: 2px solid #666;
-          width: 50px;
-          line-height: 25px;
-          font-size: 14px;
-          text-align: center;
-        }
-      }
-    }
-    .attention{
-      font-size: 12px;
-    }
-    .sj-param-val{
-      width: 100%;
-      display: block;
-    }
-    .alter-dati{
-      .pwi-body{
-        height: 410px;
-        margin-top: 10px;
-      }
-      .xiaoTiScoreInput{
-        width: 94%;
-        margin: 15px 3%;
-      }
-      .showAddFuBiaoTi{
-        padding-bottom: 5px;
-        a{
-          text-decoration: none;
-          &:hover{
-            text-decoration: none;
-          }
-        }
-      }
-      .dati-box{
-        span{
-          position: absolute;
-          height: 34px;
-          line-height: 34px;
-        }
-        input{
-          width: 90%;
-          margin-left: 30px;
-        }
-      }
-      .fenshu-box{
-        span{
-          position: absolute;
-          height: 34px;
-          line-height: 34px;
-        }
-        input{
-          width: 75%;
-          margin-left: 40px;
-        }
-      }
-      input{
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
-      textarea{
-        font-size: 14px;
-        margin-bottom: 10px;
-      }
-      h5{
-        width: 100%;
-        text-align: right;
-      }
-      .submit-edit-info{
-        height: 50px;
-        line-height: 50px;
-        border-top: 1px solid #cfcfcf;
-        .btn{
-          margin-top: 0;
-        }
-      }
-    }
-    .save-paper-box,
-    .back-to-paper-list{
-      position: fixed;
-      right: 10px;
-      bottom: 10px;
-      z-index: 100;
-      background-color: #fff;
-      padding-left: 10px;
-      label{
-        font-weight: normal;
-      }
-    }
-    .back-to-paper-list{
-      top: 10px;
-      height: 35px;
-    }
-  }
-  .fixed-top{
-    top: 47px;
-  }
-  .kmTxWrap{
-    padding-right: 100px;
-    width: 100%;
-  }
-  .back-to-zujuan{
-    width: 100px;
-    position: absolute;
-    top: 0;
-    right: 10px;
-    button{
-      float: right;
-      margin-top: 10px;
-      margin-left: 10px;
-      font-size: 12px;
-    }
-  }
-  .test-list-wrap{
-    padding-top: 50px;
-    .mt15{
-      margin-top: 15px;
     }
   }
   .paper-list{
@@ -2454,18 +2113,6 @@ label.checkbox{
       li:nth-child(odd){
         background-color: #f9f9f9;
       }
-    }
-  }
-  .paperConfirmTable{
-    width: 96%;
-    margin: 20px 0 20px 2%;
-    th{
-      text-align: center;
-      padding: 5px;
-    }
-    td{
-      text-align: center;
-      padding: 5px;
     }
   }
   .ruleMakePaper{
@@ -2545,19 +2192,8 @@ label.checkbox{
   .pointTree{
     top: 10px;
   }
-  .randomMakePaperWrap{
-    .test-list-wrap{
-      padding-top: 25px;
-    }
-  }
   .tab-content{
     padding-top: 47px;
-  }
-  .myPaper{
-    .ruleMakePaper-header{
-      border: 1px solid #ccc;
-      margin-right: 10px;
-    }
   }
 }
 .subDsShow{
@@ -4906,19 +4542,6 @@ label.checkbox{
   }
   .paging{
     padding: 0;
-  }
-  .glMoreBtnCont{
-    display: auto;
-    right: 102px;
-    top: 22px;
-    width: 105px;
-    position: absolute;
-    background-color: #FFFFFF;
-    border: 1px solid #AFC1CF;
-    padding: 10px;
-    text-align: right;
-    z-index: 1;
-    overflow: hidden;
   }
   .promptInfo{
     font-size: 10px;

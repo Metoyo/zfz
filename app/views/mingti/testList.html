@@ -44,7 +44,7 @@
     <li ng-repeat="tm in timuDetails" class="delete_{{tm['题目ID']}} pr130" repeat-done>
       <div class="item-sub-title pull-left">
         <p class="knowledge-point">
-          题型：<span ng-bind="tiXingNameArr[tm['题型ID']-1]"></span>
+          题型：<span ng-bind="tiXingArr[tm['题型ID']-1]"></span>
         </p>
         <p class="knowledge-point-zsd">
           知识点：<span ng-repeat="zsd in tm['知识点']">【{{zsd['知识点名称']}}】</span>

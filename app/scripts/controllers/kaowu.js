@@ -64,7 +64,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           var xiuGaiKaoShiShiJuanUrl = baseKwAPIUrl + 'xiugai_kaoshi_shijuan'; //修改考试试卷
           var exportStuInfoBase = config.apiurl_gg + 'json2excel?xls_file_name='; //导出excel名单
 
-          $scope.tiXingNameArr = config.tiXingNameArr; //题型名称数组
+          $scope.tiXingArr = config.tiXingArr; //题型名称数组
           $scope.letterArr = config.letterArr; //题支的序号
           $scope.cnNumArr = config.cnNumArr; //汉语的大学数字
           //$rootScope.dashboard_shown = true;
