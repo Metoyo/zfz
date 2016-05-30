@@ -604,11 +604,14 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
           if(tp == 'sgl'){
             data.push(tm);
-            tm.ckd = true;
           }
           var disByTxId = Lazy(data).groupBy('题型ID').toObject();
           Lazy(disByTxId).each(function(v, k, l){
-            var vIds = Lazy(v).map(function(tmlb){ return tmlb['题目ID'] }).toArray();
+            var vIds = [];
+            Lazy(v).each(function(tmlb){
+              vIds.push(tmlb['题目ID']);
+              tmlb.ckd = true;
+            });
             $scope.sjzSet['题目池'] = Lazy($scope.sjzSet['题目池']).union(vIds).uniq().toArray();
             var fidTar = Lazy($scope.tiMuChi).find(function(tc){
               return tc['题型ID'] == k;
@@ -831,19 +834,42 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         /**
          * 移除题目
          */
-        $scope.removeOut = function(tm){
-          tm.ckd = false;
+        $scope.removeOut = function(tp, tm){
+          var data = [];
+          if(tp == 'page'){
+            data = $scope.timuDetails;
+          }
+          if(tp == 'sgl'){
+            data.push(tm);
+          }
           if($scope.zuJuanParam.tmlTp=='tmc'){ //题目池
-            $scope.sjzSet['题目池'] = Lazy($scope.sjzSet['题目池']).without(tm['题目ID']).toArray();
-            var fidTar = Lazy($scope.tiMuChi).find(function(tc){
-              return tc['题型ID'] == tm['题型ID'];
+            var disByTxId = Lazy(data).groupBy('题型ID').toObject();
+            Lazy(disByTxId).each(function(v, k, l){
+              var vIds = [];
+              Lazy(v).each(function(tmlb){
+                vIds.push(tmlb['题目ID']);
+                tmlb.ckd = false;
+              });
+              $scope.sjzSet['题目池'] = Lazy($scope.sjzSet['题目池']).without(vIds).uniq().toArray();
+              var fidTar = Lazy($scope.tiMuChi).find(function(tc){
+                return tc['题型ID'] == k;
+              });
+              if(fidTar){
+                fidTar['题目ID'] = Lazy(fidTar['题目ID']).without(vIds).uniq().toArray();
+                var tmNum = fidTar['题目ID'].length;
+                if(tmNum){
+                  fidTar['题目数量'] = fidTar['题目ID'].length;
+                }
+                else{
+                  $scope.tiMuChi = Lazy($scope.tiMuChi).reject(function(tmctx){
+                    return tmctx['题型ID'] == k;
+                  }).toArray();
+                }
+              }
             });
-            if(fidTar){
-              fidTar['题目ID'] = Lazy(fidTar['题目ID']).without(tm['题目ID']).toArray();
-              fidTar['题目数量'] = fidTar['题目ID'].length || 0;
-            }
           }
           if($scope.zuJuanParam.tmlTp=='gdtm'){ //固定题目
+            tm.ckd = false;
             $scope.addSjz.sltDati['固定题目'] = Lazy($scope.addSjz.sltDati['固定题目']).reject(function(tmd){
               return tmd['题目ID'] == tm['题目ID'];
             }).toArray();
@@ -1174,6 +1200,30 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
+         * 删除试卷组
+         */
+        $scope.deleteSjz = function(sjzId, idx){
+          var obj = {method: 'POST', url: shiJuanZuUrl, data: {'试卷组ID': '', '状态': -1}};
+          if(sjzId){
+            obj.data['试卷组ID'] = sjzId;
+            if(confirm('确定要删除此试卷组吗？')){
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.paperListData.splice(idx, 1);
+                  DataService.alertInfFun('suc', '删除成功！');
+                }
+                else{
+                  DataService.alertInfFun('pmt', data.error);
+                }
+              });
+            }
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择要删除的试卷组！');
+          }
+        };
+
+        /**
          * 由是试卷列表点击展示试卷详情
          */
         $scope.showPaperDetail = function(sjz){
@@ -1229,6 +1279,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               });
             });
             $scope.sjList = sjz['试卷'];
+            if($scope.sjList[0]){
+              $scope.showShiJuanDtl($scope.sjList[0], 0);
+            }
+            else{
+              DataService.alertInfFun('pmt', '没有符合条件的试卷！');
+            }
           }
           if(tp == '随机'){
             $scope.zuJuanParam.showTiMu = 'rulePage';

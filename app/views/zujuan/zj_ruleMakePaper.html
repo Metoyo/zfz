@@ -215,8 +215,9 @@
       <div class="pull-left allTestNums">
         <span>共<strong ng-bind="zuJuanParam.tiMuLen"></strong>题</span>
         <span ng-if="zuJuanParam.tmlTp=='tmc'">
-          <a href="javascript:void(0)" class="ml15" ng-click="addTmToTmc('all')">全部加入题池</a>
-          <a href="javascript:void(0)" class="ml15" ng-click="addTmToTmc('page')">本页入题池</a>
+          <button type="button" class="btn btn-primary ml15" ng-click="addTmToTmc('all')">全部加入题池</button>
+          <button type="button" class="btn btn-primary ml15" ng-click="addTmToTmc('page')">本页加入题池</button>
+          <button type="button" class="btn btn-default ml15" ng-click="removeOut('page')">本页移出题池</button>
         </span>
       </div>
       <div class="pull-right">
@@ -265,11 +266,11 @@
           <div class="editWrap">
             <h3 class="item-title text-right" ng-if="zuJuanParam.tmlTp=='tmc'">
               <button type="button" class="btn btn-primary" ng-click="addTmToTmc('sgl', tm)" ng-hide="tm.ckd">加入题目池 </button>
-              <button type="button" class="btn btn-default ng-hide" ng-click="removeOut(tm)" ng-show="tm.ckd">移除题目池 </button>
+              <button type="button" class="btn btn-default ng-hide" ng-click="removeOut('sgl', tm)" ng-show="tm.ckd">移除题目池 </button>
             </h3>
             <h3 class="item-title text-right" ng-if="zuJuanParam.tmlTp=='gdtm'">
-              <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入试卷 </button>
-              <button type="button" class="btn btn-default ng-hide" ng-click="removeOut(tm)" ng-show="tm.ckd">移出试卷 </button>
+              <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入试卷</button>
+              <button type="button" class="btn btn-default ng-hide" ng-click="removeOut('sj', tm)" ng-show="tm.ckd">移出试卷</button>
             </h3>
           </div>
         </div>
