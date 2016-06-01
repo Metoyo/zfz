@@ -188,7 +188,7 @@
           <button type="button" class="btn btn-primary ml10" ng-click="generatePaper()" ng-disabled="btnDisable" ng-if="sjzSet['组卷方式'] == '规则'">
             预览试卷
           </button>
-          <button type="button" class="btn btn-primary ml10" ng-click="saveZjRule()" ng-disabled="btnDisable">
+          <button type="button" class="btn btn-primary ml10" ng-click="saveZjRule()" ng-disabled="zuJuanParam.msgClr">
             保存试卷组
           </button>
         </td>
@@ -373,7 +373,7 @@
           <button type="button" class="btn btn-primary ml10" ng-click="backToSjz()">
             返回组卷
           </button>
-          <button type="button" class="btn btn-primary ml10" ng-click="saveZjRule()" ng-disabled="btnDisable">
+          <button type="button" class="btn btn-primary ml10" ng-click="saveZjRule()" ng-disabled="zuJuanParam.msgClr">
             保存试卷组
           </button>
         </td>
