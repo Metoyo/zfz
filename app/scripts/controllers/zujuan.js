@@ -1072,7 +1072,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             if(fdTar){
               gzDtNum += fdTar['固定题目'] ? fdTar['固定题目'].length : 0;
               if(fdTar['随机题目'] && fdTar['随机题目'].length > 0){
-                gzDtNum += parseInt(fdTar['随机题目']['题目数量']);
+                Lazy(fdTar['随机题目']).each(function(sjgz){
+                  gzDtNum += parseInt(sjgz['题目数量']);
+                });
               }
               var diff = gzDtNum - sjDtNum;
               if(diff){

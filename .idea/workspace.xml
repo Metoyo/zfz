@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html" afterPath="$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" afterPath="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
@@ -32,8 +31,8 @@
       <file leaf-file-name="zujuan.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.0" vertical-offset="5550" max-vertical-offset="23488">
-              <caret line="357" column="31" selection-start-line="357" selection-start-column="31" selection-end-line="357" selection-end-column="31" />
+            <state vertical-scroll-proportion="-7.5925927" vertical-offset="7763" max-vertical-offset="23520">
+              <caret line="498" column="25" selection-start-line="498" selection-start-column="15" selection-end-line="498" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -42,8 +41,8 @@
       <file leaf-file-name="zj_ruleMakePaper.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.5576923" vertical-offset="2855" max-vertical-offset="6560">
-              <caret line="190" column="116" selection-start-line="190" selection-start-column="116" selection-end-line="190" selection-end-column="116" />
+            <state vertical-scroll-proportion="-1.6346154" vertical-offset="2091" max-vertical-offset="6560">
+              <caret line="136" column="23" selection-start-line="0" selection-start-column="0" selection-end-line="404" selection-end-column="0" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
@@ -60,8 +59,8 @@
       <file leaf-file-name="zj_radomMakePaper.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.8653846" vertical-offset="4919" max-vertical-offset="5664">
-              <caret line="369" column="17" selection-start-line="369" selection-start-column="12" selection-end-line="369" selection-end-column="17" />
+            <state vertical-scroll-proportion="-2.25" vertical-offset="1899" max-vertical-offset="6112">
+              <caret line="147" column="52" selection-start-line="147" selection-start-column="52" selection-end-line="147" selection-end-column="52" />
               <folding>
                 <element signature="n#div#0;n#div#1;n#!!top" expanded="false" />
                 <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
@@ -69,7 +68,6 @@
                 <element signature="n#style#0;n#h3#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#h4#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="false" />
                 <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#table#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="false" />
                 <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#div#0;n#div#2;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#3;n#!!top" expanded="true" />
@@ -78,21 +76,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="zujuan.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="zujuan.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.95129377" vertical-offset="22751" max-vertical-offset="23488">
-              <caret line="1461" column="10" selection-start-line="1461" selection-start-column="10" selection-end-line="1461" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="22796" max-vertical-offset="23520">
+              <caret line="1463" column="10" selection-start-line="1463" selection-start-column="10" selection-end-line="1463" selection-end-column="10" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="zj_ruleMakePaper.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="zj_ruleMakePaper.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.48" vertical-offset="2828" max-vertical-offset="6560">
-              <caret line="190" column="116" selection-start-line="190" selection-start-column="116" selection-end-line="190" selection-end-column="116" />
+            <state vertical-scroll-proportion="0.9493671" vertical-offset="5848" max-vertical-offset="6560">
+              <caret line="403" column="6" selection-start-line="403" selection-start-column="6" selection-end-line="403" selection-end-column="6" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
@@ -109,8 +107,8 @@
       <file leaf-file-name="zj_radomMakePaper.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_radomMakePaper.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.8653846" vertical-offset="5687" max-vertical-offset="6448">
-              <caret line="368" column="81" selection-start-line="368" selection-start-column="71" selection-end-line="368" selection-end-column="81" />
+            <state vertical-scroll-proportion="-11.019231" vertical-offset="5763" max-vertical-offset="6448">
+              <caret line="396" column="6" selection-start-line="396" selection-start-column="6" selection-end-line="396" selection-end-column="6" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
@@ -177,12 +175,12 @@
         <option value="$PROJECT_DIR$/app/styles/main.scss" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/styles/main.f2a6fdd2.css" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/routes/api.js" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_radomMakePaper.html" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html" />
-        <option value="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" />
-        <option value="$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js" />
+        <option value="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" />
+        <option value="$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_radomMakePaper.html" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html" />
       </list>
     </option>
   </component>
@@ -640,26 +638,27 @@
           <line>145</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js</url>
+          <line>1060</line>
+          <option name="timeStamp" value="270" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js</url>
+          <line>955</line>
+          <option name="timeStamp" value="271" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js</url>
+          <line>498</line>
+          <option name="timeStamp" value="272" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="270" />
+      <option name="time" value="273" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/renzheng.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.95129377" vertical-offset="3423" max-vertical-offset="4160">
-          <caret line="253" column="3" selection-start-line="253" selection-start-column="3" selection-end-line="253" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../kaoshi/app/scripts/controllers/guanli.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.021001615" vertical-offset="6445" max-vertical-offset="14208">
-          <caret line="402" column="54" selection-start-line="402" selection-start-column="54" selection-end-line="402" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../kaoshi/app/scripts/controllers/kaowu.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="15882" max-vertical-offset="25104">
@@ -1023,14 +1022,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_radomMakePaper.html">
+    <entry file="file://$USER_HOME$/Documents/TAT/svn/TongJi/routes/router.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.8653846" vertical-offset="5687" max-vertical-offset="6448">
-          <caret line="368" column="81" selection-start-line="368" selection-start-column="71" selection-end-line="368" selection-end-column="81" />
+        <state vertical-scroll-proportion="-7.7777777" vertical-offset="286" max-vertical-offset="944">
+          <caret line="31" column="65" selection-start-line="31" selection-start-column="47" selection-end-line="31" selection-end-column="65" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/TAT/svn/TongJi/routes/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.074074" vertical-offset="22467" max-vertical-offset="23264">
+          <caret line="1399" column="27" selection-start-line="1399" selection-start-column="9" selection-end-line="1399" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="22796" max-vertical-offset="23520">
+          <caret line="1463" column="10" selection-start-line="1463" selection-start-column="10" selection-end-line="1463" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.5925927" vertical-offset="7763" max-vertical-offset="23520">
+          <caret line="498" column="25" selection-start-line="498" selection-start-column="15" selection-end-line="498" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.25" vertical-offset="1899" max-vertical-offset="6112">
+          <caret line="147" column="52" selection-start-line="147" selection-start-column="52" selection-end-line="147" selection-end-column="52" />
           <folding>
+            <element signature="n#div#0;n#div#1;n#!!top" expanded="false" />
             <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h3#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#h4#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="false" />
             <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#0;n#div#2;n#!!top" expanded="true" />
@@ -1039,10 +1072,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html">
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_radomMakePaper.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.48" vertical-offset="2828" max-vertical-offset="6560">
-          <caret line="190" column="116" selection-start-line="190" selection-start-column="116" selection-end-line="190" selection-end-column="116" />
+        <state vertical-scroll-proportion="-11.019231" vertical-offset="5763" max-vertical-offset="6448">
+          <caret line="396" column="6" selection-start-line="396" selection-start-column="6" selection-end-line="396" selection-end-column="6" />
           <folding>
             <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
@@ -1057,8 +1090,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.5576923" vertical-offset="2855" max-vertical-offset="6560">
-          <caret line="190" column="116" selection-start-line="190" selection-start-column="116" selection-end-line="190" selection-end-column="116" />
+        <state vertical-scroll-proportion="-1.6346154" vertical-offset="2091" max-vertical-offset="6560">
+          <caret line="136" column="23" selection-start-line="0" selection-start-column="0" selection-end-line="404" selection-end-column="0" />
           <folding>
             <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
@@ -1071,38 +1104,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html">
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.8653846" vertical-offset="4919" max-vertical-offset="5664">
-          <caret line="369" column="17" selection-start-line="369" selection-start-column="12" selection-end-line="369" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.9493671" vertical-offset="5848" max-vertical-offset="6560">
+          <caret line="403" column="6" selection-start-line="403" selection-start-column="6" selection-end-line="403" selection-end-column="6" />
           <folding>
-            <element signature="n#div#0;n#div#1;n#!!top" expanded="false" />
             <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h3#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#h4#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="false" />
             <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#table#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="false" />
             <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#2;n#div#0;n#div#2;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#3;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.0" vertical-offset="5550" max-vertical-offset="23488">
-          <caret line="357" column="31" selection-start-line="357" selection-start-column="31" selection-end-line="357" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.95129377" vertical-offset="22751" max-vertical-offset="23488">
-          <caret line="1461" column="10" selection-start-line="1461" selection-start-column="10" selection-end-line="1461" selection-end-column="10" />
-          <folding />
         </state>
       </provider>
     </entry>
