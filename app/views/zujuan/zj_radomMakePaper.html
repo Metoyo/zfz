@@ -57,15 +57,15 @@
           </div>
           <div class="col-sm-7" style="padding-top:8px">
             <ul class="list-inline">
-              <li ng-repeat="tc in tiMuChi">
+              <li class="wp33" ng-repeat="tc in tiMuChi">
                 <span class="mr5">{{tc['题型名称']}}({{tc['题目数量']}})</span>
-                <span class="glyphicon glyphicon-remove"></span>
+                <span class="glyphicon glyphicon-remove clRed" ng-click="cleanTiMuChi('sgl', tc)"></span>
               </li>
             </ul>
           </div>
           <div class="col-sm-3" style="padding-top:8px">
             <a href="javascript:void(0)" class="ml15" ng-click="showTiMuList()">添加题目</a>
-            <a href="javascript:void(0)" class="ml15" ng-click="cleanTiMuChi()">清空题目池</a>
+            <a href="javascript:void(0)" class="ml15" ng-click="cleanTiMuChi('all')">清空题目池</a>
           </div>
         </div>
         <div class="form-group text-center">
@@ -93,7 +93,10 @@
             <td ng-bind="sjtm['题目数量']"></td>
             <td ng-bind="sjtm['题目分值']"></td>
             <td ng-bind="sjtm['难度名称'].join(',')"></td>
-            <td ng-bind="sjtm['使用题目池']"></td>
+            <td>
+              <span ng-show="sjtm['使用题目池']">是</span>
+              <span ng-hide="sjtm['使用题目池']">否</span>
+            </td>
             <td ng-bind="sjtm['限定题库名称'].join(',')"></td>
             <td>
               <span class="glyphicon glyphicon-trash" ng-click="deleteRule(addSjz.sltDati, $index)"></span>
@@ -141,7 +144,10 @@
             <td ng-bind="sjtm['题目数量']"></td>
             <td ng-bind="sjtm['题目分值']"></td>
             <td ng-bind="sjtm['难度名称'].join(',')"></td>
-            <td ng-bind="sjtm['使用题目池']"></td>
+            <td>
+              <span ng-show="sjtm['使用题目池']">是</span>
+              <span ng-hide="sjtm['使用题目池']">否</span>
+            </td>
             <td ng-bind="sjtm['限定题库名称'].join(',')"></td>
             <td>
               <span class="glyphicon glyphicon-trash" ng-click="deleteRule(addSjz.sltDati, $index)"></span>
@@ -152,7 +158,9 @@
           <li ng-repeat="tm in tx['固定题目']">
             <div class="item-cont positionRe">
               <h3 class="item-tigan" style="padding-right:100px" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干']"></h3>
-              <div class="fenZhi">(分值：<input type="text" class="w40" ng-model="tm['分值']" placeholder="分值"/>)</div>
+              <div class="fenZhi" ng-class="{clRed:!(tm['分值'] && tm['分值']>0)}">
+                (分值：<input type="text" class="w40" ng-model="tm['分值']" placeholder="分值"/>)
+              </div>
               <div class="item-tizhi-wrap">
                 <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
                   <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
@@ -212,8 +220,8 @@
         <span>共<strong ng-bind="zuJuanParam.tiMuLen"></strong>题</span>
         <span ng-if="zuJuanParam.tmlTp=='tmc'">
           <button type="button" class="btn btn-primary ml15" ng-click="addTmToTmc('all')">全部加入题池</button>
-          <button type="button" class="btn btn-primary ml15" ng-click="addTmToTmc('page')">本页加入题池</button>
-          <button type="button" class="btn btn-default ml15" ng-click="removeOut('page')">本页移出题池</button>
+          <button type="button" class="btn btn-primary ml15" ng-click="addTmToTmc('page')" ng-hide="removeThisPage">本页加入题池</button>
+          <button type="button" class="btn btn-default ml15" ng-click="removeOut('page')" ng-show="removeThisPage">本页移出题池</button>
         </span>
       </div>
       <div class="pull-right">
@@ -330,6 +338,7 @@
   </div>
   <!--试卷详情-->
   <div id="paperWrap" class="plr10">
+    <h4 class="text-center" ng-class="{clRed:zuJuanParam.msgClr, clGreen:!zuJuanParam.msgClr}" ng-bind="zuJuanParam.sjMsg"></h4>
     <div class="pull-left wp100" ng-repeat="tx in paperDtl['试卷题目']" repeat-done>
       <h4>
         <span style="font-weight: 500" ng-bind="cnNumArr[$index] + '、' + tx['大题名称']"></span>
