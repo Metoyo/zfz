@@ -101,7 +101,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 查询科目题型 --
          */
         var cxKmTx = function(){
-          var obj = {method:'GET', url:xueXiaoKeMuTiXingUrl, params:{'学校ID':jgID, '科目ID':dftKm['科目ID']}};
+          var obj = {method: 'GET', url: xueXiaoKeMuTiXingUrl, params: {'学校ID': jgID, '科目ID': dftKm['科目ID']}};
           $http(obj).success(function(data){
             if(data.result){
               $scope.kmtxList = data.data;
@@ -124,7 +124,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               Lazy(item['子节点']).each(_do);
             }
           }
-          var obj = {method:'GET', url:zhiShiDaGangUrl, params:{'学校ID':jgID, '科目ID':dftKm['科目ID'], '类型':2}};
+          var obj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': dftKm['科目ID'], '类型': 2}};
           $scope.dgList = [];
           $http(obj).success(function(data){
             if(data.result){
@@ -211,7 +211,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var qryTiMuDetail = function(tmArr){
           if(tmArr && tmArr.length > 0){
             $scope.loadingImgShow = true;
-            var obj = {method:'GET', url:tiMuUrl, params:{'题目ID':JSON.stringify(tmArr)}};
+            var obj = {method: 'GET', url: tiMuUrl, params: {'题目ID': JSON.stringify(tmArr)}};
             $http(obj).success(function(data){ //查询题目详情
               if(data.result){
                 Lazy(data.data).each(function(tm, idx, lst){
@@ -231,7 +231,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 查询出题人 --
          */
         var qryChuTiRen = function(){
-          var obj = {method:'GET', url:chuTiRenUrl, params:{'学校ID':jgID, '科目ID': keMuId}};
+          var obj = {method: 'GET', url: chuTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result){
               $scope.chuTiRens = data.data;
@@ -246,7 +246,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 查询录题人 --
          */
         var qryLuTiRen = function(){
-          var obj = {method:'GET', url:luTiRenUrl, params:{'学校ID':jgID, '科目ID': keMuId}};
+          var obj = {method: 'GET', url: luTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result){
               $scope.luTiRens = data.data;
@@ -261,7 +261,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 查询题库 --
          */
         var qryTiKu = function(){
-          var obj = {method:'GET', url:tiKuUrl, params:{'学校ID':jgID, '领域ID': lingYuId}};
+          var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId}};
           $http(obj).success(function(data){
             if(data.result){
               $scope.tiKuList = data.data;
@@ -445,7 +445,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           $scope.loadingImgShow = true;
           tiMuIdArr = [];
           pageArr = [];
-          var obj = {method:'GET', url:tiMuUrl, params:{'学校ID':jgID, '科目ID':keMuId, '返回题目内容':false}};
+          var obj = {method: 'GET', url: tiMuUrl, params: {'学校ID': jgID, '科目ID': keMuId, '返回题目内容': false}};
           if(qryTmPar.zsd && qryTmPar.zsd.length > 0){
             obj.params['知识点'] = JSON.stringify(qryTmPar.zsd);
           }
@@ -700,7 +700,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          */
         var qryTiMuSourceFun = function(){
           if(!($scope.mingTiParam.tiMuLaiYuan && $scope.mingTiParam.tiMuLaiYuan.length)){
-            var obj = {method:'GET', url:tiMuLaiYuanUrl, params:{'学校ID':jgID, '科目ID': keMuId}};
+            var obj = {method: 'GET', url: tiMuLaiYuanUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
             $http(obj).success(function(data){
               if(data.result){
                 $scope.mingTiParam.tiMuLaiYuan = data.data;
@@ -934,7 +934,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          */
         $scope.deleteItem = function(tmid, idx){
           if (confirm('确定要删除此题吗？')) {
-            var obj = {method:'DELETE', url:tiMuUrl, params:{'题目ID':tmid}};
+            var obj = {method: 'DELETE', url: tiMuUrl, params: {'题目ID': tmid}};
             $http(obj).success(function(data){
               if(data.result){
                 $scope.timuDetails.splice(idx, 1);
@@ -1249,7 +1249,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           }
           else{
             tiMuData['题目内容'] = JSON.stringify(tiMuData['题目内容']);
-            var obj = {method:'', url:tiMuUrl, data:tiMuData};
+            var obj = {method: '', url: tiMuUrl, data: tiMuData};
             if($scope.mingTiParam.isAddTiMu){
               obj.method = 'PUT';
             }

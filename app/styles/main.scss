@@ -1833,6 +1833,17 @@ label.checkbox{
       }
     }
   }
+  .editKaoDian{
+    i{
+      color: red;
+      font-style: normal;
+    }
+    .help-block {
+      font-size: 13px;
+      color: #cd5c5c;
+      font-style: italic;
+    }
+  }
 }
 //大纲样式
 .dagangWrapper{

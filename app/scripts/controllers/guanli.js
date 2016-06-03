@@ -47,11 +47,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          * 查询科目下的老师 --
          */
         var qryKeMuTeachers = function(){
-          var obj = {method:'GET', url:keMuJiaoShiUrl, params:{'学校ID':jgID, '科目ID':keMuId}};
+          var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result){
               if($scope.glEditBoxShow == 'modifyKeXuHao'){
-                var objKxhJs = {method:'GET', url:kxhJiaoShiUrl, params:{'课序号ID':''}};
+                var objKxhJs = {method: 'GET', url: kxhJiaoShiUrl, params: {'课序号ID': ''}};
                 var idArr = [];
                 idArr.push($scope.guanliParams.modifyKxh['课序号ID']);
                 objKxhJs.params['课序号ID'] = JSON.stringify(idArr);
@@ -85,7 +85,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          * 查询课序号下的老师 --
          */
         //var qryKeXuHaoTeachers = function(ids){
-        //  var obj = {method:'GET', url:kxhJiaoShiUrl, params:{'课序号ID':''}};
+        //  var obj = {method: 'GET', url: kxhJiaoShiUrl, params: {'课序号ID': ''}};
         //  obj.params['课序号ID'] = JSON.stringify(ids);
         //  $http(obj).success(function(data){
         //    if(data.result){
@@ -113,10 +113,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          * 查询课序号 --
          */
         var queryKeXuHao = function(){
-          var objKxh = {method:'GET', url:keXuHaoUrl, params:{'学校ID': jgID, '科目ID': keMuId, '返回学生人数': true}};
+          var objKxh = {method: 'GET', url: keXuHaoUrl, params: {'学校ID': jgID, '科目ID': keMuId, '返回学生人数': true}};
           $http(objKxh).success(function(data){
             if(data.result){
-              var objJs = {method:'GET', url:kxhJiaoShiUrl, params:{'课序号ID':''}};
+              var objJs = {method: 'GET', url: kxhJiaoShiUrl, params: {'课序号ID': ''}};
               var kxhIds = Lazy(data.data).map(function(kxh){ return kxh['课序号ID']}).toArray();
               objJs.params['课序号ID'] = JSON.stringify(kxhIds);
               $http(objJs).success(function(tech){
@@ -252,7 +252,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          * 删除课序号 --
          */
         $scope.deleteKeXuHao = function(kxh){
-          var obj = {method:'POST', url:keXuHaoUrl, data:{'课序号ID':'', '状态':-1}};
+          var obj = {method: 'POST', url: keXuHaoUrl, data: {'课序号ID': '', '状态': -1}};
           if(kxh){
             obj.data['课序号ID'] = kxh['课序号ID'];
             if(confirm('确定要删除此课序号吗？')){
@@ -367,7 +367,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         $scope.chaXunKxhYongHu = function(kxh){
           $scope.studentsData = '';
           $scope.impStus = [];
-          var obj = {method:'GET', url:kxhXueShengUrl, params:{'课序号ID': ''}};
+          var obj = {method: 'GET', url: kxhXueShengUrl, params: {'课序号ID': ''}};
           if(kxh){
             $scope.selectKxh = kxh;
             var idArr = [];
@@ -453,9 +453,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           else{
             var confirmInfo = '';
             var obj = {
-              method:'POST',
-              url:kxhXueShengUrl,
-              data:{
+              method: 'POST',
+              url: kxhXueShengUrl,
+              data: {
                 '课序号ID': $scope.selectKxh['课序号ID'],
                 '学生': ''
               }
@@ -507,7 +507,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           var uidArr = [];
           var allTrue = true;
           $scope.guanliParams.errorInfo = '';
-          var obj = {method: '', url:''};
+          var obj = {method: '', url: ''};
           var checkJiaoShi = function(){
             Lazy($scope.jgKmTeachers).each(function(th){
               if(th.ckd && (th.ckd == true)){
@@ -598,9 +598,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                 }
                 else if(saveType == 'modifyKeXuHao'){ //修改课序号
                   objJs = {
-                    method:'POST',
-                    url:kxhJiaoShiUrl,
-                    data:{'课序号ID':$scope.guanliParams.modifyKxh['课序号ID'], '教师':JSON.stringify(uidArr)}
+                    method: 'POST',
+                    url: kxhJiaoShiUrl,
+                    data: {'课序号ID': $scope.guanliParams.modifyKxh['课序号ID'], '教师': JSON.stringify(uidArr)}
                   };
                   $http(objJs).success(function(jsData){
                     if(data.result){

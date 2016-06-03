@@ -1,65 +1,50 @@
 <h4 class="pb10 bdb">
-  <span class="cYell">{{session.defaultLyName}}</span><span>考场管理</span>
+  <span class="cYell">{{kwParams.dftKmName['科目名称']}}</span><span>考场管理</span>
   <button type="button" class="btn btn-primary ml15" ng-click="addNewKaoChang()">新增考场</button>
 </h4>
 <table class="table table-striped kaoChangList">
-    <tr class="active">
-        <th>考场名称</th>
-        <th class="text-center">考位数量</th>
-        <th class="text-center">考场地址</th>
-        <!--<th class="text-center">交通方式</th>-->
-        <th class="text-center">联系人</th>
-        <th class="text-center">激活码</th>
-        <th width="140px" class="text-center">操作</th>
-    </tr>
-    <tr ng-repeat="kc in kaoChangList">
-        <td ng-bind="kc.KMINGCHENG">
-        </td>
-        <td class="text-center" ng-bind="kc.KAOWEISHULIANG">
-        </td>
-        <td class="text-center" ng-bind="kc.XIANGXIDIZHI">
-        </td>
-        <!--<td class="text-center" ng-bind="kc.JIAOTONGFANGSHI">-->
-        <!--</td>-->
-        <td class="text-center" ng-bind="kc.LIANXIREN">
-        </td>
-        <td class="text-center" ng-bind="kc.JIHUOMA">
-        </td>
-        <td class="text-center positionRe">
-            <button type="button" class="btn btn-default" ng-click="deleteKaoChang(kc)">删除</button>
-            <button type="button" class="btn btn-primary" ng-click="editKaoChang(kc)">修改</button>
-            <!--<button type="button" class="btn btn-primary jiHuoMa" bn-slide-show slid-show-tapon="jiHuoMa" slide-show-target="moreBtnCont"-->
-                    <!--slide-show-dirt="left" slide-show-idx="{{$index}}">激活码</button>-->
-            <!--<div class="moreBtnCont">-->
-                <!--<div class="mbc-inner" ng-bind="kc.JIHUOMA">-->
-
-                <!--</div>-->
-            <!--</div>-->
-        </td>
-    </tr>
+  <tr class="active">
+    <th>考场名称</th>
+    <th class="text-center">考位数量</th>
+    <th class="text-center">考场地址</th>
+    <th class="text-center">联系人</th>
+    <th class="text-center">激活码</th>
+    <th width="140px" class="text-center">操作</th>
+  </tr>
+  <tr ng-repeat="kc in kaoChangList">
+    <td ng-bind="kc['考点名称']"></td>
+    <td class="text-center" ng-bind="kc['考位数']"></td>
+    <td class="text-center" ng-bind="kc['详情']['考场地址']"></td>
+    <td class="text-center" ng-bind="kc['联系人']"></td>
+    <td class="text-center" ng-bind="kc['激活码']"></td>
+    <td class="text-center positionRe">
+      <button type="button" class="btn btn-default" ng-click="deleteKaoChang(kc)">删除</button>
+      <button type="button" class="btn btn-primary" ng-click="editKaoChang(kc)">修改</button>
+    </td>
+  </tr>
 </table>
 <div class="paging text-right">
-    <ul class="pagination pagination-sm" ng-hide="!kaoChangListIds">
-        <li ng-class="{disabled: currentKcPageVal == 1}">
-            <a href ng-click="getThisKaoChangPageData(1)">首页</a>
-        </li>
-        <li ng-class="{disabled: currentKcPageVal == 1}">
-            <a href
-               ng-click="getThisKaoChangPageData(prevPg = currentKcPageVal > 1 ? currentKcPageVal - 1 : 1)">
-                上一页
-            </a>
-        </li>
-        <li ng-repeat="pg in kaoChangPages" ng-class="{active: currentKcPageVal == pg}">
-            <a href ng-click="getThisKaoChangPageData(pg)">{{pg}}</a>
-        </li>
-        <li ng-class="{disabled: currentKcPageVal == lastKaoChangPageNum}">
-            <a href
-               ng-click="getThisKaoChangPageData(nextPg = currentKcPageVal < lastKaoChangPageNum ? currentKcPageVal + 1 : lastKaoChangPageNum)">
-                下一页
-            </a>
-        </li>
-        <li ng-class="{disabled: currentKcPageVal == lastKaoChangPageNum}">
-            <a href  ng-click="getThisKaoChangPageData(lastKaoChangPageNum)">尾页</a>
-        </li>
-    </ul>
+  <ul class="pagination pagination-sm" ng-hide="!kaoChangListIds">
+    <li ng-class="{disabled: currentKcPageVal == 1}">
+      <a href ng-click="getThisKaoChangPageData(1)">首页</a>
+    </li>
+    <li ng-class="{disabled: currentKcPageVal == 1}">
+      <a href
+         ng-click="getThisKaoChangPageData(prevPg = currentKcPageVal > 1 ? currentKcPageVal - 1 : 1)">
+        上一页
+      </a>
+    </li>
+    <li ng-repeat="pg in kaoChangPages" ng-class="{active: currentKcPageVal == pg}">
+      <a href ng-click="getThisKaoChangPageData(pg)">{{pg}}</a>
+    </li>
+    <li ng-class="{disabled: currentKcPageVal == lastKaoChangPageNum}">
+      <a href
+         ng-click="getThisKaoChangPageData(nextPg = currentKcPageVal < lastKaoChangPageNum ? currentKcPageVal + 1 : lastKaoChangPageNum)">
+        下一页
+      </a>
+    </li>
+    <li ng-class="{disabled: currentKcPageVal == lastKaoChangPageNum}">
+      <a href ng-click="getThisKaoChangPageData(lastKaoChangPageNum)">尾页</a>
+    </li>
+  </ul>
 </div>

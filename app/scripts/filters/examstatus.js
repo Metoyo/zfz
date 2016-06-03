@@ -11,19 +11,19 @@ define(['angular'], function (angular) {
             txtStatus = "考试发布中";
             break;
           case -1:
-            txtStatus = "删除";
+            txtStatus = "软删除";
             break;
           case 0:
-            txtStatus = "等待发布";
+            txtStatus = "未定义";
             break;
           case 1:
-            txtStatus = "测试中";
+            txtStatus = "未发布";
             break;
           case 2:
-            txtStatus = "报名中";
+            txtStatus = "未定义";
             break;
           case 3:
-            txtStatus = "考试已发布";
+            txtStatus = "已发布";
             break;
           case 4:
             txtStatus = "正在考试";

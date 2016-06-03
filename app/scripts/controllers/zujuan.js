@@ -75,7 +75,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
         }
         var getDaGangData = function(){
-          var obj = {method:'GET', url:zhiShiDaGangUrl, params:{'学校ID':jgID, '科目ID':dftKm['科目ID'], '类型':2}};
+          var obj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': dftKm['科目ID'], '类型': 2}};
           $scope.dgList = [];
           $http(obj).success(function(data){
             if(data.result){
@@ -111,7 +111,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.sjzKmtx = angular.copy($scope.kmtxList);
           }
           else{
-            var obj = {method:'GET', url:xueXiaoKeMuTiXingUrl, params:{'学校ID':jgID, '科目ID':dftKm['科目ID']}};
+            var obj = {method: 'GET', url: xueXiaoKeMuTiXingUrl, params: {'学校ID': jgID, '科目ID': dftKm['科目ID']}};
             $http(obj).success(function(data){
               if(data.result){
                 Lazy(data.data).each(function(tx){
@@ -134,7 +134,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         var qryTiKu = function(){
           if(!($scope.tiKuList && $scope.tiKuList.length > 0)){
-            var obj = {method:'GET', url:tiKuUrl, params:{'学校ID':jgID, '领域ID': lingYuId}};
+            var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId}};
             $http(obj).success(function(data){
               if(data.result){
                 $scope.tiKuList = data.data;
@@ -152,9 +152,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         var qryShiJuanList = function(){
           var obj = {
-            method:'GET',
-            url:shiJuanZuUrl,
-            params:{'学校ID':jgID, '科目ID':keMuId, '返回试卷': true, '返回题目内容': true}
+            method: 'GET',
+            url: shiJuanZuUrl,
+            params: {'学校ID': jgID, '科目ID': keMuId, '返回试卷': true, '返回题目内容': true}
           };
           $scope.loadingImgShow = true;
           $scope.sjzPage.allPages = [];
@@ -211,7 +211,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         var qryChuTiRen = function(){
           if(!($scope.chuTiRens && $scope.chuTiRens.length > 0)){
-            var obj = {method:'GET', url:chuTiRenUrl, params:{'学校ID':jgID, '科目ID': keMuId}};
+            var obj = {method: 'GET', url: chuTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
             $http(obj).success(function(data){
               if(data.result){
                 $scope.chuTiRens = data.data;
@@ -253,7 +253,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               gdtmTempIds = Lazy(gdtmTempIds).uniq().toArray();
             }
             $scope.removeThisPage = false;
-            var obj = {method:'GET', url:tiMuUrl, params:{'题目ID':JSON.stringify(tmArr)}};
+            var obj = {method: 'GET', url: tiMuUrl, params: {'题目ID': JSON.stringify(tmArr)}};
             $http(obj).success(function(data){ //查询题目详情
               if(data.result){
                 var count = 0;
@@ -697,7 +697,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.loadingImgShow = true;
           tiMuIdArr = [];
           pageArr = [];
-          var obj = {method:'GET', url:tiMuUrl, params:{'学校ID':jgID, '科目ID':keMuId, '返回题目内容':false}};
+          var obj = {method: 'GET', url: tiMuUrl, params: {'学校ID': jgID, '科目ID': keMuId, '返回题目内容': false}};
           if(qryTmPar.zsd && qryTmPar.zsd.length > 0){
             obj.params['知识点'] = JSON.stringify(qryTmPar.zsd);
           }
@@ -1301,7 +1301,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               });
             });
             if(tiMuIds.length > 0){
-              var obj = {method:'GET', url:tiMuUrl, params:{'题目ID':JSON.stringify(tiMuIds)}};
+              var obj = {method: 'GET', url: tiMuUrl, params: {'题目ID': JSON.stringify(tiMuIds)}};
               $http(obj).success(function(data){ //查询题目详情
                 if(data.result){
                   tmArr = data.data;

@@ -1,29 +1,37 @@
 define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 开始
   function (angular, config, $, lazy, mathjax, datepicker) { // 001 开始
     'use strict';
-
     angular.module('zhifzApp.controllers.KaowuCtrl', []) //controller 开始
-      .controller('KaowuCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$q',
-        function ($rootScope, $scope, $http, $timeout, DataService, $q) { // 002 开始
+      .controller('KaowuCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$q', '$cookieStore',
+        function ($rootScope, $scope, $http, $timeout, DataService, $q, $cookieStore) { // 002 开始
           /**
            * 定义变量
            */
-          //var userInfo = $rootScope.session.userInfo;
-          //var baseKwAPIUrl = config.apiurl_kw; //考务的api
-          //var baseMtAPIUrl = config.apiurl_mt; //mingti的api
-          //var baseRzAPIUrl = config.apiurl_rz; //renzheng的api
-          //var token = config.token;
-          //var caozuoyuan = userInfo.UID;//登录的用户的UID   chaxun_kaoshi_liebiao
-          //var jigouid = userInfo.JIGOU[0].JIGOU_ID;
-          //var lingyuid = $rootScope.session.defaultLyId;
-          //var qryKaoChangListUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang_liebiao?token=' + token + '&caozuoyuan='
-          //  + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考场列表的url
-          //var qryKaoChangDetailBaseUrl = baseKwAPIUrl + 'chaxun_kaodiankaochang?token=' + token + '&caozuoyuan='
-          //  + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考场详细的url
-          //var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='
-          //  + caozuoyuan + '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询考试列表的url
-          //var qryCxsjlbUrl = baseMtAPIUrl + 'chaxun_shijuanliebiao?token=' + token + '&caozuoyuan=' + caozuoyuan +
-          //  '&jigouid=' + jigouid + '&lingyuid=' + lingyuid; //查询试卷列表url
+          var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
+          var jgID = loginUsr['学校ID']; //登录用户学校
+          var logUid = loginUsr['UID']; //登录用户的UID
+          var dftKm = JSON.parse($cookieStore.get('ckKeMu')); //默认选择的科目
+          var keMuId = dftKm['科目ID']; //默认的科目ID
+          var lingYuId = dftKm['领域ID']; //默认的科目ID
+          var kaoShiZuUrl = '/kaoshizu'; //考试组
+          var daBaoShiJuanUrl = '/dabao_shijuan'; //打包试卷
+          var faBuKaoShiZuUrl = '/fabu_kaoshizu'; //发布考试组
+          var kaoShengKaoShiUrl = '/kaosheng_kaoshi'; //考生考试
+          var zaiXianBaoMingUrl = '/zaixian_baoming'; //在线报名
+          $scope.kwParams = { //考务用到的变量
+            dftKmName: dftKm, //默认科目名称
+            kszListZt: '', //考试列表的状态
+            editKcTp: '' //编辑考点的类型
+            //showKaoShiDetail: false, //考试详细信息
+            //selectShiJuan: [], //存放已选择试卷的数组
+            //kaoShengState: '', //判断考生状态
+            //baoMingMethod: '', //报名方式
+            //selectKaoShiId: '', // 选中考试的ID
+            //checkedAllChangCi: false,
+            //selectedCc: '', //选中的场次
+            //forbidBtn: false //提交后的禁止按钮
+          };
+          $scope.kaochangData = '';
           //var kaoshi_data; //考试的数据格式
           //var kaochang_data; //考场的数据格式
           //var isEditKaoShi = false; //是否为编辑考试
@@ -72,35 +80,153 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           //$scope.isAddStuByExcel = false; //判断添加考生类型
           //$scope.addChangCi = false;
           //$scope.keXuHaoData = '';
-          //$scope.kwParams = { //考务用到的变量
-          //  ksListZt: '', //考试列表的状态
-          //  showKaoShiDetail: false, //考试详细信息
-          //  selectShiJuan: [], //存放已选择试卷的数组
-          //  kaoShengState: '', //判断考生状态
-          //  baoMingMethod: '', //报名方式
-          //  selectKaoShiId: '', // 选中考试的ID
-          //  checkedAllChangCi: false,
-          //  selectedCc: '', //选中的场次
-          //  forbidBtn: false //提交后的禁止按钮
+
+          /**
+          * 显示考试列表,可分页的方法, zt表示状态 1，2，3，4为完成；5，6已完成
+          */
+          $scope.showKaoShiZuList = function(zt){
+            var obj = {method: 'GET', url: kaoShiZuUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
+            var stat = zt || 'ing';
+            var ztArr = [];
+            switch (stat) {
+              case 'all':
+                ztArr = [1, 3, 4, 5, 6];
+                break;
+              case 'ing':
+                ztArr = [1, 3, 4];
+                break;
+              case 'done':
+                ztArr = [5, 6];
+                break;
+            }
+            obj.params['状态'] = JSON.stringify(ztArr);
+            $scope.loadingImgShow = true;
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.kaoShiZuList = data.data;
+              }
+              else{
+                $scope.kaoShiZuList = '';
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+            });
+            $scope.tabActive = 'kszgl';
+            $scope.kwParams.kszListZt = stat;
+            $scope.txTpl = 'views/kaowu/kaoChangList.html';
+          };
+          $scope.showKaoShiZuList('all');
+
+          ///**
+          //* 显示考场列表
+          //*/
+          //$scope.showKaoChangList = function(){
+          //  var obj = {method: 'GET', url: kaoDianUrl, params: {'学校ID': jgID}};
+          //  $scope.loadingImgShow = true;
+          //  $http(obj).success(function(data){
+          //    if(data.result){
+          //      $scope.kaoChangList = data.data;
+          //    }
+          //    else{
+          //      $scope.kaoChangList = '';
+          //      DataService.alertInfFun('err', data.error);
+          //    }
+          //    $scope.loadingImgShow = false;
+          //  });
+          //  $scope.tabActive = 'kcgl';
+          //  $scope.txTpl = 'views/kaowu/kaoChangList.html';
           //};
           //
           ///**
-          // *  查询试卷列表的函数
-          // */
-          //var qryShiJuanList = function(){
-          //  $scope.paperListIds = ''; //考试id列表
-          //  $http.get(qryCxsjlbUrl).success(function(sjlb){
-          //    if(sjlb.length){
-          //      paperListOriginData = Lazy(sjlb).sortBy(function(sj){
-          //        return sj.UPDATE_TIME;
-          //      }).toArray().reverse();
+          //* 新增考场
+          //*/
+          //$scope.addNewKaoChang = function(){
+          //  $scope.kaochangData = {
+          //    //'考点ID': '',
+          //    '考点名称': '',
+          //    '学校ID': jgID,
+          //    '考位数': '',
+          //    '联系人': '',
+          //    '联系方式': '',
+          //    '详情': {
+          //      '考场地址': '',
+          //      '交通方式': ''
           //    }
-          //    else{
-          //      DataService.alertInfFun('err', '没有相关试卷信息！');
-          //    }
-          //  });
+          //  };
+          //  $scope.kwParams.editKcTp = 'add';
+          //  $scope.txTpl = 'views/kaowu/editKaoChang.html';
           //};
           //
+          ///**
+          //* 删除考场
+          //*/
+          //$scope.deleteKaoChang = function(kc){
+          //  var obj = {method: 'POST', url: kaoDianUrl, data: {'考点ID': '', '状态': -1}};
+          //  if(kc['考点ID']){
+          //    obj.data['考点ID'] = kc['考点ID'];
+          //    if(confirm('确定要删除此考场吗？')){
+          //      $http(obj).success(function(data){
+          //        if(data.result){
+          //          $scope.showKaoChangList();
+          //        }
+          //        else{
+          //          DataService.alertInfFun('err', data.error);
+          //        }
+          //      });
+          //    }
+          //  }
+          //  else{
+          //    DataService.alertInfFun('pmt', '请选择要删除的考场！');
+          //  }
+          //};
+          //
+          ///**
+          //* 修改考场
+          //*/
+          //$scope.editKaoChang = function(kc){
+          //  $scope.kaochangData = {
+          //    '考点ID': kc['考点ID'],
+          //    '考点名称': kc['考点名称'],
+          //    '学校ID': kc['学校ID'],
+          //    '考位数': kc['考位数'],
+          //    '联系人': kc['联系人'],
+          //    '联系方式': kc['联系方式'],
+          //    '详情': {
+          //      '考场地址': kc['详情'] ? kc['详情']['考场地址'] : '',
+          //      '交通方式': kc['详情'] ? kc['详情']['交通方式'] : ''
+          //    }
+          //  };
+          //  $scope.kwParams.editKcTp = 'mod';
+          //  $scope.txTpl = 'views/kaowu/editKaoChang.html';
+          //};
+          //
+          ///**
+          //* 保存考场
+          //*/
+          //$scope.saveKaoChang = function(){
+          //  var obj = {method: '', url: kaoDianUrl, data: $scope.kaochangData};
+          //  $scope.loadingImgShow = true; //保存考场
+          //  if($scope.kwParams.editKcTp == 'add'){
+          //    obj.method = 'PUT';
+          //  }
+          //  if($scope.kwParams.editKcTp == 'mod'){
+          //    obj.method = 'POST';
+          //  }
+          //  $http(obj).success(function(data){
+          //    if(data.result){
+          //      $scope.showKaoChangList();
+          //      DataService.alertInfFun('suc', '考场保存成功！');
+          //    }
+          //    else{
+          //      DataService.alertInfFun('err', data.error);
+          //    }
+          //    $scope.loadingImgShow = false; //保存考场
+          //  });
+          //};
+
+
+
+
           ///**
           // * 考试的分页数据查询函数
           // */
@@ -131,12 +257,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           //    var chaXunKaoShiZuDetail = chaXunKaoShiZuDetailUrl + pageKszId;
           //    $http.get(chaXunKaoShiZuDetail).success(function(data){
           //      if(data && data.length > 0){
-          //        $scope.kaoshiList = Lazy(data).reverse().toArray();
+          //        $scope.kaoShiZuList = Lazy(data).reverse().toArray();
           //      }
           //      else{
           //        DataService.alert('err', data.error);
           //      }
-          //      $scope.loadingImgShow = false; //kaoShiList.html
+          //      $scope.loadingImgShow = false; //kaoShiZuList.html
           //    });
           //  }
           //};
@@ -148,7 +274,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           //  var ztArr = [];
           //  var qryKaoShiZuList;
           //  zt = zt || 'ing';
-          //  $scope.loadingImgShow = true; //kaoShiList.html
+          //  $scope.loadingImgShow = true; //kaoShiZuList.html
           //  $scope.kwParams.baoMingMethod = '';
           //  kaoShiPageArr = []; //定义考试页码数组
           //  kaoShiZuIdsData = []; //存放所有考试ID的数组
@@ -164,7 +290,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           //      ztArr = [5, 6];
           //      break;
           //  }
-          //  $scope.kwParams.ksListZt = zt;
+          //  $scope.kwParams.kszListZt = zt;
           //  qryKaoShiZuList = qryKaoShiZuListUrl + '&zhuangtai=' + ztArr;
           //  $http.get(qryKaoShiZuList).success(function(kslst){
           //    kaoShiZuIdsData = kslst;
@@ -176,21 +302,21 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           //      $scope.lastKaoShiPageNum = totalKaoShiPage; //最后一页的数值
           //      //查询数据开始
           //      $scope.getThisKaoShiPageData();
-          //      $scope.txTpl = 'views/kaowu/kaoShiList.html';
+          //      $scope.txTpl = 'views/kaowu/kaoShiZuList.html';
           //      $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
           //      isEditKaoShi = false;//是否为编辑考试
           //    }
           //    else{
-          //      $scope.kaoshiList = '';
+          //      $scope.kaoShiZuList = '';
           //      kaoShiPageArr = [];
           //      $scope.kaoShiPages = [];
           //      kaoShiZuIdsData = []; //存放所有考试ID的数组
-          //      $scope.kwParams.ksListZt = '';
-          //      $scope.txTpl = 'views/kaowu/kaoShiList.html';
+          //      $scope.kwParams.kszListZt = '';
+          //      $scope.txTpl = 'views/kaowu/kaoShiZuList.html';
           //      $scope.isAddNewKaoSheng = false; //显示添加单个考生页面
           //      isEditKaoShi = false;//是否为编辑考试
           //      DataService.alertInfFun('pmt', '没有相关的考试！');
-          //      $scope.loadingImgShow = false; //kaoShiList.html
+          //      $scope.loadingImgShow = false; //kaoShiZuList.html
           //    }
           //  });
           //  $scope.tabActive = 'ksgl';
@@ -1133,7 +1259,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           //    var deleteKaoShiZu = deleteKaoShiZuUrl + ks.KAOSHIZU_ID;
           //    $http.get(deleteKaoShiZu).success(function(data){
           //      if(data.result){
-          //        $scope.showKaoShiZuList($scope.kwParams.ksListZt);
+          //        $scope.showKaoShiZuList($scope.kwParams.kszListZt);
           //        DataService.alertInfFun('suc', '考试删除成功！');
           //      }
           //      else{
@@ -1377,136 +1503,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           //    }
           //  });
           //};
-          //
-          ///**
-          // * 显示考场列表
-          // */
-          //$scope.showKaoChangList = function(){
-          //  $scope.loadingImgShow = true; //kaoChangList.html
-          //  kaoChangPageArr = []; //定义考场页码数组
-          //  kaoChangIdArrRev = []; //存放所有考场ID的数组
-          //  $http.get(qryKaoChangListUrl).success(function(kclst){
-          //    if(kclst.length){
-          //      $scope.kaoChangListIds = kclst; //得到所有的考试ids
-          //      totalKaoChangPage = Math.ceil(kclst.length/itemNumPerPage); //得到所有考试的页码
-          //      for(var i = 1; i <= totalKaoChangPage; i++){
-          //        kaoChangPageArr.push(i);
-          //      }
-          //      kaoChangIdArrRev = Lazy(kclst).map(function(kcid){ return kcid.KID; }).toArray();
-          //      $scope.lastKaoChangPageNum = totalKaoChangPage; //最后一页的数值
-          //      //查询数据开始
-          //      $scope.getThisKaoChangPageData();
-          //      $scope.txTpl = 'views/kaowu/kaoChangList.html';
-          //      isEditKaoChang = false; //是否为编辑考场
-          //      isDeleteKaoChang = false; //是否为删除考场
-          //    }
-          //    else{
-          //      $scope.txTpl = 'views/kaowu/kaoChangList.html';
-          //      isEditKaoChang = false; //是否为编辑考场
-          //      isDeleteKaoChang = false; //是否为删除考场
-          //      DataService.alertInfFun('err', '没有相关的考场信息！');
-          //      $scope.loadingImgShow = false; //kaoChangList.html
-          //    }
-          //  });
-          //  $scope.tabActive = 'kcgl';
-          //};
-          //
-          ///**
-          // * 新增考场
-          // */
-          //$scope.addNewKaoChang = function(kc){
-          //  kaochang_data = { //考场的数据格式
-          //    token: token,
-          //    caozuoyuan: caozuoyuan,
-          //    jigouid: jigouid,
-          //    lingyuid: lingyuid,
-          //    shuju:{
-          //      KID: '',
-          //      KMINGCHENG: '',
-          //      KAOWEISHULIANG: '',
-          //      XIANGXIDIZHI: '',
-          //      JIAOTONGFANGSHI: '',
-          //      LIANXIREN: '',
-          //      LIANXIFANGSHI: '',
-          //      KLEIXING: 0,
-          //      PARENT_ID: '',
-          //      KAODIANXINGZHI: 0,
-          //      ZHUANGTAI: 1
-          //    }
-          //  };
-          //  if(isEditKaoChang){
-          //    kaochang_data.shuju.KID = kc.KID;
-          //    kaochang_data.shuju.KMINGCHENG = kc.KMINGCHENG;
-          //    kaochang_data.shuju.KAOWEISHULIANG = kc.KAOWEISHULIANG;
-          //    kaochang_data.shuju.XIANGXIDIZHI = kc.XIANGXIDIZHI;
-          //    kaochang_data.shuju.JIAOTONGFANGSHI = kc.JIAOTONGFANGSHI;
-          //    kaochang_data.shuju.LIANXIREN = kc.LIANXIREN;
-          //    kaochang_data.shuju.LIANXIFANGSHI = kc.LIANXIFANGSHI;
-          //    kaochang_data.shuju.KLEIXING = kc.KLEIXING;
-          //    kaochang_data.shuju.PARENT_ID = kc.PARENT_ID;
-          //    kaochang_data.shuju.KAODIANXINGZHI = kc.KAODIANXINGZHI;
-          //    kaochang_data.shuju.ZHUANGTAI = kc.ZHUANGTAI;
-          //
-          //    $scope.kaochangData = kaochang_data;
-          //    $scope.txTpl = 'views/kaowu/editKaoChang.html';
-          //  }
-          //  else if(isDeleteKaoChang){
-          //    kaochang_data.shuju = kc;
-          //    kaochang_data.shuju.ZHUANGTAI = -1;
-          //  }
-          //  else{
-          //    $scope.kaochangData = kaochang_data;
-          //    $scope.txTpl = 'views/kaowu/editKaoChang.html';
-          //  }
-          //};
-          //
-          ///**
-          // * 删除考场
-          // */
-          //$scope.deleteKaoChang = function(kc){
-          //  isEditKaoChang = false; //是否为编辑考场
-          //  isDeleteKaoChang = true; //是否为删除考场
-          //  $scope.addNewKaoChang(kc);
-          //  var confirmInfo = confirm("确定要删除考场吗？");
-          //  if(confirmInfo){
-          //    $http.post(xiuGaiKaoChangUrl, kaochang_data).success(function(data){
-          //      if(data.result){
-          //        $scope.showKaoChangList();
-          //        qryAllKaoChang();
-          //        DataService.alertInfFun('suc', '考场删除成功！');
-          //      }
-          //      else{
-          //        DataService.alertInfFun('err', data.error);
-          //      }
-          //    });
-          //  }
-          //};
-          //
-          ///**
-          // * 修改考场
-          // */
-          //$scope.editKaoChang = function(kc){
-          //  isEditKaoChang = true; //是否为编辑考场
-          //  isDeleteKaoChang = false; //是否为删除考场
-          //  $scope.addNewKaoChang(kc);
-          //};
-          //
-          ///**
-          // * 保存考场
-          // */
-          //$scope.saveKaoChang = function(){
-          //  $scope.loadingImgShow = true; //保存考场
-          //  $http.post(xiuGaiKaoChangUrl, kaochang_data).success(function(data){
-          //    if(data.result){
-          //      $scope.loadingImgShow = false; //保存考场
-          //      DataService.alertInfFun('suc', '考场保存成功！');
-          //      $scope.showKaoChangList();
-          //    }
-          //    else{
-          //      DataService.alertInfFun('err', data.error);
-          //    }
-          //  });
-          //};
 
           /**
            * 重新加载 mathjax
@@ -1521,6 +1517,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           });
 
         }
-      ]);
+      ]
+    );
   }
 );

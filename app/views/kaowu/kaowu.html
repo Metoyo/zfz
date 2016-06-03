@@ -5,9 +5,9 @@
       数据保存中……
     </p>
   </div>
-  <div class="sub-nav fixed-top" ng-init="tabActive = 'ksgl'">
+  <div class="sub-nav fixed-top" ng-init="tabActive = 'kszgl'">
     <ul class="nav nav-tabs">
-      <li ng-class="{active: tabActive == 'ksgl'}">
+      <li ng-class="{active: tabActive == 'kszgl'}">
         <a href="javascript:void(0)" ng-click="showKaoShiZuList('all')">
           考试组管理
         </a>
@@ -25,7 +25,7 @@
     </ul>
   </div>
   <!-- 考务的容器 开始-->
-  <div class="tab-content wp90 mlp5" ng-init="txTpl = 'views/kaowu/kaoShiList.html'" ng-include="txTpl">
+  <div class="tab-content wp90 mlp5" ng-init="txTpl = 'views/kaowu/kaoShiZuList.html'" ng-include="txTpl">
 
   </div>
   <!-- 考务的容器 结束-->

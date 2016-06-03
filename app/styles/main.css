@@ -1513,6 +1513,13 @@ label.checkbox {
       .renzhengWrapper .publicKnowledgeBox .publicKnowledge p {
         margin-bottom: 5px;
         cursor: pointer; }
+  .renzhengWrapper .editKaoDian i {
+    color: red;
+    font-style: normal; }
+  .renzhengWrapper .editKaoDian .help-block {
+    font-size: 13px;
+    color: #cd5c5c;
+    font-style: italic; }
 
 .dagangWrapper {
   /*main styles end*/ }

@@ -44,6 +44,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         var zhiShiDianUrl = '/zhishidian'; //知识点
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
         var tiKuUrl = '/tiku'; //题库
+        var kaoDianUrl = '/kaodian'; //考点
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
@@ -60,7 +61,9 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           selectZsdId: '',
           zsdOldName: '', //知识
           zsdNewName: '', //知识点修改新名称
-          activeNd: '' //公共大纲那个输入框被激活了
+          activeNd: '', //公共大纲那个输入框被激活了
+          sltJgId: '', //查询考点是选择的学校ID
+          editKcTp: '' //编辑考点的类型
         };
         $scope.pageParam = {
           currentPage: '',
@@ -70,6 +73,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.scanner = scannerInfo;
         $scope.cnNumArr = config.cnNumArr; //题支的序号
         $scope.usrInfo = loginUsr;
+        $scope.kaochangData = '';
 
         /**
          * 导向本页面时，判读展示什么页面，admin, xxgly --
@@ -1533,6 +1537,138 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $scope.tkSetPageShow = false;
           $scope.tiKuSet.name = '';
           $scope.tiKuSet.step = '';
+        };
+
+        /**
+         * 考点管理
+         */
+        $scope.renderKaoDianTpl = function(){
+          if(!($scope.jigou_list && $scope.jigou_list.length)){
+            getJgList(1);
+          }
+          $scope.adminParams.sltJgId = '';
+          $scope.isShenHeBox = true; //判断是不是审核页面
+          $scope.adminSubWebTpl = 'views/renzheng/rz_kaoDian.html';
+        };
+
+        /**
+         * 由学校ID查询考点列表
+         */
+        $scope.getKaoDianList = function(jgid){
+          if(jgid){
+            var obj = {method: 'GET', url: kaoDianUrl, params: {'学校ID': jgid}};
+            $scope.loadingImgShow = true;
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.kaoChangList = data.data;
+              }
+              else{
+                $scope.kaoChangList = '';
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+            });
+          }
+          else{
+            $scope.kaoChangList = '';
+            DataService.alertInfFun('pmt', '请选择学校！');
+          }
+        };
+
+        /**
+        * 新增考场
+        */
+        $scope.addNewKaoChang = function(){
+          $scope.kaochangData = {
+            //'考点ID': '',
+            '考点名称': '',
+            '学校ID': $scope.adminParams.sltJgId,
+            '考位数': '',
+            '联系人': '',
+            '联系方式': '',
+            '详情': {
+              '考场地址': '',
+              '交通方式': ''
+            }
+          };
+          $scope.adminParams.editKcTp = 'add';
+        };
+
+        /**
+        * 删除考场
+        */
+        $scope.deleteKaoChang = function(kc){
+          var obj = {method: 'POST', url: kaoDianUrl, data: {'考点ID': '', '状态': -1}};
+          if(kc['考点ID']){
+            obj.data['考点ID'] = kc['考点ID'];
+            if(confirm('确定要删除此考场吗？')){
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.adminParams.editKcTp = '';
+                  $scope.getKaoDianList($scope.adminParams.sltJgId);
+                  DataService.alertInfFun('suc', '删除成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择要删除的考场！');
+          }
+        };
+
+        /**
+        * 修改考场
+        */
+        $scope.editKaoChang = function(kc){
+          $scope.kaochangData = {
+            '考点ID': kc['考点ID'],
+            '考点名称': kc['考点名称'],
+            '学校ID': kc['学校ID'],
+            '考位数': kc['考位数'],
+            '联系人': kc['联系人'],
+            '联系方式': kc['联系方式'],
+            '详情': {
+              '考场地址': kc['详情'] ? kc['详情']['考场地址'] : '',
+              '交通方式': kc['详情'] ? kc['详情']['交通方式'] : ''
+            }
+          };
+          $scope.adminParams.editKcTp = 'mod';
+        };
+
+        /**
+         * 取消考点修改
+         */
+        $scope.closeEditKaoDian = function(){
+          $scope.adminParams.editKcTp = '';
+        };
+
+        /**
+        * 保存考场
+        */
+        $scope.saveKaoChang = function(){
+          var obj = {method: '', url: kaoDianUrl, data: $scope.kaochangData};
+          if($scope.adminParams.editKcTp == 'add'){
+            obj.method = 'PUT';
+          }
+          if($scope.adminParams.editKcTp == 'mod'){
+            obj.method = 'POST';
+          }
+          $scope.loadingImgShow = true; //保存考场
+          $http(obj).success(function(data){
+            if(data.result){
+              //$scope.showKaoChangList();
+              $scope.adminParams.editKcTp = '';
+              $scope.getKaoDianList($scope.adminParams.sltJgId);
+              DataService.alertInfFun('suc', '考场保存成功！');
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+            $scope.loadingImgShow = false; //保存考场
+          });
         };
 
         /**

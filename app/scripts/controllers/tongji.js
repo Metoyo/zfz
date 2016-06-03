@@ -160,7 +160,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               else{
                 DataService.alert('err', data.error);
               }
-              $scope.loadingImgShow = false; //kaoShiList.html
+              $scope.loadingImgShow = false; //kaoShiZuList.html
             });
           }
         };
