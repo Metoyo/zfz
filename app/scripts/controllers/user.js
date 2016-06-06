@@ -63,7 +63,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           zsdNewName: '', //知识点修改新名称
           activeNd: '', //公共大纲那个输入框被激活了
           sltJgId: '', //查询考点是选择的学校ID
-          editKcTp: '' //编辑考点的类型
+          editKcTp: '', //编辑考点的类型
+          kaoDianFrom: ''
         };
         $scope.pageParam = {
           currentPage: '',
@@ -1542,9 +1543,13 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          * 考点管理
          */
-        $scope.renderKaoDianTpl = function(){
+        $scope.renderKaoDianTpl = function(tp){
           if(!($scope.jigou_list && $scope.jigou_list.length)){
             getJgList(1);
+          }
+          if(tp){
+            $scope.adminParams.kaoDianFrom = tp;
+            $scope.getKaoDianList(jgID);
           }
           $scope.adminParams.sltJgId = '';
           $scope.isShenHeBox = true; //判断是不是审核页面
@@ -1582,7 +1587,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $scope.kaochangData = {
             //'考点ID': '',
             '考点名称': '',
-            '学校ID': $scope.adminParams.sltJgId,
+            '学校ID': '',
             '考位数': '',
             '联系人': '',
             '联系方式': '',
@@ -1591,6 +1596,12 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               '交通方式': ''
             }
           };
+          if($scope.adminParams.kaoDianFrom){
+            $scope.kaochangData['学校ID'] = jgID;
+          }
+          else{
+            $scope.kaochangData['学校ID'] = $scope.adminParams.sltJgId;
+          }
           $scope.adminParams.editKcTp = 'add';
         };
 
@@ -1605,7 +1616,12 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               $http(obj).success(function(data){
                 if(data.result){
                   $scope.adminParams.editKcTp = '';
-                  $scope.getKaoDianList($scope.adminParams.sltJgId);
+                  if($scope.adminParams.kaoDianFrom){
+                    $scope.getKaoDianList(jgID);
+                  }
+                  else{
+                    $scope.getKaoDianList($scope.adminParams.sltJgId);
+                  }
                   DataService.alertInfFun('suc', '删除成功！');
                 }
                 else{
@@ -1649,6 +1665,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         * 保存考场
         */
         $scope.saveKaoChang = function(){
+          $scope.kaochangData['详情'] = JSON.stringify($scope.kaochangData['详情']);
           var obj = {method: '', url: kaoDianUrl, data: $scope.kaochangData};
           if($scope.adminParams.editKcTp == 'add'){
             obj.method = 'PUT';
@@ -1659,9 +1676,13 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $scope.loadingImgShow = true; //保存考场
           $http(obj).success(function(data){
             if(data.result){
-              //$scope.showKaoChangList();
               $scope.adminParams.editKcTp = '';
-              $scope.getKaoDianList($scope.adminParams.sltJgId);
+              if($scope.adminParams.kaoDianFrom){
+                $scope.getKaoDianList(jgID);
+              }
+              else{
+                $scope.getKaoDianList($scope.adminParams.sltJgId);
+              }
               DataService.alertInfFun('suc', '考场保存成功！');
             }
             else{

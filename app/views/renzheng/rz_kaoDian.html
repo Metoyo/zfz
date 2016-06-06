@@ -3,7 +3,12 @@
     <div class="col-md-2">
       <h4>考点管理</h4>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-8" ng-if="adminParams.kaoDianFrom">
+      <div class="col-md-2">
+        <button type="button" class="btn btn-success" style="margin-top: 1px" ng-click="addNewKaoChang()">新增考点</button>
+      </div>
+    </div>
+    <div class="col-md-8" ng-if="!adminParams.kaoDianFrom">
       <label class="col-md-2 text-right mt">
         机构选择
       </label>

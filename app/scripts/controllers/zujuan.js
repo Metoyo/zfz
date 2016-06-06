@@ -502,6 +502,17 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
+         * 删除组卷的固定题目
+         */
+        $scope.deleteTiMu = function(tx, idx){
+          tx['固定题目'].splice(idx, 1);
+          var reloadFun = function(){
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "zjTestList"]);
+          };
+          $timeout(reloadFun, 500);
+        };
+
+        /**
          * 添加题目POP
          */
         $scope.addTiMuPop = function(dt, tp){
@@ -532,13 +543,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.subDsShow = true;
           $scope.onlyShowAddRuleBox = false;
           $scope.addSjz.sltDati = '';
-        };
-
-        /**
-         * 规则组卷得到题型信息
-         */
-        $scope.rmpGetTxId = function(txId){
-          //queryZsdTiMuNum(txId);
         };
 
         /**
@@ -850,7 +854,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.addToPaper = function(tm){
           tm.ckd = true;
-          //tm['分值'] = 1;
           $scope.addSjz.sltDati['固定题目'].push(tm);
         };
 
@@ -1116,24 +1119,20 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         /**
          * 上下移动题目
          */
-        $scope.moveTM = function(tm, num, mbdtId){
-          //var dati = Lazy(mubanData.shuju.MUBANDATI).where({ MUBANDATI_ID: mbdtId }).toArray()[0];
-          //var tmIds = Lazy(dati.TIMUARR).map(function(t){ return t.TIMU_ID;}).toArray(),
-          //  index = Lazy(tmIds).indexOf(tm.TIMU_ID),
-          //  toIndex = index + num,
-          //  item = dati.TIMUARR[index];
-          //if(num>0){
-          //  dati.TIMUARR.splice(toIndex + 1, 0, item);
-          //  dati.TIMUARR.splice(index, 1);
-          //}
-          //else{
-          //  dati.TIMUARR.splice(index, 1);
-          //  dati.TIMUARR.splice(toIndex, 0, item);
-          //}
-          //var reloadFun = function(){
-          //  MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
-          //};
-          //$timeout(reloadFun, 500);
+        $scope.moveTM = function(idx, dirt, tx, tm){
+          var toIndex = idx + dirt;
+          if(dirt > 0){
+            tx['固定题目'].splice(toIndex + 1, 0, tm);
+            tx['固定题目'].splice(idx, 1);
+          }
+          else{
+            tx['固定题目'].splice(idx, 1);
+            tx['固定题目'].splice(toIndex, 0, tm);
+          }
+          var reloadFun = function(){
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "zjTestList"]);
+          };
+          $timeout(reloadFun, 500);
         };
 
         /**
@@ -1259,16 +1258,49 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
+         * 删除试卷组弹出 cancelDltSjz
+         */
+        $scope.deleteSjzPop = function(sjzId, idx) {
+          $scope.dltSjzPar = {
+            '弹出': true,
+            '生成验证码': '',
+            '输入验证码': '',
+            '试卷组ID': sjzId,
+            '试卷组索引': idx
+          };
+          var yzm = [];
+          var numArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+          for (var i = 0; i < 4; i++){
+            yzm.push(Math.floor(Math.random() * 10));
+          }
+          $scope.dltSjzPar['生成验证码'] = yzm.join('');
+        };
+
+        /**
+         * 取消删除试卷组
+         */
+        $scope.cancelDltSjz = function(){
+          $scope.dltSjzPar = {
+            '弹出': false,
+            '生成验证码': '',
+            '输入验证码': '',
+            '试卷组ID': '',
+            '试卷组索引': ''
+          };
+        };
+
+        /**
          * 删除试卷组
          */
-        $scope.deleteSjz = function(sjzId, idx){
-          var obj = {method: 'POST', url: shiJuanZuUrl, data: {'试卷组ID': '', '状态': -1}};
-          if(sjzId){
-            obj.data['试卷组ID'] = sjzId;
-            if(confirm('确定要删除此试卷组吗？')){
+        $scope.deleteSjz = function(){
+          if($scope.dltSjzPar['生成验证码'] == $scope.dltSjzPar['输入验证码']){
+            var obj = {method: 'POST', url: shiJuanZuUrl, data: {'试卷组ID': '', '状态': -1}};
+            if($scope.dltSjzPar['试卷组ID']){
+              obj.data['试卷组ID'] = $scope.dltSjzPar['试卷组ID'];
               $http(obj).success(function(data){
                 if(data.result){
-                  $scope.paperListData.splice(idx, 1);
+                  $scope.paperListData.splice($scope.dltSjzPar['试卷组索引'], 1);
+                  $scope.cancelDltSjz();
                   DataService.alertInfFun('suc', '删除成功！');
                 }
                 else{
@@ -1276,9 +1308,13 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 }
               });
             }
+            else{
+              $scope.cancelDltSjz();
+              DataService.alertInfFun('pmt', '请选择要删除的试卷组！');
+            }
           }
           else{
-            DataService.alertInfFun('pmt', '请选择要删除的试卷组！');
+            DataService.alertInfFun('pmt', '输入的验证码错误！');
           }
         };
 
@@ -1362,9 +1398,14 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 else{
                   DataService.alertInfFun('err', data.error);
                 }
+                $scope.zuJuanParam.showTiMu = 'rulePage';
+                var reloadFun = function(){
+                  MathJax.Hub.Queue(["Typeset", MathJax.Hub, "zjTestList"]);
+                };
+                $timeout(reloadFun, 500);
               });
             }
-            $scope.zuJuanParam.showTiMu = 'rulePage';
+
           }
           if(tp == '规则'){
             Lazy($scope.sjzSet['组卷规则']).each(function(dt){

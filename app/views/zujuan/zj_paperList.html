@@ -21,7 +21,7 @@
           <td width="100px" class="text-center" ng-bind="pld['试卷组设置']['试卷数量']"></td>
           <td width="120px" class="text-center" ng-bind="pld['创建时间'] | myLocalDate | date : 'yyyy-MM-dd'"></td>
           <td width="80px" class="text-center">
-            <button type="button" class="btn btn-default" ng-click="deleteSjz(pld['试卷组ID'], $index)">删除</button>
+            <button type="button" class="btn btn-default" ng-click="deleteSjzPop(pld['试卷组ID'], $index)">删除</button>
           </td>
         </tr>
       </table>
@@ -51,5 +51,25 @@
         <a href ng-click="getSjzPageData(sjzPage.lastPage)">尾页</a>
       </li>
     </ul>
+  </div>
+  <div class="popup-wrap popup-wrap-350" ng-if="dltSjzPar['弹出']">
+    <div class="popup-wrap-inner no-header">
+      <div class="pwi-body plr10 text-center">
+        <form class="form-inline mt65">
+          <h2 class="fz20 mt10">请输正确输入验证码，已删除试卷组</h2>
+          <div class="form-group">
+            <label>验证码</label>
+            <input type="text" class="form-control" ng-model="dltSjzPar['输入验证码']" placeholder="验证码">
+          </div>
+          <div class="form-group">
+            <label class="fz20 ml10" ng-bind="dltSjzPar['生成验证码']"></label>
+          </div>
+        </form>
+      </div>
+      <div class="pwi-footer text-center plr10">
+        <button type="button" class="btn btn-danger mt7" ng-click="cancelDltSjz()">取消</button>
+        <button type="button" class="btn btn-primary mt7 ml15" ng-click="deleteSjz()">确定</button>
+      </div>
+    </div>
   </div>
 </div>

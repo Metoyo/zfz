@@ -119,6 +119,9 @@ body {
 .mt5 {
   margin-top: 5px;
 }
+.mt7 {
+  margin-top: 7px;
+}
 .mt10{
   margin-top: 10px;
 }
@@ -2139,6 +2142,7 @@ label.checkbox{
       top: 10px;
       right: 0;
       font-size: 14px;
+      z-index: 10;
     }
   }
   .ruleMakePaper-header{
