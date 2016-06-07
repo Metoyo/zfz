@@ -165,7 +165,9 @@
                   <button type="button" class="btn btn-default" ng-click="deleteTiMu(tx, $index)">删除</button>
                 </span>
                 <span ng-class="{clRed:!(tm['分值'] && tm['分值']>0)}">
-                  (分值：<input type="text" class="w40" ng-model="tm['分值']" placeholder="分值"/>)
+                  (分值：<input type="text" class="w40" ng-model="tm['分值']" placeholder="分值"
+                             onkeyup="this.value=this.value.replace(/\D/g,'')"
+                             onafterpaste="this.value=this.value.replace(/\D/g,'')"/>)
                 </span>
               </div>
               <div class="item-tizhi-wrap">
@@ -189,7 +191,8 @@
         </td>
         <td>
           <label class="fz14 ml15">试卷数量:</label>
-          <input type="text" class="w80" ng-model="sjzSet['试卷数量']"/>
+          <input type="text" class="w80" ng-model="sjzSet['试卷数量']" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                 onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
         </td>
         <td>
           <button type="button" class="btn btn-primary ml10" ng-click="generatePaper()" ng-disabled="btnDisable" ng-if="sjzSet['组卷方式'] == '规则'">
@@ -392,8 +395,7 @@
 <div class="popup-wrap alter-dati" ng-if="zuJuanParam.sjzEdit">
   <div class="popup-wrap-inner">
     <div class="pwi-header plr10 text-center"><span class="title">修改大题名称</span></div>
-    <div class="pwi-body plr10 form-horizontal">
-      <h4></h4>
+    <div class="pwi-body p10 form-horizontal">
       <div class="row" ng-repeat="tx in sjzSet['组卷规则']">
         <div class="form-group">
           <label class="col-sm-1 control-label">{{cnNumArr[$index]}}、</label>

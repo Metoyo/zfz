@@ -121,7 +121,7 @@
             <span class="glyphicon glyphicon-plus cBlue"></span>添加随机试题
           </span>
           <span class="datiMoveBtns ml15">
-            <button type="button" class="btn btn-default ng-hide" ng-click="moveDaTi($index, -1)" ng-hide="$first">上移</button>
+            <button type="button" class="btn btn-default" ng-click="moveDaTi($index, -1)" ng-hide="$first">上移</button>
             <button type="button" class="btn btn-default" ng-click="moveDaTi($index, 1)" ng-hide="$last">下移</button>
           </span>
         </h4>
@@ -156,10 +156,19 @@
         </table>
         <ul class="list-unstyled testList">
           <li ng-repeat="tm in tx['固定题目']">
-            <div class="item-cont positionRe">
+            <div class="item-cont positionRe daTiName">
               <h3 class="item-tigan" style="padding-right:100px" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干']"></h3>
-              <div class="fenZhi" ng-class="{clRed:!(tm['分值'] && tm['分值']>0)}">
-                (分值：<input type="text" class="w40" ng-model="tm['分值']" placeholder="分值"/>)
+              <div class="fenZhi">
+                <span class="datiMoveBtns mr15">
+                  <button type="button" class="btn btn-default" ng-click="moveTM($index, -1, tx, tm)" ng-hide="$first">上移</button>
+                  <button type="button" class="btn btn-default" ng-click="moveTM($index, 1, tx, tm)" ng-hide="$last">下移</button>
+                  <button type="button" class="btn btn-default" ng-click="deleteTiMu(tx, $index)">删除</button>
+                </span>
+                <span ng-class="{clRed:!(tm['分值'] && tm['分值']>0)}">
+                  (分值：<input type="text" class="w40" ng-model="tm['分值']" placeholder="分值"
+                             onkeyup="this.value=this.value.replace(/\D/g,'')"
+                             onafterpaste="this.value=this.value.replace(/\D/g,'')"/>)
+                </span>
               </div>
               <div class="item-tizhi-wrap">
                 <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
@@ -378,8 +387,7 @@
 <div class="popup-wrap alter-dati" ng-if="zuJuanParam.sjzEdit">
   <div class="popup-wrap-inner">
     <div class="pwi-header plr10 text-center"><span class="title">修改大题名称</span></div>
-    <div class="pwi-body plr10 form-horizontal">
-      <h4></h4>
+    <div class="pwi-body p10 form-horizontal">
       <div class="row" ng-repeat="tx in sjzSet['组卷规则']">
         <div class="form-group">
           <label class="col-sm-1 control-label">{{cnNumArr[$index]}}、</label>

@@ -520,10 +520,10 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.addSjz.sltTp = tp || '';
           $scope.zuJuanParam.rlTxId = dt['题型ID'];
           $scope.zuJuanParam.txId = dt['题型ID'];
+          Lazy($scope.kowledgeList['节点']).each(_zsdDo);
           if(tp == 'fiexd'){
             $scope.zuJuanParam.showTiMu = 'tiMuPage';
             $scope.zuJuanParam.tmlTp = 'gdtm';
-            Lazy($scope.kowledgeList['节点']).each(_zsdDo);
             Lazy($scope.tmNanDuList).each(function(nd){
               nd.ckd = false;
             });
@@ -532,6 +532,14 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           if(tp == 'random'){
             $scope.onlyShowAddRuleBox = true;
             $scope.zuJuanParam.rlTmc = false;
+            $scope.zuJuanParam.rlTmNum = '';
+            $scope.zuJuanParam.rlTmFz = '';
+            Lazy($scope.nanDuList).each(function(nd){
+              nd.ckd = false;
+            });
+            Lazy($scope.tiKuList).each(function(tkl){
+              tkl.ckd = false;
+            });
           }
           $scope.subDsShow = false;
         };
