@@ -37,6 +37,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           cjsjJs: '' //创建时间结束
         };
         var tiMuUrl = '/timu'; //题目的URL
+        var shiJuanUrl = '/shijuan'; //试卷的URL
         var allTiMuIds = ''; //存放所有题目id
         var txName = config.tiXingArr; //题型名称
         var gdtmTempIds = []; //临时存放固定题目ID的数组
@@ -286,6 +287,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          * 重置函数
          */
         var resetFun = function(){
+          $scope.selectSjz = '';
           $scope.sjzSet = { //试卷组设置
             '试卷数量': '',
             '组卷方式': '',
@@ -358,7 +360,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             tmlTp: '', //题目列表类型
             sjzEdit: false, //修改试卷
             sjMsg: '', //试卷题目是否全部选出
-            msgClr: true //信息的颜色
+            msgClr: true, //信息的颜色
+            showDaAn: false, //试卷显示答案
+            showSjTitle: false //显示试卷表头
           };
           Lazy($scope.tiKuList).each(function(tkl){
             tkl.ckd = false;
@@ -366,6 +370,31 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           kmTxData();
           qryTiKu();
           qryChuTiRen();
+        };
+
+        /**
+         * 换一题的重置函数
+         */
+        var cgTmResetFun = function(){
+          qryTmPar = { //查询题目参数对象
+            zsd: [], //知识点
+            nd: '', //难度id
+            tm: '', //题目id
+            tk: '', //题库id
+            tx: '', //题型id
+            tmly: '', //题目来源ID
+            ctr: '', //出题人UID
+            ltr: '',  //录题人ID
+            cjsjKs: '', //创建时间开始
+            cjsjJs: '' //创建时间结束
+          };
+          Lazy($scope.tmNanDuList).each(function(nd){
+            nd.ckd = false;
+          });
+          Lazy($scope.kowledgeList['节点']).each(_zsdDo);
+          $scope.zjDaGangListShow = false;
+          $scope.subDsShow = true;
+          $scope.zuJuanParam.showTiMu = 'sjltPage';
         };
 
         /**
@@ -444,6 +473,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.zjDaGangListShow = false;
           $scope.subDsShow = false;
           $scope.selectSjz = '';
+          $scope.cgTiMuObj = { //换题用到的参数
+            daTi: '',
+            xiaoTi: '',
+            idx: '',
+            isCgTm: false,
+            tx: {
+              '题型ID': '',
+              '题型名称': ''
+            }
+          };
           qryShiJuanList();
           $scope.zjTpl = 'views/zujuan/zj_paperList.html';
         };
@@ -520,6 +559,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.addSjz.sltTp = tp || '';
           $scope.zuJuanParam.rlTxId = dt['题型ID'];
           $scope.zuJuanParam.txId = dt['题型ID'];
+          $scope.cgTiMuObj = { //换题用到的参数
+            daTi: '',
+            xiaoTi: '',
+            idx: '',
+            isCgTm: false,
+            tx: {
+              '题型ID': '',
+              '题型名称': ''
+            }
+          };
           Lazy($scope.kowledgeList['节点']).each(_zsdDo);
           if(tp == 'fiexd'){
             $scope.zuJuanParam.showTiMu = 'tiMuPage';
@@ -821,11 +870,15 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         $scope.backToSjz = function(){
           if($scope.zuJuanParam.tmlTp == 'gdtm'){
             $scope.subDsShow = true;
+            $scope.zuJuanParam.showTiMu = 'rulePage';
           }
           if($scope.zuJuanParam.showTiMu == 'tiMuPage'){
             Lazy($scope.kowledgeList['节点']).each(_zsdDo);
+            $scope.zuJuanParam.showTiMu = 'rulePage';
           }
-          $scope.zuJuanParam.showTiMu = 'rulePage';
+          if($scope.cgTiMuObj.isCgTm){
+            cgTmResetFun();
+          }
         };
 
         /**
@@ -1055,18 +1108,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 生成PDF
-         */
-        $scope.createPDF = function(){
-          if($scope.paperDtl){
-
-          }
-          else{
-            DataService.alertInfFun('pmt', '请选择试卷！');
-          }
-        };
-
-        /**
          * 显示试卷详情
          */
         $scope.showShiJuanDtl = function(sj, idx){
@@ -1105,6 +1146,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.zuJuanParam.sjMsg = '试卷题目已全部选出';
           }
           $scope.paperDtl = sj || '';
+          console.log($scope.paperDtl);
           $scope.shiJuanActive = idx > -1 ? idx : '';
         };
 
@@ -1127,18 +1169,35 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         /**
          * 上下移动题目
          */
-        $scope.moveTM = function(idx, dirt, tx, tm){
+        $scope.moveTM = function(idx, dirt, tx, tm, tp){
           var toIndex = idx + dirt;
-          if(dirt > 0){
-            tx['固定题目'].splice(toIndex + 1, 0, tm);
-            tx['固定题目'].splice(idx, 1);
+          if(tp == 'shijuan'){
+            if(dirt > 0){
+              tx['题目'].splice(toIndex + 1, 0, tm);
+              tx['题目'].splice(idx, 1);
+            }
+            else{
+              tx['题目'].splice(idx, 1);
+              tx['题目'].splice(toIndex, 0, tm);
+            }
           }
           else{
-            tx['固定题目'].splice(idx, 1);
-            tx['固定题目'].splice(toIndex, 0, tm);
+            if(dirt > 0){
+              tx['固定题目'].splice(toIndex + 1, 0, tm);
+              tx['固定题目'].splice(idx, 1);
+            }
+            else{
+              tx['固定题目'].splice(idx, 1);
+              tx['固定题目'].splice(toIndex, 0, tm);
+            }
           }
           var reloadFun = function(){
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "zjTestList"]);
+            if(tp == 'shijuan'){
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub, "paperWrap"]);
+            }
+            else{
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub, "zjTestList"]);
+            }
           };
           $timeout(reloadFun, 500);
         };
@@ -1277,7 +1336,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             '试卷组索引': idx
           };
           var yzm = [];
-          var numArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
           for (var i = 0; i < 4; i++){
             yzm.push(Math.floor(Math.random() * 10));
           }
@@ -1490,6 +1548,100 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             else{
               DataService.alertInfFun('pmt', '没有符合条件的试卷！');
             }
+          }
+        };
+
+        /**
+         * 生成PDF
+         */
+        $scope.createPDF = function(){
+          if($scope.paperDtl){
+
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择试卷！');
+          }
+        };
+
+        /**
+         * 换一题
+         */
+        $scope.changeItem = function(tx, tm, idx){
+          var txId = parseInt(tm['题型ID']);
+          $scope.cgTiMuObj = { //换题用到的参数
+            daTi: tx,
+            xiaoTi: tm,
+            idx: idx,
+            isCgTm: true,
+            tx: {
+              '题型ID': txId,
+              '题型名称': txName[txId - 1]
+            }
+          };
+          $scope.zjDaGangListShow = true;
+          $scope.subDsShow = false;
+          $scope.zuJuanParam.txId = tm['题型ID'];
+          $scope.zuJuanParam.showTiMu = 'tiMuPage';
+          $scope.zuJuanParam.tmlTp = 'cgtm';
+          $scope.qryTiMuByTxId();
+        };
+
+        /**
+         * 将选择好的题目加入试卷
+         */
+        $scope.changeThisTiMu = function(tm){
+          var idx = $scope.cgTiMuObj.idx;
+          var fdTar = Lazy($scope.cgTiMuObj.daTi['题目']).find(function(item){
+            return item['题目ID'] == tm['题目ID'];
+          });
+          if(fdTar){
+            DataService.alertInfFun('pmt', '你选择的题目在试卷中已存在，请选择其他题目！');
+          }
+          else{
+            $scope.cgTiMuObj.daTi['题目'].splice(idx, 1, tm);
+            cgTmResetFun();
+          }
+        };
+
+        /**
+         * 保存试卷
+         */
+        $scope.saveShiJuan = function(){
+          var obj = {method: 'POST', url: shiJuanUrl, data: {'试卷ID': '', '试卷题目': ''}};
+          if($scope.paperDtl){
+            var sjtmArr = [];
+            obj.data['试卷ID'] = $scope.paperDtl['试卷ID'];
+            Lazy($scope.paperDtl['试卷题目']).each(function(dt){
+              var sjtmObj = {
+                '大题ID': dt['大题ID'],
+                '题目': []
+              };
+              Lazy(dt['题目']).each(function(tm){
+                var tmObj = {
+                  '题目ID': tm['题目ID'],
+                  '分值': tm['分值']
+                };
+                sjtmObj['题目'].push(tmObj);
+              });
+              sjtmArr.push(sjtmObj);
+            });
+            if(sjtmArr.length > 0){
+              obj.data['试卷题目'] = JSON.stringify(sjtmArr);
+              $http(obj).success(function(data){
+                if(data.result){
+                  DataService.alertInfFun('suc', '试卷保存成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '试卷内容为空！');
+            }
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择要保存的试卷！');
           }
         };
 

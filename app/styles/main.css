@@ -1723,7 +1723,7 @@ label.checkbox {
   width: 100%; }
 .zujuanWrapper .ruleMakePaper .fenZhi {
   position: absolute;
-  top: 10px;
+  top: 0;
   right: 0;
   font-size: 14px;
   z-index: 10; }
@@ -1778,6 +1778,8 @@ label.checkbox {
   top: 10px; }
 .zujuanWrapper .tab-content {
   padding-top: 47px; }
+.zujuanWrapper .paperWrap .answer-cont {
+  display: block; }
 
 .subDsShow .subDashboard {
   display: none; }

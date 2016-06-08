@@ -209,7 +209,15 @@
 <!--组卷试题显示-->
 <div class="ruleMakePaper" ng-if="zuJuanParam.showTiMu=='tiMuPage'">
   <div class="row ruleMakePaper-header positionRe">
-    <div class="mt5">
+    <!--换题时用到的科目题型-->
+    <div class="mt5" ng-if="cgTiMuObj.isCgTm">
+      <span class="ml10">题型：</span>
+      <label class="radio-inline">
+        <input type="radio" ng-model="zuJuanParam.txId" value="{{cgTiMuObj.tx['题型ID']}}"> {{cgTiMuObj.tx['题型名称']}}
+      </label>
+    </div>
+    <!--组卷时用到的科目题型-->
+    <div class="mt5" ng-if="!cgTiMuObj.isCgTm">
       <span class="ml10">题型：</span>
       <label class="radio-inline">
         <input type="radio" ng-model="zuJuanParam.txId" value="0" ng-change="qryTiMuByTxId()"> 全部题型
@@ -290,6 +298,9 @@
               <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入试卷</button>
               <button type="button" class="btn btn-default ng-hide" ng-click="removeOut('sj', tm)" ng-show="tm.ckd">移出试卷</button>
             </h3>
+            <h3 class="item-title text-right" ng-if="zuJuanParam.tmlTp=='cgtm'">
+              <button type="button" class="btn btn-primary" ng-click="changeThisTiMu(tm)">换此题</button>
+            </h3>
           </div>
         </div>
         <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
@@ -351,7 +362,7 @@
        ng-bind="'卷'+ ($index + 1)" ng-click="showShiJuanDtl(sj, $index)"></a>
   </div>
   <!--试卷详情-->
-  <div id="paperWrap" class="plr10">
+  <div id="paperWrap" class="paperWrap plr10">
     <h4 class="text-center" ng-class="{clRed:zuJuanParam.msgClr, clGreen:!zuJuanParam.msgClr}" ng-bind="zuJuanParam.sjMsg"></h4>
     <div class="pull-left wp100" ng-repeat="tx in paperDtl['试卷题目']" repeat-done>
       <h4>
@@ -360,13 +371,26 @@
       </h4>
       <ul class="list-unstyled testList">
         <li ng-repeat="tm in tx['题目']">
-          <div class="item-cont">
+          <div class="item-cont positionRe daTiName">
             <h3 class="item-tigan" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干'] + '(本小题' + tm['分值'] + '分)'"></h3>
             <div class="item-tizhi-wrap">
               <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
                 <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
                 <span class="tiZhiSpan" ng-bind-html="tz"></span>
               </p>
+            </div>
+            <div class="fenZhi">
+              <span class="datiMoveBtns">
+                <button type="button" class="btn btn-primary" ng-click="changeItem(tx, tm, $index)">换一题</button>
+                <button type="button" class="btn btn-default" ng-click="moveTM($index, -1, tx, tm, 'shijuan')" ng-hide="$first">上移</button>
+                <button type="button" class="btn btn-default" ng-click="moveTM($index, 1, tx, tm, 'shijuan')" ng-hide="$last">下移</button>
+              </span>
+            </div>
+          </div>
+          <div class="answer-cont" ng-show="zuJuanParam.showDaAn">
+            <div class="positionRe">
+              <span class="daAnLabel">答案：</span>
+              <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
             </div>
           </div>
         </li>
@@ -377,9 +401,22 @@
     <table>
       <tr>
         <td>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="zuJuanParam.showDaAn"> 显示答案
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="zuJuanParam.showSjTitle"> 显示表头
+          </label>
+        </td>
+        <td>
           <button type="button" class="btn btn-primary ml10" ng-click="createPDF()">
             生成PDF
           </button>
+          <button type="button" class="btn btn-primary ml10" ng-click="saveShiJuan()">
+            保存本试卷
+          </button>
+        </td>
+        <td ng-if="!selectSjz">
           <button type="button" class="btn btn-primary ml10" ng-click="backToSjz()">
             返回组卷
           </button>
