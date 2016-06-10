@@ -1,29 +1,23 @@
 <h4 class="pb10 bdb">
-  <span class="cYell">{{session.defaultLyName}}</span><span>新建考试</span><em style="font-size:12px">带 <i>*</i>为必填项</em>
+  <span class="cYell">{{kwParams.dftKmName['科目名称']}}</span><span>新建考试</span><em style="font-size:12px">带 <i>*</i>为必填项</em>
 </h4>
 <div class="row editKaoShi">
   <form class="form-horizontal" name="kaoshiForm">
-    <!--<div class="form-group explain">-->
-      <!--<label class="col-sm-2 control-label"></label>-->
-      <!--<div class="col-sm-8">-->
-        <!---->
-      <!--</div>-->
-    <!--</div>-->
     <div class="form-group">
-      <label class="col-sm-2 control-label">考试名称<i>*</i></label>
+      <label class="col-sm-2 control-label">考试名称组<i>*</i></label>
       <div class="col-sm-6">
         <input type="text" name="ksName" class="form-control" placeholder="考试名称" required autofocus="true"
-               ng-model="kaoshiData.shuju.KAOSHIZU_NAME"/>
+               ng-model="kaoShiZuData['考试组名称']"/>
       </div>
       <div class="col-sm-4">
-        <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">考试名称不能为空！</p>
+        <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">考试组名称不能为空！</p>
       </div>
     </div>
     <div class="form-group">
       <label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>
       <div class="col-sm-2">
         <input type="text" name="ksTime" class="form-control" placeholder="时长" required maxlength="3"
-               onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kaoshiData.shuju.SHICHANG"
+               onkeyup="this.value=this.value.replace(/\D/g,'')" ng-model="kwParams.ksLen"
                onafterpaste="this.value=this.value.replace(/\D/g,'')"/>
       </div>
       <div class="col-sm-4">
@@ -34,10 +28,10 @@
       <label class="col-sm-2 control-label">在线报名<i>*</i></label>
       <div class="col-sm-6">
         <label class="radio-inline">
-          <input type="radio" value="2" ng-model="kaoshiData.shuju.BAOMINGFANGSHI" ng-click="getBaoMingCont()"/>是
+          <input type="radio" value="2" ng-model="kaoShiZuData['报名方式']" ng-click="getBaoMingCont()"/>是
         </label>
         <label class="radio-inline">
-          <input type="radio" value="1" ng-model="kaoshiData.shuju.BAOMINGFANGSHI" ng-click="getBaoMingCont()"/>否
+          <input type="radio" value="1" ng-model="kaoShiZuData['报名方式']" ng-click="getBaoMingCont()"/>否
         </label>
       </div>
     </div>
