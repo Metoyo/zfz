@@ -1860,7 +1860,7 @@ label.checkbox {
   margin-right: 15px; }
 .kaowuWrapper .editKaoShi .table-changci td {
   padding: 0; }
-  .kaowuWrapper .editKaoShi .table-changci td .checkbox {
+  .kaowuWrapper .editKaoShi .table-changci td .checkbox, .kaowuWrapper .editKaoShi .table-changci td .radio {
     padding: 0 5px;
     margin-top: 5px; }
 .kaowuWrapper .editKaoShi .table-changci .list-unstyled {

@@ -876,6 +876,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             Lazy($scope.kowledgeList['节点']).each(_zsdDo);
             $scope.zuJuanParam.showTiMu = 'rulePage';
           }
+          if($scope.zuJuanParam.showTiMu == 'sjltPage'){
+            $scope.zuJuanParam.showTiMu = 'rulePage';
+          }
           if($scope.cgTiMuObj.isCgTm){
             cgTmResetFun();
           }
@@ -971,8 +974,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           if($scope.addSjz.sltDati){
             var mis = [];
             var singleRl = {
-              '题目分值': $scope.zuJuanParam.rlTmFz,
-              '题目数量': $scope.zuJuanParam.rlTmNum,
+              '题目分值': parseInt($scope.zuJuanParam.rlTmFz),
+              '题目数量': parseInt($scope.zuJuanParam.rlTmNum),
               '使用题目池': $scope.zuJuanParam.rlTmc,
               '限定题库': $scope.zuJuanParam.rlTk,
               '限定题库名称': $scope.zuJuanParam.rlTkNm,
@@ -1045,9 +1048,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             }
             if(sjtmArr && sjtmArr.length > 0){ //处理随机规则
               Lazy(dt['随机题目']).each(function(sjr){
-                delete dt['限定题库名称'];
-                delete dt['难度名称'];
-                delete dt['知识点名称'];
+                delete sjr['限定题库名称'];
+                delete sjr['难度名称'];
+                delete sjr['知识点名称'];
               });
             }
             else{
@@ -1246,9 +1249,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             }
             if(sjtmArr && sjtmArr.length > 0){ //处理随机规则
               Lazy(dt['随机题目']).each(function(sjr){
-                delete dt['限定题库名称'];
-                delete dt['难度名称'];
-                delete dt['知识点名称'];
+                delete sjr['限定题库名称'];
+                delete sjr['难度名称'];
+                delete sjr['知识点名称'];
               });
             }
             else{
