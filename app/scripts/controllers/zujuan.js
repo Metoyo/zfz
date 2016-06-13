@@ -1149,7 +1149,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.zuJuanParam.sjMsg = '试卷题目已全部选出';
           }
           $scope.paperDtl = sj || '';
-          console.log($scope.paperDtl);
           $scope.shiJuanActive = idx > -1 ? idx : '';
         };
 

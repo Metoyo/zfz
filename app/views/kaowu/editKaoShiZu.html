@@ -7,7 +7,7 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">考试名称组<i>*</i></label>
       <div class="col-sm-6">
-        <input type="text" name="ksName" class="form-control" placeholder="考试名称" required autofocus="true"
+        <input type="text" name="ksName" class="form-control" placeholder="考试名称组" required autofocus="true"
                ng-model="kaoShiZuData['考试组名称']"/>
       </div>
       <div class="col-sm-4">
@@ -57,7 +57,7 @@
     <div class="form-group" ng-if="kaoShiZuData['报名方式'] == 2">
       <label class="col-sm-2 control-label">报名开始时间<i>*</i></label>
       <div class="col-sm-6">
-        <input type="date" name="bmStart" class="form-control" placeholder="报名开始时间" ng-model="kaoShiZuData['报名开始时间']" required/>
+        <input type="datetime-local" name="bmStart" class="form-control" placeholder="报名开始时间" ng-model="kaoShiZuData['报名开始时间']" required/>
       </div>
       <div class="col-sm-4">
         <p ng-show="kaoshiForm.bmStart.$error.required" class="help-block">报名开始时间不能为空！</p>
@@ -66,7 +66,7 @@
     <div class="form-group" ng-if="kaoShiZuData['报名方式'] == 2">
       <label class="col-sm-2 control-label">报名截止时间<i>*</i></label>
       <div class="col-sm-6">
-        <input type="date" name="bmEnd" class="form-control" placeholder="报名截止时间" ng-model="kaoShiZuData['报名截止时间']" required/>
+        <input type="datetime-local" name="bmEnd" class="form-control" placeholder="报名截止时间" ng-model="kaoShiZuData['报名截止时间']" required/>
       </div>
       <div class="col-sm-4">
         <p ng-show="kaoshiForm.bmEnd.$error.required" class="help-block">报名截止时间不能为空！</p>
@@ -119,8 +119,8 @@
               <div class="h300">
                 <div class="radio" ng-repeat="kcInfo in allKaoChangList">
                   <label>
-                    <input type="radio" name="kaoDian" ng-model="kwParams.kdId" value="kcInfo['考点ID']"
-                           ng-click="addKaoChangToCc(kcInfo)">{{kcInfo['考点名称']}}
+                    <input type="radio" name="kaoDian" ng-model="kwParams.kdId" value="{{kcInfo['考点ID']}}"
+                           ng-change="addKaoChangToCc(kcInfo)">{{kcInfo['考点名称']}}
                   </label>
                   <span class="pull-right" ng-bind="kcInfo['考位数']"></span>
                 </div>
@@ -156,7 +156,7 @@
             试卷（已选试卷:{{selectChangCi['试卷组'].length || 0}}）
             <button class="btn btn-success addChangCiBtn" ng-click="getMoreShiJuan()" ng-hide="paperList.length > 10">显示更多</button>
           </th>
-          <th>名单（{{selectChangCi['考生'].length || 0}} 人）</th>
+          <th>考生人数（{{studentsOrgData.length}} 人）</th>
         </tr>
         <tr>
           <td>
@@ -175,8 +175,8 @@
             <div class="h300">
               <div class="radio" ng-repeat="kcInfo in allKaoChangList">
                 <label>
-                  <input type="radio" name="kaoDian" ng-model="kwParams.kdId" value="kcInfo['考点ID']"
-                         ng-click="addKaoChangToCc(kcInfo)">{{kcInfo['考点名称']}}
+                  <input type="radio" name="kaoDian" ng-model="kwParams.kdId" value="{{kcInfo['考点ID']}}"
+                         ng-change="addKaoChangToCc(kcInfo)">{{kcInfo['考点名称']}}
                 </label>
                 <span class="pull-right" ng-bind="kcInfo['考位数']"></span>
               </div>
@@ -217,56 +217,42 @@
     </div>
   </form>
   <!--添加考生页面-->
-  <div class="popup-wrap" ng-show="showAddStuBox">
+  <div class="popup-wrap" ng-if="showAddStuBox">
     <div class="popup-wrap-inner">
       <div class="pwi-header plr10">
         <!--由课序号添加-->
-        <div ng-show="isAddStuByKxh">
+        <div ng-if="kwParams.addXsBuKxh">
           <span class="title">由课序号添加考生</span>
           <button type="button" class="btn btn-primary pull-right mt5 ml15" ng-click="chaXunKxhYongHu()">确定</button>
           <button type="button" class="btn btn-danger pull-right mt5" ng-click="closeAddStuBox()">关闭</button>
         </div>
         <!--添加考生-->
-        <div ng-show="kwParams.addChangCi">
+        <div ng-if="kwParams.addChangCi">
           <span class="title">添加场次</span>
         </div>
       </div>
       <div class="pwi-body plr10">
         <!--由课序号添加-->
-        <div ng-show="isAddStuByKxh">
+        <div ng-if="kwParams.addXsBuKxh">
           <table class="table table-striped mt15 newTable">
             <tr>
               <th>课序号</th>
               <th>人数</th>
-              <th>任课教师</th>
+              <!--<th>任课教师</th>-->
             </tr>
             <tr ng-repeat="kxh in keXuHaoData">
               <td>
                 <label class="keXuHao cursorPointer pull-left">
-                  <input type="checkbox" ng-click="pickOnKxh(kxh)" ng-checked="kxh.ckd"/> {{kxh.KEXUHAO_MINGCHENG}}
+                  <input type="checkbox" ng-click="pickOnKxh(kxh)" ng-checked="kxh.ckd"/> {{kxh['课序号名称']}}
                 </label>
               </td>
-              <td ng-bind="kxh.STUDENTS + '人'"></td>
-              <td ng-bind="kxh.jiaoShiStr"></td>
+              <td ng-bind="kxh['学生人数'] + '人'"></td>
+              <!--<td ng-bind="kxh.jiaoShiStr"></td>-->
             </tr>
           </table>
         </div>
-        <!--由Excel添加-->
-        <div ng-show="isAddStuByExcel">
-          <form id="importStudentForm" class="mt15">
-            <em> 请选择上传考生信息的文件，格式为Excel格式 </em>
-            <input type="file" file-upload="" multiple="" class="pull-left hide addFileBtn">
-            <button ng-click="addMyFile()" class="btn btn-default pull-left">添加文件</button>
-          </form>
-          <div class="mt15">
-            <p ng-repeat="fl in uploadFiles track by $index">
-              <span ng-bind="fl.name"></span>
-              <span ng-bind="(fl.size/1024).toFixed(2) + 'KB'"></span>
-            </p>
-          </div>
-        </div>
         <!--添加场次的输入部分-->
-        <form class="form-horizontal mt30" name="changCiForm" ng-show="kwParams.addChangCi">
+        <form class="form-horizontal mt30" name="changCiForm" ng-if="kwParams.addChangCi">
           <div class="form-group">
             <label class="col-sm-2 control-label">开始时间<i>*</i></label>
             <div class="col-sm-6">
@@ -281,35 +267,35 @@
       </div>
       <div class="pwi-footer plr10 text-center">
         <!--由课序号添加-->
-        <div ng-show="isAddStuByKxh">
-          <div class="paging text-right" ng-if="keXuHaoPages.length>0">
+        <div ng-if="kwParams.addXsBuKxh">
+          <div class="paging text-right">
             <ul class="pagination pagination-sm">
-              <li ng-class="{disabled: currentKxhPageVal == 1}">
+              <li ng-class="{disabled: pageParam.activePage == 1}">
                 <a href ng-click="keXuHaoDist(1)">首页</a>
               </li>
-              <li ng-class="{disabled: currentKxhPageVal == 1}">
+              <li ng-class="{disabled: pageParam.activePage == 1}">
                 <a href
-                   ng-click="keXuHaoDist(prevPg = currentKxhPageVal > 1 ? currentKxhPageVal - 1 : 1)">
+                   ng-click="keXuHaoDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
                   上一页
                 </a>
               </li>
-              <li ng-repeat="pg in keXuHaoPages" ng-class="{active: currentKxhPageVal == pg}">
+              <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
                 <a href ng-click="keXuHaoDist(pg)">{{pg}}</a>
               </li>
-              <li ng-class="{disabled: currentKxhPageVal == lastKxhPageNum}">
+              <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
                 <a href
-                   ng-click="keXuHaoDist(nextPg = currentKxhPageVal < lastKxhPageNum ? currentKxhPageVal + 1 : lastKxhPageNum)">
+                   ng-click="keXuHaoDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
                   下一页
                 </a>
               </li>
-              <li ng-class="{disabled: currentKxhPageVal == lastKxhPageNum}">
-                <a href ng-click="keXuHaoDist(lastKxhPageNum)">尾页</a>
+              <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+                <a href ng-click="keXuHaoDist(pageParam.lastPage)">尾页</a>
               </li>
             </ul>
           </div>
         </div>
         <!--添加场次的确定按钮-->
-        <div class="mt5" ng-show="kwParams.addChangCi">
+        <div class="mt5" ng-if="kwParams.addChangCi">
           <button type="button" class="btn btn-danger" ng-click="addNewChangCi('cancel')">取消</button>
           <button type="button" class="btn btn-primary ml15" ng-click="addNewChangCi('submit')">确定</button>
         </div>
@@ -327,15 +313,13 @@
           <tr>
             <th>姓名</th>
             <th>学号</th>
-            <th>班级</th>
             <th>课序号</th>
             <th width="60px" class="text-center">操作</th>
           </tr>
           <tr ng-repeat="stu in studentsOrgData">
-            <td ng-bind="stu.XINGMING"></td>
-            <td ng-bind="stu.YONGHUHAO"></td>
-            <td ng-bind="stu.BANJI"></td>
-            <td ng-bind="stu.KEXUHAO_MINGCHENG"></td>
+            <td ng-bind="stu['姓名']"></td>
+            <td ng-bind="stu['学号']"></td>
+            <td ng-bind="stu['课序号名称']"></td>
             <td class="text-center">
               <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="addKsDelStu(stu)"></span>
             </td>

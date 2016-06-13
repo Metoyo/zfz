@@ -37,27 +37,27 @@
   </tr>
 </table>
 <div class="paging text-right">
-  <ul class="pagination pagination-sm" ng-show="kaoShiPages.length">
-    <li ng-class="{disabled: currentKsPageVal == 1}">
-      <a href ng-click="getThisKaoShiPageData(1)">首页</a>
+  <ul class="pagination pagination-sm">
+    <li ng-class="{disabled: pageParam.activePage == 1}">
+      <a href ng-click="kaoShiZuDist(1)">首页</a>
     </li>
-    <li ng-class="{disabled: currentKsPageVal == 1}">
+    <li ng-class="{disabled: pageParam.activePage == 1}">
       <a href
-         ng-click="getThisKaoShiPageData(prevPg = currentKsPageVal > 1 ? currentKsPageVal - 1 : 1)">
+         ng-click="kaoShiZuDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
         上一页
       </a>
     </li>
-    <li ng-repeat="pg in kaoShiPages" ng-class="{active: currentKsPageVal == pg}">
-      <a href ng-click="getThisKaoShiPageData(pg)">{{pg}}</a>
+    <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
+      <a href ng-click="kaoShiZuDist(pg)">{{pg}}</a>
     </li>
-    <li ng-class="{disabled: currentKsPageVal == lastKaoShiPageNum}">
+    <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
       <a href
-         ng-click="getThisKaoShiPageData(nextPg = currentKsPageVal < lastKaoShiPageNum ? currentKsPageVal + 1 : lastKaoShiPageNum)">
+         ng-click="kaoShiZuDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
         下一页
       </a>
     </li>
-    <li ng-class="{disabled: currentKsPageVal == lastKaoShiPageNum}">
-      <a href ng-click="getThisKaoShiPageData(lastKaoShiPageNum)">尾页</a>
+    <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+      <a href ng-click="kaoShiZuDist(pageParam.lastPage)">尾页</a>
     </li>
   </ul>
 </div>
