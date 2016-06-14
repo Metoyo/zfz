@@ -287,7 +287,7 @@
             ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
           </p>
           <p>
-            创建时间：{{tm['创建时间'] | myLocalDate | date : 'yyyy-MM-dd'}}
+            创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
           </p>
           <div class="editWrap">
             <h3 class="item-title text-right" ng-if="zuJuanParam.tmlTp=='tmc'">

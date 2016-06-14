@@ -1,14 +1,14 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  angular.module('zhifzApp.filters.Mylocaldatewithweek', [])
-  	.filter('myLocalDateWithWeek', function () {
+  angular.module('zhifzApp.filters.Localdatewithweek', [])
+  	.filter('localDateWithWeek', function () {
       return function (dateStr) {
         if(dateStr){
-          var mydateNew = new Date(dateStr),
-//          difMinutes = mydateOld.getTimezoneOffset(), //与本地相差的分钟数
-//          difMilliseconds = mydateOld.valueOf() + difMinutes * 60 * 1000, //与本地相差的毫秒数
-//          mydateNew = new Date(difMilliseconds),
+          var mydateOld = new Date(dateStr),
+            difMinutes = mydateOld.getTimezoneOffset(), //与本地相差的分钟数
+            difMilliseconds = mydateOld.valueOf() - difMinutes * 60 * 1000, //与本地相差的毫秒数
+            mydateNew = new Date(difMilliseconds),
             year = mydateNew.getUTCFullYear(), //根据世界时从 Date 对象返回四位数的年份
             month = mydateNew.getUTCMonth() + 1, //根据世界时从 Date 对象返回月份 (0 ~ 11)
             day = mydateNew.getUTCDate(), //根据世界时从 Date 对象返回月中的一天 (1 ~ 31)

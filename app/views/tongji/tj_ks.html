@@ -33,8 +33,8 @@
         <!--<span ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"></span>-->
       <!--</td>-->
       <td class="text-center" ng-bind="ks.ZONGRENSHU"></td>
-      <td class="text-center" ng-bind="ks.UPDATE_TIME | myLocalDate | date : 'yyyy-MM-dd'"></td>
-      <!--<td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>-->
+      <td class="text-center" ng-bind="ks.UPDATE_TIME | localDate | date : 'yyyy-MM-dd'"></td>
+      <!--<td class="text-center" ng-bind="ks.KAISHISHIJIAN | localDate | date : 'yyyy-MM-dd'"></td>-->
     </tr>
   </table>
   <div class="paging text-right">

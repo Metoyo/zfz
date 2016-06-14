@@ -57,7 +57,8 @@
     <div class="form-group" ng-if="kaoShiZuData['报名方式'] == 2">
       <label class="col-sm-2 control-label">报名开始时间<i>*</i></label>
       <div class="col-sm-6">
-        <input type="datetime-local" name="bmStart" class="form-control" placeholder="报名开始时间" ng-model="kaoShiZuData['报名开始时间']" required/>
+        <input type="text" name="bmStart" class="form-control start-date bbStart" placeholder="报名开始时间"
+               ng-model="kaoShiZuData['报名开始时间']" required/>
       </div>
       <div class="col-sm-4">
         <p ng-show="kaoshiForm.bmStart.$error.required" class="help-block">报名开始时间不能为空！</p>
@@ -66,7 +67,8 @@
     <div class="form-group" ng-if="kaoShiZuData['报名方式'] == 2">
       <label class="col-sm-2 control-label">报名截止时间<i>*</i></label>
       <div class="col-sm-6">
-        <input type="datetime-local" name="bmEnd" class="form-control" placeholder="报名截止时间" ng-model="kaoShiZuData['报名截止时间']" required/>
+        <input type="text" name="bmEnd" class="form-control start-date bbEnd" placeholder="报名截止时间"
+               ng-model="kaoShiZuData['报名截止时间']" required/>
       </div>
       <div class="col-sm-4">
         <p ng-show="kaoshiForm.bmEnd.$error.required" class="help-block">报名截止时间不能为空！</p>
@@ -256,7 +258,7 @@
           <div class="form-group">
             <label class="col-sm-2 control-label">开始时间<i>*</i></label>
             <div class="col-sm-6">
-              <input type="text" name="ccKssj" class="form-control start-date" placeholder="开始时间"
+              <input type="text" name="ccKssj" class="form-control start-date ccStart" placeholder="开始时间"
                      ng-model="kwParams.startDate" required autofocus="true"/>
             </div>
             <div class="col-sm-4">

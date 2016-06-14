@@ -15,8 +15,8 @@ define([
   'controllers/tongji',
   'controllers/student',
   'controllers/guanli',
-  'filters/mylocaldate',
-  'filters/mylocaldatewithweek',
+  'filters/localdate',
+  'filters/localdatewithweek',
   'filters/examstatus',
   'filters/outtigan',
   'directives/nandustar',
@@ -27,7 +27,7 @@ define([
   'directives/repeatdone',
   'services/dataservice'
 ], function (angular, config, lazy, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, RegisterCtrl,
-             ZujuanCtrl, KaowuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, MylocaldateFilter, MylocaldatewithweekFilter,
+             ZujuanCtrl, KaowuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, LocaldateFilter, LocaldatewithweekFilter,
              ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
              HoverslideDirective, FileuploadDirective, RepeatdoneDirective, DataServiceService) {
   'use strict';
@@ -44,8 +44,8 @@ define([
     'zhifzApp.controllers.TongjiCtrl',
     'zhifzApp.controllers.StudentCtrl',
     'zhifzApp.controllers.GuanLiCtrl',
-    'zhifzApp.filters.Mylocaldate',
-    'zhifzApp.filters.Mylocaldatewithweek',
+    'zhifzApp.filters.Localdate',
+    'zhifzApp.filters.Localdatewithweek',
     'zhifzApp.filters.Examstatus',
     'zhifzApp.filters.Outtigan',
     'zhifzApp.directives.Hoverslide',

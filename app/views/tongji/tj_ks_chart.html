@@ -31,7 +31,7 @@
       <tr>
       <tr class="warning">
         <td>考试时间</td>
-        <td ng-show="tjKaoShiPublicData.kaikaodate" ng-bind="tjKaoShiPublicData.kaikaodate | myLocalDateWithWeek"></td>
+        <td ng-show="tjKaoShiPublicData.kaikaodate" ng-bind="tjKaoShiPublicData.kaikaodate | localDateWithWeek"></td>
       </tr>
       <tr>
         <td>参数设置</td>
@@ -182,7 +182,7 @@
             <p class="m0" ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"></p>
           </td>
           <td class="text-center" ng-bind="ks.KSRS"></td>
-          <td class="text-center" ng-bind="ks.KAISHISHIJIAN | myLocalDate | date : 'yyyy-MM-dd'"></td>
+          <td class="text-center" ng-bind="ks.KAISHISHIJIAN | localDate | date : 'yyyy-MM-dd'"></td>
         </tr>
       </table>
     </div>

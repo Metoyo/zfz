@@ -20,7 +20,7 @@
   </tr>
   <tr ng-repeat="ksz in kaoShiZuList">
     <td>
-      <a href="javascript:void(0)" ng-bind="ksz['考试组名称']" ng-click="seeKaoShiDetail(ksz)"></a>
+      <a href="javascript:void(0)" ng-bind="ksz['考试组名称']" ng-click="seeKaoShiZuDetail(ksz)"></a>
     </td>
     <td class="text-center" ng-bind="ksz['报名方式']==1 ? '非在线报名':'在线报名'"></td>
     <td class="text-center" ng-bind="ksz['考试'].length || 0"></td>
@@ -28,10 +28,10 @@
     <td class="text-center {{'kssCl' + ksz['状态']}}" ng-bind="ksz['状态'] | examStatus"></td>
     <td class="text-right">
       <span ng-hide="kwParams.forbidBtn">
-        <span class="glyphicon glyphicon-send cBlue cursorPointer" ng-click="faBuKaoShi(ksz['考试组ID'])"
+        <span class="glyphicon glyphicon-send cBlue cursorPointer" ng-click="faBuKaoShiZu(ksz['考试组ID'])"
               ng-hide="ksz['状态'] >= 3" title="发布" style="margin-right: 10px"></span>
       </span>
-      <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKaoShi(ksz)"
+      <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKaoShiZu(ksz['考试组ID'])"
             title="删除" style="margin-right: 10px"></span>
     </td>
   </tr>
@@ -61,24 +61,24 @@
     </li>
   </ul>
 </div>
-<div class="popup-wrap" ng-show="kwParams.showKaoShiDetail">
+<div class="popup-wrap" ng-if="kaoShiZuDtl">
   <div class="popup-wrap-inner no-footer">
     <div class="pwi-header plr10">
-      <span class="title" ng-bind="kaoShiDetailData.KAOSHIZU_NAME"></span>
+      <span class="title" ng-bind="kaoShiZuDtl['考试组名称']"></span>
       <div class="pull-right">
         <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showPaperInfo()">查看试卷</a>
-        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showChangCiToggle()">报考情况</a>
-        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiDetailData.BAOMINGFANGSHI==2"
-          ng-click="queryBaoMingStu('no', kaoShiDetailData.KAOSHIZU_ID)">未报名考生</a>
-        <button type="button" class="btn btn-danger mt5" ng-click="kwParams.showKaoShiDetail = false">
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showChangCiToggle()">查看场次</a>
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiZuDtl['报名方式']==2"
+          ng-click="queryBaoMingStu('no', kaoShiZuDtl['考试组ID'])">未报名考生</a>
+        <button type="button" class="btn btn-danger mt5" ng-click="closePaperDtl()">
           关闭
         </button>
       </div>
     </div>
     <div class="pwi-body plr10">
-      <div ng-hide="showPaperBtn">
+      <div ng-if="!kwParams.showCcSjz">
         <!--场次的table-->
-        <table class="table table-striped mt15" ng-show="kaoChangListShow">
+        <table class="table table-striped mt15" ng-if="!kwParams.showStu">
           <tr>
             <th>场次</th>
             <th class="text-center">考试时间</th>
@@ -87,42 +87,42 @@
             <th class="text-center">考生</th>
             <th class="text-center">导出考生</th>
           </tr>
-          <tr ng-repeat="cc in kaoShiDetailData.changci">
-            <td  class="cursorPointer cBlue" ng-bind="cc.KAOSHI_MINGCHENG" ng-click="queryBaoMingStu('on', cc)"></td>
-            <td class="text-center" ng-bind="cc.kaoShiShiJian"></td>
-            <td class="text-center" ng-bind="cc.SHICHANG"></td>
-            <td class="text-center" ng-bind="cc.KMINGCHENG"></td>
-            <td class="text-center">{{cc.YIBAOMINGRENSHU || 0}}/{{cc.KAOWEISHULIANG}}</td>
+          <tr ng-repeat="cc in kaoShiZuDtl['考试']">
+            <td  class="cursorPointer cBlue" ng-bind="cc['考试名称']" ng-click="queryBaoMingStu('on', cc)"></td>
+            <td class="text-center" ng-bind="cc['开始时间'] | localDateWithWeek"></td>
+            <td class="text-center" ng-bind="cc['考试时长']"></td>
+            <td class="text-center" ng-bind="cc['考点ID']"></td>
+            <td class="text-center">{{cc['总人数'] || 0}}/{{kaoShiZuDtl['总人数']}}</td>
             <td class="text-center cursorPointer" title="导出考生" ng-click="exportKsInfo('mdOff', cc)">
               <span class="glyphicon glyphicon-export"></span>
             </td>
           </tr>
         </table>
         <!--学生的table-->
-        <div ng-hide="kaoChangListShow">
+        <div ng-if="kwParams.showStu">
           <a href="javascript:void(0)" class="pull-right p10" ng-click="exportKsInfo('mdOn', '')">导出考生</a>
           <table class="table table-striped mt15">
             <tr>
+              <th>序号</th>
               <th>姓名</th>
               <th class="text-center">学号</th>
-              <th class="text-center">班级</th>
               <th class="text-center">座位号</th>
               <th width="60px" class="text-center">操作</th>
             </tr>
             <tr ng-repeat="ks in changCiKaoSheng">
-              <td ng-bind="ks.XINGMING"></td>
-              <td class="text-center" ng-bind="ks.YONGHUHAO"></td>
-              <td class="text-center" ng-bind="ks.BANJI"></td>
-              <td class="text-center" ng-bind="ks.ZUOWEIHAO"></td>
+              <td ng-bind="ks['序号']"></td>
+              <td ng-bind="ks['姓名']"></td>
+              <td class="text-center" ng-bind="ks['学号']"></td>
+              <td class="text-center" ng-bind="ks['座位号']"></td>
               <td class="text-center cursorPointer">
-            <span class="glyphicon glyphicon-trash co676767" ng-click="deleteKaoSheng(ks)" title="删除"
-                  ng-if="kaoShiDetailData.ZHUANGTAI<3"></span>
+                <span class="glyphicon glyphicon-trash co676767" ng-click="deleteKaoSheng(ks)" title="删除"
+                  ng-if="kaoShiZuDtl['状态']<3"></span>
               </td>
             </tr>
           </table>
         </div>
       </div>
-      <div ng-show="showPaperBtn">
+      <div ng-if="kwParams.showCcSjz">
         <!--修改试卷table-->
         <p class="text-right mt10">
           <a href="javascript:void(0)" ng-click="alertPaperWrapShow()">修改试卷</a>
@@ -142,17 +142,17 @@
               <td ng-show="showPaperListBox">
                 <input type="checkbox" value="cc.KAOSHI_ID" ng-click="checkThisChangCi(cc)" ng-checked="cc.ckd">
               </td>
-              <td ng-bind="cc.KAOSHI_MINGCHENG"></td>
-              <td class="text-center" ng-bind="cc.SHIJUANMINGCHENG"></td>
+              <td ng-bind="cc['考试名称']"></td>
+              <td class="text-center" ng-bind="cc['试卷组']"></td>
             </tr>
           </table>
         </div>
         <div class="col-sm-4 h400 bd1" ng-show="showPaperListBox">
-          <div class="checkbox" ng-repeat="sj in paperListIds">
+          <div class="checkbox" ng-repeat="sj in paperList">
             <label>
               <input type="checkbox" value="1">
               <input type="checkbox" value="ks.SHIJUAN_ID"  ng-click="checkThisShiJuan(sj)" ng-checked="sj.ckd">
-              {{sj.SHIJUANMINGCHENG}}
+              {{sj['试卷组']}}
             </label>
           </div>
         </div>

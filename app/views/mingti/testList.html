@@ -62,7 +62,7 @@
           ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
         </p>
         <p>
-          创建时间：{{tm['创建时间'] | myLocalDate | date : 'yyyy-MM-dd'}}
+          创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
         </p>
         <div class="editWrap">
           <!--<div class="editWrap" ng-show="tm['出题人UID'] == caozuoyuan || isPromiseAlterOthersTimu">-->

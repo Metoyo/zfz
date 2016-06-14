@@ -1,8 +1,8 @@
 define(['angular'], function (angular) {
   'use strict';
 
-  angular.module('zhifzApp.filters.Mylocaldate', [])
-  	.filter('myLocalDate', function () {
+  angular.module('zhifzApp.filters.Localdate', [])
+  	.filter('localDate', function () {
       return function (dateStr, type) {
         if(type == 'vd'){
           var sc = parseInt(dateStr), h, m, s, scNew = '';

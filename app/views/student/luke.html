@@ -29,7 +29,7 @@
             <a href="javascript:void(0)" class="media-left-a">
               <img class="media-object" ng-src="{{video.Detail.data[0].images_b[0]}}" style="width: 160px;height: 100px">
               <img src="images/play1.png" alt="" class="playIcon"/>
-              <span class="shiChang" ng-bind="video.Duration | myLocalDate:'vd'"></span>
+              <span class="shiChang" ng-bind="video.Duration | localDate:'vd'"></span>
             </a>
           </div>
           <div class="media-body">
@@ -88,7 +88,7 @@
               <div class="media-left">
                 <a href="javascript:void(0)" class="media-left-a">
                   <img class="media-object" ng-src="{{video.Detail.data[0].images_b[0]}}" style="width: 80px;height: 50px">
-                  <span class="shiChang" ng-bind="video.Duration | myLocalDate:'vd'"></span>
+                  <span class="shiChang" ng-bind="video.Duration | localDate:'vd'"></span>
                 </a>
               </div>
               <div class="media-body wp100">
