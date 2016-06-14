@@ -378,7 +378,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             }
             if(cc['考点ID']){ //考场的反选
               $scope.kwParams.kdId = cc['考点ID'];
-              fdKd = Lazy($scope.allKaoChangList).each(function(kc){ return kc['考点ID'] == cc['考点ID'] });
+              fdKd = Lazy($scope.allKaoChangList).find(function(kc){ return kc['考点ID'] == cc['考点ID'] });
               if(fdKd){
                 $scope.kwParams.kwNum = fdKd['考位数'];
               }
@@ -387,8 +387,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               }
             }
             if(!cc['考点ID']){ //所选场次为空
-              fdKd = Lazy($scope.allKaoChangList).each(function(kc){ return kc['考点ID'] == $scope.kwParams.kdId });
+              fdKd = Lazy($scope.allKaoChangList).find(function(kc){ return kc['考点ID'] == $scope.kwParams.kdId });
               if(fdKd){
+                cc['考点ID'] = $scope.kwParams.kdId;
                 $scope.kwParams.kwNum = fdKd['考位数'];
               }
               else{
@@ -640,19 +641,23 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             document.body.appendChild(form);
             var formData=$('#flowControlForm').serialize();
             $.ajax({
-              type: 'PUT',
+              type: method,
               url: path,
               processData: true,
               data: formData,
               success: function(data){
-                if(data.result){
+                var newData = '';
+                if(typeof(data) == 'string'){
+                  newData = JSON.parse(data);
+                }
+                if(newData.result){
                   var node = document.getElementById('flowControlForm');
                   node.parentNode.removeChild(node);
                   $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
                   DataService.alertInfFun('suc', '新建成功！');
                 }
                 else{
-                  DataService.alertInfFun('err', data.error);
+                  DataService.alertInfFun('err', newData.error);
                 }
                 $scope.kwParams.forbidBtn = false;
                 $scope.loadingImgShow = false;
@@ -740,9 +745,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             }
             dataPar['考试'] = JSON.stringify(dataPar['考试']);
             $scope.kwParams.forbidBtn = true;
-            //$scope.loadingImgShow = true;
+            $scope.loadingImgShow = true;
             console.log(dataPar);
-            //submitFORMPost(kaoShiZuUrl, dataPar, 'PUT');
+            submitFORMPost(kaoShiZuUrl, dataPar, 'PUT');
           };
 
           ///**
