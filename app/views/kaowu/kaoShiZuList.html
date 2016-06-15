@@ -69,7 +69,7 @@
         <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showPaperInfo()">查看试卷</a>
         <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showChangCiToggle()">查看场次</a>
         <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiZuDtl['报名方式']==2"
-          ng-click="queryBaoMingStu('no', kaoShiZuDtl['考试组ID'])">未报名考生</a>
+          ng-click="showBaoMingStu('no')">未报名考生</a>
         <button type="button" class="btn btn-danger mt5" ng-click="closePaperDtl()">
           关闭
         </button>
@@ -88,10 +88,10 @@
             <th class="text-center">导出考生</th>
           </tr>
           <tr ng-repeat="cc in kaoShiZuDtl['考试']">
-            <td  class="cursorPointer cBlue" ng-bind="cc['考试名称']" ng-click="queryBaoMingStu('on', cc)"></td>
+            <td  class="cursorPointer cBlue" ng-bind="cc['考试名称']" ng-click="showBaoMingStu('on', cc)"></td>
             <td class="text-center" ng-bind="cc['开始时间'] | localDateWithWeek"></td>
             <td class="text-center" ng-bind="cc['考试时长']"></td>
-            <td class="text-center" ng-bind="cc['考点ID']"></td>
+            <td class="text-center" ng-bind="cc['考点名称']"></td>
             <td class="text-center">{{cc['总人数'] || 0}}/{{kaoShiZuDtl['总人数']}}</td>
             <td class="text-center cursorPointer" title="导出考生" ng-click="exportKsInfo('mdOff', cc)">
               <span class="glyphicon glyphicon-export"></span>
@@ -107,17 +107,14 @@
               <th>姓名</th>
               <th class="text-center">学号</th>
               <th class="text-center">座位号</th>
-              <th width="60px" class="text-center">操作</th>
+              <th class="text-center">课序号名称</th>
             </tr>
             <tr ng-repeat="ks in changCiKaoSheng">
               <td ng-bind="ks['序号']"></td>
               <td ng-bind="ks['姓名']"></td>
               <td class="text-center" ng-bind="ks['学号']"></td>
               <td class="text-center" ng-bind="ks['座位号']"></td>
-              <td class="text-center cursorPointer">
-                <span class="glyphicon glyphicon-trash co676767" ng-click="deleteKaoSheng(ks)" title="删除"
-                  ng-if="kaoShiZuDtl['状态']<3"></span>
-              </td>
+              <td class="text-center" ng-bind="ks['课序号名称']"></td>
             </tr>
           </table>
         </div>
