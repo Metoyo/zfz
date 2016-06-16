@@ -167,7 +167,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           keXuHaoStore = '';
           $scope.studentsOrgData = '';
           $scope.studentsData = '';
-          $scope.studentsPages = '';
+          $scope.studentsPages = [];
           if (tab == 'kexuhao') {
             queryKeXuHao();
             $scope.guanliParams.tabActive = 'kexuhao';
@@ -260,7 +260,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                 if(data.result){
                   $scope.studentsOrgData = '';
                   $scope.studentsData = '';
-                  $scope.studentsPages = '';
+                  $scope.studentsPages = [];
                   $scope.selectKxh = '';
                   DataService.alertInfFun('suc', '删除成功！');
                   queryKeXuHao();
@@ -374,7 +374,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             idArr.push(kxh['课序号ID']);
             obj.params['课序号ID'] = JSON.stringify(idArr);
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.studentsOrgData = Lazy(data.data).sortBy('序号').toArray();
                 $scope.impStus = angular.copy($scope.studentsOrgData);
                 kxh['学生人数'] = data.data.length ? data.data.length : 0;
@@ -382,7 +382,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               }
               else{
                 $scope.studentsOrgData = '';
-                $scope.studentsPages = '';
+                $scope.studentsPages = [];
               }
             });
           }
@@ -396,7 +396,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          */
         var studentsPages = function(wks){
           totalStuPage = [];
-          $scope.studentsPages = '';
+          $scope.studentsPages = [];
           $scope.lastStuPageNum = '';
           if(wks && wks.length > 10){
             var stusLength;

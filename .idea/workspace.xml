@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/guanli.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/guanli.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/kaowu/kaoShiZuList.html" afterPath="$PROJECT_DIR$/app/views/kaowu/kaoShiZuList.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/kaowu.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/kaowu.js" />
     </list>
@@ -30,15 +31,30 @@
       <file leaf-file-name="kaowu.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/scripts/controllers/kaowu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="224" max-vertical-offset="14720">
-              <caret line="24" column="53" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="53" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="10264" max-vertical-offset="11504">
+              <caret line="973" column="52" selection-start-line="973" selection-start-column="35" selection-end-line="973" selection-end-column="52" />
               <folding>
                 <element signature="e#10087#11776#0" expanded="false" />
                 <element signature="e#14995#17021#0" expanded="false" />
                 <element signature="e#17121#17532#0" expanded="false" />
-                <element signature="e#32764#33560#0" expanded="false" />
-                <element signature="e#33613#35944#0" expanded="false" />
+                <element signature="e#17631#18260#0" expanded="false" />
+                <element signature="e#19846#20075#0" expanded="false" />
+                <element signature="e#20172#20364#0" expanded="false" />
+                <element signature="e#20598#22055#0" expanded="false" />
+                <element signature="e#23605#25352#0" expanded="false" />
+                <element signature="e#25440#29146#0" expanded="false" />
+                <element signature="e#33649#34445#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="guanli.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/scripts/controllers/guanli.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="5816" max-vertical-offset="13600">
+              <caret line="373" column="37" selection-start-line="0" selection-start-column="0" selection-end-line="844" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -46,8 +62,8 @@
       <file leaf-file-name="kaoShiZuList.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/views/kaowu/kaoShiZuList.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.28" vertical-offset="1264" max-vertical-offset="2640">
-              <caret line="81" column="14" selection-start-line="81" selection-start-column="14" selection-end-line="81" selection-end-column="14" />
+            <state vertical-scroll-proportion="-15.36" vertical-offset="1744" max-vertical-offset="2384">
+              <caret line="133" column="47" selection-start-line="0" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -56,8 +72,8 @@
       <file leaf-file-name="kaowu.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/kaowu.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="112" max-vertical-offset="17488">
-              <caret line="1086" column="2" selection-start-line="1086" selection-start-column="2" selection-end-line="1086" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="15852" max-vertical-offset="16576">
+              <caret line="1029" column="2" selection-start-line="1029" selection-start-column="2" selection-end-line="1029" selection-end-column="2" />
               <folding />
             </state>
           </provider>
@@ -66,8 +82,8 @@
       <file leaf-file-name="kaoShiZuList.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/kaowu/kaoShiZuList.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.72" vertical-offset="1941" max-vertical-offset="2640">
-              <caret line="124" column="79" selection-start-line="124" selection-start-column="79" selection-end-line="124" selection-end-column="79" />
+            <state vertical-scroll-proportion="-0.64" vertical-offset="1648" max-vertical-offset="2384">
+              <caret line="104" column="16" selection-start-line="104" selection-start-column="16" selection-end-line="104" selection-end-column="16" />
               <folding>
                 <element signature="n#style#0;n#span#0;n#span#0;n#td#5;n#tr#1;n#table#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#1;n#td#5;n#tr#1;n#table#0;n#!!top" expanded="true" />
@@ -76,21 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="api.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/routes/api.js">
+      <file leaf-file-name="guanli.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/guanli.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="36156" max-vertical-offset="36800">
-              <caret line="2284" column="18" selection-start-line="2284" selection-start-column="18" selection-end-line="2284" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="router.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/routes/router.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7321157" vertical-offset="1839" max-vertical-offset="2496">
-              <caret line="145" column="30" selection-start-line="145" selection-start-column="14" selection-end-line="145" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.9503106" vertical-offset="12876" max-vertical-offset="13600">
+              <caret line="843" column="3" selection-start-line="843" selection-start-column="3" selection-end-line="843" selection-end-column="3" />
               <folding />
             </state>
           </provider>
@@ -104,13 +110,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/kaowu/kaoShiList.html" />
         <option value="$PROJECT_DIR$/app/scripts/filters/examstatus.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/filters/examstatus.js" />
         <option value="$PROJECT_DIR$/app/views/kaowu/kaoChangList.html" />
         <option value="$PROJECT_DIR$/app/views/kaowu/editKaoChang.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/guanli.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/kaowu/editKaoChang.html" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/kaowu/kaoChangList.html" />
         <option value="$PROJECT_DIR$/app/views/renzheng/rz_admin.html" />
@@ -149,12 +153,14 @@
         <option value="$PROJECT_DIR$/app/views/tongji/tj_student.html" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zj_paperList.html" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html" />
-        <option value="$PROJECT_DIR$/app/views/kaowu/kaoShiZuList.html" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/kaowu/kaoShiZuList.html" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/kaowu.js" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/kaowu.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/routes/router.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/routes/api.js" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/kaowu.js" />
+        <option value="$PROJECT_DIR$/app/views/kaowu/kaoShiZuList.html" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/kaowu.js" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/kaowu/kaoShiZuList.html" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/guanli.js" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/guanli.js" />
       </list>
     </option>
   </component>
@@ -395,6 +401,46 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -435,11 +481,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/scripts/router" />
       <recent name="$PROJECT_DIR$/app/views/renzheng" />
       <recent name="$PROJECT_DIR$/app/tk" />
       <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/app/JMEditor-0.9.4" />
-      <recent name="$PROJECT_DIR$/app/JMEditor-0.9.4/jmeditor/ckeditor/plugins/jme/dialogs" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/tk" />
@@ -531,13 +577,13 @@
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.223782" sideWeight="0.1868613" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.223782" sideWeight="0.27445257" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896653" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24958813" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.223782" sideWeight="0.81313866" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.223782" sideWeight="0.72554743" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896653" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -597,8 +643,13 @@
           <line>860</line>
           <option name="timeStamp" value="335" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/app/scripts/controllers/kaowu.js</url>
+          <line>843</line>
+          <option name="timeStamp" value="336" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="336" />
+      <option name="time" value="337" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -716,14 +767,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.65822786" vertical-offset="0" max-vertical-offset="528">
           <caret line="26" column="6" selection-start-line="26" selection-start-column="6" selection-end-line="26" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/guanli.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1568323" vertical-offset="4987" max-vertical-offset="13600">
-          <caret line="318" column="22" selection-start-line="318" selection-start-column="22" selection-end-line="318" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -1002,26 +1045,69 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/routes/router.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1839" max-vertical-offset="2496">
+          <caret line="145" column="52" selection-start-line="145" selection-start-column="37" selection-end-line="145" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/routes/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="36156" max-vertical-offset="36800">
+          <caret line="2287" column="22" selection-start-line="2287" selection-start-column="22" selection-end-line="2287" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/kaowu.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="112" max-vertical-offset="17488">
-          <caret line="1086" column="2" selection-start-line="1086" selection-start-column="2" selection-end-line="1086" selection-end-column="2" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="15852" max-vertical-offset="16576">
+          <caret line="1029" column="2" selection-start-line="1029" selection-start-column="2" selection-end-line="1029" selection-end-column="2" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/views/kaowu/kaoShiZuList.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.28" vertical-offset="1264" max-vertical-offset="2640">
-          <caret line="81" column="14" selection-start-line="81" selection-start-column="14" selection-end-line="81" selection-end-column="14" />
+        <state vertical-scroll-proportion="-15.36" vertical-offset="1744" max-vertical-offset="2384">
+          <caret line="133" column="47" selection-start-line="0" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/kaowu.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="10264" max-vertical-offset="11504">
+          <caret line="973" column="52" selection-start-line="973" selection-start-column="35" selection-end-line="973" selection-end-column="52" />
+          <folding>
+            <element signature="e#10087#11776#0" expanded="false" />
+            <element signature="e#14995#17021#0" expanded="false" />
+            <element signature="e#17121#17532#0" expanded="false" />
+            <element signature="e#17631#18260#0" expanded="false" />
+            <element signature="e#19846#20075#0" expanded="false" />
+            <element signature="e#20172#20364#0" expanded="false" />
+            <element signature="e#20598#22055#0" expanded="false" />
+            <element signature="e#23605#25352#0" expanded="false" />
+            <element signature="e#25440#29146#0" expanded="false" />
+            <element signature="e#33649#34445#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/guanli.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5816" max-vertical-offset="13600">
+          <caret line="373" column="37" selection-start-line="0" selection-start-column="0" selection-end-line="844" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/kaowu/kaoShiZuList.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.72" vertical-offset="1941" max-vertical-offset="2640">
-          <caret line="124" column="79" selection-start-line="124" selection-start-column="79" selection-end-line="124" selection-end-column="79" />
+        <state vertical-scroll-proportion="-0.64" vertical-offset="1648" max-vertical-offset="2384">
+          <caret line="104" column="16" selection-start-line="104" selection-start-column="16" selection-end-line="104" selection-end-column="16" />
           <folding>
             <element signature="n#style#0;n#span#0;n#span#0;n#td#5;n#tr#1;n#table#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#1;n#td#5;n#tr#1;n#table#0;n#!!top" expanded="true" />
@@ -1029,32 +1115,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/kaowu.js">
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/guanli.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="224" max-vertical-offset="14720">
-          <caret line="24" column="53" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="53" />
-          <folding>
-            <element signature="e#10087#11776#0" expanded="false" />
-            <element signature="e#14995#17021#0" expanded="false" />
-            <element signature="e#17121#17532#0" expanded="false" />
-            <element signature="e#32764#33560#0" expanded="false" />
-            <element signature="e#33613#35944#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/routes/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="36156" max-vertical-offset="36800">
-          <caret line="2284" column="18" selection-start-line="2284" selection-start-column="18" selection-end-line="2284" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/routes/router.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7321157" vertical-offset="1839" max-vertical-offset="2496">
-          <caret line="145" column="30" selection-start-line="145" selection-start-column="14" selection-end-line="145" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.9503106" vertical-offset="12876" max-vertical-offset="13600">
+          <caret line="843" column="3" selection-start-line="843" selection-start-column="3" selection-end-line="843" selection-end-column="3" />
           <folding />
         </state>
       </provider>

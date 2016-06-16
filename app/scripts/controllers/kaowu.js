@@ -859,20 +859,43 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           * 显示场次的试卷信息
           */
           $scope.showPaperInfo = function(){
-            var ksIdArr = [];
+            var obj = {
+              method: 'GET',
+              url: kaoShiShiJuanZuUrl,
+              params: {
+                '考试组ID': []
+              }
+            };
+            $scope.alertPaperCc = [];
+            if($scope.kaoShiZuDtl['考试组ID']){
+              obj.params['考试组ID'].push($scope.kaoShiZuDtl['考试组ID']);
+              obj.params['考试组ID'] = JSON.stringify(obj.params['考试组ID']);
+              $http(obj).success(function(data){
+                if(data.result){
+                  var disDt = Lazy(data.data).groupBy('考试ID').toObject();
+                  Lazy(disDt).each(function(v, k, l){
+                    var ccObj = {
+                      '考试ID': k,
+                      '考试名称': v[0]['考试名称'],
+                      '试卷组信息': ''
+                    };
+                    var strArr = [];
+                    Lazy(v).each(function(ks){
+                      strArr.push(ks['试卷组名称'] + '(' + ks['试卷组ID'] + ')');
+                    });
+                    ccObj['试卷组信息'] = strArr.join(';');
+                    $scope.alertPaperCc.push(ccObj);
+                  });
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '请选择考试组！');
+            }
             $scope.kwParams.showCcSjz = true;
-            Lazy($scope.kaoShiZuDtl).each(function(){
-
-            });
-            //if(alertKsArr && alertKsArr.length > 0){
-            //  $scope.alertPaperCc = alertKsArr;
-            //}
-            //else{
-            //  $scope.alertPaperCc = '';
-            //  DataService.alertInfFun('err', '没有场次信息！');
-            //}
-            //$scope.paperListIds = '';
-            //$scope.showPaperListBox = false;
           };
 
           /**
@@ -985,85 +1008,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           * 修改试卷
           */
           $scope.alertPaperWrapShow = function(){
-            //$scope.paperListIds = angular.copy(paperListOriginData);
-            //$scope.kwParams.checkedAllChangCi = false;
-            //$scope.showPaperListBox = true;
-          };
 
-          /**
-          * 考场的全选
-          */
-          $scope.checkAllChangCi = function(){
-            //Lazy($scope.alertPaperCc).each(function(cc){
-            //  if($scope.kwParams.checkedAllChangCi){
-            //    cc.ckd = true;
-            //  }
-            //  else{
-            //    cc.ckd = false;
-            //  }
-            //})
-          };
-
-          /**
-          * 选择本场次
-          */
-          $scope.checkThisChangCi = function(cc){
-            //cc.ckd = !cc.ckd;
-          };
-
-          /**
-          * 选择本试卷
-          */
-          $scope.checkThisShiJuan = function(sj){
-            //sj.ckd = !sj.ckd;
-          };
-
-          /**
-          * 保存试卷修改
-          */
-          $scope.saveAlertPaper = function(){
-            //var ccIdArr = [];
-            //var sjIdArr = [];
-            //var err = [];
-            //var obj = {
-            //  token: token,
-            //  caozuoyuan: caozuoyuan,
-            //  jigouid: jigouid,
-            //  lingyuid: lingyuid,
-            //  kaoshiid: '',
-            //  shijuanid: ''
-            //};
-            //Lazy($scope.alertPaperCc).each(function(cc){
-            //  if(cc.ckd){
-            //    ccIdArr.push(cc.KAOSHI_ID);
-            //  }
-            //});
-            //Lazy($scope.paperListIds).each(function(sj){
-            //  if(sj.ckd){
-            //    sjIdArr.push(sj.SHIJUAN_ID);
-            //  }
-            //});
-            //if(!(ccIdArr && ccIdArr.length > 0)){
-            //  err.push('请选择考试！');
-            //}
-            //if(!(sjIdArr && sjIdArr.length > 0)){
-            //  err.push('请选择试卷！');
-            //}
-            //if(err && err.length > 0){
-            //  DataService.alertInfFun('err', err.join(';'));
-            //}
-            //else{
-            //  obj.kaoshiid = ccIdArr;
-            //  obj.shijuanid = sjIdArr;
-            //  $http.post(xiuGaiKaoShiShiJuanUrl, obj).success(function(data){
-            //    if(data.result){
-            //      DataService.alertInfFun('suc', '修改成功！');
-            //    }
-            //    else{
-            //      DataService.alertInfFun('err', data.error);
-            //    }
-            //  });
-            //}
           };
 
           /**

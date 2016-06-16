@@ -123,35 +123,19 @@
         <!--修改试卷table-->
         <p class="text-right mt10">
           <a href="javascript:void(0)" ng-click="alertPaperWrapShow()">修改试卷</a>
-          <a href="javascript:void(0)" class="ml15" ng-click="saveAlertPaper()">提交修改</a>
           <a href="javascript:void(0)" class="ml15" ng-click="showChangCiToggle()">取消修改</a>
         </p>
-        <div ng-class="{'col-sm-8': showPaperListBox}">
+        <div>
           <table class="table table-striped" ng-class="{mt15:!showPaperListBox}">
             <tr class="active">
-              <th width="30px" ng-show="showPaperListBox">
-                <input type="checkbox" value="all" ng-click="checkAllChangCi()" ng-model="kwParams.checkedAllChangCi">
-              </th>
               <th>场次</th>
-              <th class="text-center">试卷</th>
+              <th class="text-center">试卷组</th>
             </tr>
             <tr ng-repeat="cc in alertPaperCc">
-              <td ng-show="showPaperListBox">
-                <input type="checkbox" value="cc.KAOSHI_ID" ng-click="checkThisChangCi(cc)" ng-checked="cc.ckd">
-              </td>
               <td ng-bind="cc['考试名称']"></td>
-              <td class="text-center" ng-bind="cc['试卷组']"></td>
+              <td ng-bind="cc['试卷组信息']"></td>
             </tr>
           </table>
-        </div>
-        <div class="col-sm-4 h400 bd1" ng-show="showPaperListBox">
-          <div class="checkbox" ng-repeat="sj in paperList">
-            <label>
-              <input type="checkbox" value="1">
-              <input type="checkbox" value="ks.SHIJUAN_ID"  ng-click="checkThisShiJuan(sj)" ng-checked="sj.ckd">
-              {{sj['试卷组']}}
-            </label>
-          </div>
         </div>
       </div>
     </div>
