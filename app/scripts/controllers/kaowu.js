@@ -23,6 +23,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           var keXuHaoXueShengUrl = '/kexuhao_xuesheng'; //由课序号查询学生
           var keXuHaoUrl = '/kexuhao'; //查询课序号
           var kaoShiShiJuanZuUrl = '/kaoshi_shijuanzu'; //查询考试用到的考试组
+          var exportStuUrl = '/json2excel'; //导出考生
           var paperListOriginData = ''; //试卷组全部数据
           var newChangCi = ''; //新场次
           var keXuHaoStore = ''; //存放课序号的变量
@@ -613,8 +614,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-          * 显示考生列表
-          */
+           * 显示考生列表
+           */
           $scope.showKaoShengList = function(){
             $scope.showImportStuds = true;
           };
@@ -627,8 +628,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-          * 新建考试删除里面的考生
-          */
+           * 新建考试删除里面的考生
+           */
           $scope.addKsDelStu = function(stu){
             if(confirm('确定要删除此考生吗？')){
               $scope.studentsOrgData = Lazy($scope.studentsOrgData).reject(function(t){
@@ -641,8 +642,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-          * 清除已添加的考生
-          */
+           * 清除已添加的考生
+           */
           $scope.clearKaoShengList = function(){
             if(confirm('确定要删除全部考生吗？')){
               if($scope.kaoShiZuData['报名方式'] == 1){
@@ -798,7 +799,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
 
           /**
            * 删除考试
-          */
+           */
           $scope.deleteKaoShiZu = function(kszId){
             if(confirm('确定要删除此考试组吗？')){
               var obj = {
@@ -820,7 +821,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
 
           /**
            * 发布考试组
-          */
+           */
           $scope.faBuKaoShiZu = function(kszId){
             var obj = {
               method: 'GET',
@@ -840,7 +841,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
 
           /**
            * 查看考试组详情
-          */
+           */
           $scope.seeKaoShiZuDetail = function(ksz){
             $scope.kaoShiZuDtl = ksz;
             $scope.kwParams.showStu = false;
@@ -856,8 +857,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-          * 显示场次的试卷信息
-          */
+           * 显示场次的试卷信息
+           */
           $scope.showPaperInfo = function(){
             var obj = {
               method: 'GET',
@@ -899,8 +900,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-          * 切换场次和考生名单
-          */
+           * 切换场次和考生名单
+           */
           $scope.showChangCiToggle = function(){
             $scope.kwParams.showStu = false;
             $scope.kwParams.showCcSjz = false;
@@ -908,8 +909,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-          * 查询报名考生
-          */
+           * 查询报名考生
+           */
           $scope.showBaoMingStu = function(stat, cc){
             $scope.kwParams.showCcSjz = false;
             $scope.kwParams.showStu = true;
@@ -933,8 +934,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-          * 导出学生,需要的数据为考生列表
-          */
+           * 导出学生,需要的数据为考生列表
+           */
           function submitFORMDownload(path, params, method) {
             method = method || 'post';
             var form = document.createElement('form');
@@ -952,61 +953,75 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               }
             }
             document.body.appendChild(form);
-            form._submit_function_();
+            //form._submit_function_();
+            var formData=$('#formDownload').serialize();
+            $.ajax({
+              type: method,
+              url: path,
+              processData: true,
+              data: formData,
+              success: function(data){
+                console.log(typeof(data));
+
+                var blob = new Blob(["Hello World!"],{type:"text/plain"}); // 传入一个合适的MIME类型
+                var url = URL.createObjectURL(blob);
+                window.open(url);
+                //var blob = new Blob([data], {type: "text/plain"});
+                //var objectUrl = URL.createObjectURL(blob);
+                //window.open(objectUrl);
+
+                var node = document.getElementById('formDownload');
+                node.parentNode.removeChild(node);
+              },
+              error: function(data) {
+                DataService.alertInfFun('err', data.responseText);
+              }
+            });
           }
           $scope.exportKsInfo = function(bmStat, kc){
-            //var ksData = {};
-            //var sheetName = '';
-            //var ksArr = [];
-            //var exportStu;
-            //var exportStuInfoUrl;
-            //var exportFun = function(stuData){
-            //  exportStu = Lazy(stuData).sortBy(function(stu){ return parseInt(stu.XUHAO);}).toArray();
-            //  Lazy(exportStu).each(function(ks){
-            //    var ksObj = {};
-            //    ksObj['学号'] = ks.YONGHUHAO;
-            //    ksObj['姓名'] = ks.XINGMING;
-            //    ksObj['班级'] = ks.BANJI;
-            //    ksObj['座位号'] = ks.ZUOWEIHAO;
-            //    ksArr.push(ksObj);
-            //  });
-            //  ksData[sheetName] = ksArr;
-            //  exportStuInfoUrl = exportStuInfoBase + sheetName;
-            //  var node = document.getElementById('formDownload');
-            //  if(node){
-            //    node.parentNode.removeChild(node);
-            //  }
-            //  submitFORMDownload(exportStuInfoUrl, {json: JSON.stringify(ksData)}, 'POST');
-            //};
-            //if(bmStat == 'mdOff'){ //直接从场次那导出考生
-            //  var chaXunKaoSheng = qryKaoShengBaseUrl + '&kid=' + kc.KID + '&kaoshiid=' + kc.KAOSHI_ID;
-            //  $http.get(chaXunKaoSheng).success(function(data){
-            //    if(data && data.length > 0){
-            //      var exlName = kc.KAOSHI_MINGCHENG + '_' + kc.kaoShiShiJian.replace(/\ +/g, '_') + '_' + kc.KMINGCHENG;
-            //      sheetName = exlName.replace(/:/g, '_');
-            //      exportFun(data);
-            //    }
-            //    else{
-            //      DataService.alertInfFun('err', data.error);
-            //    }
-            //  });
-            //}
-            //if(bmStat == 'mdOn'){ //名单列表考生
-            //  if($scope.kwParams.selectedCc && $scope.kwParams.selectedCc != 'weibaoming'){
-            //    var exlName = $scope.kwParams.selectedCc.KAOSHI_MINGCHENG + '_' +
-            //    $scope.kwParams.selectedCc.kaoShiShiJian.replace(/\ +/g, '_') + '_' + $scope.kwParams.selectedCc.KMINGCHENG;
-            //    sheetName = exlName.replace(/:/g, '_');
-            //  }
-            //  if($scope.kwParams.selectedCc && $scope.kwParams.selectedCc == 'weibaoming'){
-            //    sheetName = '未报名考生';
-            //  }
-            //  exportFun($scope.changCiKaoSheng);
-            //}
+            var ksData = {};
+            var exlName = '';
+            var sheetName = '';
+            var ksArr = [];
+            var exportStu;
+            var exportFun = function(stuData){
+              exportStu = Lazy(stuData).sortBy(function(stu){ return parseInt(stu['序号']);}).toArray();
+              Lazy(exportStu).each(function(ks){
+                var ksObj = {};
+                ksObj['序号'] = ks['序号'];
+                ksObj['学号'] = ks['学号'];
+                ksObj['姓名'] = ks['姓名'];
+                ksObj['座位号'] = ks['座位号'];
+                ksArr.push(ksObj);
+              });
+              ksData[sheetName] = ksArr;
+              var node = document.getElementById('formDownload');
+              if(node){
+                node.parentNode.removeChild(node);
+              }
+              submitFORMDownload(exportStuUrl, {json: JSON.stringify(ksData)}, 'post');
+            };
+            if(bmStat == 'mdOff'){ //直接从场次那导出考生
+              exlName = kc['考试名称'] + '_' + kc['开始时间'].replace(/\ +/g, '_') + '_' + kc['考点名称'];
+              sheetName = exlName.replace(/:/g, '_');
+              exportFun(kc['考生']);
+            }
+            if(bmStat == 'mdOn'){ //名单列表考生
+              if($scope.kwParams.selectedCc && $scope.kwParams.selectedCc != 'weibaoming'){
+                exlName = $scope.kwParams.selectedCc['考试名称'] + '_' +
+                $scope.kwParams.selectedCc['开始时间'].replace(/\ +/g, '_') + '_' + $scope.kwParams.selectedCc['考点名称'];
+                sheetName = exlName.replace(/:/g, '_');
+              }
+              if($scope.kwParams.selectedCc && $scope.kwParams.selectedCc == 'weibaoming'){
+                sheetName = '未报名考生';
+              }
+              exportFun($scope.changCiKaoSheng);
+            }
           };
 
           /**
-          * 修改试卷
-          */
+           * 修改试卷
+           */
           $scope.alertPaperWrapShow = function(){
 
           };
