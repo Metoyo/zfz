@@ -5,21 +5,13 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
     .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', 'DataService',
       function ($rootScope, $scope, $location, $http, urlRedirect, DataService) {
 
-        var baseRzAPIUrl = config.apiurl_rz;
-        var baseBmAPIUrl = config.apiurl_bm; //报名的api
-        var token = config.token;
-        var qryKaoShengBaseUrl = baseBmAPIUrl + 'chaxun_kaosheng?token=' + token; //检查考生是否在报名表里
-        var checkStuInYhxxBaseUrl = baseRzAPIUrl + 'query_student?token=' + token + '&jigouid='; //检查考生是否在报名表里
-        var delBlankReg = /\s/g; //去除空格的正则表达
-        var checkUserData; //当输入学号和姓名后返回到用户信息表的数据
-        var alterYongHu = baseRzAPIUrl + 'xiugai_yonghu';
         //新方法用到的变量
         var xueXiaoUrl = '/xuexiao';
         var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目
         var yongHuUrl = '/yonghu'; //用户的增删改查
         var chkEmailUrl = '/exists_youxiang'; //检查邮箱url
         var chkUserNameUrl = '/exists_yonghuming'; //检查用户名url
-
+        var delBlankReg = /\s/g; //去除空格的正则表达
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
         $scope.xuHaoRegexp = /^.{4,30}$/;//用户名的正则表达式
@@ -51,12 +43,12 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           isSelectJs: false //对应的科目是否选择了角色
         };
         $scope.stuRegisterInfo = {
-          jigouid: '',
-          xuehao: '',
-          xingming: '',
-          youxiang: '',
-          mima: '',
-          mima_verify: ''
+          '学校ID': '',
+          '学号': '',
+          '姓名': '',
+          '邮箱': '',
+          '密码': '',
+          '确认密码': ''
         };
 
         /**
@@ -103,20 +95,6 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           }
           else{
             $scope.ifPswTheSame = false;
-          }
-        };
-
-        /**
-         * 学生注册检查密码是否一致
-         */
-        $scope.stuCheckPassword = function(){
-          var psw = $scope.stuRegisterInfo.mima,
-            pswConfirm = $scope.stuRegisterInfo.mima_verify;
-          if(pswConfirm){
-            $scope.stuIfPswTheSame = (psw != pswConfirm);
-          }
-          else{
-            $scope.stuIfPswTheSame = false;
           }
         };
 
@@ -223,12 +201,12 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          */
         $scope.studentRegister = function(){
           getJgList();
-          qryJueSe();
+          $scope.stepNum = 1;
           $scope.rzTpl = 'views/renzheng/rz_regStudent.html';
         };
 
         /**
-         * 检查是否选择角色
+         * 检查是否选择角色 --
          */
         var checkHaveJs = function(){
           var count = 0;
@@ -333,106 +311,57 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 去第二步，显示学号和姓名输入框
+         * 学生注册的步骤
          */
-        $scope.stuShowStepOne = function(){
-          $('.tab-pane').removeClass('active').eq(0).addClass('active');
+        $scope.stuShowStep = function(num){
+          $scope.stepNum = num;
         };
 
         /**
-         * 去第二步，显示学号和姓名输入框
+         * 查询考生是否已经存在 --
          */
-        $scope.stuShowStepTwo = function(){
-          $('.tab-pane').removeClass('active').eq(1).addClass('active');
-        };
-
-        /**
-         * 查询用户信息表
-         */
-        //var qryUserIfRegister = function(){
-        //  var checkStuInYhxxUrl = checkStuInYhxxBaseUrl + $scope.stuRegisterInfo.jigouid;
-        //  checkStuInYhxxUrl += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
-        //  //checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
-        //  $http.get(checkStuInYhxxUrl).success(function(student){
-        //    if(student && student.length > 0){
-        //      $scope.studentInfo = student;
-        //      $('.tab-pane').removeClass('active').eq(2).addClass('active');
-        //      DataService.alertInfFun('pmt', '用户已存在，请登录！');
-        //    }
-        //    else{
-        //      $scope.studentInfo = '';
-        //      $scope.ifTheStuHasRegister = true;
-        //    }
-        //  });
-        //};
-
-        /**
-         * 查询报名考生表
-         */
-        var qryUserIfInBmksb = function(){
-          var chaXunKaoSheng = qryKaoShengBaseUrl + '&jigouid=';
-          if($scope.stuRegisterInfo.jigouid){
-            chaXunKaoSheng += $scope.stuRegisterInfo.jigouid;
-            checkStuInYhxxBaseUrl += $scope.stuRegisterInfo.jigouid;
-            if($scope.stuRegisterInfo.xuehao){
-              $scope.stuRegisterInfo.xuehao = $scope.stuRegisterInfo.xuehao.replace(delBlankReg, '');
-              chaXunKaoSheng += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
-              if($scope.stuRegisterInfo.xingming){
-                $scope.stuRegisterInfo.xingming = $scope.stuRegisterInfo.xingming.replace(delBlankReg, '');
-                chaXunKaoSheng += '&xingming=' + $scope.stuRegisterInfo.xingming;
-                DataService.getData(chaXunKaoSheng).then(function(data){
-                  if(data && data.length > 0){
-                    $scope.ifTheStuHasRegister = true;
-                  }
-                  else{
-                    $scope.ifTheStuHasRegister = false;
-                    DataService.alertInfFun('err', '无学号信息，请核对学号信息！');
-                  }
-                });
-              }
-              else{
-                DataService.alertInfFun('pmt', '请输入姓名！');
-              }
-            }
-            else{
-              DataService.alertInfFun('pmt', '请输入学号！');
-            }
-          }
-          else{
-            DataService.alertInfFun('pmt', '请选择学校！');
-          }
-        };
-
-        /**
-         * 查询考生是否已经存在
-         */
-
         $scope.confirmTheStuIn = function(){
-          //查询用户信息表
-          checkUserData = '';
-          $scope.studentInfo = [];
-          var checkStuInYhxxUrl = checkStuInYhxxBaseUrl + $scope.stuRegisterInfo.jigouid;
-          checkStuInYhxxUrl += '&xuehao=' + $scope.stuRegisterInfo.xuehao;
-          checkStuInYhxxUrl += '&xingming=' + $scope.stuRegisterInfo.xingming;
-          $http.get(checkStuInYhxxUrl).success(function(student){
-            if(student && student.length > 0){
-              if(student[0].YOUXIANG && student[0].MIMA){
-                $scope.studentInfo.push(student[0]);
-                $('.tab-pane').removeClass('active').eq(2).addClass('active');
+          $scope.studentInfo = '';
+          var obj = {
+            method: 'GET',
+            url: yongHuUrl,
+            params: {
+              '学校ID': $scope.stuRegisterInfo['学校ID'],
+              '用户类别': 2,
+              '姓名': $scope.stuRegisterInfo['姓名'],
+              '学号': $scope.stuRegisterInfo['学号']
+            }
+          };
+          $http(obj).success(function(data){
+            if(data.result){
+              if(data.data['邮箱']){
+                $scope.studentInfo = data.data;
+                $scope.stepNum = 3;
                 DataService.alertInfFun('pmt', '用户已存在，请登录！');
               }
               else{
                 $scope.ifTheStuHasRegister = true;
-                checkUserData = student[0];
               }
             }
             else{
               $scope.studentInfo = '';
-              //qryUserIfInBmksb();
-              //qryUserIfRegister();
-              DataService.alertInfFun('err', student.error || '用户不存在！');
+              DataService.alertInfFun('err', data.error);
             }
           });
+        };
+
+        /**
+         * 学生注册检查密码是否一致
+         */
+        $scope.stuCheckPassword = function(){
+          var psw = $scope.stuRegisterInfo['密码'];
+          var pswConfirm = $scope.stuRegisterInfo['确认密码'];
+          if(pswConfirm){
+            $scope.stuIfPswTheSame = (psw != pswConfirm);
+          }
+          else{
+            $scope.stuIfPswTheSame = false;
+          }
         };
 
         /**

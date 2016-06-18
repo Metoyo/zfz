@@ -41,11 +41,11 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $rootScope.urlArrs = [];
         $rootScope.loginUsr = '';
 
-        delete $rootScope.session;
-        $cookieStore.remove('ckUrl');
-        $cookieStore.remove('ckKeMu');
-        $cookieStore.remove('ckUsr');
-        $cookieStore.remove('ckJs');
+        //delete $rootScope.session;
+        //$cookieStore.remove('ckUrl');
+        //$cookieStore.remove('ckKeMu');
+        //$cookieStore.remove('ckUsr');
+        //$cookieStore.remove('ckJs');
 
         /**
          * 显示找回密码页面
@@ -86,6 +86,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 config.loginUsr = data.data;
                 $rootScope.urlArrs = urlArr;
                 $cookieStore.put('ckUrl', JSON.stringify(urlArr));
+                urlRedirect.goTo(currentPath, '/baoming');
               }
               else{
                 var qxArr = Lazy(data.data['权限']).reject(function(qx){ //去除阅卷组长4，助教5的权限

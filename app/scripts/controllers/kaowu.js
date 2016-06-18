@@ -902,11 +902,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           /**
            * 切换场次和考生名单
            */
-          $scope.showChangCiToggle = function(){
-            $scope.kwParams.showStu = false;
-            $scope.kwParams.showCcSjz = false;
-            $scope.kwParams.selectedCc = '';
-          };
+          //$scope.showChangCiToggle = function(){
+          //  $scope.kwParams.showStu = false;
+          //  $scope.kwParams.showCcSjz = false;
+          //  $scope.kwParams.selectedCc = '';
+          //};
 
           /**
            * 查询报名考生
@@ -953,30 +953,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               }
             }
             document.body.appendChild(form);
-            //form._submit_function_();
-            var formData=$('#formDownload').serialize();
-            $.ajax({
-              type: method,
-              url: path,
-              processData: true,
-              data: formData,
-              success: function(data){
-                console.log(typeof(data));
-
-                var blob = new Blob(["Hello World!"],{type:"text/plain"}); // 传入一个合适的MIME类型
-                var url = URL.createObjectURL(blob);
-                window.open(url);
-                //var blob = new Blob([data], {type: "text/plain"});
-                //var objectUrl = URL.createObjectURL(blob);
-                //window.open(objectUrl);
-
-                var node = document.getElementById('formDownload');
-                node.parentNode.removeChild(node);
-              },
-              error: function(data) {
-                DataService.alertInfFun('err', data.responseText);
-              }
-            });
+            form._submit_function_();
+            var node = document.getElementById('formDownload');
+            node.parentNode.removeChild(node);
           }
           $scope.exportKsInfo = function(bmStat, kc){
             var ksData = {};
