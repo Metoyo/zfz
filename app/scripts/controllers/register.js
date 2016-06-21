@@ -12,6 +12,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var chkEmailUrl = '/exists_youxiang'; //检查邮箱url
         var chkUserNameUrl = '/exists_yonghuming'; //检查用户名url
         var delBlankReg = /\s/g; //去除空格的正则表达
+        var loginUrl = '/login'; //登录url
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
         $scope.xuHaoRegexp = /^.{4,30}$/;//用户名的正则表达式
@@ -52,7 +53,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 检查输入的邮箱或者是用户名，在数据库中是否存在 --
+         * 检查输入的邮箱或者是用户名，在数据库中是否存在
          */
         $scope.checkUsrExist = function(type, info){
           if(info){
@@ -85,7 +86,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 检查密码是否一致 --
+         * 检查密码是否一致
          */
         $scope.checkPassword = function(){
           var psw = $scope.teacherInfo['密码'];
@@ -107,7 +108,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 机构查询 --
+         * 机构查询
          */
         var getJgList = function(){
           if(!($scope.jigou_list && $scope.jigou_list.length > 0)){
@@ -126,7 +127,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 得到机构id --
+         * 得到机构id
          */
         $scope.getJgId = function(jgId){
           $scope.xxkm_list = ''; //重置领域
@@ -136,7 +137,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 查询科目代码 --
+         * 查询科目代码
          */
         var qryJgKeMu = function(jgId){
           if(jgId){
@@ -157,7 +158,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         *  查询角色的代码 --
+         *  查询角色的代码
          */
         var qryJueSe = function(){
           $scope.juese_list = [
@@ -175,7 +176,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 显示教师注册 --
+         * 显示教师注册
          */
         $scope.teacherRegister = function(){
           getJgList();
@@ -197,7 +198,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 显示学生注册 --
+         * 显示学生注册
          */
         $scope.studentRegister = function(){
           getJgList();
@@ -206,7 +207,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 检查是否选择角色 --
+         * 检查是否选择角色
          */
         var checkHaveJs = function(){
           var count = 0;
@@ -219,7 +220,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 获得科目 --
+         * 获得科目
          */
         $scope.getKeMuVal = function(km){
           km['角色'] = km['角色'] || [];
@@ -234,7 +235,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 获得角色juese（科目权限）的代码 --
+         * 获得角色juese（科目权限）的代码
          */
         $scope.getJueSe = function(js){
           js.ckd = !js.ckd;
@@ -249,14 +250,14 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 回到填写个人信息页面 --
+         * 回到填写个人信息页面
          */
         $scope.goToPersonInfo = function(){
           $scope.stepNum = 1;
         };
 
         /**
-         * 去提交个人信息页面 --
+         * 去提交个人信息页面
          */
         $scope.goToSubmit = function(){
           var findXx = Lazy($scope.jigou_list).find(function(xx){
@@ -284,14 +285,14 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 去提交个人信息页面 --
+         * 去提交个人信息页面
          */
         $scope.goToJueSe = function(){
           $scope.stepNum = 2;
         };
 
         /**
-         * 提交个人信息 --
+         * 提交个人信息
          */
         $scope.submitRegisterInfo = function(){
           delete $scope.teacherInfo['确认密码'];
@@ -318,7 +319,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 查询考生是否已经存在 --
+         * 查询考生是否已经存在
          */
         $scope.confirmTheStuIn = function(){
           $scope.studentInfo = '';
@@ -333,9 +334,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             }
           };
           $http(obj).success(function(data){
-            if(data.result){
-              if(data.data['邮箱']){
-                $scope.studentInfo = data.data;
+            if(data.result && data.data){
+              $scope.studentInfo = data.data;
+              if(data.data[0]['邮箱']){
                 $scope.stepNum = 3;
                 DataService.alertInfFun('pmt', '用户已存在，请登录！');
               }
@@ -345,7 +346,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             }
             else{
               $scope.studentInfo = '';
-              DataService.alertInfFun('err', data.error);
+              DataService.alertInfFun('err', data.error || '用户信息不存在！请先通过Excel文件导入个人信息！');
             }
           });
         };
@@ -375,33 +376,49 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          * 保存学生注册信息
          */
         $scope.saveStudentInfo = function(){
-          $scope.stuRegisterInfo.youxiang = $scope.stuRegisterInfo.youxiang.replace(delBlankReg,'');
-          $scope.stuRegisterInfo.mima = $scope.stuRegisterInfo.mima.replace(delBlankReg,'');
-          if(checkUserData.UID){
-            var stuData = {
-              token: token,
-              YONGHULEIBIE: 2,
-              UID: checkUserData.UID,
-              YONGHUHAO: $scope.stuRegisterInfo.xuehao,
-              XINGMING: $scope.stuRegisterInfo.xingming,
-              YOUXIANG: $scope.stuRegisterInfo.youxiang,
-              JIGOU:  [{JIGOU_ID:$scope.stuRegisterInfo.jigouid, ZHUANGTAI: 1}],
-              MIMA: $scope.stuRegisterInfo.mima
-            };
-            $http.post(alterYongHu, stuData).success(function(data){
-              if(data.result){
-                DataService.alertInfFun('suc', '提交成功！');
-                urlRedirect.goTo($location.$$path, '/renzheng');
+          var objLogin = {
+            method: 'GET',
+            url: loginUrl,
+            params: {
+              '学校ID': $scope.stuRegisterInfo['学校ID'],
+              '姓名': $scope.stuRegisterInfo['姓名'],
+              '学号': $scope.stuRegisterInfo['学号']
+            }
+          };
+          $http(objLogin).success(function(lData){
+            if(lData.result){
+              //登录成功以后获得签名
+              if($scope.studentInfo[0]['UID']){
+                var obj = {
+                  method: 'POST',
+                  url: yongHuUrl,
+                  data: {
+                    'UID': $scope.studentInfo[0]['UID'],
+                    '学号': $scope.stuRegisterInfo['学号'],
+                    '姓名': $scope.stuRegisterInfo['姓名'],
+                    '邮箱': $scope.stuRegisterInfo['邮箱'],
+                    '密码': $scope.stuRegisterInfo['密码']
+                  }
+                };
+                $http(obj).success(function(data){
+                  if(data.result){
+                    DataService.alertInfFun('suc', '注册成功！');
+                    urlRedirect.goTo($location.$$path, '/renzheng');
+                  }
+                  else{
+                    DataService.alertInfFun('err', data.error);
+                  }
+                });
               }
               else{
-                DataService.alertInfFun('err', data.error);
+                DataService.alertInfFun('err', '缺少UID！');
               }
-            });
-          }
-          else{
-            DataService.alertInfFun('err', '缺少UID！');
-          }
+            }
+            else{
+              DataService.alertInfFun('err', lData.error);
+            }
+          });
         };
 
-    }]);
+      }]);
 });

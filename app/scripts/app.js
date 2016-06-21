@@ -16,7 +16,6 @@ define([
   'controllers/student',
   'controllers/guanli',
   'filters/localdate',
-  'filters/localdatewithweek',
   'filters/examstatus',
   'filters/outtigan',
   'directives/nandustar',
@@ -27,7 +26,7 @@ define([
   'directives/repeatdone',
   'services/dataservice'
 ], function (angular, config, lazy, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, RegisterCtrl,
-             ZujuanCtrl, KaowuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, LocaldateFilter, LocaldatewithweekFilter,
+             ZujuanCtrl, KaowuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, LocaldateFilter,
              ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
              HoverslideDirective, FileuploadDirective, RepeatdoneDirective, DataServiceService) {
   'use strict';
@@ -45,7 +44,6 @@ define([
     'zhifzApp.controllers.StudentCtrl',
     'zhifzApp.controllers.GuanLiCtrl',
     'zhifzApp.filters.Localdate',
-    'zhifzApp.filters.Localdatewithweek',
     'zhifzApp.filters.Examstatus',
     'zhifzApp.filters.Outtigan',
     'zhifzApp.directives.Hoverslide',
@@ -99,6 +97,7 @@ define([
           }
           currentUrlParser.href = current; // current为当前的url地址
           nextUrlParser.href = next; // next为即将要访问的url地址
+
           if (currentUrlParser.protocol === nextUrlParser.protocol && currentUrlParser.host === nextUrlParser.host) { // 确保current与next的url地址都是属于同一个网站的链接地址
             nextPath = nextUrlParser.hash.substr(1); // 因为我们使用的是hash即#开头的浏览器端路由， 在这儿解析的时候要去掉#
             /**
@@ -116,10 +115,12 @@ define([
             });
             if (findRoute) { // 如果在我们的路由表中已找到即将要访问的路由， 那么执行以下代码
               nextRoute = routes[nextUrlPattern]; // 找到即将要访问的路由的配置信息
+              //$rootScope.reloadModule = false;
               /**
                * 判断即将要访问的路由是否需要登陆验证， 并且确保如果当前用户没有登陆的话，将用户重定向至登陆界面
                */
               if (nextRoute && nextRoute.requireLogin && !(loginUsr['UID'] >= 0)) {
+                //$rootScope.reloadModule = true;
                 event.preventDefault(); // 取消访问下一个路由地址
                 currentPath = $location.$$path;
                 urlRedirect.goTo(currentPath, '/renzheng');

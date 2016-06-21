@@ -89,7 +89,7 @@
           </tr>
           <tr ng-repeat="cc in kaoShiZuDtl['考试']">
             <td  class="cursorPointer cBlue" ng-bind="cc['考试名称']" ng-click="showBaoMingStu('on', cc)"></td>
-            <td class="text-center" ng-bind="cc['开始时间'] | localDateWithWeek"></td>
+            <td class="text-center" ng-bind="cc['开始时间'] | localDate:'ww'"></td>
             <td class="text-center" ng-bind="cc['考试时长']"></td>
             <td class="text-center" ng-bind="cc['考点名称']"></td>
             <td class="text-center">{{cc['总人数'] || 0}}/{{kaoShiZuDtl['总人数']}}</td>

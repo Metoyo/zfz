@@ -23,6 +23,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         var resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
         var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目URL
         var module = config.moduleObj;
+        var loginUrl = '/login'; //登录的URL
+        var regu = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
         $scope.login = login;
         $scope.stuLogin = stuLogin;
         $rootScope.isPromiseAlterOthersTimu = false;
@@ -41,11 +43,11 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $rootScope.urlArrs = [];
         $rootScope.loginUsr = '';
 
-        //delete $rootScope.session;
-        //$cookieStore.remove('ckUrl');
-        //$cookieStore.remove('ckKeMu');
-        //$cookieStore.remove('ckUsr');
-        //$cookieStore.remove('ckJs');
+        delete $rootScope.session;
+        $cookieStore.remove('ckUrl');
+        $cookieStore.remove('ckKeMu');
+        $cookieStore.remove('ckUsr');
+        $cookieStore.remove('ckJs');
 
         /**
          * 显示找回密码页面
@@ -69,9 +71,22 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          * 登录程序;在module数组中的索引：D0, M1, Z2, K3, T4, G5, B6, C7, W8  --
          */
         $scope.signIn = function() {
-          var loginUrl = '/login?用户名=' + login.userName + '&密码=' + login.password;
+          var obj = {
+            method: 'GET',
+            url: loginUrl,
+            params: {
+              '密码': login.password
+            }
+          };
+          var re = new RegExp(regu);
+          if (re.test(login.userName)) {
+            obj.params['邮箱'] = login.userName;
+          }
+          else {
+            obj.params['用户名'] = login.userName;
+          }
           urlArr = [];
-          $http.get(loginUrl).success(function(data){
+          $http(obj).success(function(data){
             if(data.result){
               var usrInfo = { //登录用户的cookies
                 UID: data.data['UID'],

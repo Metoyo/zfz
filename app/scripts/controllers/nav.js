@@ -2,8 +2,8 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
   'use strict';
 
   angular.module('zhifzApp.controllers.NavCtrl', [])
-    .controller('NavCtrl', ['$rootScope', '$scope', '$location', '$http', 'DataService',
-      function ($rootScope, $scope, $location, $http, DataService) {
+    .controller('NavCtrl', ['$rootScope', '$scope','$route', '$location', '$http', 'DataService',
+      function ($rootScope, $scope, $route, $location, $http, DataService) {
         /**
          * 定义变量
          */
@@ -255,11 +255,13 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         };
 
         /**
-         * 点击相应的模块刷新
+         * 点击相应的模块刷新 --
          */
         $scope.reloadModule = function(targUrl){
           if($location.$$url == targUrl){
-            $location.path($location.$$absUrl);
+            //$rootScope.reloadModule = true;
+            //$location.path($location.$$absUrl);
+            $route.reload();
           }
         };
 

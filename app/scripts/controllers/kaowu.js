@@ -9,15 +9,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            */
           var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
           var jgID = loginUsr['学校ID']; //登录用户学校
-          var logUid = loginUsr['UID']; //登录用户的UID
           var dftKm = JSON.parse($cookieStore.get('ckKeMu')); //默认选择的科目
           var keMuId = dftKm['科目ID']; //默认的科目ID
-          var lingYuId = dftKm['领域ID']; //默认的科目ID
           var kaoShiZuUrl = '/kaoshizu'; //考试组
           var daBaoShiJuanUrl = '/dabao_shijuan'; //打包试卷
           var faBuKaoShiZuUrl = '/fabu_kaoshizu'; //发布考试组
-          var kaoShengKaoShiUrl = '/kaosheng_kaoshi'; //考生考试
-          var zaiXianBaoMingUrl = '/zaixian_baoming'; //在线报名
           var kaoDianUrl = '/kaodian'; //考点
           var shiJuanZuUrl = '/shijuanzu'; //试卷组
           var keXuHaoXueShengUrl = '/kexuhao_xuesheng'; //由课序号查询学生
@@ -45,10 +41,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             showCcSjz: false, //显示场次用到的试卷组
             showStu: false, //显示考生列表
             selectedCc: '' //选中的场次
-            //selectShiJuan: [], //存放已选择试卷的数组
-            //baoMingMethod: '', //报名方式
-            //selectKaoShiId: '', // 选中考试的ID
-            //checkedAllChangCi: false,
           };
           $scope.kaochangData = '';
           $scope.pageParam = { //分页参数
@@ -57,14 +49,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             pageArr: [],
             disPage: []
           };
-          //$scope.tiXingArr = config.tiXingArr; //题型名称数组
-          //$scope.letterArr = config.letterArr; //题支的序号
-          //$scope.cnNumArr = config.cnNumArr; //汉语的大学数字
-          ////$rootScope.dashboard_shown = true;
-          //$scope.showAddStuBox = false; //显示添加考生页面
-          //$scope.isAddStuByKxh = false; //判断添加考生类型
-          //$scope.isAddStuByExcel = false; //判断添加考生类型
-          //$scope.keXuHaoData = '';
 
           /**
            * 查询考点
