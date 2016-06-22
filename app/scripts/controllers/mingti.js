@@ -98,10 +98,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         ];
 
         /**
-         * 查询科目题型 --
+         * 查询科目题型
          */
         var cxKmTx = function(){
-          var obj = {method: 'GET', url: xueXiaoKeMuTiXingUrl, params: {'学校ID': jgID, '科目ID': dftKm['科目ID']}};
+          var obj = {method: 'GET', url: xueXiaoKeMuTiXingUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result){
               $scope.kmtxList = data.data;
@@ -114,7 +114,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 获得大纲数据 --
+         * 获得大纲数据
          */
         var getDaGangData = function(){
           function _do(item) {
@@ -124,7 +124,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               Lazy(item['子节点']).each(_do);
             }
           }
-          var obj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': dftKm['科目ID'], '类型': 2}};
+          var obj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': keMuId, '类型': 2}};
           $scope.dgList = [];
           $http(obj).success(function(data){
             if(data.result){
@@ -151,7 +151,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         整理选中的知识点的ID和名称 --
+         整理选中的知识点的ID和名称
          */
         var selectZsdFun = function(){ //用于将选择的知识点变成字符串
           var zsdName = [];
@@ -178,7 +178,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 知识点反选 --
+         * 知识点反选
          */
         var zsdFxFun = function(zsd){
           function _do(item) {
@@ -192,7 +192,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 分页处理函数 --
+         * 分页处理函数
          */
         var pageMake = function(data){
           var perNumOfPage = 15; //每页15条数据
@@ -206,7 +206,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 查询题目详情 --
+         * 查询题目详情
          */
         var qryTiMuDetail = function(tmArr){
           if(tmArr && tmArr.length > 0){
@@ -228,7 +228,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 查询出题人 --
+         * 查询出题人
          */
         var qryChuTiRen = function(){
           var obj = {method: 'GET', url: chuTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
@@ -243,7 +243,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 查询录题人 --
+         * 查询录题人
          */
         var qryLuTiRen = function(){
           var obj = {method: 'GET', url: luTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
@@ -258,7 +258,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 查询题库 --
+         * 查询题库
          */
         var qryTiKu = function(){
           var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId}};
@@ -273,7 +273,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 展示不同的题型和模板 --
+         * 展示不同的题型和模板
          */
         var renderTpl = function(tpl){
           $scope.txTpl = tpl; //点击不同的题型变换不同的题型模板
@@ -281,7 +281,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 初始化需要查询到数据 --
+         * 初始化需要查询到数据
          */
         cxKmTx();
         getDaGangData();
@@ -290,7 +290,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         qryTiKu();
 
         /**
-         * 由所选的知识大纲，得到知识点 --
+         * 由所选的知识大纲，得到知识点
          */
         $scope.getDgZsdData = function(dgId){
           function _do(item) {
@@ -322,7 +322,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         点击checkbox得到checkbox的值 --
+         点击checkbox得到checkbox的值
          */
         $scope.toggleSelection = function(zsd) {
           function _do(item) {
@@ -377,7 +377,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 获得题型查询条件 --
+         * 获得题型查询条件
          */
         $scope.getTiXingId = function(qrytxId){
           if(qrytxId >= 1){
@@ -394,7 +394,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 获得难度查询条件 --
+         * 获得难度查询条件
          */
         $scope.getNanDuId = function(nd){
           var ndArr = [];
@@ -411,7 +411,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 得到分页数据 --
+         * 得到分页数据
          */
         $scope.pageGetData = function(pg){
           var cPg = pg || 1;
@@ -439,7 +439,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 查询试题的函数 --
+         * 查询试题的函数
          */
         $scope.qryTestFun = function(pg){
           $scope.loadingImgShow = true;
@@ -487,7 +487,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 通过题目ID查询试题 --
+         * 通过题目ID查询试题
          */
         $scope.qryTestByTiMuId = function(){
           function _do(item) {
@@ -523,7 +523,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 通过出题人的UID查询试题 --
+         * 通过出题人的UID查询试题
          */
         $scope.qryTiMuByChuTiRenId = function(){
           qryTmPar.ctr = $scope.mingTiParam.ctr ? $scope.mingTiParam.ctr : '';
@@ -533,7 +533,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 通过录题人的UID查询试题 --
+         * 通过录题人的UID查询试题
          */
         $scope.qryTiMuByLuTiRenId = function(){
           qryTmPar.ctr = $scope.mingTiParam.ltr ? $scope.mingTiParam.ltr : '';
@@ -543,7 +543,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 通过录题库查询试题 --
+         * 通过录题库查询试题
          */
         $scope.qryTiMuByTiKu = function(){
           qryTmPar.tk = $scope.mingTiParam.tiKuId ? $scope.mingTiParam.tiKuId : '';
@@ -553,7 +553,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 得到特定页面的数据 --
+         * 得到特定页面的数据
          */
         $scope.getFixedPageData = function(){
           var goToPage = parseInt($scope.mingTiParam.goToPageNum);
@@ -566,7 +566,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 添加新的试题 --
+         * 添加新的试题
          */
         $scope.addNewShiTi = function(){
           $scope.mingTiParam.isAddTiMu = true;
@@ -600,7 +600,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 题型模板加载 --
+         * 题型模板加载
          */
         $scope.addTiMuTpl = function(txId){
           $scope.newTiXingId = txId;
@@ -662,7 +662,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 点击添加题型的取消按钮后< div class="kmTxWrap">显示 --
+         * 点击添加题型的取消按钮后< div class="kmTxWrap">显示
          */
         $scope.cancelAddPattern = function(){
           $scope.kmTxWrap = true;
@@ -696,7 +696,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 查询题目来源的数据 --
+         * 查询题目来源的数据
          */
         var qryTiMuSourceFun = function(){
           if(!($scope.mingTiParam.tiMuLaiYuan && $scope.mingTiParam.tiMuLaiYuan.length)){
@@ -713,7 +713,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 添加题干编辑器 --
+         * 添加题干编辑器
          */
         $scope.addTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
@@ -721,7 +721,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 添加题支编辑器 --
+         * 添加题支编辑器
          */
         $scope.addTiZhiEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
@@ -729,14 +729,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 移除题干编辑器 --
+         * 移除题干编辑器
          */
         $scope.removeTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp('remove');
         };
 
         /**
-         * 移除题支编辑器 --
+         * 移除题支编辑器
          */
         $scope.removeTiZhiEditor = function(tx){
           if(tx >= 5){
@@ -749,7 +749,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示单选题题干编辑器 --
+         * 显示单选题题干编辑器
          */
         $scope.showDanXuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
@@ -757,28 +757,28 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示单选题题支编辑器 --
+         * 显示单选题题支编辑器
          */
         $scope.showDanXuanTiZhiEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
         };
 
         /**
-         * 给题支选项赋值 --
+         * 给题支选项赋值
          */
         $scope.fuZhiFun = function(idx){
           $scope.loopArr[idx].itemVal = $scope.mingTiParam.xuanZheTiZhi;
         };
 
         /**
-         * 填空题题支选项赋值 --
+         * 填空题题支选项赋值
          */
         $scope.fuZhiFunTk = function(tzCont, idx){
           tzCont.subTiZhiNum[idx].itmVal = $scope.mingTiParam.tianKongDaAn;
         };
 
         /**
-         * 显示多选题题干编辑器 --
+         * 显示多选题题干编辑器
          */
         $scope.showDuoXuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
@@ -786,14 +786,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示多选题题支编辑器 --
+         * 显示多选题题支编辑器
          */
         $scope.showDuoXuanTiZhiEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
         };
 
         /**
-         * 显示计算题干编辑器 --
+         * 显示计算题干编辑器
          */
         $scope.showJiSuanTiGanEditor = function(){
           $('.formulaEditTiGan').markItUp(mySettings);
@@ -801,7 +801,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示计算题答案编辑器 --
+         * 显示计算题答案编辑器
          */
         $scope.showJiSuanDaAnEditor = function(){
           $('.formulaEditTiZhi').markItUp(mySettings);
@@ -809,7 +809,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 多选题选择答案的效果的代码 --
+         * 多选题选择答案的效果的代码
          */
         $scope.chooseDaAn = function(da, stat){
           if(stat == 'dan'){
@@ -821,7 +821,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 判断题选择答案的效果的代码 --
+         * 判断题选择答案的效果的代码
          */
         $scope.choosePanDuanDaan = function(idx){
           $scope.mingTiParam.panDuanDaAn = idx;
@@ -829,7 +829,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 查找字符串出现的次数 --
+         * 查找字符串出现的次数
          */
         var countInstances = function(mainStr, subStr) {
           var count = 0; var offset = 0;
@@ -846,7 +846,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 填空题题干处理 --
+         * 填空题题干处理
          */
         $scope.addTkDaanInput = function(){
           var tgVal = $scope.timu['题目内容']['题干'];
@@ -886,21 +886,21 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 添加更多变形答案 --
+         * 添加更多变形答案
          */
         $scope.addSubTiZhi = function(tzCont){
           tzCont.subTiZhiNum.push({itmVal: '请输入答案'});
         };
 
         /**
-         * 删除一条变形答案 --
+         * 删除一条变形答案
          */
         $scope.removeSubTiZhi = function(tzCont, idx){
           tzCont.subTiZhiNum.splice(idx, 1);
         };
 
         /**
-         * 检查填空题输入的内容 --
+         * 检查填空题输入的内容
          */
         $scope.checkTiKongVal = function(tzCont, idx){
           var thisVal = tzCont.subTiZhiNum[idx].itmVal;
@@ -910,7 +910,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 点击添加按钮添加一项题支输入框 --
+         * 点击添加按钮添加一项题支输入框
          */
         $scope.addOneItem = function(){
           var vObj = {itemVal: '', ckd: false};
@@ -918,7 +918,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 点击删除按钮删除一项题支输入框 --
+         * 点击删除按钮删除一项题支输入框
          */
         $scope.deleteOneItem = function(idx, itm){
           if(itm.ckd){
@@ -930,7 +930,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 点击删除按钮删除一道题 --
+         * 点击删除按钮删除一道题
          */
         $scope.deleteItem = function(tmid, idx){
           if (confirm('确定要删除此题吗？')) {
@@ -948,7 +948,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 题目修改 --
+         * 题目修改
          */
         $scope.editItem = function(tm){
           $scope.newTiXingId = tm['题型ID'];
@@ -1146,7 +1146,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
 //        };
 
         /**
-         * 显示题干预览 --
+         * 显示题干预览
          */
         $scope.previewTiGan = function(){
           var tgCont = $scope.timu['题目内容']['题干'];
@@ -1156,7 +1156,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 显示题支预览 --
+         * 显示题支预览
          */
         $scope.previewTiZhi = function(){
           var tzCont = '';
@@ -1172,7 +1172,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 保存题目 --
+         * 保存题目
          */
         $scope.saveTiMu = function(){
           var mis = [];
@@ -1284,7 +1284,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 重新加载mathjax --
+         * 重新加载mathjax
          */
         $scope.$on('onRepeatLast', function(scope, element, attrs){
           MathJax.Hub.Config({

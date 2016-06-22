@@ -1,27 +1,27 @@
 <div class="studentWrapper">
   <h2>录课</h2>
-  <!--<div class="sub-nav fixed-top" ng-init="tabActive = 'ksgl'">-->
-    <!--<ul class="nav nav-tabs">-->
-      <!--<li class="active">-->
+  <div class="sub-nav fixed-top" ng-init="tabActive = 'ksgl'">
+    <ul class="nav nav-tabs">
+      <li class="active">
+        <a href="javascript:void(0)">
+          我的视频
+        </a>
+      </li>
+      <li class="pull-right" ng-show="showVideodeoPlay">
+        <button type="button" class="btn btn-danger mt5 mr10" ng-click="backToVideoList()">视频列表</button>
+      </li>
+      <!--<li ng-class="{active: tabActive == 'ksgl'}" class="active">-->
         <!--<a href="javascript:void(0)">-->
-          <!--我的视频-->
+          <!--我的收藏-->
         <!--</a>-->
       <!--</li>-->
-      <!--<li class="pull-right" ng-show="showVideodeoPlay">-->
-        <!--<button type="button" class="btn btn-danger mt5 mr10" ng-click="backToVideoList()">视频列表</button>-->
+      <!--<li ng-class="{active: tabActive == 'anks'}">-->
+        <!--<a href="javascript:void(0)">-->
+          <!--公共视频-->
+        <!--</a>-->
       <!--</li>-->
-      <!--&lt;!&ndash;<li ng-class="{active: tabActive == 'ksgl'}" class="active">&ndash;&gt;-->
-        <!--&lt;!&ndash;<a href="javascript:void(0)">&ndash;&gt;-->
-          <!--&lt;!&ndash;我的收藏&ndash;&gt;-->
-        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-      <!--&lt;!&ndash;</li>&ndash;&gt;-->
-      <!--&lt;!&ndash;<li ng-class="{active: tabActive == 'anks'}">&ndash;&gt;-->
-        <!--&lt;!&ndash;<a href="javascript:void(0)">&ndash;&gt;-->
-          <!--&lt;!&ndash;公共视频&ndash;&gt;-->
-        <!--&lt;!&ndash;</a>&ndash;&gt;-->
-      <!--&lt;!&ndash;</li>&ndash;&gt;-->
-    <!--</ul>-->
-  <!--</div>-->
+    </ul>
+  </div>
   <!--<div class="tab-content mt50">-->
     <!--<div class="row" ng-hide="showVideodeoPlay">-->
       <!--<ul class="media-list videoList">-->

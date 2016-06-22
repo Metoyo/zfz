@@ -929,10 +929,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           //得到知识大纲知识点的递归函数
           $scope.adminParams.activeNd = '';
           $scope.adminParams.selected_dg = dgId;
-          var selectDgZsd = [];
           function _do(item) {
             var zsdId = item['知识点ID'];
-            selectDgZsd.push(zsdId);
             $scope.publicKnowledge = Lazy($scope.publicKnowledge).reject(function(pgz){
               return pgz['知识点ID'] == zsdId;
             }).toArray();
