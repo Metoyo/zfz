@@ -19,6 +19,9 @@
       <button class="btn btn-primary" ng-click="saveDaGang()" ng-if="dgParam.dgType==2" ng-disabled="prDgBtnDisabled">
         保存大纲
       </button>
+      <button class="btn btn-primary" ng-click="setDefaultDg()" ng-disabled="!dgParam.slt_dg">
+        用作默认大纲
+      </button>
     </div>
     <div class="row dagangInput" ng-init="dgTpl = 'views/dagang/daGangPublic.html'">
       <div class="sub-nav fixed-top">

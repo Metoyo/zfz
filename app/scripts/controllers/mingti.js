@@ -9,6 +9,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
+        var yongHuSet = loginUsr['用户设置']; //用户设置
         var dftKm = JSON.parse($cookieStore.get('ckKeMu')); //默认选择的科目
         var keMuId = dftKm['科目ID']; //默认的科目ID
         var lingYuId = dftKm['领域ID']; //默认的科目ID
@@ -19,6 +20,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var chuTiRenUrl = '/chutiren'; //出题人
         var tiKuUrl = '/tiku'; //题库
         var tiMuLaiYuanUrl = '/timulaiyuan'; //题目来源
+        var yongHuUrl = '/yonghu'; //用户的增删改查
         var tiMuIdArr = []; //获得查询题目ID的数组
         var pageArr = []; //根据得到的数据定义一个分页数组
         var qryTmPar = { //查询题目参数对象
@@ -114,6 +116,29 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
+         * 设置用户的默认大纲
+         */
+        var setYongHuDefaultDg = function(parm){
+          var pObj = {
+            method: 'POST',
+            url: yongHuUrl,
+            data: {
+              'UID': logUid,
+              '用户设置': parm
+            }
+          };
+          $http(pObj).success(function(pData){
+            if(pData.result){
+              loginUsr['用户设置'] = JSON.parse(parm);
+              $cookieStore.put('ckUsr', JSON.stringify(loginUsr));
+            }
+            else{
+              DataService.alertInfFun('err', pData.error);
+            }
+          });
+        };
+
+        /**
          * 获得大纲数据
          */
         var getDaGangData = function(){
@@ -124,6 +149,15 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               Lazy(item['子节点']).each(_do);
             }
           }
+          var sltDg = '';
+          var reqSet = function(){
+            sltDg = Lazy($scope.allZsdgData).find(function(dg){
+              return dg['知识大纲ID'] == $scope.dgList[0]['知识大纲ID'];
+            });
+            yongHuSet['默认大纲']['知识大纲ID'] = sltDg['知识大纲ID'];
+            yongHuSet['默认大纲']['知识大纲名称'] = sltDg['知识大纲名称'];
+            setYongHuDefaultDg(JSON.stringify(yongHuSet));
+          };
           var obj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': keMuId, '类型': 2}};
           $scope.dgList = [];
           $http(obj).success(function(data){
@@ -136,9 +170,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                 $scope.dgList.push(dgObj);
               });
               $scope.allZsdgData = data.data;
-              var sltDg = Lazy($scope.allZsdgData).find(function(dg){
-                return dg['知识大纲ID'] == $scope.dgList[0]['知识大纲ID'];
-              });
+              if(yongHuSet['默认大纲']['知识大纲ID']){
+                sltDg = Lazy($scope.allZsdgData).find(function(dg){
+                  return dg['知识大纲ID'] == yongHuSet['默认大纲']['知识大纲ID'];
+                });
+                if(!sltDg){
+                  reqSet();
+                }
+              }
+              else{
+                reqSet();
+              }
               Lazy(sltDg['节点']).each(_do);
               $scope.mingTiParam.slt_dg = sltDg['知识大纲ID'];
               $scope.kowledgeList = sltDg;
@@ -303,6 +345,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           var sltDg = Lazy($scope.allZsdgData).find(function(dg){
             return dg['知识大纲ID'] == dgId;
           });
+          if(!yongHuSet['默认大纲']['知识大纲ID'] || (yongHuSet['默认大纲']['知识大纲ID'] != dgId)){
+            yongHuSet['默认大纲']['知识大纲ID'] = sltDg['知识大纲ID'];
+            yongHuSet['默认大纲']['知识大纲名称'] = sltDg['知识大纲名称'];
+            setYongHuDefaultDg(JSON.stringify(yongHuSet));
+          }
           Lazy(sltDg['节点']).each(_do);
           $scope.kowledgeList = sltDg;
         };

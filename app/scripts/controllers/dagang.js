@@ -14,11 +14,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         var lingYuId = dftKm['领域ID']; //默认的科目ID
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
         var zhiShiDianUrl = '/zhishidian'; //知识点
-        //var publicKnowledgeData = ''; //存放领域下的公共知识点
-        //var publicZsdArr = []; //存放公共知识点id的数组
-        //var zsdgZsdArr = []; //大纲管理页面，选择自建知识大纲，存放选中的知识大纲知识点id
+        var keMuConfUrl = '/kemu_conf'; //科目设置
         $scope.defaultKeMu = dftKm; //默认科目
-        //$scope.prDgBtnDisabled = true; //自建大纲的保存和用作默认大纲按钮是否可点
         $scope.publicZsdgList = []; //存放公共知识大纲的数组
         $scope.privateZsdgList = []; //存放自建知识大纲的数组
         $scope.loadingImgShow = false;
@@ -210,7 +207,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 那一个输入框被选中了 --
+         * 那一个输入框被选中了
          */
         $scope.getInputIndex = function(nd){
           $scope.dgParam.activeNd = nd;
@@ -281,7 +278,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               }
             }
             else{
-              obj.data['知识大纲名称'] = $scope.knowledgePr['知识大纲名称'];;
+              obj.data['知识大纲名称'] = $scope.knowledgePr['知识大纲名称'];
             }
             obj.data['节点'] = JSON.stringify($scope.knowledgePr['节点']);
           }
@@ -296,6 +293,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           $scope.loadingImgShow = true;
           $http(obj).success(function(data){
             if(data.result){
+              if($scope.dgParam.dgType == 2){
+                getDaGangData(2);
+                $scope.knowledgePr = '';
+                $scope.dgParam.slt_dg = '';
+              }
               $scope.dgParam.showDaGangAsNew = false;
               DataService.alertInfFun('suc', '大纲保存成功！');
             }
@@ -304,6 +306,91 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             }
             $scope.loadingImgShow = false;
           });
+        };
+
+        /**
+         * 设定默认大纲
+         */
+        $scope.setDefaultDg = function(){
+          var gObj = {
+            method: 'GET',
+            url: keMuConfUrl,
+            params: {
+              '学校ID': jgID,
+              '科目ID': keMuId
+            }
+          };
+          var pObj = {
+            method: 'POST',
+            url: keMuConfUrl,
+            data: {
+              '学校ID': jgID,
+              '科目ID': keMuId,
+              '科目设置': ''
+            }
+          };
+          var setPar = {};
+          $http(gObj).success(function(gData){
+            if(gData.result && gData.data){
+              if(typeof(gData.data) == 'string'){
+                gData.data = JSON.parse(gData.data);
+              }
+              setPar = gData.data;
+            }
+            else{
+              setPar = {
+                '默认大纲': {
+                  '知识大纲ID': '',
+                  '知识大纲名称': ''
+                }
+              };
+            }
+            if($scope.dgParam.dgType == 1){
+              setPar['默认大纲']['知识大纲ID'] = $scope.knowledgePb['知识大纲ID'];
+              setPar['默认大纲']['知识大纲名称'] = $scope.knowledgePb['知识大纲名称'];
+            }
+            if($scope.dgParam.dgType == 2){
+              setPar['默认大纲']['知识大纲ID'] = $scope.knowledgePr['知识大纲ID'];
+              setPar['默认大纲']['知识大纲名称'] = $scope.knowledgePr['知识大纲名称'];
+            }
+            pObj.data['科目设置'] = JSON.stringify(setPar);
+            $http(pObj).success(function(pData){
+              if(pData.result){
+                DataService.alertInfFun('suc', '设置成功！');
+              }
+              else{
+                DataService.alertInfFun('err', pData.error);
+              }
+            });
+          });
+        };
+
+        /**
+         * 删除大纲
+         */
+        $scope.deleteDaGang = function(){
+          var obj = {
+            method:'POST',
+            url:zhiShiDaGangUrl,
+            data: {
+              '知识大纲ID': $scope.knowledgePr['知识大纲ID'],
+              '状态': -1
+            }
+          };
+          if(confirm('你确定要删除此大纲吗？')){
+            $http(obj).success(function(data){
+              if(data.result){
+                getDaGangData(2);
+                $scope.knowledgePr = '';
+                $scope.dgParam.slt_dg = '';
+                DataService.alertInfFun('suc', '删除成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+            });
+          }
         };
 
         /**
@@ -319,5 +406,5 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "daGangList"]);
         });
 
-    }]);
+      }]);
 });
