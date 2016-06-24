@@ -6,33 +6,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          * 定义变量
          */
-        //var baseRzAPIUrl = config.apiurl_rz; //renzheng的api;
-        //var baseKwAPIUrl = config.apiurl_kw; //考务的api
-        //var baseSmAPIUrl = config.apiurl_sm; //扫描的api
-        //var token = config.token; //token的值
-        //var caozuoyuan = 0;//登录的用户的UID
-        //var jigouid = 0;
-        //var lingyuid = 0;
-        //var qryJiGouUrl = baseRzAPIUrl + 'jiGou?token=' + token + '&leibieid='; //由机构类别查询机构的url
-        //var qryKaoShiZuListUrl = baseKwAPIUrl + 'query_kaoshizu_liebiao?token=' + token + '&caozuoyuan='+ caozuoyuan; //查询考试列表的url
-        //var chaXunChangCiUrl = baseKwAPIUrl + 'query_changci?token=' + token + '&caozuoyuan=' + caozuoyuan + '&kszid='; //查询考试
-        //var scannerBaseUrl = baseSmAPIUrl + 'yuejuan/transfer_from_omr?omr_set='; //扫描的url
-        //var createPdfUrl = '/create_pdf'; //创建PDF
-        //var scannerInfo = { //扫描设定数据
-        //  selectInfo: {
-        //    jgid: '',
-        //    kmid: '',
-        //    kszid: '',
-        //    ksid: ''
-        //  },
-        //  inputInfo: {
-        //    omrksid: '',
-        //    sjaid: '',
-        //    sjbid: '',
-        //    xuehao: ''
-        //  }
-        //};
-        //新方法用到的变量
         var xueXiaoUrl = '/xuexiao'; //机构的增删改查
         var yongHuUrl = '/yonghu'; //用户的增删改查
         var yongHuJueSeUrl = '/yonghu_juese'; //用户角色URL
@@ -45,6 +18,10 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
         var tiKuUrl = '/tiku'; //题库
         var kaoDianUrl = '/kaodian'; //考点
+        var kaoShiZuUrl = '/kaoshizu'; //考试组
+        var shiJuanZuUrl = '/shijuanzu'; //试卷组
+        var createPdfUrl = '/create_pdf'; //创建PDF
+        var transferFromOmrUrl = '/transfer_from_omr'; //扫描设定
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
@@ -71,7 +48,20 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           lastPage: '',
           pageArr: []
         };
-        $scope.scanner = scannerInfo;
+        $scope.scanner = { //扫描设定数据
+          selectInfo: {
+            jgid: '',
+            kmid: '',
+            kszid: '',
+            ksid: ''
+          },
+          inputInfo: {
+            omrksid: '',
+            sjaid: '',
+            sjbid: '',
+            xuehao: ''
+          }
+        };
         $scope.cnNumArr = config.cnNumArr; //题支的序号
         $scope.usrInfo = loginUsr;
         $scope.kaochangData = '';
@@ -1693,184 +1683,182 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          *  扫描设定
          */
-        //$scope.renderScannerSetTpl = function(){
-        //  if(!($scope.jigou_list && $scope.jigou_list.length)){
-        //    DataService.getData(qryJiGouUrl + '1').then(function(data){
-        //      $scope.jigou_list = data;
-        //    });
-        //  }
-        //  $scope.isShenHeBox = false; //判断是不是审核页面
-        //  $scope.loadingImgShow = false;
-        //  $scope.adminSubWebTpl = 'views/renzheng/rz_scanner.html';
-        //};
+        $scope.renderScannerSetTpl = function(){
+          if(!($scope.jigou_list && $scope.jigou_list.length)){
+            getJgList(1);
+          }
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.loadingImgShow = false;
+          $scope.adminSubWebTpl = 'views/renzheng/rz_scanner.html';
+        };
 
         /**
          * 由所选机构，得到相应的科目，扫描设定
          */
         $scope.getKeMuList = function(jgid){
-          //if(jgid){
-          //  //var qryLy = qryLingYuUrl + '&jigouid=' + jgid,
-          //  //  dataArr = [];
-          //  //$scope.kemu_list = '';
-          //  //$scope.kaoChangList = '';
-          //  //$scope.scanner.selectInfo.kmid = '';
-          //  //DataService.getData(qryLy).then(function(lyData){
-          //  //  Lazy(lyData).each(function(ly, idx, lst){
-          //  //    Lazy(ly.CHILDREN).each(function(km, kmIdx, kmLst){
-          //  //      dataArr.push(km);
-          //  //    });
-          //  //  });
-          //  //  $scope.kemu_list = dataArr;
-          //  //});
-          //}
-          //else{
-          //  $scope.kemu_list = '';
-          //  DataService.alertInfFun('pmt', '请选择机构ID');
-          //}
+          if(jgid){
+            var obj = {method:'GET', url:xueXiaoKeMuUrl, params: {'学校ID': jgid}};
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.kemu_list = data.data;
+              }
+              else{
+                $scope.kemu_list = '';
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+              $scope.isShenHeBox = false;
+            });
+          }
+          else{
+            $scope.kemu_list = '';
+            DataService.alertInfFun('pmt', '请选择机构ID');
+          }
         };
 
         /**
          * 由所选科目，查询考试组
          */
-        //$scope.getKaoShiZuList = function(kmId){
-        //  var kaoShiZuListUrl = qryKaoShiZuListUrl;
-        //  if($scope.scanner.selectInfo.jgid){
-        //    kaoShiZuListUrl += '&jigouid=' + $scope.scanner.selectInfo.jgid;
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择机构！');
-        //    return ;
-        //  }
-        //  if(kmId){
-        //    kaoShiZuListUrl += '&lingyuid=' + kmId;
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择科目！');
-        //    return ;
-        //  }
-        //  kaoShiZuListUrl += '&zhuangtai=' + [0, 1, 2, 3, 4, 5, 6];
-        //  $http.get(kaoShiZuListUrl).success(function(data){
-        //    if(data && data.length >0){
-        //      $scope.kaoshizu_list = data;
-        //    }
-        //    else{
-        //      $scope.kaoshizu_list = '';
-        //      DataService.alertInfFun('err', data.error);
-        //    }
-        //  });
-        //};
+        $scope.getKaoShiZuList = function(kmId){
+          var obj = {
+            method: 'GET',
+            url: kaoShiZuUrl,
+            params: {
+              '学校ID': '',
+              '科目ID': '',
+              '返回试卷': true,
+              '状态': JSON.stringify([5, 6])
+            }
+          };
+          if($scope.scanner.selectInfo.jgid){
+            obj.params['学校ID'] = $scope.scanner.selectInfo.jgid;
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择机构！');
+            return ;
+          }
+          if(kmId){
+            obj.params['科目ID'] = kmId;
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择科目！');
+            return ;
+          }
+          $http(obj).success(function(data){
+            if(data.result >0){
+              $scope.kaoshizu_list = data.data;
+            }
+            else{
+              $scope.kaoshizu_list = '';
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
 
         /**
          * 由所选考试组，查询考试
          */
-        //$scope.getKaoShiList = function(kszid){
-        //  if(kszid){
-        //    var chaXunChangCi = chaXunChangCiUrl + kszid;
-        //    $http.get(chaXunChangCi).success(function(data) {
-        //      if (data && data.length > 0) {
-        //        var ccArr = [];
-        //        Lazy(data).groupBy('KAOSHI_ID').each(function(v, k, l){
-        //          var ccDist = Lazy(v).groupBy('KID').toObject();
-        //          Lazy(ccDist).each(function(v1, k1, l1){
-        //            var ccObj = v1[0];
-        //            var sjName = [];
-        //            var sjId = [];
-        //            var sjArr = [];
-        //            Lazy(v1).each(function(cc){
-        //              var sjObj = {
-        //                SHIJUANMINGCHENG: cc.SHIJUANMINGCHENG,
-        //                SHIJUAN_ID: cc.SHIJUAN_ID
-        //              };
-        //              sjName.push(cc.SHIJUANMINGCHENG);
-        //              sjId.push(cc.SHIJUAN_ID);
-        //              sjArr.push(sjObj);
-        //            });
-        //            ccObj.SHIJUANMINGCHENG = sjName.join(';');
-        //            ccObj.SHIJUAN_ID = sjId.join(';');
-        //            ccObj.shijuans = sjArr;
-        //            ccObj.kaoShiShiJian = DataService.baoMingDateFormat(ccObj.KAISHISHIJIAN, ccObj.JIESHUSHIJIAN);
-        //            ccArr.push(ccObj);
-        //          });
-        //        });
-        //        Lazy(ccArr).sortBy(function(cc){return cc.KAISHISHIJIAN});
-        //        $scope.kaoshi_list = ccArr;
-        //      }
-        //      else {
-        //        DataService.alertInfFun('err', data.error);
-        //      }
-        //    })
-        //  }
-        //  else{
-        //    $scope.kaoshi_list = '';
-        //    DataService.alertInfFun('pmt', '请选择考试组！');
-        //  }
-        //};
+        $scope.getKaoShiList = function(kszid){
+          if(kszid){
+            var fdTar = Lazy($scope.kaoshizu_list).find(function(ksz){
+              return ksz['考试组ID'] == kszid;
+            });
+            if(fdTar){
+              $scope.kaoshi_list = fdTar['考试'];
+            }
+            else{
+              $scope.kaoshi_list = '';
+            }
+          }
+          else{
+            $scope.kaoshi_list = '';
+            DataService.alertInfFun('pmt', '请选择考试组！');
+          }
+        };
 
         /**
          * 由考试得到试卷
          */
-        //$scope.getShiJuanList = function(ksid){
-        //  var selectKs = Lazy($scope.kaoshi_list).find(function(ks){
-        //    return ks.KAOSHI_ID == ksid;
-        //  });
-        //  if(selectKs){
-        //    $scope.shijuan_list = selectKs.shijuans;
-        //  }
-        //  else{
-        //    $scope.shijuan_list = '';
-        //    DataService.alertInfFun('pmt', '没有试卷信息！');
-        //  }
-        //};
+        $scope.getShiJuanList = function(ksid){
+          if(ksid){
+            var obj = {
+              method: 'GET',
+              url: shiJuanZuUrl,
+              params: {'考试ID': ksid, '返回试卷': true, '返回题目内容': false}
+            };
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.shijuan_list = data.data[0]['试卷'];
+              }
+              else{
+                $scope.shijuan_list = '';
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            $scope.shijuan_list = '';
+            DataService.alertInfFun('pmt', '没有试卷信息！');
+          }
+        };
 
         /**
          * 保存扫描仪设定信息
          */
-        //$scope.saveScannerSet = function(){
-        //  var omr_set = {
-        //    "考试组ID": $scope.scanner.selectInfo.kszid,
-        //    "考试ID": $scope.scanner.selectInfo.ksid,
-        //    "OMR考试ID": $scope.scanner.inputInfo.omrksid,
-        //    "试卷映射":[]
-        //  };
-        //  $scope.scannerResInfo = '';
-        //  if($scope.scanner.inputInfo.sjaid){
-        //    var obja = {"OMR试卷编号":"A","试卷ID": $scope.scanner.inputInfo.sjaid};
-        //    omr_set['试卷映射'].push(obja);
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请填写A卷的试卷ID！');
-        //    return ;
-        //  }
-        //  if($scope.scanner.inputInfo.sjbid){
-        //    var objb = {"OMR试卷编号":"B","试卷ID": $scope.scanner.inputInfo.sjbid};
-        //    omr_set['试卷映射'].push(objb);
-        //  }
-        //  if($scope.scanner.inputInfo.xuehao && $scope.scanner.inputInfo.xuehao.length > 0){
-        //    var newStr = $scope.scanner.inputInfo.xuehao.replace(/，/g, ',');
-        //    var xuehaoArr = newStr.split(',');
-        //    var xhObj = {'学号': ''};
-        //    xhObj['学号'] = xuehaoArr;
-        //    omr_set['筛选'] = xhObj;
-        //  }
-        //  if($scope.scanner.selectInfo.kszid && $scope.scanner.selectInfo.ksid){
-        //    var scannerUrl = scannerBaseUrl + JSON.stringify(omr_set);
-        //    $scope.loadingImgShow = true;
-        //    $http.get(scannerUrl).success(function(data){
-        //      if(data.result){
-        //        $scope.scannerResInfo = data.message;
-        //        $scope.loadingImgShow = false;
-        //      }
-        //      else{
-        //        $scope.loadingImgShow = false;
-        //        DataService.alertInfFun('err', data.error);
-        //      }
-        //    });
-        //  }
-        //  else{
-        //    $scope.loadingImgShow = false;
-        //    DataService.alertInfFun('pmt', '请选择考试组和考试！');
-        //  }
-        //};
+        $scope.saveScannerSet = function(){
+          var omr_set = {
+            '考试组ID': $scope.scanner.selectInfo.kszid,
+            '考试ID': $scope.scanner.selectInfo.ksid,
+            'OMR考试ID': $scope.scanner.inputInfo.omrksid,
+            '试卷映射':[]
+          };
+          $scope.scannerResInfo = '';
+          if($scope.scanner.inputInfo.sjaid){
+            var obja = {'OMR试卷编号':'A','试卷ID': $scope.scanner.inputInfo.sjaid};
+            omr_set['试卷映射'].push(obja);
+          }
+          else{
+            DataService.alertInfFun('pmt', '请填写A卷的试卷ID！');
+            return ;
+          }
+          if($scope.scanner.inputInfo.sjbid){
+            var objb = {'OMR试卷编号':'B','试卷ID': $scope.scanner.inputInfo.sjbid};
+            omr_set['试卷映射'].push(objb);
+          }
+          if($scope.scanner.inputInfo.xuehao && $scope.scanner.inputInfo.xuehao.length > 0){
+            var newStr = $scope.scanner.inputInfo.xuehao.replace(/，/g, ',');
+            var xuehaoArr = newStr.split(',');
+            var xhObj = {'学号': ''};
+            xhObj['学号'] = xuehaoArr;
+            omr_set['筛选'] = xhObj;
+          }
+          if($scope.scanner.selectInfo.kszid && $scope.scanner.selectInfo.ksid){
+            var obj = {
+              method: 'POST',
+              url: transferFromOmrUrl,
+              data: {
+                '转换参数': ''
+              }
+            };
+            obj.data['转换参数'] = JSON.stringify(omr_set);
+            //$scope.loadingImgShow = true;
+            //$http(obj).success(function(data){
+            //  if(data.result){
+            //    $scope.scannerResInfo = data.data;
+            //    $scope.loadingImgShow = false;
+            //  }
+            //  else{
+            //    $scope.scannerResInfo = '';
+            //    $scope.loadingImgShow = false;
+            //    DataService.alertInfFun('err', data.error);
+            //  }
+            //});
+          }
+          else{
+            $scope.loadingImgShow = false;
+            DataService.alertInfFun('pmt', '请选择考试组和考试！');
+          }
+        };
 
         /**
          * pdf设定

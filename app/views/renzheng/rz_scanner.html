@@ -9,7 +9,7 @@
       机构选择
     </label>
     <div class="col-md-4">
-      <select class="form-control" ng-options="jg.JIGOU_ID as jg.JIGOUMINGCHENG for jg in jigou_list"
+      <select class="form-control" ng-options="jg['学校ID'] as jg['学校名称'] for jg in jigou_list"
               ng-model="scanner.selectInfo.jgid" ng-change="getKeMuList(scanner.selectInfo.jgid)">
         <option value="">请选择</option>
       </select>
@@ -18,7 +18,7 @@
       科目选择
     </label>
     <div class="col-md-4">
-      <select class="form-control" ng-options="km.LINGYU_ID as km.LINGYUMINGCHENG for km in kemu_list"
+      <select class="form-control" ng-options="km['科目ID'] as km['科目名称'] for km in kemu_list"
               ng-model="scanner.selectInfo.kmid" ng-change="getKaoShiZuList(scanner.selectInfo.kmid)">
         <option value="">请选择</option>
       </select>
@@ -29,7 +29,7 @@
       考试组选择
     </label>
     <div class="col-md-4">
-      <select class="form-control" ng-options="ksz.KAOSHIZU_ID as ksz.KAOSHIZU_NAME for ksz in kaoshizu_list"
+      <select class="form-control" ng-options="ksz['考试组ID'] as ksz['考试组名称'] for ksz in kaoshizu_list"
               ng-model="scanner.selectInfo.kszid" ng-change="getKaoShiList(scanner.selectInfo.kszid)">
         <option value="">请选择</option>
       </select>
@@ -38,7 +38,7 @@
       考试选择
     </label>
     <div class="col-md-4">
-      <select class="form-control" ng-options="ks.KAOSHI_ID as ks.KAOSHI_MINGCHENG for ks in kaoshi_list"
+      <select class="form-control" ng-options="ks['考试ID'] as ks['考试名称'] for ks in kaoshi_list"
               ng-model="scanner.selectInfo.ksid" ng-change="getShiJuanList(scanner.selectInfo.ksid)">
         <option value="">请选择</option>
       </select>
@@ -63,7 +63,7 @@
       试卷ID
     </label>
     <div class="col-md-4">
-      <select class="form-control" ng-options="sj.SHIJUAN_ID as sj.SHIJUANMINGCHENG for sj in shijuan_list"
+      <select class="form-control" ng-options="sj['试卷ID'] for sj in shijuan_list"
               ng-model="scanner.inputInfo.sjaid">
         <option value="">请选择</option>
       </select>
@@ -80,7 +80,7 @@
       试卷ID
     </label>
     <div class="col-md-4">
-      <select class="form-control" ng-options="sj.SHIJUAN_ID as sj.SHIJUANMINGCHENG for sj in shijuan_list"
+      <select class="form-control" ng-options="sj['试卷ID'] for sj in shijuan_list"
               ng-model="scanner.inputInfo.sjbid">
         <option value="">请选择</option>
       </select>
@@ -97,7 +97,7 @@
   <div class="form-group text-right">
     <button type="button" class="btn btn-primary" ng-click="saveScannerSet()">提交</button>
   </div>
-  <div class="form-group" ng-if="scannerResInfo">
+  <div class="form-group" ng-show="scannerResInfo">
     <p>scannerResInfo['主观题答题数']</p>
     <p>scannerResInfo['客观题答题数']</p>
     <p>scannerResInfo['考生人数']</p>
