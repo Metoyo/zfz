@@ -5,7 +5,7 @@
       机构选择
     </label>
     <div class="col-md-4">
-      <select class="form-control" ng-options="jg.JIGOU_ID as jg.JIGOUMINGCHENG for jg in jigou_list"
+      <select class="form-control" ng-options="jg['学校ID'] as jg['学校名称'] for jg in jigou_list"
               ng-model="scanner.selectInfo.jgid" ng-change="getKeMuList(scanner.selectInfo.jgid)">
         <option value="">请选择</option>
       </select>
@@ -14,7 +14,7 @@
       科目选择
     </label>
     <div class="col-md-4">
-      <select class="form-control" ng-options="km.LINGYU_ID as km.LINGYUMINGCHENG for km in kemu_list"
+      <select class="form-control" ng-options="km['科目ID'] as km['科目名称'] for km in kemu_list"
               ng-model="scanner.selectInfo.kmid" ng-change="getKaoShiZuList(scanner.selectInfo.kmid)">
         <option value="">请选择</option>
       </select>
@@ -25,7 +25,7 @@
       考试组选择
     </label>
     <div class="col-md-10">
-      <select class="form-control" ng-options="ksz.KAOSHIZU_ID as ksz.KAOSHIZU_NAME for ksz in kaoshizu_list"
+      <select class="form-control" ng-options="ksz['考试组ID'] as ksz['考试组名称'] for ksz in kaoshizu_list"
               ng-model="scanner.selectInfo.kszid" ng-change="getKaoShiList(scanner.selectInfo.kszid)">
         <option value="">请选择</option>
       </select>

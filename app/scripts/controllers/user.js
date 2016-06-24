@@ -1841,18 +1841,18 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               }
             };
             obj.data['转换参数'] = JSON.stringify(omr_set);
-            //$scope.loadingImgShow = true;
-            //$http(obj).success(function(data){
-            //  if(data.result){
-            //    $scope.scannerResInfo = data.data;
-            //    $scope.loadingImgShow = false;
-            //  }
-            //  else{
-            //    $scope.scannerResInfo = '';
-            //    $scope.loadingImgShow = false;
-            //    DataService.alertInfFun('err', data.error);
-            //  }
-            //});
+            $scope.loadingImgShow = true;
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.scannerResInfo = data.data;
+                $scope.loadingImgShow = false;
+              }
+              else{
+                $scope.scannerResInfo = '';
+                $scope.loadingImgShow = false;
+                DataService.alertInfFun('err', data.error);
+              }
+            });
           }
           else{
             $scope.loadingImgShow = false;
@@ -1863,51 +1863,48 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          * pdf设定
          */
-        //$scope.renderPdfTpl = function(){
-        //  if(!($scope.jigou_list && $scope.jigou_list.length)){
-        //    DataService.getData(qryJiGouUrl + '1').then(function(data){
-        //      $scope.jigou_list = data;
-        //    });
-        //  }
-        //  $scope.isShenHeBox = false; //判断是不是审核页面
-        //  $scope.adminSubWebTpl = 'views/renzheng/rz_pdf.html';
-        //};
+        $scope.renderPdfTpl = function(){
+          if(!($scope.jigou_list && $scope.jigou_list.length)){
+            getJgList(1);
+          }
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.adminSubWebTpl = 'views/renzheng/rz_pdf.html';
+        };
 
         /**
          * 生成pdf
          */
-        //$scope.createPdf = function(stat){
-        //  var obj = {
-        //    token: token,
-        //    kaozhizuid: '',
-        //    xuexiaoname: '',
-        //    kaoshizuname: '',
-        //    pfdtype: stat
-        //  };
-        //  if($scope.scanner.selectInfo.kszid){
-        //    obj.kaozhizuid = $scope.scanner.selectInfo.kszid;
-        //    var findKaoShiZi = Lazy($scope.jigou_list).find(function(jg){
-        //      return jg.JIGOU_ID == $scope.scanner.selectInfo.jgid;
-        //    });
-        //    var findKaoShiZu = Lazy($scope.kaoshizu_list).find(function(ksz){
-        //      return ksz.KAOSHIZU_ID == $scope.scanner.selectInfo.kszid;
-        //    });
-        //    obj.xuexiaoname = findKaoShiZi.JIGOUMINGCHENG;
-        //    obj.kaoshizuname = findKaoShiZu.KAOSHIZU_NAME;
-        //    $http({method: 'GET', url: createPdfUrl, params: obj}).success(function(data){
-        //      if(data.result){
-        //        DataService.alertInfFun('suc', '生成成功！');
-        //      }
-        //      else{
-        //        DataService.alertInfFun('err', data.error);
-        //      }
-        //    });
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择考试组!');
-        //  }
-        //};
-
+        $scope.createPdf = function(stat){
+          var obj = {
+            token: token,
+            kaozhizuid: '',
+            xuexiaoname: '',
+            kaoshizuname: '',
+            pfdtype: stat
+          };
+          if($scope.scanner.selectInfo.kszid){
+            obj.kaozhizuid = $scope.scanner.selectInfo.kszid;
+            var findXueXiao = Lazy($scope.jigou_list).find(function(jg){
+              return jg['学校ID'] == $scope.scanner.selectInfo.jgid;
+            });
+            var findKaoShiZu = Lazy($scope.kaoshizu_list).find(function(ksz){
+              return ksz['考试组ID'] == $scope.scanner.selectInfo.kszid;
+            });
+            obj.xuexiaoname = findXueXiao['学校名称'];
+            obj.kaoshizuname = findKaoShiZu['考试组名称'];
+            $http({method: 'GET', url: createPdfUrl, params: obj}).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '生成成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择考试组!');
+          }
+        };
 
       }]);
 });
