@@ -25,7 +25,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         };
 
         /**
-         * 控制导航的代码
+         * 控制导航的代码 --
          */
         $scope.navClass = function (page) {
           var currentRoute = $location.path().substring(1);

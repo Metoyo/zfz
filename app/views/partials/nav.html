@@ -3,10 +3,9 @@
     <img src="/images/logo.png" style="width: 80px"/>
   </div>
   <div class="userInfo">
-    <a href="javascript:void(0)" ng-bind="session.userInfo.XINGMING" ng-click="showUserInfo()">
-    </a>
+    <a href="javascript:void(0)" ng-bind="session.userInfo.XINGMING" ng-click="showUserInfo()"></a>
     <!--<a href="/logout">退出</a>-->
-    <a href="/lingyu" ng-show="session.info.LINGYU > 1">修改默认科目</a>
+    <!--<a href="/lingyu" ng-show="session.info.LINGYU > 1">修改默认科目</a>-->
   </div>
   <ul class="list-group nav-list">
     <li class="list-group-item" ng-repeat="ul in urlArrs" ng-class="navClass('{{ul.myUrl}}')">
@@ -14,42 +13,6 @@
         <span class="nav-icon"></span> <span class="nav-name" ng-bind="ul.urlName"></span>
       </a>
     </li>
-    <!--<li class="list-group-item" ng-class="navClass('dagang')"-->
-        <!--ng-show="session.quanxianStr.indexOf('dagang')>=0">-->
-      <!--<a href="/dagang" class="dropdownToggle dagang" ng-click="reloadModule('/dagang')">-->
-        <!--<span class="nav-icon"></span> <span class="nav-name">大纲</span>-->
-      <!--</a>-->
-    <!--</li>-->
-    <!--<li class="list-group-item" ng-class="navClass('mingti')"-->
-        <!--ng-show="session.quanxianStr.indexOf('mingti')>=0">-->
-      <!--<a href="/mingti" class="dropdownToggle mingti" ng-click="reloadModule('/mingti')">-->
-        <!--<span class="nav-icon"></span> <span class="nav-name">命题</span>-->
-      <!--</a>-->
-    <!--</li>-->
-    <!--<li class="list-group-item" ng-class="navClass('zujuan')"-->
-        <!--ng-show="session.quanxianStr.indexOf('zujuan')>=0">-->
-      <!--<a href="/zujuan" class="dropdownToggle zujuan" ng-click="reloadModule('/zujuan')">-->
-        <!--<span class="nav-icon"></span> <span class="nav-name">组卷</span>-->
-      <!--</a>-->
-    <!--</li>-->
-    <!--<li class="list-group-item" ng-class="navClass('kaowu')"-->
-        <!--ng-show="session.quanxianStr.indexOf('kaowu')>=0">-->
-      <!--<a href="/kaowu" class="dropdownToggle kaowu" ng-click="reloadModule('/kaowu')">-->
-        <!--<span class="nav-icon"></span> <span class="nav-name">考务</span>-->
-      <!--</a>-->
-    <!--</li>-->
-    <!--<li class="list-group-item" ng-class="navClass('tongji')"-->
-        <!--ng-show="session.quanxianStr.indexOf('tongji')>=0">-->
-      <!--<a href="/tongji" class="dropdownToggle tongji" ng-click="reloadModule('/tongji')">-->
-        <!--<span class="nav-icon"></span> <span class="nav-name">统计</span>-->
-      <!--</a>-->
-    <!--</li>-->
-    <!--<li class="list-group-item" ng-class="navClass('student')"-->
-        <!--ng-show="session.quanxianStr.indexOf('student')>=0">-->
-      <!--<a href="/student" class="dropdownToggle student">-->
-        <!--<span class="nav-icon"></span> <span class="nav-name">学生</span>-->
-      <!--</a>-->
-    <!--</li>-->
   </ul>
   <div class="dsfoldBox">
     <a href="javascript:void(0)" ng-click="signOut()">退出</a>
