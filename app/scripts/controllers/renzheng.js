@@ -86,9 +86,11 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               var usrInfo = { //登录用户的cookies
                 UID: data.data['UID'],
                 '学校ID': data.data['学校ID'],
-                '用户名': data.data['用户名']
+                '用户名': data.data['用户名'],
+                '姓名': data.data['姓名']
                 //'用户设置': data.data['用户设置']
               };
+              $rootScope.xingMing = data.data['姓名'];
               if(data.data['用户设置']){
                 if(!data.data['用户设置']['默认大纲']){
                   data.data['用户设置']['默认大纲'] = {

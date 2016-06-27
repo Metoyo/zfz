@@ -9,7 +9,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var jgID = loginUsr['学校ID']; //登录用户学校
-        var logUid = loginUsr['UID']; //登录用户的UID
         var yongHuSet = loginUsr['用户设置']; //用户设置
         var dftKm = JSON.parse($cookieStore.get('ckKeMu')); //默认选择的科目
         var keMuId = dftKm['科目ID']; //默认的科目ID
@@ -268,7 +267,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               gdtmTempIds = Lazy(gdtmTempIds).uniq().toArray();
             }
             $scope.removeThisPage = false;
-            var obj = {method: 'GET', url: tiMuUrl, params: {'题目ID': JSON.stringify(tmArr)}};
+            var obj = {method: 'GET', url: tiMuUrl, params: {'返回题目内容': true, '题目ID': JSON.stringify(tmArr)}};
             $http(obj).success(function(data){ //查询题目详情
               if(data.result){
                 var count = 0;

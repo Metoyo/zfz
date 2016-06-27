@@ -3,7 +3,7 @@
     <img src="/images/logo.png" style="width: 80px"/>
   </div>
   <div class="userInfo">
-    <a href="javascript:void(0)" ng-bind="session.userInfo.XINGMING" ng-click="showUserInfo()"></a>
+    <a href="javascript:void(0)" ng-bind="xingMing" ng-click="showUserInfo()"></a>
     <!--<a href="/logout">退出</a>-->
     <!--<a href="/lingyu" ng-show="session.info.LINGYU > 1">修改默认科目</a>-->
   </div>
@@ -25,40 +25,40 @@
       </div>
       <div class="pwi-body plr10">
         <!--教师修改密码-->
-        <table class="table changePsw" ng-if="usr.YONGHULEIBIE==1">
+        <table class="table changePsw" ng-if="usr['用户类别']==1">
           <tr>
             <td>系统账号</td>
-            <td ng-bind="usr.YONGHUMING"></td>
+            <td ng-bind="usr['用户名']"></td>
           </tr>
           <tr>
             <td>真实姓名</td>
-            <td ng-bind="usr.XINGMING"></td>
+            <td ng-bind="usr['姓名']"></td>
           </tr>
           <tr>
             <td>邮箱</td>
-            <td ng-bind="usr.YOUXIANG"></td>
+            <td ng-bind="usr['邮箱']"></td>
           </tr>
           <tr>
             <td>手机</td>
-            <td ng-bind="usr.SHOUJI"></td>
+            <td ng-bind="usr['手机']"></td>
           </tr>
-          <tr>
-            <td style="padding-bottom: 20px">单位</td>
-            <td ng-bind="usr.JIGOUMINGCHENG"></td>
-          </tr>
-          <tr>
-            <td>个人简介</td>
-            <td>
-              <div ng-init="showGeRenJianLi=false">
-                <a href="javascript:void(0)" ng-hide="showGeRenJianLi" ng-click="showGeRenJianLi=true">展开</a>
-                <a href="javascript:void(0)" ng-show="showGeRenJianLi" ng-click="showGeRenJianLi=false">收起</a>
-              </div>
-              <div ng-show="showGeRenJianLi">
-                <textarea cols="30" rows="5" class="form-control" ng-model="usr.GERENJIANLI"></textarea>
-                <button class="btn btn-primary mt10 pull-right" ng-click="saveGenRenJianLi()">提交</button>
-              </div>
-            </td>
-          </tr>
+          <!--<tr>-->
+            <!--<td style="padding-bottom: 20px">单位</td>-->
+            <!--<td ng-bind="usr.JIGOUMINGCHENG"></td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td>个人简介</td>-->
+            <!--<td>-->
+              <!--<div ng-init="showGeRenJianLi=false">-->
+                <!--<a href="javascript:void(0)" ng-hide="showGeRenJianLi" ng-click="showGeRenJianLi=true">展开</a>-->
+                <!--<a href="javascript:void(0)" ng-show="showGeRenJianLi" ng-click="showGeRenJianLi=false">收起</a>-->
+              <!--</div>-->
+              <!--<div ng-show="showGeRenJianLi">-->
+                <!--<textarea cols="30" rows="5" class="form-control" ng-model="usr['详情']"></textarea>-->
+                <!--<button class="btn btn-primary mt10 pull-right" ng-click="saveGenRenJianLi()">提交</button>-->
+              <!--</div>-->
+            <!--</td>-->
+          <!--</tr>-->
           <tr>
             <th>修改密码</th>
             <th></th>
@@ -75,121 +75,121 @@
           <tr>
             <td colspan="2" class="modifuMiMaInfo clRed"></td>
           </tr>
-          <tr>
-            <th>科目</th>
-            <th>职务</th>
-          </tr>
-          <tr ng-repeat="ly in usr.LINGYU">
-            <td ng-bind="ly.LINGYUMINGCHENG"></td>
-            <td ng-bind="ly.jueseStr"></td>
-          </tr>
-          <tr>
-            <th>添加学科领域</th>
-            <th>
-              <button type="button" class="btn btn-primary pull-right" ng-click="saveNewLingYu()">
-                保存新增学科领域
-              </button>
-            </th>
-          </tr>
-          <tr>
-            <td>选择领域</td>
-            <td>
-              <select class="form-control myField" ng-model="navData.select_ly"
-                      ng-change="getKemuList(navData.select_ly)"
-                      ng-options="ly.LINGYU_ID as ly.LINGYUMINGCHENG for ly in lingYuList">
-                <option value="">请选择</option>
-              </select>
-            </td>
-          </tr>
-          <tr>
-            <td>新添科目</td>
-            <td>
-              <div class="selectedObjectBox">
-                <div class="selectedObjectList pull-left wp100 bdb mb10" ng-repeat="oar in objAndRight">
-                  <div class="pull-left">
-                    <p class="kemumingcheng">
-                      <span>科目：</span>
-                      <span class="objectName">{{oar.lingyu[0].LINGYUMINGCHENG}}</span>
-                    </p>
-                    <p class="kemuquanxian">
-                      <span>职务：</span>
-                      <span class="rightName">{{oar.juese.jueseName.toString()}}</span>
-                    </p>
-                  </div>
-                  <div class="btn-can pull-right">
-                    <a href="javascript:void(0)" ng-click="delSelectedObject($index)">
-                      <span class="glyphicon glyphicon-remove-circle"></span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td width="110px">科目和职位</td>
-            <td>
-              <div ng-show="kemu_list.length">
-                <div class="form-group col-md-12">
-                  <label>科目</label>
-                  <div class="chooseObject">
-                    <label class="radio-inline" ng-repeat="km in kemu_list">
-                      <input type="radio" name="objectName" value="{{km.LINGYU_ID}}"
-                             ng-click="getLingYuVal($index)">
-                      <span>{{km.LINGYUMINGCHENG}}</span>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-group col-md-12">
-                  <label>职务</label>
-                  <div class="chooseRight">
-                    <label class="checkbox-inline" ng-repeat="js in juese_list">
-                      <input type="checkbox" name="rightName" value="{{js.JUESE_ID}}"
-                             ng-click="getJueSeArr($index)">
-                      <span>{{js.JUESEMINGCHENG}}</span>
-                    </label>
-                  </div>
-                </div>
-                <div class="form-group col-md-12 text-right">
-                  <button type="button" class="btn btn-primary" ng-disabled="!linyuValue || !jueseValue"
-                          ng-click="getObjectAndRight()">
-                    添加
-                  </button>
-                </div>
-              </div>
-            </td>
-          </tr>
+          <!--<tr>-->
+            <!--<th>科目</th>-->
+            <!--<th>职务</th>-->
+          <!--</tr>-->
+          <!--<tr ng-repeat="ly in usr.LINGYU">-->
+            <!--<td ng-bind="ly.LINGYUMINGCHENG"></td>-->
+            <!--<td ng-bind="ly.jueseStr"></td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<th>添加学科领域</th>-->
+            <!--<th>-->
+              <!--<button type="button" class="btn btn-primary pull-right" ng-click="saveNewLingYu()">-->
+                <!--保存新增学科领域-->
+              <!--</button>-->
+            <!--</th>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td>选择领域</td>-->
+            <!--<td>-->
+              <!--<select class="form-control myField" ng-model="navData.select_ly"-->
+                      <!--ng-change="getKemuList(navData.select_ly)"-->
+                      <!--ng-options="ly.LINGYU_ID as ly.LINGYUMINGCHENG for ly in lingYuList">-->
+                <!--<option value="">请选择</option>-->
+              <!--</select>-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td>新添科目</td>-->
+            <!--<td>-->
+              <!--<div class="selectedObjectBox">-->
+                <!--<div class="selectedObjectList pull-left wp100 bdb mb10" ng-repeat="oar in objAndRight">-->
+                  <!--<div class="pull-left">-->
+                    <!--<p class="kemumingcheng">-->
+                      <!--<span>科目：</span>-->
+                      <!--<span class="objectName">{{oar.lingyu[0].LINGYUMINGCHENG}}</span>-->
+                    <!--</p>-->
+                    <!--<p class="kemuquanxian">-->
+                      <!--<span>职务：</span>-->
+                      <!--<span class="rightName">{{oar.juese.jueseName.toString()}}</span>-->
+                    <!--</p>-->
+                  <!--</div>-->
+                  <!--<div class="btn-can pull-right">-->
+                    <!--<a href="javascript:void(0)" ng-click="delSelectedObject($index)">-->
+                      <!--<span class="glyphicon glyphicon-remove-circle"></span>-->
+                    <!--</a>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td width="110px">科目和职位</td>-->
+            <!--<td>-->
+              <!--<div ng-show="kemu_list.length">-->
+                <!--<div class="form-group col-md-12">-->
+                  <!--<label>科目</label>-->
+                  <!--<div class="chooseObject">-->
+                    <!--<label class="radio-inline" ng-repeat="km in kemu_list">-->
+                      <!--<input type="radio" name="objectName" value="{{km.LINGYU_ID}}"-->
+                             <!--ng-click="getLingYuVal($index)">-->
+                      <!--<span>{{km.LINGYUMINGCHENG}}</span>-->
+                    <!--</label>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group col-md-12">-->
+                  <!--<label>职务</label>-->
+                  <!--<div class="chooseRight">-->
+                    <!--<label class="checkbox-inline" ng-repeat="js in juese_list">-->
+                      <!--<input type="checkbox" name="rightName" value="{{js.JUESE_ID}}"-->
+                             <!--ng-click="getJueSeArr($index)">-->
+                      <!--<span>{{js.JUESEMINGCHENG}}</span>-->
+                    <!--</label>-->
+                  <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group col-md-12 text-right">-->
+                  <!--<button type="button" class="btn btn-primary" ng-disabled="!linyuValue || !jueseValue"-->
+                          <!--ng-click="getObjectAndRight()">-->
+                    <!--添加-->
+                  <!--</button>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</td>-->
+          <!--</tr>-->
         </table>
         <!--学生修改密码-->
-        <table class="table changePsw" ng-if="usr.YONGHULEIBIE==2">
+        <table class="table changePsw" ng-if="usr['用户类别']==2">
           <tr>
             <td>用户编号</td>
-            <td ng-bind="usr.UID"></td>
+            <td ng-bind="usr['UID']"></td>
           </tr>
           <tr>
             <td>真实姓名</td>
-            <td ng-bind="usr.XINGMING"></td>
+            <td ng-bind="usr['姓名']"></td>
           </tr>
           <tr>
             <td>邮箱</td>
-            <td ng-bind="usr.YOUXIANG"></td>
+            <td ng-bind="usr['邮箱']"></td>
           </tr>
-          <tr>
-            <td style="padding-bottom: 20px">学校</td>
-            <td ng-bind="usr.JIGOUMINGCHENG"></td>
-          </tr>
-          <tr>
-            <td>个人简介</td>
-            <td>
-              <div ng-init="showGeRenJianLi=false">
-                <a href="javascript:void(0)" ng-hide="showGeRenJianLi" ng-click="showGeRenJianLi=true">展开</a>
-                <a href="javascript:void(0)" ng-show="showGeRenJianLi" ng-click="showGeRenJianLi=false">收起</a>
-              </div>
-              <div ng-show="showGeRenJianLi">
-                <textarea cols="30" rows="5" class="form-control" ng-model="usr.GERENJIANLI"></textarea>
-                <button class="btn btn-primary mt10 pull-right" ng-click="saveGenRenJianLi()">提交</button>
-              </div>
-            </td>
-          </tr>
+          <!--<tr>-->
+            <!--<td style="padding-bottom: 20px">学校</td>-->
+            <!--<td ng-bind="usr.JIGOUMINGCHENG"></td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td>个人简介</td>-->
+            <!--<td>-->
+              <!--<div ng-init="showGeRenJianLi=false">-->
+                <!--<a href="javascript:void(0)" ng-hide="showGeRenJianLi" ng-click="showGeRenJianLi=true">展开</a>-->
+                <!--<a href="javascript:void(0)" ng-show="showGeRenJianLi" ng-click="showGeRenJianLi=false">收起</a>-->
+              <!--</div>-->
+              <!--<div ng-show="showGeRenJianLi">-->
+                <!--<textarea cols="30" rows="5" class="form-control" ng-model="usr.GERENJIANLI"></textarea>-->
+                <!--<button class="btn btn-primary mt10 pull-right" ng-click="saveGenRenJianLi()">提交</button>-->
+              <!--</div>-->
+            <!--</td>-->
+          <!--</tr>-->
           <tr>
             <th>修改密码</th>
             <th></th>
@@ -198,8 +198,8 @@
             <td style="padding-bottom: 20px">新密码</td>
             <td>
               <input type="text" class="newPassWord" ng-model="navData.newPsd">
-              <button type="button" class="btn btn-primary" ng-click="modifyPassWord()"
-                      ng-disabled="!navData.newPsd">修改
+              <button type="button" class="btn btn-primary" ng-click="modifyPassWord()" ng-disabled="!navData.newPsd">
+                修改密码
               </button>
             </td>
           </tr>

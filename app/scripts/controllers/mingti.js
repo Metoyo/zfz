@@ -145,11 +145,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           function _do(item) {
             item.ckd = false;
             item.fld = true;
+            qryTmPar.zsd.push(item['知识点ID']);
             if(item['子节点'] && item['子节点'].length > 0){
               Lazy(item['子节点']).each(_do);
             }
           }
           var sltDg = '';
+          qryTmPar.zsd = [];
           var reqSet = function(){
             sltDg = Lazy($scope.allZsdgData).find(function(dg){
               return dg['知识大纲ID'] == $scope.dgList[0]['知识大纲ID'];
@@ -253,7 +255,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var qryTiMuDetail = function(tmArr){
           if(tmArr && tmArr.length > 0){
             $scope.loadingImgShow = true;
-            var obj = {method: 'GET', url: tiMuUrl, params: {'题目ID': JSON.stringify(tmArr)}};
+            var obj = {method: 'GET', url: tiMuUrl, params: {'返回题目内容': true, '题目ID': JSON.stringify(tmArr)}};
             $http(obj).success(function(data){ //查询题目详情
               if(data.result){
                 Lazy(data.data).each(function(tm, idx, lst){
@@ -335,9 +337,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 由所选的知识大纲，得到知识点
          */
         $scope.getDgZsdData = function(dgId){
+          qryTmPar.zsd = [];
           function _do(item) {
             item.ckd = false;
             item.fld = true;
+            qryTmPar.zsd.push(item['知识点ID']);
             if(item['子节点'] && item['子节点'].length > 0){
               Lazy(item['子节点']).each(_do);
             }
@@ -352,6 +356,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           }
           Lazy(sltDg['节点']).each(_do);
           $scope.kowledgeList = sltDg;
+          $scope.qryTestFun();
         };
 
         /**
