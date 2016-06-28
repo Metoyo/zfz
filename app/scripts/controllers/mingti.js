@@ -17,7 +17,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
         var tiMuUrl = '/timu'; //题目的URL
         var luTiRenUrl = '/lutiren'; //录题人
-        var chuTiRenUrl = '/chutiren'; //出题人
+        var keMuJiaoShiUrl = '/kemu_jiaoshi'; //学校教师
         var tiKuUrl = '/tiku'; //题库
         var tiMuLaiYuanUrl = '/timulaiyuan'; //题目来源
         var yongHuUrl = '/yonghu'; //用户的增删改查
@@ -275,7 +275,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 查询出题人
          */
         var qryChuTiRen = function(){
-          var obj = {method: 'GET', url: chuTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
+          var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result){
               $scope.chuTiRens = data.data;
@@ -1238,9 +1238,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                 daArr.push(idx);
               }
             });
-            tiMuData['题目内容']['选项'] = tzArr.length ? JSON.stringify(tzArr) : '';
+            tiMuData['题目内容']['选项'] = tzArr.length ? tzArr : [];
             if(daArr && daArr.length > 0){
-              tiMuData['题目内容']['答案'] = $scope.newTiXingId == 1 ? daArr[0] : JSON.stringify(daArr);
+              tiMuData['题目内容']['答案'] = $scope.newTiXingId == 1 ? daArr[0] : daArr;
             }
             else{
               mis.push('答案');

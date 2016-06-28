@@ -21,7 +21,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         var itemNumPerPage = 10; //每页显示多少条数据
         var paginationLength = 11; //分页部分，页码的长度，目前设定为11
         var originSjzData = ''; //存放试卷组原始数据的变量
-        var chuTiRenUrl = '/chutiren'; //出题人
+        var keMuJiaoShiUrl = '/kemu_jiaoshi'; //学校教师
         var tiMuIdArr = []; //获得查询题目ID的数组
         var pageArr = []; //根据得到的数据定义一个分页数组
         var qryTmPar = { //查询题目参数对象
@@ -115,7 +115,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 查询科目题型 --
+         * 查询科目题型
          */
         var kmTxData = function(){
           if($scope.kmtxList && $scope.kmtxList.length > 0){
@@ -144,7 +144,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 查询题库 --
+         * 查询题库
          */
         var qryTiKu = function(){
           if(!($scope.tiKuList && $scope.tiKuList.length > 0)){
@@ -196,7 +196,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         整理选中的知识点的ID和名称 --
+         整理选中的知识点的ID和名称
          */
         var selectZsdFun = function(){ //用于将选择的知识点变成字符串
           var zsdName = [];
@@ -218,14 +218,17 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
           $scope.zuJuanParam.rlZsd = zsdId;
           $scope.zuJuanParam.rlZsdName = zsdName;
+          if($scope.onlyShowAddRuleBox){
+            qryTestNum();
+          }
         };
 
         /**
-         * 查询出题人 --
+         * 查询出题人
          */
         var qryChuTiRen = function(){
           if(!($scope.chuTiRens && $scope.chuTiRens.length > 0)){
-            var obj = {method: 'GET', url: chuTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
+            var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
             $http(obj).success(function(data){
               if(data.result){
                 $scope.chuTiRens = data.data;
@@ -238,7 +241,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 分页处理函数 --
+         * 分页处理函数
          */
         var pageMake = function(data){
           var perNumOfPage = 15; //每页15条数据
@@ -252,7 +255,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 查询题目详情 --
+         * 查询题目详情
          */
         var qryTiMuDetail = function(tmArr){
           if(tmArr && tmArr.length > 0){
@@ -375,7 +378,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             sjMsg: '', //试卷题目是否全部选出
             msgClr: true, //信息的颜色
             showDaAn: false, //试卷显示答案
-            showSjTitle: false //显示试卷表头
+            saveSjBtn: false, //保存试卷按钮
+            timuNum: '' //符合条件的题目数量
           };
           Lazy($scope.tiKuList).each(function(tkl){
             tkl.ckd = false;
@@ -434,7 +438,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         getDaGangData();
 
         /**
-         * 由所选的知识大纲，得到知识点 --
+         * 由所选的知识大纲，得到知识点
          */
         $scope.getDgZsdData = function(dgId){
           function _do(item) {
@@ -452,7 +456,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 查询试卷概要的分页代码 --
+         * 查询试卷概要的分页代码
          */
         $scope.getSjzPageData = function(pg){
           var pgNum = pg - 1;
@@ -484,7 +488,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           resetFun();
           $scope.zj_tabActive = 'shiJuan';
           $scope.zjDaGangListShow = false;
-          $scope.subDsShow = false;
+          $scope.subDsShow = true;
           $scope.selectSjz = '';
           $scope.cgTiMuObj = { //换题用到的参数
             daTi: '',
@@ -509,6 +513,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.sjzSet['组卷方式'] = tp;
           $scope.zjDaGangListShow = true; //控制加载规则组卷的css
           if(tp == '规则'){
+            $scope.sjzSet['试卷数量'] = 1;
             $scope.zj_tabActive = 'ruleMakePaper';
             $scope.zjTpl = 'views/zujuan/zj_ruleMakePaper.html'; //加载规则组卷模板
           }
@@ -616,7 +621,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 获得难度查询条件 --
+         * 获得难度查询条件
          */
         $scope.getNanDuId = function(nd, tp){
           var ndArr = [];
@@ -631,6 +636,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             });
             $scope.zuJuanParam.rlNd = ndArr;
             $scope.zuJuanParam.rlNdNm = ndArrNm;
+            qryTestNum();
           }
           if(tp == 'qr'){
             Lazy($scope.tmNanDuList).each(function(nd){
@@ -658,6 +664,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           });
           $scope.zuJuanParam.rlTk = tkArr;
           $scope.zuJuanParam.rlTkNm = tkArrNm;
+          if($scope.onlyShowAddRuleBox){
+            qryTestNum();
+          }
         };
 
         /**
@@ -737,7 +746,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 得到分页数据 --
+         * 得到分页数据
          */
         $scope.pageGetData = function(pg){
           var cPg = pg || 1;
@@ -765,7 +774,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 查询试题的函数 --
+         * 查询试题的函数
          */
         var qryTestFun = function(pg){
           $scope.loadingImgShow = true;
@@ -830,7 +839,50 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 通过录题库查询试题 --
+         * 题目数量
+         */
+        var qryTestNum = function(){
+          var obj = {
+            method: 'GET',
+            url: tiMuUrl,
+            params: {
+              '学校ID': jgID,
+              '科目ID': keMuId,
+              '只返回题目数': true
+            }
+          };
+          var mis = [];
+          $scope.zuJuanParam.timuNum = '';
+          if(!$scope.zuJuanParam.rlZsd.length){
+            mis.push('知识点');
+          }
+          if(!$scope.zuJuanParam.rlTxId){
+            mis.push('题型');
+          }
+          if(!$scope.zuJuanParam.rlNd.length){
+            mis.push('难度');
+          }
+          if(!$scope.zuJuanParam.rlTk.length){
+            mis.push('题库');
+          }
+          if(!mis.length){
+            obj.params['知识点'] = JSON.stringify($scope.zuJuanParam.rlZsd);
+            obj.params['题型'] = $scope.zuJuanParam.rlTxId;
+            obj.params['难度'] = JSON.stringify($scope.zuJuanParam.rlNd);
+            obj.params['题库'] = JSON.stringify($scope.zuJuanParam.rlTk);
+            $http(obj).success(function(data){ //查询题目列表
+              if(data.result){
+                $scope.zuJuanParam.timuNum = data.data['题目数'];
+              }
+              else{
+                $scope.zuJuanParam.timuNum = '';
+              }
+            });
+          }
+        };
+
+        /**
+         * 通过录题库查询试题
          */
         $scope.qryTiMuByTiKu = function(){
           qryTmPar.tk = $scope.zuJuanParam.tiKuId ? $scope.zuJuanParam.tiKuId : '';
@@ -838,7 +890,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 通过出题人的UID查询试题 --
+         * 通过出题人的UID查询试题
          */
         $scope.qryTiMuByChuTiRenId = function(){
           qryTmPar.ctr = $scope.zuJuanParam.ctr ? $scope.zuJuanParam.ctr : '';
@@ -854,7 +906,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 通过创建时间查询试题 --
+         * 通过创建时间查询试题
          */
         $scope.qryTiMuByCjsj = function(){
           if($scope.zuJuanParam.cjsjKs){
@@ -865,7 +917,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         * 得到特定页面的数据 --
+         * 得到特定页面的数据
          */
         $scope.getFixedPageData = function(){
           var goToPage = parseInt($scope.zuJuanParam.goToPageNum);
@@ -912,7 +964,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         };
 
         /**
-         点击checkbox得到checkbox的值 --
+         点击checkbox得到checkbox的值
          */
         $scope.toggleSelection = function(zsd) {
           function _do(item) {
@@ -1010,9 +1062,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             if(!$scope.zuJuanParam.rlNd.length){
               mis.push('难度');
             }
-            if(!$scope.zuJuanParam.rlTk.length){
-              mis.push('题库');
-            }
+            //if(!$scope.zuJuanParam.rlTk.length){
+            //  mis.push('题库');
+            //}
             if(!$scope.zuJuanParam.rlZsd.length){
               mis.push('知识点');
             }
@@ -1418,7 +1470,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               });
             });
             if(tiMuIds.length > 0){
-              var obj = {method: 'GET', url: tiMuUrl, params: {'题目ID': JSON.stringify(tiMuIds)}};
+              var obj = {method: 'GET', url: tiMuUrl, params: {'题目ID': JSON.stringify(tiMuIds), '返回题目内容': true}};
               $http(obj).success(function(data){ //查询题目详情
                 if(data.result){
                   tmArr = data.data;
@@ -1486,9 +1538,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 $timeout(reloadFun, 500);
               });
             }
-
           }
           if(tp == '规则'){
+            $scope.zuJuanParam.saveSjBtn = true;
             Lazy($scope.sjzSet['组卷规则']).each(function(dt){
               var sjrArr = dt['随机题目'];
               var gdtmArr = dt['固定题目'];
@@ -1563,18 +1615,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             else{
               DataService.alertInfFun('pmt', '没有符合条件的试卷！');
             }
-          }
-        };
-
-        /**
-         * 生成PDF
-         */
-        $scope.createPDF = function(){
-          if($scope.paperDtl){
-
-          }
-          else{
-            DataService.alertInfFun('pmt', '请选择试卷！');
           }
         };
 

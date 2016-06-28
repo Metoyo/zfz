@@ -349,7 +349,8 @@ a.add-btn:hover span {
   border: 2px solid #6c92ff;
   padding: 0;
   margin-top: 7px;
-  margin-left: 25px; }
+  margin-left: 25px;
+  min-height: inherit; }
   .form-body .radio span {
     width: 20px;
     height: 20px;

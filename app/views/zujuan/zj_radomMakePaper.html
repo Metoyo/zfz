@@ -26,7 +26,8 @@
           <label class="col-sm-1 control-label">数量</label>
           <div class="col-sm-2">
             <input type="text" class="form-control txNum" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
-                   onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-model="zuJuanParam.rlTmNum"/>
+                   onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-model="zuJuanParam.rlTmNum" style="width: 60px;display: inline-block;"/>
+            <span ng-bind="'/'+ zuJuanParam.timuNum" ng-show="zuJuanParam.timuNum"></span>
           </div>
           <label class="col-sm-1 control-label">小题分值</label>
           <div class="col-sm-2">
@@ -81,8 +82,7 @@
             <th>数量</th>
             <th>分值</th>
             <th>难度</th>
-            <th>使用题目池</th>
-            <th>限定题库</th>
+            <th>使用题库</th>
             <th>删除</th>
           </tr>
           <tr ng-repeat="sjtm in addSjz.sltDati['随机题目']">
@@ -94,10 +94,8 @@
             <td ng-bind="sjtm['题目分值']"></td>
             <td ng-bind="sjtm['难度名称'].join(',')"></td>
             <td>
-              <span ng-show="sjtm['使用题目池']">是</span>
-              <span ng-hide="sjtm['使用题目池']">否</span>
+              <span ng-if="sjtm['使用题目池']">题目池,</span><span ng-bind="sjtm['限定题库名称'].join(',')"></span>
             </td>
-            <td ng-bind="sjtm['限定题库名称'].join(',')"></td>
             <td>
               <span class="glyphicon glyphicon-trash" ng-click="deleteRule(addSjz.sltDati, $index)"></span>
             </td>
@@ -182,7 +180,7 @@
       </div>
     </div>
   </div>
-  <div class="row fixed-bottom">
+  <div class="row fixed-bottom" ng-hide="onlyShowAddRuleBox">
     <table>
       <tr>
         <td>
