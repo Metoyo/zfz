@@ -130,8 +130,7 @@
             <th>数量</th>
             <th>分值</th>
             <th>难度</th>
-            <th>使用题目池</th>
-            <th>限定题库</th>
+            <th>使用题库</th>
             <th>删除</th>
           </tr>
           <tr ng-repeat="sjtm in tx['随机题目']">
@@ -143,10 +142,8 @@
             <td ng-bind="sjtm['题目分值']"></td>
             <td ng-bind="sjtm['难度名称'].join(',')"></td>
             <td>
-              <span ng-show="sjtm['使用题目池']">是</span>
-              <span ng-hide="sjtm['使用题目池']">否</span>
+              <span ng-if="sjtm['使用题目池']">题目池,</span><span ng-bind="sjtm['限定题库名称'].join(',')"></span>
             </td>
-            <td ng-bind="sjtm['限定题库名称'].join(',')"></td>
             <td>
               <span class="glyphicon glyphicon-trash" ng-click="deleteRule(tx, $index)"></span>
             </td>
@@ -359,6 +356,41 @@
     <a href="javascript:void(0)" class="ml15" ng-repeat="sj in sjList" ng-class="{active: shiJuanActive == $index}"
        ng-bind="'卷'+ ($index + 1)" ng-click="showShiJuanDtl(sj, $index)"></a>
   </div>
+  <!--试卷规则-->
+  <div class="plr10" ng-if="zuJuanParam.showZjRule">
+    <div class="pull-left wp100" ng-repeat="tx in sjzSet['组卷规则']">
+      <h4 class="daTiName">
+        <span class="cursorPointer" style="font-weight: 500" ng-bind="cnNumArr[$index] + '、' + tx['大题名称']"></span>
+        <span class="fz14">(随机题目:{{tx['随机题目数量'] || 0}},固定题目:{{tx['固定题目'].length}})</span>
+      </h4>
+      <table class="table table-bordered" ng-if="tx['随机题目'].length>0">
+        <tr>
+          <th>知识点</th>
+          <th>题型</th>
+          <th>数量</th>
+          <th>分值</th>
+          <th>难度</th>
+          <th>使用题库</th>
+        </tr>
+        <tr ng-repeat="sjtm in tx['随机题目']">
+          <td>
+            <input type="text" value="{{sjtm['知识点名称'].join('；')}}" disabled class="font-cut">
+          </td>
+          <td ng-bind="tiXingArr[sjtm['题型']-1]"></td>
+          <td ng-bind="sjtm['题目数量']"></td>
+          <td ng-bind="sjtm['题目分值']"></td>
+          <td ng-bind="sjtm['难度名称'].join(',')"></td>
+          <td>
+            <span ng-if="sjtm['使用题目池']">题目池,</span><span ng-bind="sjtm['限定题库名称'].join(',')"></span>
+          </td>
+        </tr>
+      </table>
+      <p>
+        <span>固定题目ID：</span>
+        <span><b ng-repeat="tm in tx['固定题目']" class="mr10">{{tm['题目ID']}}</b></span>
+      </p>
+    </div>
+  </div>
   <!--试卷详情-->
   <div id="paperWrap" class="paperWrap plr10">
     <h4 class="text-center" ng-class="{clRed:zuJuanParam.msgClr, clGreen:!zuJuanParam.msgClr}" ng-bind="zuJuanParam.sjMsg"></h4>
@@ -401,6 +433,9 @@
         <td>
           <label class="checkbox-inline">
             <input type="checkbox" ng-model="zuJuanParam.showDaAn"> 显示答案
+          </label>
+          <label class="checkbox-inline" ng-if="selectSjz">
+            <input type="checkbox" ng-model="zuJuanParam.showZjRule"> 显示组卷规则
           </label>
         </td>
         <td ng-if="zuJuanParam.saveSjBtn">

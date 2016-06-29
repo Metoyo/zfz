@@ -379,7 +379,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             msgClr: true, //信息的颜色
             showDaAn: false, //试卷显示答案
             saveSjBtn: false, //保存试卷按钮
-            timuNum: '' //符合条件的题目数量
+            timuNum: '', //符合条件的题目数量
+            showZjRule: false //显示组卷规则
           };
           Lazy($scope.tiKuList).each(function(tkl){
             tkl.ckd = false;
