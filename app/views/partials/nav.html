@@ -4,8 +4,6 @@
   </div>
   <div class="userInfo">
     <a href="javascript:void(0)" ng-bind="xingMing" ng-click="showUserInfo()"></a>
-    <!--<a href="/logout">退出</a>-->
-    <!--<a href="/lingyu" ng-show="session.info.LINGYU > 1">修改默认科目</a>-->
   </div>
   <ul class="list-group nav-list">
     <li class="list-group-item" ng-repeat="ul in urlArrs" ng-class="navClass('{{ul.myUrl}}')">
@@ -42,23 +40,10 @@
             <td>手机</td>
             <td ng-bind="usr['手机']"></td>
           </tr>
-          <!--<tr>-->
-            <!--<td style="padding-bottom: 20px">单位</td>-->
-            <!--<td ng-bind="usr.JIGOUMINGCHENG"></td>-->
-          <!--</tr>-->
-          <!--<tr>-->
-            <!--<td>个人简介</td>-->
-            <!--<td>-->
-              <!--<div ng-init="showGeRenJianLi=false">-->
-                <!--<a href="javascript:void(0)" ng-hide="showGeRenJianLi" ng-click="showGeRenJianLi=true">展开</a>-->
-                <!--<a href="javascript:void(0)" ng-show="showGeRenJianLi" ng-click="showGeRenJianLi=false">收起</a>-->
-              <!--</div>-->
-              <!--<div ng-show="showGeRenJianLi">-->
-                <!--<textarea cols="30" rows="5" class="form-control" ng-model="usr['详情']"></textarea>-->
-                <!--<button class="btn btn-primary mt10 pull-right" ng-click="saveGenRenJianLi()">提交</button>-->
-              <!--</div>-->
-            <!--</td>-->
-          <!--</tr>-->
+          <tr>
+            <td>学校</td>
+            <td ng-bind="usr['学校名称']"></td>
+          </tr>
           <tr>
             <th>修改密码</th>
             <th></th>
@@ -75,14 +60,14 @@
           <tr>
             <td colspan="2" class="modifuMiMaInfo clRed"></td>
           </tr>
-          <!--<tr>-->
-            <!--<th>科目</th>-->
-            <!--<th>职务</th>-->
-          <!--</tr>-->
-          <!--<tr ng-repeat="ly in usr.LINGYU">-->
-            <!--<td ng-bind="ly.LINGYUMINGCHENG"></td>-->
-            <!--<td ng-bind="ly.jueseStr"></td>-->
-          <!--</tr>-->
+          <tr>
+            <th>科目</th>
+            <th>职务</th>
+          </tr>
+          <tr ng-repeat="kmjs in usr['科目角色']">
+            <td ng-bind="kmjs['科目名称']"></td>
+            <td ng-bind="kmjs['角色'].join('；')"></td>
+          </tr>
           <!--<tr>-->
             <!--<th>添加学科领域</th>-->
             <!--<th>-->

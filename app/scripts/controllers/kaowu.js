@@ -125,20 +125,30 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           /**
            * 打包试卷
            */
-          var daBaoShiJuan = function(kszId){
+          $scope.daBaoShiJuan = function(kszId){
             var obj = {
               method: 'GET',
               url: daBaoShiJuanUrl,
-              params: { '考试组ID': kszId }
+              params: {
+                '考试组ID': ''
+              }
             };
-            $http(obj).success(function(data){
-              if(data.result){
-                console.log('打包成功！');
+            if($scope.kaoShiZuDtl && $scope.kaoShiZuDtl['考试组ID']){
+              obj.params['考试组ID'] = $scope.kaoShiZuDtl['考试组ID'];
+              if(confirm('你确定要重新打包试卷组吗？')){
+                $http(obj).success(function(data){
+                  if(data.result){
+                    DataService.alertInfFun('suc', '打包成功！');
+                  }
+                  else{
+                    DataService.alertInfFun('err', data.error);
+                  }
+                });
               }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-            });
+            }
+            else{
+              DataService.alertInfFun('err', '请选择要重新打包的考试组！');
+            }
           };
 
           /**
@@ -886,11 +896,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           /**
            * 切换场次和考生名单
            */
-          //$scope.showChangCiToggle = function(){
-          //  $scope.kwParams.showStu = false;
-          //  $scope.kwParams.showCcSjz = false;
-          //  $scope.kwParams.selectedCc = '';
-          //};
+          $scope.showChangCiToggle = function(){
+            $scope.kwParams.showStu = false;
+            $scope.kwParams.showCcSjz = false;
+            $scope.kwParams.selectedCc = '';
+          };
 
           /**
            * 查询报名考生

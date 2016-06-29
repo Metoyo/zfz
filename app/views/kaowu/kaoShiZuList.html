@@ -69,7 +69,7 @@
         <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showPaperInfo()">查看试卷</a>
         <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showChangCiToggle()">查看场次</a>
         <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiZuDtl['报名方式']==2"
-          ng-click="showBaoMingStu('no')">未报名考生</a>
+           ng-click="showBaoMingStu('no')">未报名考生</a>
         <button type="button" class="btn btn-danger mt5" ng-click="closePaperDtl()">
           关闭
         </button>
@@ -121,9 +121,9 @@
       </div>
       <div ng-if="kwParams.showCcSjz">
         <!--修改试卷table-->
-        <p class="text-right mt10">
+        <p class="text-right mt10" ng-if="kaoShiZuDtl['状态'] < 4">
           <a href="javascript:void(0)" ng-click="alertPaperWrapShow()">修改试卷</a>
-          <!--<a href="javascript:void(0)" class="ml15" ng-click="showChangCiToggle()">取消修改</a>-->
+          <a href="javascript:void(0)" class="ml15" ng-click="daBaoShiJuan()">重新打包试卷</a>
         </p>
         <div>
           <table class="table table-striped" ng-class="{mt15:!showPaperListBox}">

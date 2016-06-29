@@ -9,7 +9,8 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
          */
         var loginUsr = '';
         var logUid = ''; //登录用户的UID
-        var yongHuUrl = '/yonghu';
+        var yongHuUrl = '/yonghu'; //用户的接口
+        var yongHuJueSeUrl = '/yonghu_juese'; //用户角色URL
         $scope.usr = '';
         $scope.userInfoLayer = false;
         $scope.navData = {
@@ -42,7 +43,35 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
           $scope.usr = '';
           $http(obj).success(function(data){
             if(data.result){
-              $scope.usr = data.data[0];
+              var yhjsObj = {
+                method: 'GET',
+                url: yongHuJueSeUrl,
+                params: {
+                  'UID': logUid
+                }
+              };
+              $http(yhjsObj).success(function(kmjs){
+                if(kmjs.result && kmjs.data){
+                  data.data[0]['学校名称'] = kmjs.data[0]['学校名称'];
+                  var dist = Lazy(kmjs.data).groupBy('科目ID').toObject();
+                  var kmjsArr = [];
+                  Lazy(dist).each(function(v, k, l){
+                    var kmjsObj = {
+                      '科目名称': v[0]['科目名称'],
+                      '角色': []
+                    };
+                    kmjsObj['角色'] = Lazy(v).map(function(js){ return js['角色名称'] }).toArray();
+                    kmjsArr.push(kmjsObj);
+                  });
+                  data.data[0]['科目角色'] = kmjsArr;
+                  $scope.usr = data.data[0];
+                }
+                else{
+                  $scope.usr = data.data[0];
+                  DataService.alertInfFun('err', kmjs.error);
+                }
+              });
+
               $scope.userInfoLayer = true;
             }
             else{
@@ -98,8 +127,6 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
          */
         $scope.reloadModule = function(targUrl){
           if($location.$$url == targUrl){
-            //$rootScope.reloadModule = true;
-            //$location.path($location.$$absUrl);
             $route.reload();
           }
         };
