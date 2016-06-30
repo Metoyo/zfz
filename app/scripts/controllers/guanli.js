@@ -853,17 +853,16 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             if(kszZsd['知识大纲ID'] && kszZsd['知识点ID'].length > 0){
               kszZsd['知识点ID'] = JSON.stringify(kszZsd['知识点ID']);
               obj.data['考试组设置']['考试组知识点'] = kszZsd;
-              //$scope.loadingImgShow = true;
-              console.log(obj);
-              //$http(obj).success(function(data){
-              //  if(data.result){
-              //    DataService.alertInfFun('suc', '保存成功！');
-              //  }
-              //  else{
-              //    DataService.alertInfFun('err', data.error);
-              //  }
-              //  $scope.loadingImgShow = false;
-              //});
+              $scope.loadingImgShow = true;
+              $http(obj).success(function(data){
+                if(data.result){
+                  DataService.alertInfFun('suc', '保存成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+                $scope.loadingImgShow = false;
+              });
             }
             else{
               DataService.alertInfFun('pmt', '请选择需要的数据！');
