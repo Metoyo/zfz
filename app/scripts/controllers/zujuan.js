@@ -104,9 +104,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                   return dg['知识大纲ID'] == $scope.dgList[0]['知识大纲ID'];
                 });
               }
-              Lazy(sltDg['节点']).each(_zsdDo);
-              $scope.slt_dg = sltDg['知识大纲ID'];
-              $scope.kowledgeList = sltDg;
+              if(sltDg){
+                Lazy(sltDg['节点']).each(_zsdDo);
+                $scope.slt_dg = sltDg['知识大纲ID'];
+                $scope.kowledgeList = sltDg;
+              }
+              else{
+                $scope.slt_dg = '';
+                $scope.kowledgeList = '';
+                DataService.alertInfFun('err', '没有符合的大纲数据！');
+              }
             }
             else{
               DataService.alertInfFun('err', data.error);
@@ -173,7 +180,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.loadingImgShow = true;
           $scope.sjzPage.allPages = [];
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               $scope.sjzPage.lastPage = Math.ceil(data.data.length/itemNumPerPage); //试卷一共有多少页
               for(var i = 1; i <= $scope.sjzPage.lastPage; i++){
                 $scope.sjzPage.allPages.push(i);
@@ -189,7 +196,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 allPages: [],
                 pages: []
               };
-              DataService.alertInfFun('err', data.error);
+              DataService.alertInfFun('err', data.error || '没有符合的数据！');
             }
             $scope.loadingImgShow = false;
           });

@@ -13,7 +13,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         var paginationLength = 7; //分页部分，页码的长度，目前设定为7
         var totalStuPage = []; //所有的课序号考生的页码数
         var regKxh = /^[a-zA-Z0-9_-]+$/; //检测课序号
-        //var selectData = ''; //考试组和知识点用到变量
+        var selectData = ''; //考试组和知识点用到变量
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var dftKm = JSON.parse($cookieStore.get('ckKeMu')); //默认选择的科目
         var jgID = loginUsr['学校ID']; //登录用户学校
@@ -25,6 +25,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         var kxhJiaoShiUrl = '/kexuhao_jiaoshi'; //课序号教师
         var kxhXueShengUrl = '/kexuhao_xuesheng'; //课序号学生
         var impYongHuUrl = '/imp_yonghu'; //导入用户
+        var kaoShiZuUrl = '/kaoshizu'; //考试组
+        var kaoShiZuZhiShiDianUrl = '/kaoshizu_zhishidian'; //考试组知识点
+        var keMuConfUrl = '/kemu_conf'; //科目设置
+        var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
         $scope.defaultKeMu = dftKm; //默认科目
         $scope.guanliParams = {
           tabActive: '',
@@ -82,34 +86,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 查询课序号下的老师 --
-         */
-        //var qryKeXuHaoTeachers = function(ids){
-        //  var obj = {method: 'GET', url: kxhJiaoShiUrl, params: {'课序号ID': ''}};
-        //  obj.params['课序号ID'] = JSON.stringify(ids);
-        //  $http(obj).success(function(data){
-        //    if(data.result){
-        //      if(itmeType && (itmeType == 'modifyKeXuHao')){
-        //        if(jsArr && jsArr.length > 0){
-        //          Lazy(jsArr).each(function(sjs){
-        //            Lazy(data).each(function(js){
-        //              if(js.UID == sjs.UID){
-        //                js.ckd = true;
-        //              }
-        //            });
-        //          });
-        //        }
-        //      }
-        //      //$scope.jgKmTeachers = data;
-        //      //$scope.jgKxhTeachers = data.data;
-        //    }
-        //    else{
-        //      DataService.alertInfFun('err', data.error);
-        //    }
-        //  });
-        //};
-
-        /**
          * 查询课序号 --
          */
         var queryKeXuHao = function(){
@@ -158,6 +134,98 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
+         * 查询考试组
+         */
+        var glQueryKaoShiZu = function(){
+          var obj = {
+            method: 'GET',
+            url: kaoShiZuUrl,
+            params: {
+              '学校ID': jgID,
+              '科目ID': keMuId,
+              '状态': JSON.stringify([1, 3, 4, 5, 6])
+            }
+          };
+          var pageHeight = document.querySelector('.dashboard').clientHeight - 180 + 'px';
+          $http(obj).success(function(data) {
+            if(data.result && data.data){
+              $scope.glKaoShiZuList = Lazy(data.data).reverse().toArray();
+              var wrapWt = document.querySelectorAll('.glZsdgWrap');
+              angular.element(wrapWt).css({height: pageHeight, 'overflow-y': 'auto'});
+            }
+            else{
+              $scope.glKaoShiZuList = '';
+              DataService.alertInfFun('err', data.error)
+            }
+          });
+        };
+
+        /**
+         * 查询大纲的函数
+         */
+        var getDaGangFun = function(obj){
+          //得到知识大纲知识点的递归函数
+          function _do(item) {
+            item.ckd = false;
+            item.fld = true;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          $scope.glKowledgeList = '';
+          if(obj){
+            $scope.loadingImgShow = true;
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                Lazy(data.data[0]['节点']).each(_do);
+                $scope.glKowledgeList = data.data[0];
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '缺少知识大纲ID');
+          }
+        };
+
+        /**
+         * 获得大纲数据
+         */
+        var getDaGangData = function(){
+          var sObj = {
+            method: 'GET',
+            url: keMuConfUrl,
+            params: {
+              '学校ID': jgID,
+              '科目ID': keMuId
+            }
+          };
+          var obj = {
+            method: 'GET',
+            url: zhiShiDaGangUrl,
+            params: {}
+          };
+          $http(sObj).success(function(sData){
+            if(sData.result){
+              if(sData.data['默认大纲'] && sData.data['默认大纲']['知识大纲ID']){
+                obj.params['知识大纲ID'] = sData.data['默认大纲']['知识大纲ID'];
+              }
+              else{
+                obj.params['学校ID'] = jgID;
+                obj.params['科目ID'] = keMuId;
+              }
+              getDaGangFun(obj);
+            }
+            else{
+              DataService.alertInfFun('err', sData.error);
+            }
+          });
+        };
+
+        /**
          * 考生内容切换 --
          */
         $scope.guanLiTabSlide = function (tab) {
@@ -173,12 +241,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             $scope.guanliParams.tabActive = 'kexuhao';
             $scope.guanLiTpl = 'views/guanli/kexuhao.html';
           }
-          //if (tab == 'tongji') {
-          //  glQueryKaoShiZu();
-          //  getDaGangData();
-          //  $scope.guanliParams.tabActive = 'tongji';
-          //  $scope.guanLiTpl = 'views/guanli/tongjiset.html';
-          //}
+          if (tab == 'tongji') {
+            glQueryKaoShiZu();
+            getDaGangData();
+            $scope.guanliParams.tabActive = 'tongji';
+            $scope.guanLiTpl = 'views/guanli/tongjiset.html';
+          }
         };
         $scope.guanLiTabSlide('kexuhao');
 
@@ -442,8 +510,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-        * 删除课序号用户 --
-        */
+         * 删除课序号用户 --
+         */
         $scope.deleteKxhYh = function(yh, kind){
           if(kind && kind == 'imp'){
             $scope.impStus = Lazy($scope.impStus).reject(function(stu){
@@ -632,213 +700,179 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 查询考试组
+         * 重新加载mathjax
          */
-        //var glQueryKaoShiZu = function(){
-        //  var kaoShiState = [-3, 0, 1, 2, 3, 4, 5, 6];
-        //  var qryKaoShiZuList = qryKaoShiZuListUrl + '&zhuangtai=' + kaoShiState;
-        //  $http.get(qryKaoShiZuList).success(function(data) {
-        //    if(data && data.length > 0){
-        //      $scope.glKaoShiZuList = data;
-        //      $('.glZsdgWrap').css({height: pageHeight, 'overflow-y': 'auto'});
-        //    }
-        //    else{
-        //      $scope.glKaoShiZuList = '';
-        //      DataService.alertInfFun('err', data.error)
-        //    }
-        //  });
-        //};
+        $scope.$on('onRepeatLast', function(scope, element, attrs){
+          MathJax.Hub.Config({
+            tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+            messageStyle: "none",
+            showMathMenu: false,
+            processEscapes: true
+          });
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "glDaGangList"]);
+        });
 
-        ///**
-        // * 获得大纲数据
-        // */
-        //var getDaGangData = function(){
-        //  //var zsdgZsdArr = [];
-        //  //得到知识大纲知识点的递归函数
-        //  function _do(item) {
-        //    item.ckd = false;
-        //    item.fld = true;
-        //    //zsdgZsdArr.push(item.ZHISHIDIAN_ID);
-        //    if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-        //      Lazy(item.ZIJIEDIAN).each(_do);
-        //    }
-        //  }
-        //  $http.get(qryMoRenDgUrl).success(function(mrDg){
-        //    if(mrDg && mrDg.length > 0){
-        //      $scope.glDgList = mrDg;
-        //      //获取大纲知识点
-        //      var qryKnowledge = qryKnowledgeBaseUrl + mrDg[0].ZHISHIDAGANG_ID;
-        //      $http.get(qryKnowledge).success(function(zsddata){
-        //        if(zsddata.length){
-        //          $scope.glKowledgeList = zsddata;
-        //          //得到知识大纲知识点id的函数
-        //          Lazy(zsddata).each(_do);
-        //          $('.glZsdgWrap').css({height: pageHeight, 'overflow-y': 'auto'});
-        //        }
-        //        else{
-        //          DataService.alertInfFun('err', '查询大纲失败！错误信息为：' + zsddata.error); // '查询大纲失败！错误信息为：' + data.error
-        //        }
-        //      });
-        //    }
-        //    else{
-        //      DataService.alertInfFun('err', mrDg.error);
-        //    }
-        //  });
-        //};
+        /**
+         * 点击展开和收起的按钮子一级显示和隐藏
+         */
+        $scope.toggleChildNode = function(nd) {
+          function _do(item) {
+            item.fld = nd.fld;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          nd.fld = !nd.fld;
+          Lazy(nd['子节点']).each(_do);
+        };
 
-        ///**
-        // * 重新加载mathjax
-        // */
-        //$scope.$on('onRepeatLast', function(scope, element, attrs){
-        //  MathJax.Hub.Config({
-        //    tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
-        //    messageStyle: "none",
-        //    showMathMenu: false,
-        //    processEscapes: true
-        //  });
-        //  MathJax.Hub.Queue(["Typeset", MathJax.Hub, "glDaGangList"]);
-        //});
-        //
-        ///**
-        // * 点击展开和收起的按钮子一级显示和隐藏
-        // */
-        //$scope.toggleChildNode = function(nd) {
-        //  function _do(item) {
-        //    item.fld = nd.fld;
-        //    if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-        //      Lazy(item.ZIJIEDIAN).each(_do);
-        //    }
-        //  }
-        //  nd.fld = !nd.fld;
-        //  Lazy(nd.ZIJIEDIAN).each(_do);
-        //};
-        //
-        ///**
-        // 点击checkbox得到checkbox的值
-        // */
-        //$scope.toggleSelection = function(zsd) {
-        //  zsd.ckd = !zsd.ckd;
-        //};
-        //
-        ///**
-        // * 查询知识点，在考务表里里，当统计的表里面没有数据时，执行此函数
-        // */
-        //function _doKszZsd(item) {
-        //  item.ckd = false;
-        //  if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-        //    Lazy(item.ZIJIEDIAN).each(_doKszZsd);
-        //  }
-        //}
-        //function _doCheckKszZsd(item) {
-        //  if(item.ZHISHIDIAN_ID == selectData.ZHISHIDIAN_ID){
-        //    item.ckd = true;
-        //  }
-        //  if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-        //    Lazy(item.ZIJIEDIAN).each(_doCheckKszZsd);
-        //  }
-        //}
-        //$scope.glKaoWuGetZsd = function(){
-        //  var pObj = {
-        //    token: token,
-        //    caozuoyuan: caozuoyuan,
-        //    kaoshizuid: ''
-        //  };
-        //  Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doKszZsd);
-        //  if($scope.guanliParams.selectKsz){
-        //    pObj.kaoshizuid = $scope.guanliParams.selectKsz;
-        //    //查询知识点，在考务表里里，当统计的表里面没有数据时，执行此函数
-        //    $http({method: 'GET', url: kwKaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata){
-        //      if(zsddata && zsddata.length > 0){
-        //        //知识点反选
-        //        Lazy(zsddata).each(function(kszzsd){
-        //          selectData = kszzsd;
-        //          Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doCheckKszZsd);
-        //        });
-        //      }
-        //      else{
-        //        DataService.alertInfFun('err', zsddata.error);
-        //      }
-        //    });
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择考试组！');
-        //  }
-        //};
-        //
-        ///**
-        // * 查询知识点，在统计表里
-        // */
-        //$scope.glQueryZsd = function(){
-        //  var pObj = {
-        //    token: token,
-        //    caozuoyuan: caozuoyuan,
-        //    kaoshizuid: ''
-        //  };
-        //  selectData = '';
-        //  if($scope.guanliParams.selectKsz){
-        //    pObj.kaoshizuid = $scope.guanliParams.selectKsz;
-        //    $http({method: 'GET', url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(data){
-        //      if(data && data.length > 0){
-        //        Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doKszZsd);
-        //        //知识点反选
-        //        Lazy(data).each(function(kszzsd){
-        //          selectData = kszzsd;
-        //          Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_doCheckKszZsd);
-        //        });
-        //      }
-        //      else{
-        //        $scope.glKaoWuGetZsd();
-        //      }
-        //    });
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择考试组！');
-        //  }
-        //};
-        //
-        ///**
-        // * 保存统计设定的值
-        // */
-        //$scope.glSaveTongJiSet = function(){
-        //  var kszZsdObj = {
-        //    token: token,
-        //    caozuoyuan: caozuoyuan,
-        //    kszzsd: [],
-        //    kaoshizuid: ''
-        //  };
-        //  function _do(item) {
-        //    if(item.ckd){
-        //      var obj = {
-        //        KAOSHIZU_ID: $scope.guanliParams.selectKsz,
-        //        ZHISHIDIAN_ID: item.ZHISHIDIAN_ID
-        //      };
-        //      kszZsdObj.kszzsd.push(obj);
-        //    }
-        //    if(item.ZIJIEDIAN && item.ZIJIEDIAN.length > 0){
-        //      Lazy(item.ZIJIEDIAN).each(_do);
-        //    }
-        //  }
-        //  if($scope.guanliParams.selectKsz){
-        //    Lazy($scope.glKowledgeList[0].ZIJIEDIAN).each(_do);
-        //    kszZsdObj.kaoshizuid = $scope.guanliParams.selectKsz;
-        //    if(kszZsdObj.kszzsd && kszZsdObj.kszzsd.length > 0){
-        //      $http.post(kaoShiZuZhiShiDianUrl, kszZsdObj).success(function(data){
-        //        if(data.result){
-        //          DataService.alertInfFun('suc', '保存成功！');
-        //        }
-        //        else{
-        //          DataService.alertInfFun('err', data.error);
-        //        }
-        //      });
-        //    }
-        //    else{
-        //      DataService.alertInfFun('pmt', '请选择需要的数据！');
-        //    }
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择考试组！');
-        //  }
-        //};
+        /**
+         点击checkbox得到checkbox的值
+         */
+        $scope.toggleSelection = function(zsd) {
+          zsd.ckd = !zsd.ckd;
+        };
+
+        /**
+         * 查询知识点，在考务表里里，当统计的表里面没有数据时，执行此函数
+         */
+        function _doKszZsd(item) {
+          item.ckd = false;
+          item.fld = true;
+          if(item['子节点'] && item['子节点'].length > 0){
+            Lazy(item['子节点']).each(_doKszZsd);
+          }
+        }
+        function _doCheckKszZsd(item) {
+          if(item['知识点ID'] == selectData['知识点ID']){
+            item.ckd = true;
+          }
+          if(item['子节点'] && item['子节点'].length > 0){
+            Lazy(item['子节点']).each(_doCheckKszZsd);
+          }
+        }
+
+        /**
+         * 查询知识点，在统计表里
+         */
+        $scope.glQueryZsd = function(ksz){
+          var obj = {
+            method: 'GET',
+            url: kaoShiZuZhiShiDianUrl,
+            params: {
+              '考试组ID': ''
+            }
+          };
+          var activeDg = '';
+          selectData = '';
+          $scope.guanliParams.selectKsz = ksz || '';
+          if($scope.guanliParams.selectKsz){
+            obj.params['考试组ID'] = $scope.guanliParams.selectKsz['考试组ID'];
+            if($scope.guanliParams.selectKsz['考试组设置'] && $scope.guanliParams.selectKsz['考试组设置']['考试组知识点'] &&
+              $scope.guanliParams.selectKsz['考试组设置']['考试组知识点']['知识大纲ID']){
+              activeDg = $scope.guanliParams.selectKsz['考试组设置']['考试组知识点']['知识大纲ID'];
+            }
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                if($scope.glKowledgeList){
+                  if(activeDg && ($scope.glKowledgeList['知识大纲ID'] != activeDg)){
+                    var dgObj = {
+                      method: 'GET',
+                      url: zhiShiDaGangUrl,
+                      params: {}
+                    };
+                    obj.params['知识大纲ID'] = activeDg;
+                    $http(dgObj).success(function(dataDg){
+                      if(dataDg.result && dataDg.data){
+                        $scope.glKowledgeList = dataDg.data[0];
+                        Lazy($scope.glKowledgeList['节点']).each(_doKszZsd);
+                        //知识点反选
+                        Lazy(data.data).each(function(kszzsd){
+                          selectData = kszzsd;
+                          Lazy($scope.glKowledgeList['节点']).each(_doCheckKszZsd);
+                        });
+                      }
+                      else{
+                        DataService.alertInfFun('err', data.error);
+                      }
+                    });
+                  }
+                  else{
+                    Lazy($scope.glKowledgeList['节点']).each(_doKszZsd);
+                    //知识点反选
+                    Lazy(data.data).each(function(kszzsd){
+                      selectData = kszzsd;
+                      Lazy($scope.glKowledgeList['节点']).each(_doCheckKszZsd);
+                    });
+                  }
+                }
+                else{
+                  DataService.alertInfFun('err', '没有知识大纲数据！');
+                }
+              }
+              else{
+                Lazy($scope.glKowledgeList['节点']).each(_doKszZsd);
+                DataService.alertInfFun('err', '本考试组没有知识点数据！');
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择考试组！');
+          }
+        };
+
+        /**
+        * 保存统计设定的值
+        */
+        $scope.glSaveTongJiSet = function(){
+          var obj = {
+            method: 'POST',
+            url: kaoShiZuUrl,
+            data: {
+              '考试组ID': '',
+              '考试组设置': ''
+            }
+          };
+          var kszZsd = {
+            '知识大纲ID': '',
+            '知识点ID': []
+          };
+          function _do(item) {
+            if(item.ckd){
+              kszZsd['知识点ID'].push(item['知识点ID']);
+            }
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          if($scope.guanliParams.selectKsz){
+            obj.data['考试组ID'] = parseInt($scope.guanliParams.selectKsz['考试组ID']);
+            kszZsd['知识大纲ID'] = $scope.glKowledgeList['知识大纲ID'];
+            Lazy($scope.glKowledgeList['节点']).each(_do);
+            obj.data['考试组设置'] = $scope.guanliParams.selectKsz['考试组设置'] || {};
+            if(kszZsd['知识大纲ID'] && kszZsd['知识点ID'].length > 0){
+              kszZsd['知识点ID'] = JSON.stringify(kszZsd['知识点ID']);
+              obj.data['考试组设置']['考试组知识点'] = kszZsd;
+              //$scope.loadingImgShow = true;
+              console.log(obj);
+              //$http(obj).success(function(data){
+              //  if(data.result){
+              //    DataService.alertInfFun('suc', '保存成功！');
+              //  }
+              //  else{
+              //    DataService.alertInfFun('err', data.error);
+              //  }
+              //  $scope.loadingImgShow = false;
+              //});
+            }
+            else{
+              DataService.alertInfFun('pmt', '请选择需要的数据！');
+            }
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择考试组！');
+          }
+        };
 
       }]);
 });

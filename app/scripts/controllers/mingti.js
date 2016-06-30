@@ -156,9 +156,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             sltDg = Lazy($scope.allZsdgData).find(function(dg){
               return dg['知识大纲ID'] == $scope.dgList[0]['知识大纲ID'];
             });
-            yongHuSet['默认大纲']['知识大纲ID'] = sltDg['知识大纲ID'];
-            yongHuSet['默认大纲']['知识大纲名称'] = sltDg['知识大纲名称'];
-            setYongHuDefaultDg(JSON.stringify(yongHuSet));
+            if(sltDg){
+              yongHuSet['默认大纲']['知识大纲ID'] = sltDg['知识大纲ID'];
+              yongHuSet['默认大纲']['知识大纲名称'] = sltDg['知识大纲名称'];
+              setYongHuDefaultDg(JSON.stringify(yongHuSet));
+            }
+            else{
+              DataService.alertInfFun('err', '没有大纲！');
+            }
           };
           var obj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': keMuId, '类型': 2}};
           $scope.dgList = [];
@@ -183,10 +188,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               else{
                 reqSet();
               }
-              Lazy(sltDg['节点']).each(_do);
-              $scope.mingTiParam.slt_dg = sltDg['知识大纲ID'];
-              $scope.kowledgeList = sltDg;
-              $scope.qryTestFun();
+              if(sltDg){
+                Lazy(sltDg['节点']).each(_do);
+                $scope.mingTiParam.slt_dg = sltDg['知识大纲ID'];
+                $scope.kowledgeList = sltDg;
+                $scope.qryTestFun();
+              }
+              else{
+                $scope.mingTiParam.slt_dg = '';
+                $scope.kowledgeList = '';
+                DataService.alertInfFun('err', '没有符合的大纲数据！');
+              }
             }
             else{
               DataService.alertInfFun('err', data.error);

@@ -20,6 +20,14 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
         };
 
         /**
+         * 整个网站刷新是，重现赋值用户名
+         */
+        if($cookieStore.get('ckUsr')){
+          loginUsr = JSON.parse($cookieStore.get('ckUsr'));
+          $rootScope.xingMing = loginUsr['姓名'];
+        }
+
+        /**
          * 控制导航的代码
          */
         $scope.navClass = function (page) {
