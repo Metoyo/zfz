@@ -1383,20 +1383,23 @@ label.checkbox {
       margin-top: 20px; }
     .renzhengWrapper .shenheBox .table {
       margin-bottom: 0; }
+    .renzhengWrapper .shenheBox .shenheTable {
+      font-size: 12px; }
     .renzhengWrapper .shenheBox .shenheTable thead {
       background-color: #33363b; }
     .renzhengWrapper .shenheBox .shenheTable th {
       text-align: center;
       color: #fff;
-      vertical-align: middle; }
-    .renzhengWrapper .shenheBox .shenheTable td {
-      text-align: center;
       vertical-align: middle;
-      color: #666; }
+      padding: 5px; }
+    .renzhengWrapper .shenheBox .shenheTable td {
+      vertical-align: middle;
+      color: #666;
+      padding: 5px; }
     .renzhengWrapper .shenheBox .shenheTable .text-left {
       text-align: left; }
-    .renzhengWrapper .shenheBox .shenheBox .shenheTable td {
-      vertical-align: middle; }
+    .renzhengWrapper .shenheBox .shenheTable .table td {
+      border-top: 0; }
     .renzhengWrapper .shenheBox .shenheTable .btn {
       border-radius: 0; }
     .renzhengWrapper .shenheBox .shTitle {

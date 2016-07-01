@@ -1649,6 +1649,9 @@ label.checkbox{
     .table {
       margin-bottom: 0;
     }
+    .shenheTable {
+      font-size: 12px;
+    }
     .shenheTable thead {
       background-color: #33363b;
     }
@@ -1656,17 +1659,18 @@ label.checkbox{
       text-align: center;
       color: #fff;
       vertical-align: middle;
+      padding: 5px;
     }
     .shenheTable td {
-      text-align: center;
       vertical-align: middle;
       color: #666;
+      padding: 5px;
     }
     .shenheTable .text-left {
       text-align: left;
     }
-    .shenheBox .shenheTable td {
-      vertical-align: middle;
+    .shenheTable .table td {
+      border-top: 0;
     }
     .shenheTable .btn {
       border-radius: 0;

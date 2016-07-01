@@ -1,7 +1,6 @@
 <div class="col-md-12 infoBox">
   <h3 class="text-center shTitle"> 权限审批
-    <a href="javascript:void(0)" ng-click="closeShenheBox()" class="closeShenBox pull-right"
-       title="关闭审核窗口">
+    <a href="javascript:void(0)" ng-click="closeShenheBox()" class="closeShenBox pull-right" title="关闭窗口">
       <span class="glyphicon glyphicon-remove"></span>
     </a>
   </h3>
@@ -15,28 +14,28 @@
       </tr>
       </thead>
       <tbody class="shenheList">
-      <tr ng-repeat="usr in shenHeList">
-        <td ng-bind="usr['姓名']"></td>
-        <td>
-          <table class="table">
-            <tr ng-repeat="km in usr['待审']">
-              <td ng-bind="km['科目名称']"></td>
-              <td>
-                <label ng-repeat="js in km['角色']" class="checkbox-inline">
-                  <input type="checkbox" ng-checked="js.ckd" ng-click="jueseClicked(js)"/>
-                  <span ng-bind="js['角色名称']"></span>
-                </label>
-              </td>
-            </tr>
-          </table>
-        </td>
-        <td>
-          <button type="button" class="btn btn-success" ng-show="usr.btn" ng-click="authPerm(usr)">
-            审批
-          </button>
-          <span class="shMsgBox" ng-hide="usr.btn">已审</span>
-        </td>
-      </tr>
+        <tr ng-repeat="usr in shenHeList">
+          <td ng-bind="usr['姓名']"></td>
+          <td>
+            <table class="table">
+              <tr ng-repeat="km in usr['待审']">
+                <td ng-bind="km['科目名称']"></td>
+                <td>
+                  <label ng-repeat="js in km['角色']" class="checkbox-inline">
+                    <input type="checkbox" ng-checked="js.ckd" ng-click="jueseClicked(js)"/>
+                    <span ng-bind="js['角色名称']"></span>
+                  </label>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <button type="button" class="btn btn-success" ng-show="usr.btn" ng-click="authPerm(usr)">
+              审批
+            </button>
+            <span class="shMsgBox" ng-hide="usr.btn">已审</span>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>

@@ -67,6 +67,68 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.kaochangData = '';
 
         /**
+         * 查询学校科目
+         */
+        var qryXxKm = function(){
+          var obj = {method: 'GET', url: xueXiaoKeMuUrl, params: {'学校ID': jgID}};
+          $scope.xxkmList = '';
+          $http(obj).success(function(xxKm){
+            if(xxKm.result && xxKm.data){
+              var nwKm = [];
+              Lazy(xxKm.data).each(function(km){
+                var tpObj = {
+                  '科目ID': km['科目ID'],
+                  '科目名称': km['科目名称'],
+                  '角色': [
+                    {
+                      '学校ID': km['学校ID'],
+                      '领域ID': km['领域ID'],
+                      '科目ID': km['科目ID'],
+                      '角色ID': 2,
+                      '状态': -1,
+                      '角色名称': '科目负责人',
+                      ckd: false
+                    },
+                    {
+                      '学校ID': km['学校ID'],
+                      '领域ID': km['领域ID'],
+                      '科目ID': km['科目ID'],
+                      '角色ID': 4,
+                      '状态': -1,
+                      '角色名称': '阅卷组长',
+                      ckd: false
+                    },
+                    {
+                      '学校ID': km['学校ID'],
+                      '领域ID': km['领域ID'],
+                      '科目ID': km['科目ID'],
+                      '角色ID': 3,
+                      '状态': -1,
+                      '角色名称': '任课老师',
+                      ckd: false
+                    },
+                    {
+                      '学校ID': km['学校ID'],
+                      '领域ID': km['领域ID'],
+                      '科目ID': km['科目ID'],
+                      '角色ID': 5,
+                      '状态': -1,
+                      '角色名称': '助教',
+                      ckd: false
+                    }
+                  ]
+                };
+                nwKm.push(tpObj);
+              });
+              $scope.xxkmList =nwKm;
+            }
+            else{
+              DataService.alertInfFun('err', xxKm.error || '没有科目，请添加科目！');
+            }
+          });
+        };
+
+        /**
          * 导向本页面时，判读展示什么页面，admin, xxgly --
          */
         var goToWhere = function(){
@@ -77,6 +139,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }
           else{
             if(find1){
+              qryXxKm();
               $scope.shenHeTpl = 'views/renzheng/rz_xxgly.html';
             }
             else{
@@ -96,98 +159,98 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          * 设置权限，审核权限 --
          */
-        $scope.renderPerm = function() {
-          $scope.loadingImgShow = true;
-          var obj = {method: 'GET', url: yongHuJueSeUrl, params: ''};
-          $scope.shenHeList = [];
-          obj.params = {
-            '学校ID': jgID,
-            '状态': 0
-          };
-          $http(obj).success(function(data) {
-            if(data.result){
-              var distByUid = Lazy(data.data).groupBy(function(usr){return usr.UID;}).toObject();
-              Lazy(distByUid).each(function(v, k, l){ //通过UID排序
-                var temp = {
-                  UID: k,
-                  '用户名': v[0]['用户名'],
-                  '姓名': v[0]['姓名'],
-                  btn: false,
-                  '待审': []
-                };
-                var count = 0;
-                var distByKm = Lazy(v).groupBy(function(ds){return ds['科目ID']});
-                Lazy(distByKm).each(function(v1, k1, l1){ //通过科目排序
-                  var kmTemp = {
-                    '科目ID': k1,
-                    '科目名称': v1[0]['科目名称'],
-                    '角色': ''
-                  };
-                  var jsArr = [
-                    {
-                      '学校ID': v1[0]['学校ID'],
-                      '领域ID': v1[0]['领域ID'],
-                      '科目ID': v1[0]['科目ID'],
-                      '角色ID': 2,
-                      '状态': -1,
-                      '角色名称': '科目负责人',
-                      ckd: false
-                    },
-                    {
-                      '学校ID': v1[0]['学校ID'],
-                      '领域ID': v1[0]['领域ID'],
-                      '科目ID': v1[0]['科目ID'],
-                      '角色ID': 4,
-                      '状态': -1,
-                      '角色名称': '阅卷组长',
-                      ckd: false
-                    },
-                    {
-                      '学校ID': v1[0]['学校ID'],
-                      '领域ID': v1[0]['领域ID'],
-                      '科目ID': v1[0]['科目ID'],
-                      '角色ID': 3,
-                      '状态': -1,
-                      '角色名称': '任课老师',
-                      ckd: false
-                    },
-                    {
-                      '学校ID': v1[0]['学校ID'],
-                      '领域ID': v1[0]['领域ID'],
-                      '科目ID': v1[0]['科目ID'],
-                      '角色ID': 5,
-                      '状态': -1,
-                      '角色名称': '助教',
-                      ckd: false
-                    }
-                  ];
-                  Lazy(jsArr).each(function(ojs){
-                    var findJs = Lazy(v1).find(function(js){return js['角色ID'] == ojs['角色ID']});
-                    if(findJs){
-                      ojs.ckd = true;
-                      ojs['状态'] = findJs['状态'];
-                      if(findJs['状态'] == 0){
-                        count ++;
-                      }
-                    }
-                  });
-                  kmTemp['角色'] = jsArr;
-                  temp['待审'].push(kmTemp);
-                });
-                if(count > 0){
-                  temp.btn = true;
-                }
-                $scope.shenHeList.push(temp);
-              });
-              $scope.isShenHeBox = true;
-              $scope.adminSubWebTpl = 'views/renzheng/rz_shenHe.html';
-            }
-            else{
-              DataService.alertInfFun('err', data.error);
-            }
-            $scope.loadingImgShow = false;
-          });
-        };
+        //$scope.renderPerm = function() {
+        //  $scope.loadingImgShow = true;
+        //  var obj = {method: 'GET', url: yongHuJueSeUrl, params: ''};
+        //  $scope.shenHeList = [];
+        //  obj.params = {
+        //    '学校ID': jgID
+        //    //'状态': 0
+        //  };
+        //  $http(obj).success(function(data) {
+        //    if(data.result){
+        //      var distByUid = Lazy(data.data).groupBy(function(usr){return usr.UID;}).toObject();
+        //      Lazy(distByUid).each(function(v, k, l){ //通过UID排序
+        //        var temp = {
+        //          UID: k,
+        //          '用户名': v[0]['用户名'],
+        //          '姓名': v[0]['姓名'],
+        //          btn: false,
+        //          '待审': []
+        //        };
+        //        var count = 0;
+        //        var distByKm = Lazy(v).groupBy(function(ds){return ds['科目ID']});
+        //        Lazy(distByKm).each(function(v1, k1, l1){ //通过科目排序
+        //          var kmTemp = {
+        //            '科目ID': k1,
+        //            '科目名称': v1[0]['科目名称'],
+        //            '角色': ''
+        //          };
+        //          var jsArr = [
+        //            {
+        //              '学校ID': v1[0]['学校ID'],
+        //              '领域ID': v1[0]['领域ID'],
+        //              '科目ID': v1[0]['科目ID'],
+        //              '角色ID': 2,
+        //              '状态': -1,
+        //              '角色名称': '科目负责人',
+        //              ckd: false
+        //            },
+        //            {
+        //              '学校ID': v1[0]['学校ID'],
+        //              '领域ID': v1[0]['领域ID'],
+        //              '科目ID': v1[0]['科目ID'],
+        //              '角色ID': 4,
+        //              '状态': -1,
+        //              '角色名称': '阅卷组长',
+        //              ckd: false
+        //            },
+        //            {
+        //              '学校ID': v1[0]['学校ID'],
+        //              '领域ID': v1[0]['领域ID'],
+        //              '科目ID': v1[0]['科目ID'],
+        //              '角色ID': 3,
+        //              '状态': -1,
+        //              '角色名称': '任课老师',
+        //              ckd: false
+        //            },
+        //            {
+        //              '学校ID': v1[0]['学校ID'],
+        //              '领域ID': v1[0]['领域ID'],
+        //              '科目ID': v1[0]['科目ID'],
+        //              '角色ID': 5,
+        //              '状态': -1,
+        //              '角色名称': '助教',
+        //              ckd: false
+        //            }
+        //          ];
+        //          Lazy(jsArr).each(function(ojs){
+        //            var findJs = Lazy(v1).find(function(js){return js['角色ID'] == ojs['角色ID']});
+        //            if(findJs){
+        //              ojs.ckd = true;
+        //              ojs['状态'] = findJs['状态'];
+        //              if(findJs['状态'] == 0){
+        //                count ++;
+        //              }
+        //            }
+        //          });
+        //          kmTemp['角色'] = jsArr;
+        //          temp['待审'].push(kmTemp);
+        //        });
+        //        if(count > 0){
+        //          temp.btn = true;
+        //        }
+        //        $scope.shenHeList.push(temp);
+        //      });
+        //      $scope.isShenHeBox = true;
+        //      $scope.adminSubWebTpl = 'views/renzheng/rz_shenHe.html';
+        //    }
+        //    else{
+        //      DataService.alertInfFun('err', data.error);
+        //    }
+        //    $scope.loadingImgShow = false;
+        //  });
+        //};
 
         /**
          * 关闭审核页面 --
@@ -207,38 +270,38 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          * 通过审核的按钮 --
          */
-        $scope.authPerm = function(usr) {
-          var obj = {method: 'POST', url: yongHuJueSeUrl, data: {UID: usr.UID, '角色': []}};
-          var dsArr = [];
-          Lazy(usr['待审']).each(function(km){
-            Lazy(km['角色']).each(function(js){
-              if(js.ckd){
-                var temp = {
-                  '学校ID': js['学校ID'],
-                  '领域ID': js['领域ID'],
-                  '科目ID': js['科目ID'],
-                  '角色ID': js['角色ID'],
-                  '状态': 1
-                };
-                dsArr.push(temp);
-              }
-            });
-          });
-          if(dsArr && dsArr.length > 0){
-            obj.data['角色'] = JSON.stringify(dsArr);
-            $http(obj).success(function(data){
-              if(data.result){
-                usr.btn = false;
-              }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-            });
-          }
-          else{
-            DataService.alertInfFun('pmt', '请选择需要通过审核的角色！');
-          }
-        };
+        //$scope.authPerm = function(usr) {
+        //  var obj = {method: 'POST', url: yongHuJueSeUrl, data: {UID: usr.UID, '角色': []}};
+        //  var dsArr = [];
+        //  Lazy(usr['待审']).each(function(km){
+        //    Lazy(km['角色']).each(function(js){
+        //      if(js.ckd){
+        //        var temp = {
+        //          '学校ID': js['学校ID'],
+        //          '领域ID': js['领域ID'],
+        //          '科目ID': js['科目ID'],
+        //          '角色ID': js['角色ID'],
+        //          '状态': 1
+        //        };
+        //        dsArr.push(temp);
+        //      }
+        //    });
+        //  });
+        //  if(dsArr && dsArr.length > 0){
+        //    obj.data['角色'] = JSON.stringify(dsArr);
+        //    $http(obj).success(function(data){
+        //      if(data.result){
+        //        usr.btn = false;
+        //      }
+        //      else{
+        //        DataService.alertInfFun('err', data.error);
+        //      }
+        //    });
+        //  }
+        //  else{
+        //    DataService.alertInfFun('pmt', '请选择需要通过审核的角色！');
+        //  }
+        //};
 
         /**
          * 机构查询 --
@@ -815,6 +878,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           obj['学校ID'] = jgID;
           $http.post(xueXiaoKeMuUrl, obj).success(function(data){
             if(data.result){
+              qryXxKm();
               DataService.alertInfFun('suc', '保存成功！');
             }
             else{
@@ -1397,18 +1461,136 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          * 本机构下教师管理 --
          */
         $scope.renderTeacherTpl = function(){
-          var obj = {method: 'GET', url: yongHuUrl, params: {'学校ID': jgID, '用户类别': 1}};
-          $http(obj).success(function(data){
-            if(data.result){
-              $scope.teacherData = data.data;
-              $scope.isShenHeBox = false; //判断是不是审核页面
-              $scope.adminSubWebTpl = 'views/renzheng/rz_setTeacher.html';
+          var objUsr = {method: 'GET', url: yongHuUrl, params: {'学校ID': jgID, '用户类别': 1}};
+          $http(objUsr).success(function(user){ //机构教师
+            if(user.result){
+              var objTec = {method: 'GET', url: yongHuJueSeUrl, params: {'学校ID': jgID}};
+              $scope.shenHeList = [];
+              $http(objTec).success(function(teacher) { //查询机构教师角色
+                if(teacher.result){
+                  var distByUid = Lazy(teacher.data)
+                    .reject(function(usr){ return usr['科目ID'] == 0})
+                    .groupBy(function(usr){return usr.UID;}).toObject();
+                  Lazy(distByUid).each(function(v, k, l){ //通过UID排序
+                    var temp = {
+                      UID: k,
+                      '用户名': v[0]['用户名'],
+                      '姓名': v[0]['姓名'],
+                      '待审': []
+                    };
+                    var distByKm = Lazy(v).groupBy(function(ds){return ds['科目ID']});
+                    var xuXiaoKeMu = angular.copy($scope.xxkmList);
+                    Lazy(distByKm).each(function(v1, k1, l1){ //通过科目排序
+                      var kmTemp = Lazy(xuXiaoKeMu).find(function(xxkm){ return xxkm['科目ID'] == k1});
+                      var jsArr = [ //角色数据
+                        {
+                          '学校ID': v1[0]['学校ID'],
+                          '领域ID': v1[0]['领域ID'],
+                          '科目ID': v1[0]['科目ID'],
+                          '角色ID': 2,
+                          '状态': -1,
+                          '角色名称': '科目负责人',
+                          ckd: false
+                        },
+                        {
+                          '学校ID': v1[0]['学校ID'],
+                          '领域ID': v1[0]['领域ID'],
+                          '科目ID': v1[0]['科目ID'],
+                          '角色ID': 4,
+                          '状态': -1,
+                          '角色名称': '阅卷组长',
+                          ckd: false
+                        },
+                        {
+                          '学校ID': v1[0]['学校ID'],
+                          '领域ID': v1[0]['领域ID'],
+                          '科目ID': v1[0]['科目ID'],
+                          '角色ID': 3,
+                          '状态': -1,
+                          '角色名称': '任课老师',
+                          ckd: false
+                        },
+                        {
+                          '学校ID': v1[0]['学校ID'],
+                          '领域ID': v1[0]['领域ID'],
+                          '科目ID': v1[0]['科目ID'],
+                          '角色ID': 5,
+                          '状态': -1,
+                          '角色名称': '助教',
+                          ckd: false
+                        }
+                      ];
+                      Lazy(jsArr).each(function(ojs){
+                        var findJs = Lazy(v1).find(function(js){return js['角色ID'] == ojs['角色ID']});
+                        if(findJs){
+                          ojs.ckd = true;
+                          ojs['状态'] = findJs['状态'];
+                        }
+                      });
+                      kmTemp['角色'] = jsArr;
+                    });
+                    temp['待审'] = xuXiaoKeMu;
+                    $scope.shenHeList.push(temp);
+                  });
+                  Lazy(user.data).each(function(jsjs){ //合并数据
+                    var fdUsr = Lazy($scope.shenHeList).find(function(thjs){ return thjs['UID'] == jsjs['UID'];});
+                    if(fdUsr){
+                      jsjs['科目角色'] = fdUsr['待审'];
+                    }
+                    else{
+                      jsjs['科目角色'] = angular.copy($scope.xxkmList);
+                    }
+                  });
+                  $scope.teacherData = user.data;
+                  $scope.isShenHeBox = true; //判断是不是审核页面
+                  $scope.adminSubWebTpl = 'views/renzheng/rz_setTeacher.html';
+                }
+                else{
+                  DataService.alertInfFun('err', teacher.error);
+                }
+              });
             }
             else{
               $scope.teacherData = '';
-              DataService.alertInfFun('err', data.error);
+              DataService.alertInfFun('err', user.error);
             }
           });
+        };
+
+        /**
+         * 保存教师角色修改
+         */
+        $scope.saveTeacherJs = function(usr) {
+          var obj = {method: 'POST', url: yongHuJueSeUrl, data: {UID: usr.UID, '角色': []}};
+          var dsArr = [];
+          Lazy(usr['科目角色']).each(function(km){
+            Lazy(km['角色']).each(function(js){
+              if(js.ckd){
+                var temp = {
+                  '学校ID': js['学校ID'],
+                  '领域ID': js['领域ID'],
+                  '科目ID': js['科目ID'],
+                  '角色ID': js['角色ID'],
+                  '状态': 1
+                };
+                dsArr.push(temp);
+              }
+            });
+          });
+          if(dsArr && dsArr.length > 0){
+            obj.data['角色'] = JSON.stringify(dsArr);
+            $http(obj).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('pmt', '保存成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择的角色！');
+          }
         };
 
         /**

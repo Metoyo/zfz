@@ -1,24 +1,67 @@
-<h4>教师管理</h4>
-<div class="dagangInput teacherInfo">
-  <table class="table-bordered">
-    <tr>
-      <th>姓名</th>
-      <th>用户名</th>
-      <th>邮箱</th>
-      <th>手机</th>
-      <!--<th>领域和角色</th>-->
-    </tr>
-    <tr ng-repeat="tech in teacherData">
-      <td ng-bind="tech['姓名']"></td>
-      <td ng-bind="tech['用户名']"></td>
-      <td ng-bind="tech['邮箱']"></td>
-      <td ng-bind="tech['手机']"></td>
-      <!--<td>-->
-        <!--<p ng-repeat="ly in tech.lingyu">-->
-          <!--<span ng-bind="ly.LINGYUMINGCHENG" class="clGreen"></span>：-->
-          <!--<span ng-bind="ly.juese" class="cBlue"></span>-->
-        <!--</p>-->
-      <!--</td>-->
-    </tr>
-  </table>
+<div class="col-md-12 infoBox">
+  <h3 class="text-center shTitle"> 教师管理
+    <a href="javascript:void(0)" ng-click="closeShenheBox()" class="closeShenBox pull-right" title="关闭窗口">
+      <span class="glyphicon glyphicon-remove"></span>
+    </a>
+  </h3>
+  <div class="tab-pane">
+    <table class="table table-bordered shenheTable" style="font-size: 12px">
+      <thead>
+      <tr>
+        <th>姓名</th>
+        <th>用户名</th>
+        <th>邮箱</th>
+        <th>手机</th>
+        <th>科目角色</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody class="shenheList">
+      <tr ng-repeat="tech in teacherData">
+        <td ng-bind="tech['姓名']"></td>
+        <td ng-bind="tech['用户名']"></td>
+        <td ng-bind="tech['邮箱']"></td>
+        <td ng-bind="tech['手机']"></td>
+        <td>
+          <table class="table">
+            <tr ng-repeat="km in tech['科目角色']">
+              <td ng-bind="km['科目名称']"></td>
+              <td>
+                <label ng-repeat="js in km['角色']" class="checkbox-inline">
+                  <input type="checkbox" ng-checked="js.ckd" ng-click="jueseClicked(js)"/>
+                  <span ng-bind="js['角色名称']"></span>
+                </label>
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td>
+          <button type="button" class="btn btn-success" ng-click="saveTeacherJs(tech)">保存</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+<!--<h4>教师管理</h4>-->
+<!--<div class="dagangInput teacherInfo">-->
+  <!--<table class="table-bordered">-->
+    <!--<tr>-->
+      <!--<th>姓名</th>-->
+      <!--<th>用户名</th>-->
+      <!--<th>邮箱</th>-->
+      <!--<th>手机</th>-->
+      <!--<th>科目角色</th>-->
+      <!--<th>操作</th>-->
+    <!--</tr>-->
+    <!--<tr ng-repeat="tech in teacherData">-->
+      <!--<td ng-bind="tech['姓名']"></td>-->
+      <!--<td ng-bind="tech['用户名']"></td>-->
+      <!--<td ng-bind="tech['邮箱']"></td>-->
+      <!--<td ng-bind="tech['手机']"></td>-->
+      <!--<td>-->
+        <!--<button type="button" class="btn btn-success" ng-click="authPerm(usr)">保存</button>-->
+      <!--</td>-->
+    <!--</tr>-->
+  <!--</table>-->
+<!--</div>-->
