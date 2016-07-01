@@ -41,7 +41,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           activeNd: '', //公共大纲那个输入框被激活了
           sltJgId: '', //查询考点是选择的学校ID
           editKcTp: '', //编辑考点的类型
-          kaoDianFrom: ''
+          kaoDianFrom: '',
+          navHide: false //隐藏二级导航
         };
         $scope.pageParam = {
           currentPage: '',
@@ -258,6 +259,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.closeShenheBox = function() {
           $scope.adminSubWebTpl = '';
           $scope.isShenHeBox = true; //判断是不是审核页面
+          $scope.adminParams.navHide = false;
         };
 
         /**
@@ -1543,6 +1545,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   });
                   $scope.teacherData = user.data;
                   $scope.isShenHeBox = true; //判断是不是审核页面
+                  $scope.adminParams.navHide = true;
                   $scope.adminSubWebTpl = 'views/renzheng/rz_setTeacher.html';
                 }
                 else{
@@ -1723,6 +1726,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }
           $scope.adminParams.sltJgId = '';
           $scope.isShenHeBox = true; //判断是不是审核页面
+          $scope.adminParams.navHide = true;
           $scope.adminSubWebTpl = 'views/renzheng/rz_kaoDian.html';
         };
 

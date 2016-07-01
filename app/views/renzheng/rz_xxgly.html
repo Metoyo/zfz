@@ -3,7 +3,7 @@
     返回
   </button>
 </div>
-<div class="col-md-3 logoutInfo" ng-init="showAlterAdminBox = false">
+<div class="col-md-3 logoutInfo" ng-init="showAlterAdminBox = false" ng-hide="adminParams.navHide">
   <h4>
     您好，<a href="javascript:void(0)" ng-bind="usrInfo['用户名']" ng-click="showAlterAdminBox = !showAlterAdminBox"></a>
     <span class="hide userUID" ng-bind="usrInfo['UID']"></span>
@@ -24,8 +24,8 @@
   </div>
 </div>
 <div class="col-md-9 entries" ng-show="isShenHeBox">
-  <h4>请选择您要进行的操作：</h4>
-  <ul class="list-unstyled">
+  <h4 ng-hide="adminParams.navHide">请选择您要进行的操作：</h4>
+  <ul class="list-unstyled" ng-hide="adminParams.navHide">
     <li>
       <a href="javascript:void(0)" class="btn btn-primary" ng-click="renderLingYuSelectTpl()">学校科目选择</a>
     </li>
@@ -36,7 +36,7 @@
       <a href="javascript:void(0)" class="btn btn-primary" ng-click="renderTeacherTpl()">学校教师</a>
     </li>
     <li>
-      <a href="javascript:void(0)" class="btn btn-primary" ng-click="renderPerm()">权限审批</a>
+      <!--<a href="javascript:void(0)" class="btn btn-primary" ng-click="renderPerm()">权限审批</a>-->
     </li>
     <li>
       <a href="javascript:void(0)" class="btn btn-primary" ng-click="renderTiKu()">学校题库</a>

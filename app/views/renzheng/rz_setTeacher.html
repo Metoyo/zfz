@@ -1,8 +1,9 @@
 <div class="col-md-12 infoBox">
   <h3 class="text-center shTitle"> 教师管理
-    <a href="javascript:void(0)" ng-click="closeShenheBox()" class="closeShenBox pull-right" title="关闭窗口">
-      <span class="glyphicon glyphicon-remove"></span>
-    </a>
+    <!--<a href="javascript:void(0)" ng-click="closeShenheBox()" class="closeShenBox pull-right" title="关闭窗口">-->
+      <!--<span class="glyphicon glyphicon-remove"></span>-->
+    <!--</a>-->
+    <button type="button" class="btn btn-danger pull-right" ng-click="closeShenheBox()">返回</button>
   </h3>
   <div class="tab-pane">
     <table class="table table-bordered shenheTable" style="font-size: 12px">
@@ -43,25 +44,3 @@
     </table>
   </div>
 </div>
-<!--<h4>教师管理</h4>-->
-<!--<div class="dagangInput teacherInfo">-->
-  <!--<table class="table-bordered">-->
-    <!--<tr>-->
-      <!--<th>姓名</th>-->
-      <!--<th>用户名</th>-->
-      <!--<th>邮箱</th>-->
-      <!--<th>手机</th>-->
-      <!--<th>科目角色</th>-->
-      <!--<th>操作</th>-->
-    <!--</tr>-->
-    <!--<tr ng-repeat="tech in teacherData">-->
-      <!--<td ng-bind="tech['姓名']"></td>-->
-      <!--<td ng-bind="tech['用户名']"></td>-->
-      <!--<td ng-bind="tech['邮箱']"></td>-->
-      <!--<td ng-bind="tech['手机']"></td>-->
-      <!--<td>-->
-        <!--<button type="button" class="btn btn-success" ng-click="authPerm(usr)">保存</button>-->
-      <!--</td>-->
-    <!--</tr>-->
-  <!--</table>-->
-<!--</div>-->
