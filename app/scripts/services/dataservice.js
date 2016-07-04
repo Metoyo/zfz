@@ -31,6 +31,10 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
       this.alertInfFun = function(a, b){
         if(b){
           alertFun(a, b);
+          if(b == '请先登录！'){
+            var currentPath = $location.$$path;
+            urlRedirect.goTo(currentPath, '/renzheng');
+          }
         }
         else{
           alertFun(a, '没有符合的数据！');
@@ -77,7 +81,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
       this.logout = function(){
         var paramUrl = '/logout';
         $http.get(paramUrl).success(function(data){
-          if(data.result){
+          if(data.result && data.data){
             delete $rootScope.session;
             $cookieStore.remove('ckUrl');
             $cookieStore.remove('ckKeMu');

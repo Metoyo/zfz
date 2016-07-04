@@ -67,7 +67,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               obj.params['用户名'] = info;
             }
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 if(type == 'yonghuming'){
                   $scope.yonghumingExist = data.data['存在'];
                 }
@@ -114,7 +114,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           if(!($scope.jigou_list && $scope.jigou_list.length > 0)){
             $scope.loadingImgShow = true;
             $http.get(xueXiaoUrl).success(function(schools){
-              if(schools.result){
+              if(schools.result && schools.data){
                 $scope.jigou_list = schools.data;
               }
               else{
@@ -146,7 +146,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               '学校ID': jgId
             };
             $http(obj).success(function(data) {
-              if(data.result){
+              if(data.result && data.data){
                 $scope.xxkm_list = data.data;
               }
               else{
@@ -299,7 +299,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $scope.teacherInfo['角色'] = JSON.stringify($scope.teacherInfo['角色']);
           var obj = {method: 'PUT', url: yongHuUrl, data: $scope.teacherInfo};
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               DataService.alertInfFun('suc', '提交成功！');
               $scope.stepTwo = false;
               $scope.stepThree = false;
@@ -386,7 +386,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             }
           };
           $http(objLogin).success(function(lData){
-            if(lData.result){
+            if(lData.result && lData.data){
               //登录成功以后获得签名
               if($scope.studentInfo[0]['UID']){
                 var obj = {
@@ -401,7 +401,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                   }
                 };
                 $http(obj).success(function(data){
-                  if(data.result){
+                  if(data.result && data.data){
                     DataService.alertInfFun('suc', '注册成功！');
                     urlRedirect.goTo($location.$$path, '/renzheng');
                   }

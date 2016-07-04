@@ -44,7 +44,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             }
           };
           $http(obj).success(function (data) {
-            if(data.data && data.result > 0) {
+            if(data.result && data.data) {
               $scope.kaoShiArrs = Lazy(data.data).sortBy('创建时间').reverse().toArray();
             }
             if(data.error){
@@ -162,7 +162,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           if(ks['考试组ID']){
             obj.params['考试组ID'] = ks['考试组ID'];
             $http(obj).success(function (data) {
-              if (data.data && data.result > 0) {
+              if (data.result && data.data) {
                 Lazy(data.data[0]['考试']).each(function(cc){
                   if(cc['考试ID'] == ks['考试ID']){
                     cc.ckd = ks['状态'] == 1;
@@ -229,7 +229,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             bmObj.params['考试ID'] = findTar['考试ID'];
             bmObj.params['考点ID'] = findTar['考点ID'];
             $http(bmObj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 DataService.alertInfFun('suc', '报名成功！');
                 $scope.backToKszList();
                 chaXunBaoMingChangCi();

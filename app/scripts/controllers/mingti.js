@@ -105,7 +105,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var cxKmTx = function(){
           var obj = {method: 'GET', url: xueXiaoKeMuTiXingUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               $scope.kmtxList = data.data;
               $scope.keMuList = true;
             }
@@ -128,7 +128,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             }
           };
           $http(pObj).success(function(pData){
-            if(pData.result){
+            if(pData.result && data.data){
               loginUsr['用户设置'] = JSON.parse(parm);
               $cookieStore.put('ckUsr', JSON.stringify(loginUsr));
             }
@@ -168,7 +168,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           var obj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': keMuId, '类型': 2}};
           $scope.dgList = [];
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               Lazy(data.data).each(function(dg){
                 var dgObj = {
                   '知识大纲ID': dg['知识大纲ID'],
@@ -269,7 +269,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             $scope.loadingImgShow = true;
             var obj = {method: 'GET', url: tiMuUrl, params: {'返回题目内容': true, '题目ID': JSON.stringify(tmArr)}};
             $http(obj).success(function(data){ //查询题目详情
-              if(data.result){
+              if(data.result && data.data){
                 Lazy(data.data).each(function(tm, idx, lst){
                   tm = DataService.formatDaAn(tm);
                 });
@@ -289,7 +289,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var qryChuTiRen = function(){
           var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               $scope.chuTiRens = data.data;
             }
             else{
@@ -304,7 +304,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var qryLuTiRen = function(){
           var obj = {method: 'GET', url: luTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               $scope.luTiRens = data.data;
             }
             else{
@@ -319,7 +319,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var qryTiKu = function(){
           var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId}};
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               $scope.tiKuList = data.data;
             }
             else{
@@ -532,7 +532,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             obj.params['录题人UID'] = qryTmPar.ltr;
           }
           $http(obj).success(function(tmlb){ //查询题目列表
-            if(tmlb.result){
+            if(tmlb.result && tmlb.data){
               var timuliebiao = Lazy(tmlb.data).reverse().toArray();
               allTiMuIds = angular.copy(timuliebiao);
               pageMake(tmlb.data);
@@ -544,7 +544,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               $scope.timuDetails = '';
               $scope.mingTiParam.tiMuLen = '';
               allTiMuIds = '';
-              DataService.alertInfFun('err', tmlb.error);
+              DataService.alertInfFun('err', tmlb.error || '没有数据！');
             }
             $scope.loadingImgShow = false;
           });
@@ -766,7 +766,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           if(!($scope.mingTiParam.tiMuLaiYuan && $scope.mingTiParam.tiMuLaiYuan.length)){
             var obj = {method: 'GET', url: tiMuLaiYuanUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.mingTiParam.tiMuLaiYuan = data.data;
               }
               else{
@@ -1000,7 +1000,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           if (confirm('确定要删除此题吗？')) {
             var obj = {method: 'DELETE', url: tiMuUrl, params: {'题目ID': tmid}};
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.timuDetails.splice(idx, 1);
                 DataService.alertInfFun('suc', '删除成功！');
               }
@@ -1321,7 +1321,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               obj.method = 'POST';
             }
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.timu['题目内容'] = {
                   '题干': '',
                   '答案': '',

@@ -82,7 +82,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }
           urlArr = [];
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               var usrInfo = { //登录用户的cookies
                 UID: data.data['UID'],
                 '学校ID': data.data['学校ID'],
@@ -144,7 +144,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                     $scope.usrKeMu = [];
                     var obj = {method: 'GET', url: xueXiaoKeMuUrl, params: {'学校ID': data.data['学校ID']}};
                     $http(obj).success(function(xxKm){
-                      if(xxKm.result){
+                      if(xxKm.result && xxKm.data){
                         Lazy(kmArr).each(function(kmId){
                           var findKm = Lazy(xxKm.data).find(function(km){return km['科目ID'] == kmId});
                           $scope.usrKeMu.push(findKm);
@@ -219,7 +219,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         //    var findPwUrl = findPwUrlBase + $scope.registerEmail,
         //      mailLink = 'http://mail.' + $scope.registerEmail.split('@').pop();
         //    $http.get(findPwUrl).success(function(data){
-        //      if(data.result){
+        //      if(data.result && data.data){
         //        $scope.rzParams.emailLink = mailLink;
         //        $scope.rzParams.sendEmailSuccess = true;
         //      }
@@ -236,7 +236,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         //$scope.checkUsrExist = function(nme, info){
         //  var checkUserUrl = checkUserUrlBase + '&' + nme + '=' + info;
         //  $http.get(checkUserUrl).success(function(data){
-        //    if(data.result){
+        //    if(data.result && data.data){
         //      $scope.youxiangExist = false;
         //    }
         //    else{
@@ -258,7 +258,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         //$scope.restPassword = function(){
         //  if($scope.newPasswordObj.newPw == $scope.newPasswordObj.confirmNewPw){
         //    $http.post(resetPwUrl, $scope.newPasswordObj).success(function(data){
-        //      if(data.result){
+        //      if(data.result && data.data){
         //        $scope.rzParams.resetPwSuccess = true;
         //        var jumpToHome = function() {
         //          urlRedirect.goTo(currentPath, '/renzheng');

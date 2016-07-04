@@ -1405,7 +1405,8 @@ label.checkbox {
     .renzhengWrapper .shenheBox .shTitle {
       margin-top: 10px; }
     .renzhengWrapper .shenheBox .btn {
-      padding: 4px 10px; }
+      padding: 4px 10px;
+      font-size: 12px; }
     .renzhengWrapper .shenheBox .jg-table {
       background-color: #fff; }
       .renzhengWrapper .shenheBox .jg-table th {

@@ -80,7 +80,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           var sltDg = '';
           $scope.dgList = [];
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               Lazy(data.data).each(function(dg){
                 var dgObj = {
                   '知识大纲ID': dg['知识大纲ID'],
@@ -134,7 +134,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           else{
             var obj = {method: 'GET', url: xueXiaoKeMuTiXingUrl, params: {'学校ID': jgID, '科目ID': dftKm['科目ID']}};
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 Lazy(data.data).each(function(tx){
                   tx.ckd = false;
                 });
@@ -157,7 +157,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           if(!($scope.tiKuList && $scope.tiKuList.length > 0)){
             var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId}};
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.tiKuList = data.data;
               }
               else{
@@ -237,7 +237,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           if(!($scope.chuTiRens && $scope.chuTiRens.length > 0)){
             var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.chuTiRens = data.data;
               }
               else{
@@ -279,7 +279,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.removeThisPage = false;
             var obj = {method: 'GET', url: tiMuUrl, params: {'返回题目内容': true, '题目ID': JSON.stringify(tmArr)}};
             $http(obj).success(function(data){ //查询题目详情
-              if(data.result){
+              if(data.result && data.data){
                 var count = 0;
                 Lazy(data.data).each(function(tm, idx, lst){
                   tm = DataService.formatDaAn(tm);
@@ -626,6 +626,11 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.subDsShow = true;
           $scope.onlyShowAddRuleBox = false;
           $scope.addSjz.sltDati = '';
+          $scope.zuJuanParam.timuNum = '';
+          $scope.zuJuanParam.rlZsd = '';
+          $scope.zuJuanParam.rlTxId = '';
+          $scope.zuJuanParam.rlNd = '';
+          $scope.zuJuanParam.rlTk = '';
         };
 
         /**
@@ -817,7 +822,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             obj.params['创建时间截止'] = DataService.formatDateZh(qryTmPar.cjsjJs);
           }
           $http(obj).success(function(tmlb){ //查询题目列表
-            if(tmlb.result){
+            if(tmlb.result && tmlb.data){
               var timuliebiao = Lazy(tmlb.data).reverse().toArray();
               allTiMuIds = angular.copy(timuliebiao);
               if(tmlb.data && tmlb.data.length > 0){
@@ -879,7 +884,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             obj.params['难度'] = JSON.stringify($scope.zuJuanParam.rlNd);
             obj.params['题库'] = JSON.stringify($scope.zuJuanParam.rlTk);
             $http(obj).success(function(data){ //查询题目列表
-              if(data.result){
+              if(data.result && data.data){
                 $scope.zuJuanParam.timuNum = data.data['题目数'];
               }
               else{
@@ -1162,7 +1167,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
           else{
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.btnDisable = false;
                 $scope.zuJuanParam.showTiMu = 'sjltPage';
                 Lazy(data.data).each(function(sj, idx, lst){
@@ -1386,7 +1391,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               obj['试卷'] = JSON.stringify($scope.sjList);
             }
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.btnDisable = false;
                 $scope.showPaperList();
                 DataService.alertInfFun('suc', '保存成功！');
@@ -1439,7 +1444,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             if($scope.dltSjzPar['试卷组ID']){
               obj.data['试卷组ID'] = $scope.dltSjzPar['试卷组ID'];
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   $scope.paperListData.splice($scope.dltSjzPar['试卷组索引'], 1);
                   $scope.cancelDltSjz();
                   DataService.alertInfFun('suc', '删除成功！');
@@ -1480,7 +1485,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             if(tiMuIds.length > 0){
               var obj = {method: 'GET', url: tiMuUrl, params: {'题目ID': JSON.stringify(tiMuIds), '返回题目内容': true}};
               $http(obj).success(function(data){ //查询题目详情
-                if(data.result){
+                if(data.result && data.data){
                   tmArr = data.data;
                   Lazy($scope.sjzSet['组卷规则']).each(function(dt){
                     var sjrArr = dt['随机题目'];
@@ -1691,7 +1696,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             if(sjtmArr.length > 0){
               obj.data['试卷题目'] = JSON.stringify(sjtmArr);
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   DataService.alertInfFun('suc', '试卷保存成功！');
                 }
                 else{

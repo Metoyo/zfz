@@ -84,13 +84,9 @@
           <span class="daAnLabel">答案：</span>
           <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
         </div>
-        <div class="positionRe" ng-show="tm['题目来源']">
-          <span class="daAnLabel">来源：</span>
-          <div class="daAnBox" ng-bind-html="tm['题目来源']"></div>
-        </div>
-        <div class="positionRe" ng-show="tm['题目内容']['提示']">
+        <div class="positionRe" ng-show="tm['备注']">
           <span class="daAnLabel">备注：</span>
-          <div class="daAnBox" ng-bind-html="tm['题目内容']['提示']"></div>
+          <div class="daAnBox" ng-bind-html="tm['备注']"></div>
         </div>
       </div>
     </li>

@@ -57,7 +57,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             if(!($scope.allKaoChangList && $scope.allKaoChangList.length > 0)){
               var obj = {method: 'GET', url: kaoDianUrl, params: {'学校ID': jgID}};
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   $scope.allKaoChangList = data.data;
                 }
                 else{
@@ -79,7 +79,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             };
             if(!(paperListOriginData && paperListOriginData.length > 0)){
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   paperListOriginData = data.data;
                 }
                 else{
@@ -91,7 +91,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
-           * 分页处理函数 --
+           * 分页处理函数
            */
           var pageMake = function(data){
             var dataLen = data.length; //数据长度
@@ -137,7 +137,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               obj.params['考试组ID'] = $scope.kaoShiZuDtl['考试组ID'];
               if(confirm('你确定要重新打包试卷组吗？')){
                 $http(obj).success(function(data){
-                  if(data.result){
+                  if(data.result && data.data){
                     DataService.alertInfFun('suc', '打包成功！');
                   }
                   else{
@@ -183,7 +183,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             obj.params['状态'] = JSON.stringify(ztArr);
             $scope.loadingImgShow = true;
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 pageMake(data.data);
                 kaoShiZuStore = Lazy(data.data).reverse().toArray();
                 $scope.kaoShiZuDist(1);
@@ -516,7 +516,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 params: {'学校ID': jgID, '科目ID': keMuId, '返回学生人数': true}
               };
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   var dataLength = data.data.length; //课序号的长度
                   keXuHaoStore = data.data;
                   if(dataLength > 10){
@@ -582,7 +582,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 params: { '课序号ID': JSON.stringify(kxhId) }
               };
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   $scope.showAddStuBox = false;
                   $scope.studentsOrgData = Lazy(data.data).uniq('UID').toArray();
                   //将名单加入考试数据
@@ -685,7 +685,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 if(typeof(data) == 'string'){
                   newData = JSON.parse(data);
                 }
-                if(newData.result){
+                if(newData.result && newData.data){
                   var node = document.getElementById('flowControlForm');
                   node.parentNode.removeChild(node);
                   $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
@@ -802,7 +802,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 data: {'考试组ID': kszId, '状态': -1}
               };
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   $scope.showKaoShiZuList($scope.kwParams.kszListZt);
                   DataService.alertInfFun('suc', '考试删除成功！');
                 }
@@ -823,7 +823,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               params: { '考试组ID': kszId }
             };
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.showKaoShiZuList($scope.kwParams.kszListZt);
                 DataService.alertInfFun('suc', '发布成功！');
               }
@@ -866,7 +866,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               obj.params['考试组ID'].push($scope.kaoShiZuDtl['考试组ID']);
               obj.params['考试组ID'] = JSON.stringify(obj.params['考试组ID']);
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   var disDt = Lazy(data.data).groupBy('考试ID').toObject();
                   Lazy(disDt).each(function(v, k, l){
                     var ccObj = {

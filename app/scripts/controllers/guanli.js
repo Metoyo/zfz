@@ -53,14 +53,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         var qryKeMuTeachers = function(){
           var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               if($scope.glEditBoxShow == 'modifyKeXuHao'){
                 var objKxhJs = {method: 'GET', url: kxhJiaoShiUrl, params: {'课序号ID': ''}};
                 var idArr = [];
                 idArr.push($scope.guanliParams.modifyKxh['课序号ID']);
                 objKxhJs.params['课序号ID'] = JSON.stringify(idArr);
                 $http(objKxhJs).success(function(kxhJsData){
-                  if(kxhJsData.result){
+                  if(kxhJsData.result && kxhJsData.data){
                     Lazy(data.data).each(function(kmjs){
                       Lazy(kxhJsData.data).each(function(kxhjs){
                         if(kxhjs.UID == kmjs.UID){
@@ -91,12 +91,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         var queryKeXuHao = function(){
           var objKxh = {method: 'GET', url: keXuHaoUrl, params: {'学校ID': jgID, '科目ID': keMuId, '返回学生人数': true}};
           $http(objKxh).success(function(data){
-            if(data.result){
+            if(data.result && data.data){
               var objJs = {method: 'GET', url: kxhJiaoShiUrl, params: {'课序号ID': ''}};
               var kxhIds = Lazy(data.data).map(function(kxh){ return kxh['课序号ID']}).toArray();
               objJs.params['课序号ID'] = JSON.stringify(kxhIds);
               $http(objJs).success(function(tech){
-                if(tech.result){
+                if(tech.result && tech.data){
                   Lazy(data.data).each(function(kxh){
                     if(kxh['学生人数'] == null){
                       kxh['学生人数'] = 0;
@@ -209,7 +209,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             params: {}
           };
           $http(sObj).success(function(sData){
-            if(sData.result){
+            if(sData.result && sData.data){
               if(sData.data['默认大纲'] && sData.data['默认大纲']['知识大纲ID']){
                 obj.params['知识大纲ID'] = sData.data['默认大纲']['知识大纲ID'];
               }
@@ -325,7 +325,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             obj.data['课序号ID'] = kxh['课序号ID'];
             if(confirm('确定要删除此课序号吗？')){
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   $scope.studentsOrgData = '';
                   $scope.studentsData = '';
                   $scope.studentsPages = [];
@@ -408,7 +408,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             $scope.loadingImgShow = true;
             var impUrl = impYongHuUrl + '/?' + '学校ID=' + jgID;
             $http.post(impUrl, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}}).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 $scope.impStus = Lazy($scope.impStus).union(data.data['导入成功']).toArray();
                 $scope.impStus = Lazy($scope.impStus).uniq('UID').toArray();
                 $scope.impUsrStepNum = 'list';
@@ -546,7 +546,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               if($scope.selectKxh){
                 if(confirm(confirmInfo)){
                   $http(obj).success(function(data){
-                    if(data.result){
+                    if(data.result && data.data){
                       $scope.chaXunKxhYongHu($scope.selectKxh);
                       DataService.alertInfFun('suc', '删除成功！');
                       $scope.showKeXuHaoManage = false;
@@ -641,7 +641,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           }
           if(allTrue){
             $http(obj).success(function(data){
-              if(data.result){
+              if(data.result && data.data){
                 var objJs = '';
                 if(saveType == 'addKeXuHao'){ //新增课序号
                   objJs = {
@@ -650,7 +650,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                     data:{'课序号ID':data.data['课序号ID'], '教师':JSON.stringify(uidArr)}
                   };
                   $http(objJs).success(function(jsData){
-                    if(data.result){
+                    if(jsData.result && jsData.data){
                       $scope.glEditBoxShow = ''; //弹出层显示那一部分内容重置
                       $scope.guanliParams.addNewKxh = ''; //课序号重置
                       $scope.guanliParams.addNewKxhSetting = '';
@@ -671,7 +671,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                     data: {'课序号ID': $scope.guanliParams.modifyKxh['课序号ID'], '教师': JSON.stringify(uidArr)}
                   };
                   $http(objJs).success(function(jsData){
-                    if(data.result){
+                    if(jsData.result && jsData.data){
                       $scope.glEditBoxShow = ''; //弹出层显示那一部分内容重置
                       $scope.guanliParams.addNewKxh = ''; //课序号重置
                       $scope.guanliParams.addNewKxhSetting = '';
@@ -855,7 +855,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               obj.data['考试组设置']['考试组知识点'] = kszZsd;
               $scope.loadingImgShow = true;
               $http(obj).success(function(data){
-                if(data.result){
+                if(data.result && data.data){
                   DataService.alertInfFun('suc', '保存成功！');
                 }
                 else{
