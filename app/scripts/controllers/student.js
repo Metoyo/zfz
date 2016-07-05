@@ -229,7 +229,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             bmObj.params['考试ID'] = findTar['考试ID'];
             bmObj.params['考点ID'] = findTar['考点ID'];
             $http(bmObj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 DataService.alertInfFun('suc', '报名成功！');
                 $scope.backToKszList();
                 chaXunBaoMingChangCi();

@@ -41,22 +41,6 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         }
       };
 
-      //查询数据，GET方法
-      this.getData = function(url){
-        var deferred = $q.defer();
-        $http.get(url).success(function(data){
-          if(data && data.length > 0 ){
-            deferred.resolve(data);
-          }
-          else{
-            console.log(data.error);
-            alertFun('err', data.error || '没有符合的数据！');
-            deferred.reject(data.error);
-          }
-        });
-        return deferred.promise;
-      };
-
       //修改试题，点击编辑器，内容立刻预览 题干
       this.tiMuContPreview = function(tgCont){
         var tgCont = $('.formulaEditTiGan').val() || tgCont;
@@ -81,7 +65,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
       this.logout = function(){
         var paramUrl = '/logout';
         $http.get(paramUrl).success(function(data){
-          if(data.result && data.data){
+          if(data.result){
             delete $rootScope.session;
             $cookieStore.remove('ckUrl');
             $cookieStore.remove('ckKeMu');

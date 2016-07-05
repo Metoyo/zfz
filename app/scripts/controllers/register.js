@@ -299,7 +299,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $scope.teacherInfo['角色'] = JSON.stringify($scope.teacherInfo['角色']);
           var obj = {method: 'PUT', url: yongHuUrl, data: $scope.teacherInfo};
           $http(obj).success(function(data){
-            if(data.result && data.data){
+            if(data.result){
               DataService.alertInfFun('suc', '提交成功！');
               $scope.stepTwo = false;
               $scope.stepThree = false;
@@ -401,7 +401,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                   }
                 };
                 $http(obj).success(function(data){
-                  if(data.result && data.data){
+                  if(data.result){
                     DataService.alertInfFun('suc', '注册成功！');
                     urlRedirect.goTo($location.$$path, '/renzheng');
                   }

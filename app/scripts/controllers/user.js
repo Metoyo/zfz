@@ -378,7 +378,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             $scope.loadingImgShow = true;
             if($scope.addNewJiGou['学校ID']){ //修改机构，用POST
               $http.post(xueXiaoUrl, $scope.addNewJiGou).success(function(data){
-                if(data.result && data.data){
+                if(data.result){
                   $scope.closeAddNewJiGou();
                   DataService.alertInfFun('suc', '修改成功');
                   getJgList();
@@ -390,7 +390,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             }
             else{ //新增机构，用PUT
               $http.put(xueXiaoUrl, $scope.addNewJiGou).success(function(data){
-                if(data.result && data.data){
+                if(data.result){
                   $scope.closeAddNewJiGou();
                   DataService.alertInfFun('suc', '新增成功');
                   getJgList();
@@ -416,7 +416,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             var obj = {};
             obj['学校ID'] = jg['学校ID'];
             $http({method: 'delete', url: xueXiaoUrl, params: obj}).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 DataService.alertInfFun('suc', '删除成功！');
                 getJgList();
               }
@@ -480,7 +480,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $scope.loadingImgShow = true;
           $scope.newXxgly['角色'] = JSON.stringify($scope.newXxgly['角色']);
           $http.put(yongHuUrl, $scope.newXxgly).success(function(data){
-            if(data.result && data.data){
+            if(data.result){
               var obj = {
                 method: 'POST',
                 url: yongHuJueSeUrl,
@@ -499,7 +499,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               };
               obj.data['角色'] = JSON.stringify(obj.data['角色']);
               $http(obj).success(function(rlt){
-                if(rlt.result && rlt.data){
+                if(rlt.result){
                   $scope.closeManageAdmin();
                   DataService.alertInfFun('suc', '新增成功');
                   getJgList();
@@ -526,7 +526,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             var obj = {};
             obj['UID'] = adm['UID'];
             $http({method: 'delete', url: yongHuUrl, params: obj}).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 DataService.alertInfFun('suc', '删除成功！');
                 getJgList();
               }
@@ -644,7 +644,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }
           if(confirm('确定要删除吗？')){
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 if(km){
                   ly['科目'] = ly['科目'].splice(idx, 1);
                 }
@@ -731,7 +731,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             }
           }
           $http(obj).success(function(data){
-            if(data.result && data.data){
+            if(data.result){
               if($scope.lyOrKmSet.type == 'nl'){
                 $scope.lingyu_list.push({
                   '领域ID': data.data['领域ID'],
@@ -903,7 +903,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }).toArray();
           obj['学校ID'] = jgID;
           $http.post(xueXiaoKeMuUrl, obj).success(function(data){
-            if(data.result && data.data){
+            if(data.result){
               qryXxKm();
               DataService.alertInfFun('suc', '保存成功！');
             }
@@ -1144,9 +1144,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             $scope.pubZsdgData['节点'] = JSON.stringify($scope.pubZsdgData['节点']);
             var obj = {method:'', url:zhiShiDaGangUrl, data:$scope.pubZsdgData};
             obj.method = $scope.pubZsdgData['知识大纲ID'] ? 'POST' : 'PUT';
-            console.log(obj);
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 $scope.allPubZsdgData = '';
                 $scope.pubZsdgData = '';
                 $scope.getPubDaGangList($scope.adminParams.selectKeMu['科目ID'], 'savedg');
@@ -1173,7 +1172,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             if($scope.adminParams.selected_dg){
               obj.data['知识大纲ID'] = $scope.adminParams.selected_dg;
               $http(obj).success(function(data){
-                if(data.result && data.data){
+                if(data.result){
                   $scope.getPubDaGangList($scope.adminParams.selectKeMu['科目ID'], 'savedg');
                   DataService.alertInfFun('suc', '删除成功！');
                 }
@@ -1267,7 +1266,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           if(txArr && txArr.length > 0){
             obj.data['题型'] = txArr;
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 DataService.alertInfFun('suc', '保存成功！');
               }
               else{
@@ -1300,7 +1299,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             }
           }
           $http(obj).success(function(data){
-            if(data.result && data.data){
+            if(data.result){
               DataService.alertInfFun('suc', '密码修改成功!');
             }
             else{
@@ -1429,7 +1428,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           if(confirm('你确定要删除此公共点吗？')){
             var obj = {method:'DELETE', url:zhiShiDianUrl, params:{'知识点ID':zsd['知识点ID']}};
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 DataService.alertInfFun('suc', '删除成功！');
               }
               else{
@@ -1473,7 +1472,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             }
           }
           $http(obj).success(function(data){
-            if(data.result && data.data){
+            if(data.result){
               $scope.getPublicZsd($scope.adminParams.selectLinYuId);
               DataService.alertInfFun('suc', '知识点保存成功！');
             }
@@ -1607,7 +1606,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           if(dsArr && dsArr.length > 0){
             obj.data['角色'] = JSON.stringify(dsArr);
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 DataService.alertInfFun('pmt', '保存成功！');
               }
               else{
@@ -1635,16 +1634,18 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               }
             };
             obj.data['UID'] = usr['UID'];
-            $http(obj).success(function(data){
-              if(data.result && data.data){
-                $scope.renderTeacherTpl();
-                DataService.alertInfFun('suc', '删除成功！');
-              }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-              $scope.loadingImgShow = false;
-            });
+            if(confirm('确定要删除此教师吗？')){
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.renderTeacherTpl();
+                  DataService.alertInfFun('suc', '删除成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+                $scope.loadingImgShow = false;
+              });
+            }
           }
           else{
             DataService.alertInfFun('pmt', '请选择学校！');
@@ -1705,7 +1706,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           if(confirm('确定要删除此题库吗？')){
             var obj = {method: 'DELETE', url: tiKuUrl, params: {'题库ID': tk['题库ID']}};
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 ly['题库'].splice(idx, 1);
                 DataService.alertInfFun('suc', '删除成功！');
               }
@@ -1742,7 +1743,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               obj.data = {'题库ID':tkInfo['题库ID'], '题库名称':tkName};
             }
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 $scope.tkSetPageShow = false;
                 $scope.tiKuSet.name = '';
                 $scope.tiKuSet.step = '';
@@ -1843,7 +1844,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             obj.data['考点ID'] = kc['考点ID'];
             if(confirm('确定要删除此考场吗？')){
               $http(obj).success(function(data){
-                if(data.result && data.data){
+                if(data.result){
                   $scope.adminParams.editKcTp = '';
                   if($scope.adminParams.kaoDianFrom){
                     $scope.getKaoDianList(jgID);
@@ -1904,7 +1905,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }
           $scope.loadingImgShow = true; //保存考场
           $http(obj).success(function(data){
-            if(data.result && data.data){
+            if(data.result){
               $scope.adminParams.editKcTp = '';
               if($scope.adminParams.kaoDianFrom){
                 $scope.getKaoDianList(jgID);
@@ -2134,7 +2135,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             obj.xuexiaoname = findXueXiao['学校名称'];
             obj.kaoshizuname = findKaoShiZu['考试组名称'];
             $http({method: 'GET', url: createPdfUrl, params: obj}).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 DataService.alertInfFun('suc', '生成成功！');
               }
               else{

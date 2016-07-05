@@ -51,11 +51,24 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          * 查询科目下的老师 --
          */
         var qryKeMuTeachers = function(){
-          var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
+          var obj = {
+            method: 'GET',
+            url: keMuJiaoShiUrl,
+            params: {
+              '学校ID': jgID,
+              '科目ID': keMuId
+            }
+          };
           $http(obj).success(function(data){
             if(data.result && data.data){
               if($scope.glEditBoxShow == 'modifyKeXuHao'){
-                var objKxhJs = {method: 'GET', url: kxhJiaoShiUrl, params: {'课序号ID': ''}};
+                var objKxhJs = {
+                  method: 'GET',
+                  url: kxhJiaoShiUrl,
+                  params: {
+                    '课序号ID': ''
+                  }
+                };
                 var idArr = [];
                 idArr.push($scope.guanliParams.modifyKxh['课序号ID']);
                 objKxhJs.params['课序号ID'] = JSON.stringify(idArr);
@@ -89,10 +102,24 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          * 查询课序号 --
          */
         var queryKeXuHao = function(){
-          var objKxh = {method: 'GET', url: keXuHaoUrl, params: {'学校ID': jgID, '科目ID': keMuId, '返回学生人数': true}};
+          var objKxh = {
+            method: 'GET',
+            url: keXuHaoUrl,
+            params: {
+              '学校ID': jgID,
+              '科目ID': keMuId,
+              '返回学生人数': true
+            }
+          };
           $http(objKxh).success(function(data){
             if(data.result && data.data){
-              var objJs = {method: 'GET', url: kxhJiaoShiUrl, params: {'课序号ID': ''}};
+              var objJs = {
+                method: 'GET',
+                url: kxhJiaoShiUrl,
+                params: {
+                  '课序号ID': ''
+                }
+              };
               var kxhIds = Lazy(data.data).map(function(kxh){ return kxh['课序号ID']}).toArray();
               objJs.params['课序号ID'] = JSON.stringify(kxhIds);
               $http(objJs).success(function(tech){
@@ -320,12 +347,19 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          * 删除课序号 --
          */
         $scope.deleteKeXuHao = function(kxh){
-          var obj = {method: 'POST', url: keXuHaoUrl, data: {'课序号ID': '', '状态': -1}};
+          var obj = {
+            method: 'POST',
+            url: keXuHaoUrl,
+            data: {
+              '课序号ID': '',
+              '状态': -1
+            }
+          };
           if(kxh){
             obj.data['课序号ID'] = kxh['课序号ID'];
             if(confirm('确定要删除此课序号吗？')){
               $http(obj).success(function(data){
-                if(data.result && data.data){
+                if(data.result){
                   $scope.studentsOrgData = '';
                   $scope.studentsData = '';
                   $scope.studentsPages = [];
@@ -435,7 +469,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         $scope.chaXunKxhYongHu = function(kxh){
           $scope.studentsData = '';
           $scope.impStus = [];
-          var obj = {method: 'GET', url: kxhXueShengUrl, params: {'课序号ID': ''}};
+          var obj = {
+            method: 'GET',
+            url: kxhXueShengUrl,
+            params: {
+              '课序号ID': ''
+            }
+          };
           if(kxh){
             $scope.selectKxh = kxh;
             var idArr = [];
@@ -546,7 +586,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               if($scope.selectKxh){
                 if(confirm(confirmInfo)){
                   $http(obj).success(function(data){
-                    if(data.result && data.data){
+                    if(data.result){
                       $scope.chaXunKxhYongHu($scope.selectKxh);
                       DataService.alertInfFun('suc', '删除成功！');
                       $scope.showKeXuHaoManage = false;
@@ -650,7 +690,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                     data:{'课序号ID':data.data['课序号ID'], '教师':JSON.stringify(uidArr)}
                   };
                   $http(objJs).success(function(jsData){
-                    if(jsData.result && jsData.data){
+                    if(jsData.result){
                       $scope.glEditBoxShow = ''; //弹出层显示那一部分内容重置
                       $scope.guanliParams.addNewKxh = ''; //课序号重置
                       $scope.guanliParams.addNewKxhSetting = '';
@@ -671,7 +711,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                     data: {'课序号ID': $scope.guanliParams.modifyKxh['课序号ID'], '教师': JSON.stringify(uidArr)}
                   };
                   $http(objJs).success(function(jsData){
-                    if(jsData.result && jsData.data){
+                    if(jsData.result){
                       $scope.glEditBoxShow = ''; //弹出层显示那一部分内容重置
                       $scope.guanliParams.addNewKxh = ''; //课序号重置
                       $scope.guanliParams.addNewKxhSetting = '';
@@ -855,7 +895,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               obj.data['考试组设置']['考试组知识点'] = kszZsd;
               $scope.loadingImgShow = true;
               $http(obj).success(function(data){
-                if(data.result && data.data){
+                if(data.result){
                   DataService.alertInfFun('suc', '保存成功！');
                 }
                 else{

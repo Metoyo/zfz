@@ -64,7 +64,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
          * 查询公共知识点
          */
         $scope.qryZsd = function(tp){
-          var obj = {method:'GET', url:zhiShiDianUrl, params:{'领域ID':lingYuId, '类型': tp}};
+          var obj = {
+            method:'GET',
+            url:zhiShiDianUrl,
+            params:{
+              '领域ID':lingYuId,
+              '类型': tp
+            }
+          };
           $scope.dgParam.zsdKind = tp;
           $http(obj).success(function(data){
             if(data.result && data.data){
@@ -292,7 +299,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           }
           $scope.loadingImgShow = true;
           $http(obj).success(function(data){
-            if(data.result && data.data){
+            if(data.result){
               if($scope.dgParam.dgType == 2){
                 getDaGangData(2);
                 $scope.knowledgePr = '';
@@ -355,7 +362,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             }
             pObj.data['科目设置'] = JSON.stringify(setPar);
             $http(pObj).success(function(pData){
-              if(pData.result && pData.data){
+              if(pData.result){
                 DataService.alertInfFun('suc', '设置成功！');
               }
               else{
@@ -379,7 +386,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           };
           if(confirm('你确定要删除此大纲吗？')){
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 getDaGangData(2);
                 $scope.knowledgePr = '';
                 $scope.dgParam.slt_dg = '';

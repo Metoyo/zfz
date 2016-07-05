@@ -109,7 +109,7 @@ define(['angular', 'config','jquery', 'lazy'], function (angular, config, $, laz
           if($scope.navData.newPsd){
             obj.data['密码'] = $scope.navData.newPsd;
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 $scope.navData.newPsd = '';
                 DataService.alertInfFun('suc', '密码修改成功！');
               }

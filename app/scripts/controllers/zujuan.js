@@ -1167,7 +1167,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
           else{
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 $scope.btnDisable = false;
                 $scope.zuJuanParam.showTiMu = 'sjltPage';
                 Lazy(data.data).each(function(sj, idx, lst){
@@ -1391,7 +1391,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
               obj['试卷'] = JSON.stringify($scope.sjList);
             }
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 $scope.btnDisable = false;
                 $scope.showPaperList();
                 DataService.alertInfFun('suc', '保存成功！');
@@ -1444,7 +1444,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             if($scope.dltSjzPar['试卷组ID']){
               obj.data['试卷组ID'] = $scope.dltSjzPar['试卷组ID'];
               $http(obj).success(function(data){
-                if(data.result && data.data){
+                if(data.result){
                   $scope.paperListData.splice($scope.dltSjzPar['试卷组索引'], 1);
                   $scope.cancelDltSjz();
                   DataService.alertInfFun('suc', '删除成功！');
@@ -1696,7 +1696,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             if(sjtmArr.length > 0){
               obj.data['试卷题目'] = JSON.stringify(sjtmArr);
               $http(obj).success(function(data){
-                if(data.result && data.data){
+                if(data.result){
                   DataService.alertInfFun('suc', '试卷保存成功！');
                 }
                 else{

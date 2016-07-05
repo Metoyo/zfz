@@ -55,7 +55,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            */
           var qryKaoDianList = function(){
             if(!($scope.allKaoChangList && $scope.allKaoChangList.length > 0)){
-              var obj = {method: 'GET', url: kaoDianUrl, params: {'学校ID': jgID}};
+              var obj = {
+                method: 'GET',
+                url: kaoDianUrl,
+                params: {
+                  '学校ID': jgID
+                }
+              };
               $http(obj).success(function(data){
                 if(data.result && data.data){
                   $scope.allKaoChangList = data.data;
@@ -802,7 +808,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 data: {'考试组ID': kszId, '状态': -1}
               };
               $http(obj).success(function(data){
-                if(data.result && data.data){
+                if(data.result){
                   $scope.showKaoShiZuList($scope.kwParams.kszListZt);
                   DataService.alertInfFun('suc', '考试删除成功！');
                 }

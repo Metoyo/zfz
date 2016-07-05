@@ -18,6 +18,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var tiMuUrl = '/timu'; //题目的URL
         var luTiRenUrl = '/lutiren'; //录题人
         var keMuJiaoShiUrl = '/kemu_jiaoshi'; //学校教师
+        var chuTiRenUrl = '/chutiren'; //出题人
         var tiKuUrl = '/tiku'; //题库
         var tiMuLaiYuanUrl = '/timulaiyuan'; //题目来源
         var yongHuUrl = '/yonghu'; //用户的增删改查
@@ -128,7 +129,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             }
           };
           $http(pObj).success(function(pData){
-            if(pData.result && data.data){
+            if(pData.result){
               loginUsr['用户设置'] = JSON.parse(parm);
               $cookieStore.put('ckUsr', JSON.stringify(loginUsr));
             }
@@ -287,10 +288,25 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 查询出题人
          */
         var qryChuTiRen = function(){
-          var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
+          var obj = {method: 'GET', url: chuTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result && data.data){
               $scope.chuTiRens = data.data;
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
+
+        /**
+         * 查询科目教师
+         */
+        var qryKeMuJiaoShi = function(){
+          var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
+          $http(obj).success(function(data){
+            if(data.result && data.data){
+              $scope.keMuJiaoShi = data.data;
             }
             else{
               DataService.alertInfFun('err', data.error);
@@ -343,6 +359,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         getDaGangData();
         qryLuTiRen();
         qryChuTiRen();
+        qryKeMuJiaoShi();
         qryTiKu();
 
         /**
@@ -650,7 +667,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             '难度': '',
             '题目来源ID': '',
             '出题人UID': '',
-            '知识点': ''
+            '知识点': '',
+            '备注': ''
           };
           function _do(item) {
             item.ckd = false;
@@ -716,6 +734,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             '答案': '',
             '提示': ''
           };
+          $scope.timu['备注'] = '';
           if(txId == 1 || txId == 2){
             $scope.timu['题目内容']['选项'] = '';
             $scope.loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];
@@ -745,7 +764,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             '难度': '',
             '题目来源ID': '',
             '出题人UID': '',
-            '知识点': ''
+            '知识点': '',
+            '备注': ''
           };
           function _do(item) {
             item.ckd = false;
@@ -770,7 +790,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                 $scope.mingTiParam.tiMuLaiYuan = data.data;
               }
               else{
-                DataService.alertInfFun('err', data.error);
+                $scope.mingTiParam.tiMuLaiYuan = '';
+                //DataService.alertInfFun('err', data.error);
               }
             });
           }
@@ -1000,7 +1021,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           if (confirm('确定要删除此题吗？')) {
             var obj = {method: 'DELETE', url: tiMuUrl, params: {'题目ID': tmid}};
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 $scope.timuDetails.splice(idx, 1);
                 DataService.alertInfFun('suc', '删除成功！');
               }
@@ -1030,7 +1051,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             '题目来源ID': tm['题目来源ID'],
             '出题人UID': tm['出题人UID'],
             '录题人UID': tm['录题人UID'],
-            '知识点': ''
+            '知识点': '',
+            '备注': tm['备注']
           };
           var zsdId = [];
           var zsdMc = [];
@@ -1321,12 +1343,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               obj.method = 'POST';
             }
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 $scope.timu['题目内容'] = {
                   '题干': '',
                   '答案': '',
                   '提示': ''
                 };
+                $scope.timu['备注'] = '';
                 if($scope.newTiXingId < 3){
                   $scope.loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];
                 }
