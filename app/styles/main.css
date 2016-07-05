@@ -874,7 +874,7 @@ a.add-btn:hover span {
     margin-bottom: 10px;
     line-height: 24px; }
     .testList .item-tigan img {
-      width: 50%; }
+      max-width: 50%; }
   .testList .item-sub-title {
     font-size: 14px;
     width: 100%;

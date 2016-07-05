@@ -353,6 +353,7 @@
   <!--试卷列表-->
   <div class="p10">
     <span class="fz20">{{zuJuanParam.sjzName}}</span>
+    <span class="fz16">(总分:{{zuJuanParam.sjScore}})</span>
     <a href="javascript:void(0)" class="ml15" ng-repeat="sj in sjList" ng-class="{active: shiJuanActive == $index}"
        ng-bind="'卷'+ ($index + 1)" ng-click="showShiJuanDtl(sj, $index)"></a>
   </div>
@@ -402,7 +403,7 @@
       <ul class="list-unstyled testList">
         <li ng-repeat="tm in tx['题目']">
           <div class="item-cont positionRe daTiName">
-            <h3 class="item-tigan" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干'] + '(本小题' + tm['分值'] + '分)'"></h3>
+            <h3 class="item-tigan" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干'] + '(本小题' + tm['分值'] + '分)(题目ID:' + tm['题目ID'] + ')'"></h3>
             <div class="item-tizhi-wrap">
               <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
                 <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>

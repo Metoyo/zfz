@@ -387,7 +387,8 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             showDaAn: false, //试卷显示答案
             saveSjBtn: false, //保存试卷按钮
             timuNum: '', //符合条件的题目数量
-            showZjRule: false //显示组卷规则
+            showZjRule: false, //显示组卷规则
+            sjScore: '' //试卷总分
           };
           Lazy($scope.tiKuList).each(function(tkl){
             tkl.ckd = false;
@@ -1193,10 +1194,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.showShiJuanDtl = function(sj, idx){
           var mis = [];
+          $scope.zuJuanParam.sjScore = 0;
           Lazy(sj['试卷题目']).each(function(dt){
             dt['大题分值'] = Lazy(dt['题目']).reduce(function(memo, tm){
               return memo + parseInt(tm['分值']);
             }, 0);
+            $scope.zuJuanParam.sjScore += dt['大题分值'];
             var fdTar = Lazy($scope.sjzSet['组卷规则']).find(function(gzDt){
               return gzDt['大题名称'] == dt['大题名称'];
             });
