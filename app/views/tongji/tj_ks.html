@@ -20,14 +20,14 @@
   <table class="table table-striped">
     <tr>
       <th>考试名称组</th>
-      <th width="120px" class="text-center">考试人数</th>
-      <th width="240px" class="text-center">创建时间</th>
+      <th width="160px" class="text-center">考试人数/总人数</th>
+      <th width="180px" class="text-center">创建时间</th>
     </tr>
-    <tr ng-repeat="ksz in kaoShiZuList" ng-click="tjShowKaoShiChart(ks)">
+    <tr ng-repeat="ksz in kaoShiZuList" ng-click="tjShowKaoShiChart(ksz)">
       <td>
         <a href="javascript:void(0)" ng-bind="ksz['考试组名称']"></a>
       </td>
-      <td class="text-center" ng-bind="ksz['总人数']"></td>
+      <td class="text-center" ng-bind="ksz['已作答人数'] + '/' + ksz['总人数']"></td>
       <td class="text-center" ng-bind="ksz['创建时间'] | localDate | date : 'yyyy-MM-dd'"></td>
     </tr>
   </table>

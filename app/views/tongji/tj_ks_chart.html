@@ -13,25 +13,23 @@
         </th>
       </tr>
       <tr>
-        <td width="20%">考试名称</td>
-        <td ng-init="showMoreKaoShi=false">
-          <div ng-bind="tjKaoShiPublicData.ksname" class="wordBreak pull-left"></div>
-          <!--<a href="javascript:void(0)" class="pull-right" ng-click="showMoreKaoShi=true">-->
-            <!--<span class="glyphicon glyphicon-plus-sign"></span>-->
-          <!--</a>-->
+        <td width="20%">考试组名称</td>
+        <td>
+          <div ng-bind="kszPubData['考试组名称']" class="pull-left"></div>
         </td>
       </tr>
       <tr class="success">
         <td>平均分数</td>
-        <td ng-bind="tjKaoShiPublicData.ksAvgScore.toFixed(1)"></td>
+        <td ng-bind="kszPubData['平均分数'].toFixed(1)"></td>
       </tr>
       <tr>
         <td>考试人数</td>
-        <td ng-bind="tjKaoShiPublicData.ksRenShu"></td>
+        <td ng-bind="kszPubData['已作答人数'] + '/' + kszPubData['总人数']"></td>
       <tr>
       <tr class="warning">
         <td>考试时间</td>
-        <td ng-show="tjKaoShiPublicData.kaikaodate" ng-bind="tjKaoShiPublicData.kaikaodate | localDate:'ww'"></td>
+        <!--<td ng-show="kszPubData.kaikaodate" ng-bind="kszPubData.kaikaodate | localDate:'ww'"></td>-->
+        <td></td>
       </tr>
       <tr>
         <td>参数设置</td>
@@ -45,14 +43,15 @@
     </table>
     <div class="tj-ks-box wp48 ml15">
       <h4 class="title">
-        <label class="radio-inline">
-          <input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="keXuHao"
-                 ng-change="switchTongJiType(tjParas.tongJiType)"> 按课序号统计
-        </label>
-        <label class="radio-inline" ng-hide="isRenKeJiaoShi">
-          <input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="banJi"
-                 ng-change="switchTongJiType(tjParas.tongJiType)"> 按班级统计
-        </label>
+        按课序号统计
+        <!--<label class="radio-inline">-->
+          <!--<input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="keXuHao"-->
+                 <!--ng-change="switchTongJiType(tjParas.tongJiType)"> 按课序号统计-->
+        <!--</label>-->
+        <!--<label class="radio-inline" ng-hide="isRenKeJiaoShi">-->
+          <!--<input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="banJi"-->
+                 <!--ng-change="switchTongJiType(tjParas.tongJiType)"> 按班级统计-->
+        <!--</label>-->
       </h4>
       <div class="selectBanJi">
         <div class="banJiList">
@@ -84,7 +83,7 @@
   </div>
   <div class="row">
     <div class="tj-ks-box wp48">
-      <h4 class="title">课序号平均分分布<span>（课序号：{{tjKaoShiPublicData.kxh}}-）</span></h4>
+      <h4 class="title">课序号平均分分布<span>（课序号：{{kszPubData.kxh}}-）</span></h4>
       <div class="chart">
         <div id="chartBar" style="height:100%;width: 100%">
         </div>
@@ -217,7 +216,7 @@
 <div class="popup-wrap" ng-show="showMoreShiJuan">
   <div class="popup-wrap-inner no-header">
     <div class="pwi-body plr10">
-      <label class="checkbox-inline" ng-repeat="sj in tjKaoShiPublicData.shijuan">
+      <label class="checkbox-inline" ng-repeat="sj in kszPubData.shijuan">
         <input type="checkbox" value="sj.SHIJUAN_ID" checked>
         {{sj.SHIJUAN_MINGCHENG}}
       </label>
