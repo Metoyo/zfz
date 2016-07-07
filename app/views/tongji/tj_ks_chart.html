@@ -1,6 +1,6 @@
 <div class="row tj-ks-title fixed-top">
   <span>按考试统计</span>
-  <button class="btn btn-danger pull-right" ng-click="tjDetailToList()">返回统计</button>
+  <button class="btn btn-danger pull-right" ng-click="backToList()">返回列表</button>
 </div>
 <div class="tab-content ks-chart-page">
   <div class="bg">
@@ -20,11 +20,13 @@
       </tr>
       <tr class="success">
         <td>平均分数</td>
-        <td ng-bind="kszPubData['平均分数'].toFixed(1)"></td>
+        <td ng-bind="kszPubData['考试组平均分']"></td>
       </tr>
       <tr>
         <td>考试人数</td>
-        <td ng-bind="kszPubData['已作答人数'] + '/' + kszPubData['总人数']"></td>
+        <td>
+          实考人数：{{kszPubData['已作答人数']}}  /  总人数：{{kszPubData['总人数']}}
+        </td>
       <tr>
       <tr class="warning">
         <td>考试时间</td>
@@ -34,10 +36,10 @@
       <tr>
         <td>参数设置</td>
         <td>
-          优秀分值：<input type="text" ng-model="tjParas.youXiuFenZhi" class="w40" ng-disabled="needToXgYxJgLv"/>
-          及格分值：<input type="text" ng-model="tjParas.jiGeFenZhi" class="w40" ng-disabled="needToXgYxJgLv"/>
+          优秀分值：<input type="text" ng-model="tjParas.yxScore" class="w40" ng-disabled="needToXgYxJgLv"/>
+          及格分值：<input type="text" ng-model="tjParas.jgScore" class="w40" ng-disabled="needToXgYxJgLv"/>
           <a href="javascript:void(0)" class="ml15" ng-click="changYouXiuJiGeLv()" ng-show="needToXgYxJgLv">修改</a>
-          <a href="javascript:void(0)" class="ml15" ng-click="tjShowKaoShiChart(selectKsz)" ng-hide="needToXgYxJgLv">确定</a>
+          <a href="javascript:void(0)" class="ml15" ng-click="kszChart(selectKsz)" ng-hide="needToXgYxJgLv">确定</a>
         </td>
       </tr>
     </table>
@@ -56,19 +58,19 @@
       <div class="selectBanJi">
         <div class="banJiList">
           <ul class="list-unstyled banJiUl">
-            <li ng-class="{active: tjParas.lastSelectItem.banJiIdx == 0}" ng-click="tjByBjOrKxh('all')">
+            <li ng-class="{active: tjParas.lastSltKxh.kxhIdx == 0}" ng-click="tjByKxh('all')">
               <a href="javascript:void(0)">全部</a>
             </li>
-            <li ng-repeat="bj in tjBanJi" ng-class="{active: bj.bjIdx == tjParas.lastSelectItem.banJiIdx}"
-                ng-click="tjByBjOrKxh(bj)">
-              <a href="javascript:void(0)" ng-bind="bj.bjName"></a>
+            <li ng-repeat="kxh in tjKxh" ng-class="{active: kxh['索引'] == tjParas.lastSltKxh.kxhIdx}"
+                ng-click="tjByKxh(kxh)">
+              <a href="javascript:void(0)" ng-bind="kxh['课序号名称']"></a>
             </li>
           </ul>
           <div class="page">
-            <p class="wp50 text-center up" ng-click="bJorKxhPage('up')">
+            <p class="wp50 text-center up" ng-click="kxhPage('up')">
               <span class="glyphicon glyphicon-chevron-up"></span>
             </p>
-            <p class="wp50 text-center down" ng-click="bJorKxhPage('down')">
+            <p class="wp50 text-center down" ng-click="kxhPage('down')">
               <span class="glyphicon glyphicon-chevron-down"></span>
             </p>
           </div>
@@ -83,7 +85,7 @@
   </div>
   <div class="row">
     <div class="tj-ks-box wp48">
-      <h4 class="title">课序号平均分分布<span>（课序号：{{kszPubData.kxh}}-）</span></h4>
+      <h4 class="title">课序号平均分分布</h4>
       <div class="chart">
         <div id="chartBar" style="height:100%;width: 100%">
         </div>
@@ -112,7 +114,7 @@
     <div class="tj-ks-box wp48 ml15">
       <h4 class="title">
         <span>考生名单</span>
-        <span class="ml15" ng-bind="tjParas.selectItemName" ng-if="tjParas.selectItemName!='全部'"></span>
+        <span class="ml15" ng-bind="tjParas.sltWeiDu" ng-if="tjParas.sltWeiDu!='全部'"></span>
         <button class="btn btn-primary pull-right mt5 mr5" ng-show="studentData.length"
                 ng-click="exportKsInfo(studentData)">导出考生
         </button>
@@ -124,20 +126,20 @@
               <th ng-click="ksSortDataFun('xuhao')">序号</th>
               <th ng-click="ksSortDataFun('stuId')">学号</th>
               <th ng-click="ksSortDataFun('name')">姓名</th>
-              <th ng-click="ksSortDataFun('class')">班级</th>
               <th ng-click="ksSortDataFun('score')">成绩</th>
+              <th ng-click="ksSortDataFun('kxh')">课序号</th>
             </tr>
             <tr ng-repeat="ksd in studentData">
-              <td ng-bind="ksd.XUHAO">
+              <td ng-bind="ksd['序号']">
               </td>
-              <td ng-bind="ksd.YONGHUHAO">
+              <td ng-bind="ksd['学号']">
               </td>
               <td>
-                <a href="javascript:void(0)" ng-bind="ksd.XINGMING" ng-click="zuoDaReappear(ksd)"></a>
+                <a href="javascript:void(0)" ng-bind="ksd['姓名']" ng-click="zuoDaReappear(ksd)"></a>
               </td>
-              <td ng-bind="ksd.BANJI">
+              <td ng-bind="ksd['实际评分']">
               </td>
-              <td ng-bind="ksd.ZUIHOU_PINGFEN">
+              <td ng-bind="ksd['课序号名称']">
               </td>
             </tr>
           </table>
@@ -162,7 +164,7 @@
 <div class="popup-wrap" ng-show="showMoreKaoShi">
   <div class="popup-wrap-inner">
     <div class="pwi-header plr10 text-right">
-      <button type="button" class="btn btn-success mt5" ng-click="tjShowKaoShiChart(tjParas.selectedKaoShi);showMoreKaoShi=false">确定</button>
+      <button type="button" class="btn btn-success mt5" ng-click="kszChart(tjParas.selectedKaoShi);showMoreKaoShi=false">确定</button>
       <button type="button" class="btn btn-danger mt5 ml10" ng-click="showMoreKaoShi=false">关闭</button>
     </div>
     <div class="pwi-body plr10">

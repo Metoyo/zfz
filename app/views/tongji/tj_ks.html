@@ -1,12 +1,12 @@
 <div class="sub-nav tj-ks fixed-top">
   <ul class="nav nav-tabs" ng-hide="isTjDetailShow">
     <li ng-class="{active: tj_tabActive == 'kaoshiTj'}">
-      <a href="javascript:void(0)" ng-click="showKaoShiTjList()">
+      <a href="javascript:void(0)" ng-click="showKszList()">
         考试统计
       </a>
     </li>
     <li ng-class="{active: tj_tabActive == 'kaoshengTj'}">
-      <a href="javascript:void(0)" ng-click="showKaoShengTjList()">
+      <a href="javascript:void(0)" ng-click="showStuList()">
         作答重现
       </a>
     </li>
@@ -23,7 +23,7 @@
       <th width="160px" class="text-center">考试人数/总人数</th>
       <th width="180px" class="text-center">创建时间</th>
     </tr>
-    <tr ng-repeat="ksz in kaoShiZuList" ng-click="tjShowKaoShiChart(ksz)">
+    <tr ng-repeat="ksz in kaoShiZuList" ng-click="kszChart(ksz)">
       <td>
         <a href="javascript:void(0)" ng-bind="ksz['考试组名称']"></a>
       </td>
