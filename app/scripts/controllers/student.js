@@ -14,19 +14,21 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         var kaoShengKaoShiUrl = '/kaosheng_kaoshi'; //查询考生考试
         var kaoShiZuUrl = '/kaoshizu'; //考试组
         var zaiXianBaoMingUrl = '/zaixian_baoming'; //在线报名
+        var kaoShengChengJiUrl = '/kaosheng_chengji'; //查询考生成绩
         //$scope.bmKaoChang = '';
-        //$scope.stuParams = {
-        //  selectKaoDian: '',
-        //  hasBaoMing: true,
-        //  letterArr: config.letterArr, //题支的序号
-        //  cnNumArr: config.cnNumArr, //汉语的大写数字
-        //  noData: '', //没有数据的显示
-        //  zsdTjShow: false //是否显示考生的知识点
-        //};
+        $scope.stuParams = {
+          bmKszArr: []
+          //selectKaoDian: '',
+          //hasBaoMing: true,
+          //letterArr: config.letterArr, //题支的序号
+          //cnNumArr: config.cnNumArr, //汉语的大写数字
+          //noData: '', //没有数据的显示
+          //zsdTjShow: false //是否显示考生的知识点
+        };
         $scope.kaoShiArrs = '';
         //$scope.kaoShiDetail = '';
         //$scope.showStuSelectInfo = false;
-        //$scope.showKaoShengList = true;
+        $scope.showKaoShengList = true;
         //
         var currentPath = $location.$$path;
 
@@ -34,8 +36,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         * 查询考生有几场考试
         */
         var chaXunBaoMingChangCi = function(){
-          $scope.kaoShiArrs = '';
-          $scope.kaoShiChangCiDetail = false;
           var obj = {
             method: 'GET',
             url: kaoShengKaoShiUrl,
@@ -43,9 +43,54 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               'UID': logUid
             }
           };
+          $scope.kaoShiArrs = [];
+          $scope.kaoShiChangCiDetail = false;
+          $scope.stuParams.bmKszArr = [];
           $http(obj).success(function (data) {
             if(data.result && data.data) {
-              $scope.kaoShiArrs = Lazy(data.data).sortBy('创建时间').reverse().toArray();
+              var kszId = Lazy(data.data).reverse().map('考试组ID').toArray();
+              var kzsObj = {
+                method: 'GET',
+                url: kaoShiZuUrl,
+                params: {
+                  '考试组ID': '',
+                  '返回考试': true
+                }
+              };
+              if(kszId && kszId.length > 0){
+                kzsObj.params['考试组ID'] = JSON.stringify(kszId);
+                $http(kzsObj).success(function (kszs) {
+                  if(kszs.result && kszs.data) {
+                    Lazy(kszs.data).each(function(ksz){
+                      if(ksz['状态'] <= 2){
+                        var bmStar = new Date(ksz['报名开始时间']);
+                        var bmEnd = new Date(ksz['报名截止时间']);
+                        var now = new Date();
+                        //var difMinutes = bmStar.getTimezoneOffset(); //与本地相差的分钟数
+                        //var sDifMS = bmStar.valueOf() - difMinutes * 60 * 1000; //报名开始与本地相差的毫秒数
+                        //var eDifMS = bmEnd.valueOf() - difMinutes * 60 * 1000; //报名结束与本地相差的毫秒数
+                        var sDifMS = bmStar.valueOf(); //报名开始与本地相差的毫秒数
+                        var eDifMS = bmEnd.valueOf(); //报名结束与本地相差的毫秒数
+                        var nMS = now.valueOf(); //本地时间
+                        if(nMS >= sDifMS && nMS <= eDifMS){
+                          ksz.baoMingStart = (nMS >= sDifMS && nMS <= eDifMS);
+                          $scope.stuParams.bmKszArr.push(ksz);
+                          var fidTar = Lazy(data.data).find(function(ks){ return ks['考试组ID'] == ksz['考试组ID']});
+                          if(fidTar){
+                            $scope.kaoShiArrs.push(fidTar);
+                          }
+                        }
+                      }
+                    });
+                  }
+                  else{
+                    DataService.alertInfFun('err', data.error);
+                  }
+                });
+              }
+              else{
+                DataService.alertInfFun('pmt', '目前没有需要报名的考试！');
+              }
             }
             if(data.error){
               $scope.kaoShiArrs = '';
@@ -57,7 +102,23 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         /**
          * 查询考试通过考生UID
          */
-        var qryKaoShiByXueHao = function () {
+        var qryKaoShiByUid = function () {
+          var stuObj = {
+            method: 'GET',
+            url: kaoShengChengJiUrl,
+            params: {
+              'UID': logUid
+            }
+          };
+          $http(stuObj).success(function(students) {
+            if (students.result && students.data) {
+              $scope.kszScoreData = Lazy(students.data).reverse().toArray();
+              $scope.showKaoShengList = true;
+            }
+            else{
+              DataService.alertInfFun('err', students.error);
+            }
+          });
           //$http.get(jiGouConf).success(function(conf){
           //  if(!conf.error){
           //    var confObj = '';
@@ -81,7 +142,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           //              }
           //            }
           //          });
-          //          $scope.ksScoreData = data;
+          //          $scope.kszScoreData = data;
           //          tjParaObj.radarBoxZsd = echarts.init(document.getElementById('studentZsd'));
           //          $scope.showKaoShengList = true;
           //        }
@@ -141,7 +202,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             chaXunBaoMingChangCi();
             break;
           case '/chengji':
-            qryKaoShiByXueHao();
+            qryKaoShiByUid();
             break;
           case '/weiluke':
             loadVideoList();
@@ -152,44 +213,65 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         * 查看考试组详情
         */
         $scope.queryKaoShiZuDetail = function(ks){
-          var obj = {
-            method: 'GET',
-            url: kaoShiZuUrl,
-            params: {
-              '考试组ID': ks['考试组ID']
-            }
-          };
-          if(ks['考试组ID']){
-            obj.params['考试组ID'] = ks['考试组ID'];
-            $http(obj).success(function (data) {
-              if (data.result && data.data) {
-                Lazy(data.data[0]['考试']).each(function(cc){
-                  if(cc['考试ID'] == ks['考试ID']){
-                    cc.ckd = ks['状态'] == 1;
-                  }
-                  else{
-                    cc.ckd = false;
-                  }
-                });
-                var bmStar = new Date(data.data[0]['报名开始时间']);
-                var bmEnd = new Date(data.data[0]['报名截止时间']);
-                var now = new Date();
-                var difMinutes = bmStar.getTimezoneOffset(); //与本地相差的分钟数
-                var sDifMS = bmStar.valueOf() - difMinutes * 60 * 1000; //报名开始与本地相差的毫秒数
-                var eDifMS = bmEnd.valueOf() - difMinutes * 60 * 1000; //报名结束与本地相差的毫秒数
-                var nMS = now.valueOf(); //本地时间
-                data.data[0].baoMingStart = (nMS >= sDifMS && nMS <= eDifMS);
-                $scope.selectKsz = data.data[0];
+          $scope.selectKsz = Lazy($scope.stuParams.bmKszArr).find(function(ksz){ return ksz['考试组ID'] == ks['考试组ID']}) || '';
+          if($scope.selectKsz){
+            Lazy($scope.selectKsz['考试']).each(function(cc){
+              if(cc['考试ID'] == ks['考试ID']){
+                cc.ckd = ks['状态'] == 1;
               }
-              if(data.error){
-                $scope.selectKsz = '';
-                DataService.alertInfFun('err', data.error);
+              else{
+                cc.ckd = false;
               }
             });
           }
-          else{
-            DataService.alertInfFun('pmt', '请选择考试组！');
-          }
+          //var obj = {
+          //  method: 'GET',
+          //  url: kaoShiZuUrl,
+          //  params: {
+          //    '考试组ID': ks['考试组ID']
+          //  }
+          //};
+          //$scope.selectKsz = '';
+          //if(ks['考试组ID']){
+          //  obj.params['考试组ID'] = ks['考试组ID'];
+          //  $http(obj).success(function (data) {
+          //    if(data.result && data.data) {
+          //      if(data.data[0]['状态'] >= 3){
+          //        DataService.alertInfFun('pmt', '报名已截止！');
+          //      }
+          //      else{
+          //        Lazy(data.data[0]['考试']).each(function(cc){
+          //          if(cc['考试ID'] == ks['考试ID']){
+          //            cc.ckd = ks['状态'] == 1;
+          //          }
+          //          else{
+          //            cc.ckd = false;
+          //          }
+          //        });
+          //        var bmStar = new Date(data.data[0]['报名开始时间']);
+          //        var bmEnd = new Date(data.data[0]['报名截止时间']);
+          //        var now = new Date();
+          //        var difMinutes = bmStar.getTimezoneOffset(); //与本地相差的分钟数
+          //        var sDifMS = bmStar.valueOf() - difMinutes * 60 * 1000; //报名开始与本地相差的毫秒数
+          //        var eDifMS = bmEnd.valueOf() - difMinutes * 60 * 1000; //报名结束与本地相差的毫秒数
+          //        var nMS = now.valueOf(); //本地时间
+          //        if(nMS >= sDifMS && nMS <= eDifMS){
+          //          data.data[0].baoMingStart = (nMS >= sDifMS && nMS <= eDifMS);
+          //          $scope.selectKsz = data.data[0];
+          //        }
+          //        else{
+          //          DataService.alertInfFun('pmt', '报名已截止！');
+          //        }
+          //      }
+          //    }
+          //    if(data.error){
+          //      DataService.alertInfFun('err', data.error);
+          //    }
+          //  });
+          //}
+          //else{
+          //  DataService.alertInfFun('pmt', '请选择考试组！');
+          //}
         };
 
         /**

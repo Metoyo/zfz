@@ -1,5 +1,5 @@
 <div class="studentWrapper">
-  <h2 class="loading-box" ng-hide="kaoShiArrs.length">暂无数据</h2>
+  <h2 class="loading-box" ng-hide="kaoShiArrs.length">暂无需要报名的考试</h2>
   <div class="sub-nav fixed-top">
     <ul class="nav nav-tabs">
       <li class="active" style="margin-left:50px">
@@ -9,7 +9,7 @@
       </li>
     </ul>
   </div>
-  <div class="tab-content wp80 mt65 ml50">
+  <div class="tab-content wp80 mt65 ml50" ng-show="kaoShiArrs.length">
     <div class="row" ng-hide="selectKsz">
       <h4 class="pb10">我的考试</h4>
       <table class="table table-striped">
