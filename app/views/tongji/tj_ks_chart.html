@@ -46,14 +46,6 @@
     <div class="tj-ks-box wp48 ml15">
       <h4 class="title">
         按课序号统计
-        <!--<label class="radio-inline">-->
-          <!--<input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="keXuHao"-->
-                 <!--ng-change="switchTongJiType(tjParas.tongJiType)"> 按课序号统计-->
-        <!--</label>-->
-        <!--<label class="radio-inline" ng-hide="isRenKeJiaoShi">-->
-          <!--<input type="radio" name="tongJiType" ng-model="tjParas.tongJiType" value="banJi"-->
-                 <!--ng-change="switchTongJiType(tjParas.tongJiType)"> 按班级统计-->
-        <!--</label>-->
       </h4>
       <div class="selectBanJi">
         <div class="banJiList">
@@ -75,10 +67,10 @@
             </p>
           </div>
         </div>
-        <div class="banJiName text-center pull-right wp60">
-          <!--<span ng-bind="tjParas.selectBanJi"></span>-->
-          <div id="chartRadar" style="width: 280px;height: 180px;">
-          </div>
+        <div class="banJiName text-center pull-right">
+          <span>平均分：</span><span ng-bind="tjParas.sltKxhPjf"></span>
+          <!--<div id="chartRadar" style="width: 280px;height: 180px;">-->
+          <!--</div>-->
         </div>
       </div>
     </div>

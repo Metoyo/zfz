@@ -2028,7 +2028,7 @@ label.checkbox {
     height: 300px;
     overflow-y: auto; }
 .tongjiWrapper .banJiList {
-  width: 120px;
+  width: 35%;
   border-right: 1px solid #ddd;
   height: 190px;
   float: left; }
@@ -2065,7 +2065,11 @@ label.checkbox {
     background-color: #EAE2B9; }
 .tongjiWrapper .banJiName {
   font-size: 12px;
-  margin-right: 30px; }
+  width: 65%; }
+  .tongjiWrapper .banJiName span {
+    margin-top: 70px;
+    font-size: 32px;
+    display: inline-block; }
 .tongjiWrapper .zsd-list li {
   padding-bottom: 10px;
   border-bottom: 1px solid #ddd; }

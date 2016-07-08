@@ -2578,7 +2578,7 @@ label.checkbox{
     }
   }
   .banJiList{
-    width: 120px;
+    width: 35%;
     border-right: 1px solid #ddd;
     height: 190px;
     float: left;
@@ -2627,7 +2627,13 @@ label.checkbox{
   }
   .banJiName{
     font-size: 12px;
-    margin-right: 30px;
+//    margin-right: 30px;
+    width: 65%;
+    span{
+      margin-top: 70px;
+      font-size: 32px;
+      display: inline-block;
+    }
   }
   .zsd-list{
     li{
