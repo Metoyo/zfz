@@ -40,6 +40,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           zsdNewName: '', //知识点修改新名称
           activeNd: '', //公共大纲那个输入框被激活了
           sltJgId: '', //查询考点是选择的学校ID
+          sltJg: '', //选中的学校
           editKcTp: '', //编辑考点的类型
           kaoDianFrom: '',
           navHide: false //隐藏二级导航
@@ -66,6 +67,20 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.cnNumArr = config.cnNumArr; //题支的序号
         $scope.usrInfo = loginUsr;
         $scope.kaochangData = '';
+
+        /**
+         * 检查对象是否为空
+         */
+        var objHasProp = function(obj){
+          if (typeof obj === "object" && !(obj instanceof Array)){
+            var hasProp = false;
+            for (var prop in obj){
+              hasProp = true;
+              break;
+            }
+            return hasProp;
+          }
+        };
 
         /**
          * 查询学校科目
@@ -130,7 +145,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 导向本页面时，判读展示什么页面，admin, xxgly --
+         * 导向本页面时，判读展示什么页面，admin, xxgly
          */
         var goToWhere = function(){
           var find0 = Lazy(jsArr).contains(0); //学校管理员
@@ -151,14 +166,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         goToWhere();
 
         /**
-         * 退出程序 --
+         * 退出程序
          */
         $scope.signOut = function(){
           DataService.logout();
         };
 
         /**
-         * 设置权限，审核权限 --
+         * 设置权限，审核权限
          */
         //$scope.renderPerm = function() {
         //  $scope.loadingImgShow = true;
@@ -254,7 +269,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         //};
 
         /**
-         * 关闭审核页面 --
+         * 关闭审核页面
          */
         $scope.closeShenheBox = function() {
           $scope.adminSubWebTpl = '';
@@ -263,14 +278,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 已经通过审核的科目，点击或者选中后通过按钮显示 --
+         * 已经通过审核的科目，点击或者选中后通过按钮显示
          */
         $scope.jueseClicked = function(js) {
           js.ckd = !js.ckd;
         };
 
         /**
-         * 通过审核的按钮 --
+         * 通过审核的按钮
          */
         //$scope.authPerm = function(usr) {
         //  var obj = {method: 'POST', url: yongHuJueSeUrl, data: {UID: usr.UID, '角色': []}};
@@ -306,7 +321,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         //};
 
         /**
-         * 机构查询 --
+         * 机构查询
          */
         var getJgList = function(jsid){
           $scope.loadingImgShow = true;
@@ -336,7 +351,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 展示设置机构的页面 --
+         * 展示设置机构的页面
          */
         $scope.renderJiGouSetTpl = function(){
           if(!($scope.jigou_list && $scope.jigou_list.length)){
@@ -347,7 +362,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 点击新增机构，显示新增页面 --
+         * 点击新增机构，显示新增页面
          */
         $scope.addNewJiGouBoxShow = function(jg){
           $scope.addNewJiGou = {};
@@ -363,7 +378,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 关闭添加新机构页面 --
+         * 关闭添加新机构页面
          */
         $scope.closeAddNewJiGou = function(){
           $scope.isAddNewJiGouBoxShow = false;
@@ -371,7 +386,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 保存新增加的机构 --
+         * 保存新增加的机构
          */
         $scope.saveNewAddJiGou = function(){
           if($scope.addNewJiGou['学校名称']){
@@ -408,22 +423,31 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 删除机构 --
+         * 删除机构
          */
         $scope.deleteJiGou = function(jg){
           if(jg['学校ID']){
             $scope.loadingImgShow = true;
-            var obj = {};
-            obj['学校ID'] = jg['学校ID'];
-            $http({method: 'delete', url: xueXiaoUrl, params: obj}).success(function(data){
-              if(data.result){
-                DataService.alertInfFun('suc', '删除成功！');
-                getJgList();
+            var obj = {
+              method: 'POST',
+              url: xueXiaoUrl,
+              data: {
+                '学校ID': '',
+                '状态': -1
               }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-            });
+            };
+            obj.data['学校ID'] = jg['学校ID'];
+            if(confirm('确定要删除此学校吗？')){
+              $http(obj).success(function(data){
+                if(data.result){
+                  DataService.alertInfFun('suc', '删除成功！');
+                  getJgList(1);
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
           }
           else{
             DataService.alertInfFun('pmt', '请选择学校！');
@@ -432,7 +456,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 展示管理机构管理页面 --
+         * 展示管理机构管理页面
          */
         $scope.manageAdmin = function(jg, idx){
           $scope.isAddNewAdminBoxShow = true; //显示管理管理员页面
@@ -457,7 +481,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 学校管理员的添加 --
+         * 学校管理员的添加
          */
         $scope.saveNewAddAdmin = function(){
           var mis = [];
@@ -518,22 +542,31 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 删除机构管理员 --
+         * 删除机构管理员
          */
         $scope.deleteJiGouAdmin = function(adm){
           if(adm['UID']){
             $scope.loadingImgShow = true;
-            var obj = {};
-            obj['UID'] = adm['UID'];
-            $http({method: 'delete', url: yongHuUrl, params: obj}).success(function(data){
-              if(data.result){
-                DataService.alertInfFun('suc', '删除成功！');
-                getJgList();
+            var obj = {
+              method: 'POST',
+              url: yongHuUrl,
+              data: {
+                'UID': '',
+                '状态': -1
               }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-            });
+            };
+            obj.data['UID'] = adm['UID'];
+            if(confirm('确定要删除此学校的学校管理员吗？')){
+              $http(obj).success(function(data){
+                if(data.result){
+                  DataService.alertInfFun('suc', '删除成功！');
+                  getJgList();
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
           }
           else{
             DataService.alertInfFun('pmt', '请选择学校！');
@@ -542,14 +575,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 关闭添加学校管理员页面 --
+         * 关闭添加学校管理员页面
          */
         $scope.closeManageAdmin = function(){
           $scope.isAddNewAdminBoxShow = false;
         };
 
         /**
-         * 展示科目设置(领域) --
+         * 展示科目设置(领域)
          */
         $scope.renderLingYuSetTpl = function(){
           $scope.loadingImgShow = true;
@@ -587,7 +620,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 添加领域 --
+         * 添加领域
          */
         $scope.addLy = function() {
           $scope.lyOrKmSet.type = 'nl';
@@ -595,7 +628,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 修改领域 --
+         * 修改领域
          */
         $scope.alterLy = function(ly) {
           $scope.lyOrKmSet.type = 'al';
@@ -605,7 +638,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 添加科目 --
+         * 添加科目
          */
         $scope.addKm = function(ly) {
           $scope.lyOrKmSet.type = 'nk';
@@ -614,7 +647,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 修改科目 --
+         * 修改科目
          */
         $scope.alterKm = function(km) {
           $scope.lyOrKmSet.type = 'ak';
@@ -624,7 +657,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 删除科目 --
+         * 删除科目
          */
         $scope.deleteLyKm = function(idx, ly, km) {
           var obj = {method: 'POST', url: '', data: ''};
@@ -642,7 +675,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               '状态': -1
             };
           }
-          if(confirm('确定要删除吗？')){
+          if(confirm('确定要删除此科目吗？')){
             $http(obj).success(function(data){
               if(data.result){
                 if(km){
@@ -661,7 +694,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 关闭领域和科目的添加和修改 --
+         * 关闭领域和科目的添加和修改
          */
         $scope.closeAddLMPage = function(){
           $scope.lyOrKmSet = {
@@ -673,7 +706,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 保存领域和科目的添加和修改 --
+         * 保存领域和科目的添加和修改
          */
         $scope.saveAddLM = function(){
           var obj = {method: '', url: '', data: ''};
@@ -769,7 +802,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 学校科目选择 --
+         * 学校科目选择
          */
         $scope.renderLingYuSelectTpl = function(){
           $scope.jgSelectKeMu = '';
@@ -838,7 +871,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 添加领域到已选 --
+         * 添加领域到已选
          */
         $scope.addKeMuToSelect = function(ly, km){
           if(km){ //点击的为科目
@@ -874,7 +907,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 从已选科目删除领域 --
+         * 从已选科目删除领域
          */
         $scope.deleteSelectedKeMu = function(idx, km){
           $scope.jgSelectKeMu.splice(idx, 1);
@@ -894,7 +927,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 保存已选的领域 --
+         * 保存已选的领域
          */
         $scope.saveChooseKeMu = function(){
           var obj = {};
@@ -914,7 +947,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 大纲设置 --
+         * 大纲设置
          */
         $scope.renderDaGangSetTpl = function(){
           $scope.loadingImgShow = true;
@@ -939,7 +972,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 由科目获得大纲数据 --
+         * 由科目获得大纲数据
          */
         $scope.getPubDaGangList = function(kmid, cf){
           if(kmid){
@@ -1003,7 +1036,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 由所选的知识大纲，得到知识点 --
+         * 由所选的知识大纲，得到知识点
          */
         $scope.getPubDgZsdData = function(dgId){
           //得到知识大纲知识点的递归函数
@@ -1033,7 +1066,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 添加知识点 --
+         * 添加知识点
          */
         $scope.dgAddNd = function(nd, ndl) {
           var newNd = {};
@@ -1050,7 +1083,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 删除知识点 --
+         * 删除知识点
          */
         $scope.dgRemoveNd = function(parentNd, nd, idx) {
           function _do(item) {
@@ -1082,14 +1115,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 那一个输入框被选中了 --
+         * 那一个输入框被选中了
          */
         $scope.getInputIndex = function(nd){
           $scope.adminParams.activeNd = nd;
         };
 
         /**
-         * 将公共知识点添加到知识大纲 --
+         * 将公共知识点添加到知识大纲
          */
         $scope.addToDaGang = function(zsd, idx){
           $scope.adminParams.activeNd['知识点ID'] = zsd['知识点ID'];
@@ -1113,7 +1146,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 新增公共知识大纲 --
+         * 新增公共知识大纲
          */
         $scope.addNewPubDaGang = function(){
           var pdgObj = {
@@ -1135,7 +1168,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 保存知识大纲 --
+         * 保存知识大纲
          */
         $scope.saveDaGangData = function() {
           $scope.adminParams.saveDGBtnDisabled = true;
@@ -1168,7 +1201,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          */
         $scope.deletePublicDaGang = function(){
           if(confirm('你确定要删除此公共大纲吗？')){
-            var obj = {method:'POST', url:zhiShiDaGangUrl, data:{'知识大纲ID': '', '状态': -1}};
+            var obj = {
+              method:'POST',
+              url:zhiShiDaGangUrl,
+              data:{
+                '知识大纲ID': '',
+                '状态': -1
+              }
+            };
             if($scope.adminParams.selected_dg){
               obj.data['知识大纲ID'] = $scope.adminParams.selected_dg;
               $http(obj).success(function(data){
@@ -1189,7 +1229,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 科目题型选择 --
+         * 科目题型选择
          */
         $scope.renderTiXingSelectTpl = function(){
           $scope.loadingImgShow = true; //rz_selectTiXing.html
@@ -1217,7 +1257,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 那个领域被选中 --
+         * 那个领域被选中
          */
         $scope.whichLingYuActive = function(kmID){
           if(kmID){
@@ -1246,14 +1286,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
 
 
         /**
-         * 添加或者删除题型 --
+         * 添加或者删除题型
          */
         $scope.addOrRemoveTiXing = function(tx){
           tx.ckd = !tx.ckd;
         };
 
         /**
-         * 保存已选的题型 --
+         * 保存已选的题型
          */
         $scope.saveSelectTiXing = function(){
           var obj = {method: 'POST', url: xueXiaoKeMuTiXingUrl, data: {'学校ID': jgID, '科目ID': $scope.activeKeMu}};
@@ -1280,7 +1320,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 修改管理员的密码 --
+         * 修改管理员的密码
          */
         $scope.modifyAdminPassWord = function(adm){
           var obj = {method: 'POST', url: yongHuUrl, data: {UID:'', '密码':''}};
@@ -1310,7 +1350,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 修改知识点 --
+         * 修改知识点
          */
         $scope.renderZhiShiDianSetTpl = function(){
           $scope.setZsdLingYu = '';
@@ -1336,7 +1376,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 分页处理函数 --
+         * 分页处理函数
          */
         var pageMake = function(data){
           var perNumOfPage = 15; //每页15条数据
@@ -1348,7 +1388,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 得到所选领域的的公共知识点 --
+         * 得到所选领域的的公共知识点
          */
         $scope.getPublicZsd = function(lyId){
           if(lyId){
@@ -1379,7 +1419,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 公共知识点分页 --
+         * 公共知识点分页
          */
         $scope.publicZsdDist = function(pg){
           var cPg = pg || 1;
@@ -1405,7 +1445,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 显示知识点修改 --
+         * 显示知识点修改
          */
         $scope.showModifyZsd = function(zsd){
           $scope.adminParams.zsdWrapShow = true;
@@ -1422,11 +1462,18 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 删除所选的公共知识点 --
+         * 删除所选的公共知识点
          */
         $scope.deletePubZsd = function(zsd){
           if(confirm('你确定要删除此公共点吗？')){
-            var obj = {method:'DELETE', url:zhiShiDianUrl, params:{'知识点ID':zsd['知识点ID']}};
+            var obj = {
+              method:'POST',
+              url:zhiShiDianUrl,
+              data:{
+                '知识点ID': zsd['知识点ID'],
+                '状态': -1
+              }
+            };
             $http(obj).success(function(data){
               if(data.result){
                 DataService.alertInfFun('suc', '删除成功！');
@@ -1439,7 +1486,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 修改知识点 --
+         * 修改知识点
          */
         $scope.modifyPubZsd = function(){
           var obj = {method:'', url:zhiShiDianUrl, data:''};
@@ -1483,13 +1530,13 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 本机构下教师管理 --
+         * 本机构下教师管理
          */
         $scope.renderTeacherTpl = function(){
           var objUsr = {method: 'GET', url: yongHuUrl, params: {'学校ID': jgID, '用户类别': 1}};
           $http(objUsr).success(function(user){ //机构教师
             if(user.result && user.data){
-              var objTec = {method: 'GET', url: yongHuJueSeUrl, params: {'学校ID': jgID}};
+              var objTec = {method: 'GET', url: yongHuJueSeUrl, params: {'学校ID': jgID, '状态': JSON.stringify([0,1])}};
               $scope.shenHeList = [];
               $http(objTec).success(function(teacher) { //查询机构教师角色
                 if(teacher.result && teacher.data){
@@ -1503,10 +1550,18 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                       '姓名': v[0]['姓名'],
                       '待审': []
                     };
-                    var distByKm = Lazy(v).groupBy(function(ds){return ds['科目ID']});
+                    var distByKm = Lazy(v).groupBy(function(ds){return ds['科目ID']}).toObject();
                     var xuXiaoKeMu = angular.copy($scope.xxkmList);
                     Lazy(distByKm).each(function(v1, k1, l1){ //通过科目排序
                       var kmTemp = Lazy(xuXiaoKeMu).find(function(xxkm){ return xxkm['科目ID'] == k1});
+                      if(!kmTemp){
+                        kmTemp = {
+                          '科目ID': v1[0]['科目ID'],
+                          '科目名称': v1[0]['科目名称'],
+                          '角色': []
+                        };
+                        xuXiaoKeMu.push(kmTemp);
+                      }
                       var jsArr = [ //角色数据
                         {
                           '学校ID': v1[0]['学校ID'],
@@ -1553,6 +1608,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                         }
                       });
                       kmTemp['角色'] = jsArr;
+
                     });
                     temp['待审'] = xuXiaoKeMu;
                     $scope.shenHeList.push(temp);
@@ -1653,7 +1709,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 题库管理 --
+         * 题库管理
          */
         $scope.renderTiKu = function(){
           $scope.tiKuList = '';
@@ -1691,7 +1747,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 新增题库 --
+         * 新增题库
          */
         $scope.addTiKu = function(ly){
           $scope.tkSetPageShow = true;
@@ -1700,11 +1756,18 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 删除题库 --
+         * 删除题库
          */
         $scope.deleteTiKu = function(idx, ly, tk){
           if(confirm('确定要删除此题库吗？')){
-            var obj = {method: 'DELETE', url: tiKuUrl, params: {'题库ID': tk['题库ID']}};
+            var obj = {
+              method: 'POST',
+              url: tiKuUrl,
+              data: {
+                '题库ID': tk['题库ID'],
+                '状态': -1
+              }
+            };
             $http(obj).success(function(data){
               if(data.result){
                 ly['题库'].splice(idx, 1);
@@ -1718,7 +1781,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 修改题库 --
+         * 修改题库
          */
         $scope.alterTiKu = function(tk){
           $scope.tkSetPageShow = true;
@@ -1727,7 +1790,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 保存题库 --
+         * 保存题库
          */
         $scope.saveAddTk = function(){
           var tkName = $scope.tiKuSet.name;
@@ -1761,7 +1824,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 取消题库添加页 --
+         * 取消题库添加页
          */
         $scope.closeAddTkPage = function(){
           $scope.tkSetPageShow = false;
@@ -1811,8 +1874,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-        * 新增考场
-        */
+         * 新增考场
+         */
         $scope.addNewKaoChang = function(){
           $scope.kaochangData = {
             //'考点ID': '',
@@ -1836,10 +1899,17 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-        * 删除考场
-        */
+         * 删除考场
+         */
         $scope.deleteKaoChang = function(kc){
-          var obj = {method: 'POST', url: kaoDianUrl, data: {'考点ID': '', '状态': -1}};
+          var obj = {
+            method: 'POST',
+            url: kaoDianUrl,
+            data: {
+              '考点ID': '',
+              '状态': -1
+            }
+          };
           if(kc['考点ID']){
             obj.data['考点ID'] = kc['考点ID'];
             if(confirm('确定要删除此考场吗？')){
@@ -1866,8 +1936,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-        * 修改考场
-        */
+         * 修改考场
+         */
         $scope.editKaoChang = function(kc){
           $scope.kaochangData = {
             '考点ID': kc['考点ID'],
@@ -1892,8 +1962,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-        * 保存考场
-        */
+         * 保存考场
+         */
         $scope.saveKaoChang = function(){
           $scope.kaochangData['详情'] = JSON.stringify($scope.kaochangData['详情']);
           var obj = {method: '', url: kaoDianUrl, data: $scope.kaochangData};
@@ -2147,6 +2217,99 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             DataService.alertInfFun('pmt', '请选择考试组!');
           }
         };
+
+        /**
+         * 学校权限设置
+         */
+        $scope.schoolePowerSet = function(){
+          getJgList();
+          $scope.adminParams.sltJgId = '';
+          $scope.sspKmList = '';
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.loadingImgShow = false;
+          $scope.adminSubWebTpl = 'views/renzheng/rz_setSchoolPower.html';
+        };
+
+        /**
+         * 展示所有学校科目设置
+         */
+        $scope.sspAllKeMuSet = function(xxid){
+          var obj = {
+            method: 'GET',
+            url: xueXiaoKeMuUrl,
+            params: {'学校ID': ''}
+          };
+          $scope.adminParams.sltJg = '';
+          if(xxid){
+            obj.params['学校ID'] = xxid;
+            var xueXiao = Lazy($scope.jigou_list).find(function(jg){ return jg['学校ID'] == xxid; });
+            var xxSet = xueXiao['学校设置'];
+            var hasCjZd = false;
+            if(xxSet && xxSet['成绩和作答']){
+              hasCjZd = objHasProp(xxSet['成绩和作答']);
+            }
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                Lazy(data.data).each(function(km){
+                  var pObj = {
+                    '考试成绩': 'off',
+                    '作答重现': 'off'
+                  };
+                  if(hasCjZd && xxSet['成绩和作答'] && xxSet['成绩和作答'][km['科目ID']]){
+                    var sltKm = xxSet['成绩和作答'][km['科目ID']];
+                    pObj['考试成绩'] = sltKm['考试成绩'] ? sltKm['考试成绩'] : 'off';
+                    pObj['作答重现'] = sltKm['作答重现'] ? sltKm['作答重现'] : 'off';
+                  }
+                  km['设置'] = pObj;
+                });
+                $scope.adminParams.sltJg = xueXiao;
+                $scope.sspKmList = data.data;
+              }
+              else{
+                $scope.sspKmList = '';
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+        };
+
+        /**
+         * 保存学校权限设置
+         */
+        $scope.saveSchoolSet = function(){
+          var obj = {
+            method: 'POST',
+            url: xueXiaoUrl,
+            data: {
+              '学校ID': '',
+              '学校设置': ''
+            }
+          };
+          if($scope.adminParams.sltJg){
+            obj.data['学校ID'] = $scope.adminParams.sltJg['学校ID'];
+            obj.data['学校设置'] = $scope.adminParams.sltJg['学校设置'] || {};
+            var cjAndZd = {};
+            Lazy($scope.sspKmList).each(function(km){
+              cjAndZd[km['科目ID']] = km['设置'];
+            });
+            obj.data['学校设置']['成绩和作答'] = cjAndZd;
+            obj.data['学校设置'] = JSON.stringify(obj.data['学校设置']);
+            $http(obj).success(function(data) {
+              if(data.result) {
+                $scope.adminParams.sltJgId = '';
+                $scope.sspKmList = '';
+                getJgList();
+                DataService.alertInfFun('suc', '保存成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择学校！');
+          }
+        }
 
       }]);
 });

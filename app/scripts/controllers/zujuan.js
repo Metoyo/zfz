@@ -76,44 +76,61 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
         }
         var getDaGangData = function(){
-          var obj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': dftKm['科目ID'], '类型': 2}};
+          var objZj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': dftKm['科目ID'], '类型': 2}};
           var sltDg = '';
+          var zjDg = [];
+          var ggDg = [];
           $scope.dgList = [];
-          $http(obj).success(function(data){
-            if(data.result && data.data){
-              Lazy(data.data).each(function(dg){
-                var dgObj = {
-                  '知识大纲ID': dg['知识大纲ID'],
-                  '知识大纲名称': dg['知识大纲名称']
-                };
-                $scope.dgList.push(dgObj);
-              });
-              $scope.allZsdgData = data.data;
-              if(yongHuSet['默认大纲']['知识大纲ID']){
-                sltDg = Lazy($scope.allZsdgData).find(function(dg){
-                  return dg['知识大纲ID'] == yongHuSet['默认大纲']['知识大纲ID'];
-                });
-                if(!sltDg){
-                  sltDg = Lazy($scope.allZsdgData).find(function(dg){
-                    return dg['知识大纲ID'] == $scope.dgList[0]['知识大纲ID'];
+          $http(objZj).success(function(data){
+            if(data.result){
+              if(data.data){
+                zjDg = data.data;
+              }
+              var objGg = {method: 'GET', url: zhiShiDaGangUrl, params: {'科目ID': keMuId, '类型': 1}};
+              $http(objGg).success(function(ggData) {
+                if (ggData.result) {
+                  if (ggData.data) {
+                    ggDg = ggData.data;
+                  }
+                  var allDaGangArr = Lazy(zjDg).union(ggDg).toArray();
+                  Lazy(allDaGangArr).each(function(dg){
+                    var dgObj = {
+                      '知识大纲ID': dg['知识大纲ID'],
+                      '知识大纲名称': dg['知识大纲名称']
+                    };
+                    $scope.dgList.push(dgObj);
                   });
+                  $scope.allZsdgData = allDaGangArr;
+                  if(yongHuSet['默认大纲']['知识大纲ID']){
+                    sltDg = Lazy($scope.allZsdgData).find(function(dg){
+                      return dg['知识大纲ID'] == yongHuSet['默认大纲']['知识大纲ID'];
+                    });
+                    if(!sltDg){
+                      sltDg = Lazy($scope.allZsdgData).find(function(dg){
+                        return dg['知识大纲ID'] == $scope.dgList[0]['知识大纲ID'];
+                      });
+                    }
+                  }
+                  else{
+                    sltDg = Lazy($scope.allZsdgData).find(function(dg){
+                      return dg['知识大纲ID'] == $scope.dgList[0]['知识大纲ID'];
+                    });
+                  }
+                  if(sltDg){
+                    Lazy(sltDg['节点']).each(_zsdDo);
+                    $scope.slt_dg = sltDg['知识大纲ID'];
+                    $scope.kowledgeList = sltDg;
+                  }
+                  else{
+                    $scope.slt_dg = '';
+                    $scope.kowledgeList = '';
+                    DataService.alertInfFun('err', '没有符合的大纲数据！');
+                  }
                 }
-              }
-              else{
-                sltDg = Lazy($scope.allZsdgData).find(function(dg){
-                  return dg['知识大纲ID'] == $scope.dgList[0]['知识大纲ID'];
-                });
-              }
-              if(sltDg){
-                Lazy(sltDg['节点']).each(_zsdDo);
-                $scope.slt_dg = sltDg['知识大纲ID'];
-                $scope.kowledgeList = sltDg;
-              }
-              else{
-                $scope.slt_dg = '';
-                $scope.kowledgeList = '';
-                DataService.alertInfFun('err', '没有符合的大纲数据！');
-              }
+                else{
+                  DataService.alertInfFun('err', ggData.error);
+                }
+              });
             }
             else{
               DataService.alertInfFun('err', data.error);
@@ -1446,16 +1463,18 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             var obj = {method: 'POST', url: shiJuanZuUrl, data: {'试卷组ID': '', '状态': -1}};
             if($scope.dltSjzPar['试卷组ID']){
               obj.data['试卷组ID'] = $scope.dltSjzPar['试卷组ID'];
-              $http(obj).success(function(data){
-                if(data.result){
-                  $scope.paperListData.splice($scope.dltSjzPar['试卷组索引'], 1);
-                  $scope.cancelDltSjz();
-                  DataService.alertInfFun('suc', '删除成功！');
-                }
-                else{
-                  DataService.alertInfFun('pmt', data.error);
-                }
-              });
+              if(confirm('确定要删除此试卷组吗？')){
+                $http(obj).success(function(data){
+                  if(data.result){
+                    $scope.paperListData.splice($scope.dltSjzPar['试卷组索引'], 1);
+                    $scope.cancelDltSjz();
+                    DataService.alertInfFun('suc', '删除成功！');
+                  }
+                  else{
+                    DataService.alertInfFun('pmt', data.error);
+                  }
+                });
+              }
             }
             else{
               $scope.cancelDltSjz();

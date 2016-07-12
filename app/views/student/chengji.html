@@ -23,14 +23,14 @@
           <tr ng-repeat="ksz in kszScoreData">
             <td ng-bind="ksz['考试组名称']"></td>
             <td class="text-center">
-              <span ng-if="ksz['实际评分'] >= 0" ng-bind="ksz['实际评分']"></span>
-              <span ng-if="ksz['实际评分'] == null">缺考</span>
+              <span ng-if="ksz['实际评分'] >= 0 && ksz.score == 'on'" ng-bind="ksz['实际评分']"></span>
+              <span ng-if="ksz['实际评分'] == null && ksz.score == 'on'">缺考</span>
             </td>
             <td class="text-center">
-              <a href="javascript:void(0)" ng-if="ks.zuoda" ng-click="zuoDaReappear(ks)">作答重现</a>
+              <a href="javascript:void(0)" ng-if="ksz.zuoda == 'on'" ng-click="zuoDaReappear(ks)">作答重现</a>
             </td>
             <td class="text-center">
-              <a href="javascript:void(0)" ng-click="studentZsdFenXi(ks)">查看</a>
+              <a href="javascript:void(0)" ng-click="studentZsdFenXi(ksz)">查看</a>
             </td>
           </tr>
         </table>

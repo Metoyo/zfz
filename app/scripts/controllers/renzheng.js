@@ -119,7 +119,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 urlRedirect.goTo(currentPath, '/baoming');
               }
               else{
-                var qxArr = Lazy(data.data['权限']).reject(function(qx){ //去除阅卷组长4，助教5的权限
+                var qxArr = Lazy(data.data['权限']).reject(function(qx){ //去除阅卷负责人4，助教5的权限
                   return qx['角色ID'] == 4 || qx['角色ID'] == 5;
                 }).toArray();
                 data.data['权限'] = qxArr;

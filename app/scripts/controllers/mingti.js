@@ -28,7 +28,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           zsd: [], //知识点
           nd: '', //难度id
           tm: '', //题目id
-          tk: '', //题库id
+          tk: [], //题库id
           tx: '', //题型id
           tmly: '', //题目来源ID
           ctr: '', //出题人UID
@@ -60,7 +60,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           tiMuLen: '', //题目数量
           isAddTiMu: true, //是否是编辑题目
           xuanZheTiZhi: '', //选择题题支内容
-          tianKongDaAn: '' //填空题答案
+          tianKongDaAn: '', //填空题答案
+          allTkIds: [] //所有题库ID
         };
         $scope.tiXingIdArr = [ //题型转换数组
           {txId: 5, txName: '计算题'},
@@ -140,6 +141,37 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
+         * 查询题库
+         */
+        var qryTiKu = function(){
+          var objZj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId, '类型': 2}};
+          var zjTk = [];
+          var ggTk = [];
+          $http(objZj).success(function(data){
+            if(data.result){
+              zjTk = data.data ? data.data : [];
+              var objGg = {method: 'GET', url: tiKuUrl, params: {'领域ID': lingYuId, '类型': 1}};
+              $http(objGg).success(function(ggData){
+                if(ggData.result){
+                  ggTk = ggData.data ? ggData.data : [];
+                  $scope.tiKuList = Lazy(zjTk).union(ggTk).toArray();
+                  var allTkId = Lazy($scope.tiKuList).map(function(tk){ return tk['题库ID'];}).toArray();
+                  $scope.mingTiParam.allTkIds = angular.copy(allTkId);
+                  qryTmPar.tk = allTkId;
+                  $scope.qryTestFun();
+                }
+                else{
+                  DataService.alertInfFun('err', ggData.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
+
+        /**
          * 获得大纲数据
          */
         var getDaGangData = function(){
@@ -152,6 +184,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             }
           }
           var sltDg = '';
+          var zjDg = [];
+          var ggDg = [];
           qryTmPar.zsd = [];
           var reqSet = function(){
             sltDg = Lazy($scope.allZsdgData).find(function(dg){
@@ -166,40 +200,55 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               DataService.alertInfFun('err', '没有大纲！');
             }
           };
-          var obj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': keMuId, '类型': 2}};
+          var objZj = {method: 'GET', url: zhiShiDaGangUrl, params: {'学校ID': jgID, '科目ID': keMuId, '类型': 2}};
           $scope.dgList = [];
-          $http(obj).success(function(data){
-            if(data.result && data.data){
-              Lazy(data.data).each(function(dg){
-                var dgObj = {
-                  '知识大纲ID': dg['知识大纲ID'],
-                  '知识大纲名称': dg['知识大纲名称']
-                };
-                $scope.dgList.push(dgObj);
-              });
-              $scope.allZsdgData = data.data;
-              if(yongHuSet['默认大纲']['知识大纲ID']){
-                sltDg = Lazy($scope.allZsdgData).find(function(dg){
-                  return dg['知识大纲ID'] == yongHuSet['默认大纲']['知识大纲ID'];
-                });
-                if(!sltDg){
-                  reqSet();
+          $http(objZj).success(function(data){
+            if(data.result){
+              if(data.data){
+                zjDg = data.data;
+              }
+              var objGg = {method: 'GET', url: zhiShiDaGangUrl, params: {'科目ID': keMuId, '类型': 1}};
+              $http(objGg).success(function(ggData){
+                if(ggData.result){
+                  if(ggData.data){
+                    ggDg = ggData.data;
+                  }
+                  var allDaGangArr = Lazy(zjDg).union(ggDg).toArray();
+                  Lazy(allDaGangArr).each(function(dg){
+                    var dgObj = {
+                      '知识大纲ID': dg['知识大纲ID'],
+                      '知识大纲名称': dg['知识大纲名称']
+                    };
+                    $scope.dgList.push(dgObj);
+                  });
+                  $scope.allZsdgData = allDaGangArr;
+                  if(yongHuSet['默认大纲']['知识大纲ID']){
+                    sltDg = Lazy($scope.allZsdgData).find(function(dg){
+                      return dg['知识大纲ID'] == yongHuSet['默认大纲']['知识大纲ID'];
+                    });
+                    if(!sltDg){
+                      reqSet();
+                    }
+                  }
+                  else{
+                    reqSet();
+                  }
+                  if(sltDg){
+                    Lazy(sltDg['节点']).each(_do);
+                    $scope.mingTiParam.slt_dg = sltDg['知识大纲ID'];
+                    $scope.kowledgeList = sltDg;
+                    qryTiKu();
+                  }
+                  else{
+                    $scope.mingTiParam.slt_dg = '';
+                    $scope.kowledgeList = '';
+                    DataService.alertInfFun('err', '没有符合的大纲数据！');
+                  }
                 }
-              }
-              else{
-                reqSet();
-              }
-              if(sltDg){
-                Lazy(sltDg['节点']).each(_do);
-                $scope.mingTiParam.slt_dg = sltDg['知识大纲ID'];
-                $scope.kowledgeList = sltDg;
-                $scope.qryTestFun();
-              }
-              else{
-                $scope.mingTiParam.slt_dg = '';
-                $scope.kowledgeList = '';
-                DataService.alertInfFun('err', '没有符合的大纲数据！');
-              }
+                else{
+                  DataService.alertInfFun('err', ggData.error);
+                }
+              });
             }
             else{
               DataService.alertInfFun('err', data.error);
@@ -330,21 +379,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         };
 
         /**
-         * 查询题库
-         */
-        var qryTiKu = function(){
-          var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId}};
-          $http(obj).success(function(data){
-            if(data.result && data.data){
-              $scope.tiKuList = data.data;
-            }
-            else{
-              DataService.alertInfFun('err', data.error);
-            }
-          });
-        };
-
-        /**
          * 展示不同的题型和模板
          */
         var renderTpl = function(tpl){
@@ -360,7 +394,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         qryLuTiRen();
         qryChuTiRen();
         qryKeMuJiaoShi();
-        qryTiKu();
+        //qryTiKu();
 
         /**
          * 由所选的知识大纲，得到知识点
@@ -533,6 +567,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           if(qryTmPar.tx){
             obj.params['题型ID'] = qryTmPar.tx;
           }
+          if(qryTmPar.tk && qryTmPar.tk.length > 0){
+            obj.params['题库ID'] = JSON.stringify(qryTmPar.tk);
+          }
           if(qryTmPar.tm){
             obj.params['题目ID'] = qryTmPar.tm;
           }
@@ -627,7 +664,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 通过录题库查询试题
          */
         $scope.qryTiMuByTiKu = function(){
-          qryTmPar.tk = $scope.mingTiParam.tiKuId ? $scope.mingTiParam.tiKuId : '';
+          qryTmPar.tk = [];
+          if($scope.mingTiParam.tiKuId){
+            qryTmPar.tk($scope.mingTiParam.tiKuId);
+          }
+          else{
+            qryTmPar.tk = angular.copy($scope.mingTiParam.allTkIds);
+          }
           $scope.mingTiParam.tiMuId = '';
           qryTmPar.tm = '';
           $scope.qryTestFun();

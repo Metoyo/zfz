@@ -1,0 +1,47 @@
+<h4 class="admin-title">
+  <span>学校权限设置</span>
+</h4>
+<div class="form-horizontal dagangInput setDaGangBox">
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      机构选择
+    </label>
+    <div class="col-md-10">
+      <select class="form-control" ng-options="jg['学校ID'] as jg['学校名称'] for jg in jigou_list"
+              ng-model="adminParams.sltJgId" ng-change="sspAllKeMuSet(adminParams.sltJgId)">
+        <option value="">请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <table class="table table-bordered">
+      <tr>
+        <th>科目</th>
+        <th>考试成绩</th>
+        <th>作答重现</th>
+      </tr>
+      <tr ng-repeat="km in sspKmList">
+        <td ng-bind="km['科目名称']"></td>
+        <td>
+          <label class="radio-inline">
+            <input type="radio" ng-model="km['设置']['考试成绩']" value="on"> on
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="km['设置']['考试成绩']" value="off"> off
+          </label>
+        </td>
+        <td>
+          <label class="radio-inline">
+            <input type="radio" ng-model="km['设置']['作答重现']" value="on"> on
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="km['设置']['作答重现']" value="off"> off
+          </label>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="save-box">
+  <button class="btn btn-primary" ng-click="saveSchoolSet()">保存</button>
+</div>
