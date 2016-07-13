@@ -483,14 +483,14 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             }
             else{
               optLine.series[1].data = tjParaObj.lineDataKxh;
-              optPieKxh.title.text = $scope.tjParas.sltWeiDu;
-              optPieKxh.legend.data = ['及格率:' + sgKxh['及格率'] + '%', '优秀率:' + sgKxh['优秀率'] + '%'];
-              optPieKxh.series[0].data[0].value = sgKxh['及格率'];
-              optPieKxh.series[0].data[0].name = '及格率:' + sgKxh['及格率'] + '%';
-              optPieKxh.series[0].data[1].value = 100 - sgKxh['及格率'];
-              optPieKxh.series[1].data[0].value = sgKxh['优秀率'];
-              optPieKxh.series[1].data[0].name = '优秀率:' + sgKxh['优秀率'] + '%';
-              optPieKxh.series[1].data[1].value = 100 - sgKxh['优秀率'];
+              //optPieKxh.title.text = $scope.tjParas.sltWeiDu;
+              //optPieKxh.legend.data = ['及格率:' + sgKxh['及格率'] + '%', '优秀率:' + sgKxh['优秀率'] + '%'];
+              //optPieKxh.series[0].data[0].value = sgKxh['及格率'];
+              //optPieKxh.series[0].data[0].name = '及格率:' + sgKxh['及格率'] + '%';
+              //optPieKxh.series[0].data[1].value = 100 - sgKxh['及格率'];
+              //optPieKxh.series[1].data[0].value = sgKxh['优秀率'];
+              //optPieKxh.series[1].data[0].name = '优秀率:' + sgKxh['优秀率'] + '%';
+              //optPieKxh.series[1].data[1].value = 100 - sgKxh['优秀率'];
             }
             if(sgKxh){
               //radarKxh[0] = sgKxh['及格率'];

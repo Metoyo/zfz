@@ -17,6 +17,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         var kaoShengChengJiUrl = '/kaosheng_chengji'; //查询考生成绩
         var xueXiaoUrl = '/xuexiao'; //机构的增删改查
         var kaoShengZhiShiDianDeFenLvUrl = '/kaosheng_zhishidian_defenlv'; //查询考生知识点得分率
+        var kaoShengZuoDaUrl = '/kaosheng_zuoda'; //考生作答的接口
         var tjParaObj = { //存放统计参数的Object
           radarBoxZsd: '',
           radarDataZsd: {
@@ -28,16 +29,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         //$scope.bmKaoChang = '';
         $scope.stuParams = {
           bmKszArr: [],
-          //selectKaoDian: '',
-          //hasBaoMing: true,
-          //letterArr: config.letterArr, //题支的序号
-          //cnNumArr: config.cnNumArr, //汉语的大写数字
-          //noData: '', //没有数据的显示
+          letterArr: config.letterArr, //题支的序号
+          cnNumArr: config.cnNumArr, //汉语的大写数字
           zsdTjShow: false //是否显示考生的知识点
         };
         $scope.kaoShiArrs = '';
-        //$scope.kaoShiDetail = '';
-        //$scope.showStuSelectInfo = false;
         $scope.showKaoShengList = true;
         //
         var currentPath = $location.$$path;
@@ -143,7 +139,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                       var fndTar = power[stu['科目ID']];
                       if(fndTar){
                         stu.score = fndTar['考试成绩'];
-                        stu.zuoda = fndTar['studentZsdFenXi'];
+                        stu.zuoda = fndTar['作答重现'];
                       }
                     }
                   });
@@ -281,100 +277,42 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           }
         };
 
-        ///**
-        // * 作答重现
-        // */
-        //$scope.zuoDaReappear = function (ks) {
-        //  var answerReappearUrl = answerReappearBaseUrl;
-        //  var dataDis;
-        //  var tmVal;
-        //  var finaData = {
-        //    sj_name: '',
-        //    sj_tm: []
-        //  };
-        //  var studId = ks.UID;
-        //  var examId = ks.KAOSHI_ID;
-        //  var itemDeFenLv = '';
-        //  $scope.kaoShengShiJuan = '';
-        //  $scope.showKaoShengList = true;
-        //  if (studId) {
-        //    answerReappearUrl += '&kaoshengid=' + studId;
-        //  }
-        //  else {
-        //    DataService.alertInfFun('pmt', '缺少考生UID');
-        //    return;
-        //  }
-        //  if (examId) {
-        //    answerReappearUrl += '&kaoshiid=' + examId;
-        //  }
-        //  else {
-        //    DataService.alertInfFun('pmt', '缺少考试ID');
-        //    return;
-        //  }
-        //  DataService.getData(answerReappearUrl).then(function (data) {
-        //    //if (data && data.length > 0) {
-        //    //  var qryItemDeFenLvUrl = qryItemDeFenLvBase + examId;
-        //    //  if (examId) {
-        //    //    DataService.getData(qryItemDeFenLvUrl).then(function (dfl) {
-        //    //      if (dfl && dfl.length > 0) {
-        //    //        itemDeFenLv = dfl;
-        //    //        finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
-        //    //        dataDis = Lazy(data).groupBy('DATI_XUHAO').toObject();
-        //    //        Lazy(dataDis).each(function (val, key, list) {
-        //    //          var dObj = {
-        //    //            tx_id: key,
-        //    //            tx_name: val[0].DATIMINGCHENG,
-        //    //            tm: ''
-        //    //          };
-        //    //          tmVal = Lazy(val).each(function (tm, idx, lst) {
-        //    //            var findVal = Lazy(itemDeFenLv).find(function (item) {
-        //    //              return item.TIMU_ID == tm.TIMU_ID
-        //    //            });
-        //    //            tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
-        //    //            if (typeof(tm.TIGAN) == 'string') {
-        //    //              tm.TIGAN = JSON.parse(tm.TIGAN);
-        //    //            }
-        //    //            DataService.formatDaAn(tm);
-        //    //          });
-        //    //          dObj.tm = tmVal;
-        //    //          finaData.sj_tm.push(dObj);
-        //    //        });
-        //    //        $scope.kaoShengShiJuan = finaData;
-        //    //      }
-        //    //    });
-        //    //  }
-        //    //  else {
-        //    //    itemDeFenLv = '';
-        //    //    DataService.alertInfFun('pmt', '查询得分率缺少考试ID');
-        //    //  }
-        //    //}
-        //    if(data && data.length > 0){
-        //      finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
-        //      dataDis = Lazy(data).groupBy('DATI_XUHAO').toObject();
-        //      Lazy(dataDis).each(function(val, key, list){
-        //        var dObj = {
-        //          tx_id: key,
-        //          tx_name: val[0].DATIMINGCHENG,
-        //          tm: ''
-        //        };
-        //        Lazy(val).each(function(tm, idx, lst){
-        //          var findVal = Lazy(itemDeFenLv).find(function(item){return item.TIMU_ID == tm.TIMU_ID});
-        //          if(findVal){
-        //            tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
-        //          }
-        //          if(typeof(tm.TIGAN) == 'string'){
-        //            tm.TIGAN = JSON.parse(tm.TIGAN);
-        //          }
-        //          DataService.formatDaAn(tm);
-        //        });
-        //        dObj.tm = val;
-        //        finaData.sj_tm.push(dObj);
-        //      });
-        //      $scope.showKaoShengList = false;
-        //      $scope.kaoShengShiJuan = finaData;
-        //    }
-        //  });
-        //};
+        /**
+        * 作答重现
+        */
+        $scope.zuoDaReappear = function (ks) {
+          var obj = {
+            method: 'GET',
+            url: kaoShengZuoDaUrl,
+            params: {
+              '考试组ID': ks['考试组ID'],
+              'UID': ks['UID']
+            }
+          };
+          var finaData = {
+            sj_name: '',
+            sj_tm: []
+          };
+          $scope.kaoShengShiJuan = '';
+          $scope.showKaoShengList = true;
+          $http(obj).success(function(data){
+            if(data.result && data.data){
+              finaData.sj_name = data.data['试卷组名称'];
+              Lazy(data.data['试卷题目']).each(function(dt){
+                Lazy(dt['题目']).each(function(tm){
+                  tm = DataService.formatDaAn(tm);
+                });
+              });
+              finaData.sj_tm = data.data['试卷题目'];
+              $scope.showKaoShengList = false;
+              $scope.kaoShengShiJuan = finaData;
+              console.log(finaData);
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
 
         /**
         * 考生知识点分析
@@ -533,79 +471,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               }
             });
           });
-          //if(ks.KAOSHIZU_ID){
-          //  pObj.kaoshizuid = ks.KAOSHIZU_ID;
-          //}
-          //else{
-          //  DataService.alertInfFun('err', '请选择考试！');
-          //  return;
-          //}
-          //$http({method: 'GET', url: kaoShiZuZhiShiDianUrl, params: pObj}).success(function(zsddata1){
-          //  if(zsddata1 && zsddata1.length > 0){
-          //    var zsdParam = {
-          //      token: token,
-          //      caozuoyuan: caozuoyuan,
-          //      kaoshizuid: pObj.kaoshizuid,
-          //      uid: ''
-          //    };
-          //    $http({method: 'GET', url: getZhiShiDianScoreUrl, params: zsdParam}).success(function(kszdata){
-          //      if(kszdata && kszdata.length > 0){
-          //        zsdParam.uid = caozuoyuan;
-          //        $http({method: 'GET', url: getZhiShiDianScoreUrl, params: zsdParam}).success(function(grdata){
-          //          if(grdata && grdata.length > 0){
-          //            //知识点统计
-          //            Lazy(zsddata1).each(function(tjzsd){
-          //              var zsdNameObj = {text: tjzsd.ZHISHIDIANMINGCHENG, max: 100};
-          //              tjParaObj.radarDataZsd.zsdName.push(zsdNameObj);
-          //              var findTarKsz = Lazy(kszdata).find(function(zsdObj){
-          //                return zsdObj.zhishidian_id == tjzsd.ZHISHIDIAN_ID;
-          //              });
-          //              var findTarGr = Lazy(grdata).find(function(zsdObj){
-          //                return zsdObj.zhishidian_id == tjzsd.ZHISHIDIAN_ID;
-          //              });
-          //              if(findTarKsz){
-          //                var zsdDeFenLvKsz = findTarKsz.defenlv ? (findTarKsz.defenlv*100).toFixed(1) : 0;
-          //                tjParaObj.radarDataZsd.zsdPerAll.push(zsdDeFenLvKsz);
-          //              }
-          //              if(findTarGr){
-          //                var zsdDeFenLvGr = findTarGr.defenlv ? (findTarGr.defenlv*100).toFixed(1) : 0;
-          //                tjParaObj.radarDataZsd.zsdPerSf.push(zsdDeFenLvGr);
-          //              }
-          //            });
-          //            var personalLen = tjParaObj.radarDataZsd.zsdPerSf.length;
-          //            tjParaObj.radarDataZsd.zsdName.splice(personalLen);
-          //            tjParaObj.radarDataZsd.zsdPerAll.splice(personalLen);
-          //            tjParaObj.radarDataZsd.zsdPerSf.splice(personalLen);
-          //            optRadarZsd.polar[0].indicator = tjParaObj.radarDataZsd.zsdName;
-          //            optRadarZsd.series[0].data[0].value = tjParaObj.radarDataZsd.zsdPerAll;
-          //            optRadarZsd.series[0].data[1].value = tjParaObj.radarDataZsd.zsdPerSf;
-          //            tjParaObj.radarBoxZsd.setOption(optRadarZsd);
-          //            $scope.stuParams.zsdTjShow = true;
-          //            $timeout(function (){
-          //              window.onresize = function () {
-          //                tjParaObj.radarBoxZsd.resize();
-          //              }
-          //            }, 200);
-          //          }
-          //          else{
-          //            DataService.alertInfFun('err', grdata.error);
-          //          }
-          //        });
-          //      }
-          //      else{
-          //        DataService.alertInfFun('err', kszdata.error);
-          //      }
-          //    });
-          //  }
-          //  else{
-          //    if(zsddata1.error){
-          //      DataService.alertInfFun('err', zsddata1.error);
-          //    }
-          //    else{
-          //      DataService.alertInfFun('err', '没有知识点！');
-          //    }
-          //  }
-          //});
         };
 
         /**

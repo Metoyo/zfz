@@ -290,6 +290,25 @@ body {
   height: 120px;
   border: 1px solid #ccc; }
 
+.ar-tiGan {
+  font-size: 16px; }
+  .ar-tiGan .ar-tk-da {
+    border-bottom: 1px solid #000000;
+    padding: 0 10px;
+    color: red; }
+    .ar-tiGan .ar-tk-da img {
+      width: auto;
+      max-height: 40px; }
+
+.ar-tzs .ar-tz {
+  margin-bottom: 10px;
+  position: relative; }
+  .ar-tzs .ar-tz p {
+    margin-bottom: 0; }
+  .ar-tzs .ar-tz .positionAb {
+    top: 50%;
+    margin-top: -11px; }
+
 .positionAb {
   position: absolute; }
 
@@ -1951,20 +1970,6 @@ label.checkbox {
   margin-left: -50px; }
   .tongjiWrapper .chart-wrap .avg-score p {
     font-size: 42px; }
-.tongjiWrapper .ar-tiGan {
-  font-size: 16px; }
-  .tongjiWrapper .ar-tiGan .ar-tk-da {
-    border-bottom: 1px solid #000000;
-    padding: 0 10px;
-    color: red; }
-.tongjiWrapper .ar-tzs .ar-tz {
-  margin-bottom: 10px;
-  position: relative; }
-  .tongjiWrapper .ar-tzs .ar-tz p {
-    margin-bottom: 0; }
-  .tongjiWrapper .ar-tzs .ar-tz .positionAb {
-    top: 50%;
-    margin-top: -11px; }
 .tongjiWrapper .tj-stu .btn {
   padding: 6px 12px; }
 .tongjiWrapper .ks-chart-page .summary {
