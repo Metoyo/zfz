@@ -681,7 +681,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           }
           if(allTrue){
             $http(obj).success(function(data){
-              if(data.result && data.data){
+              if(data.result){
                 var objJs = '';
                 if(saveType == 'addKeXuHao'){ //新增课序号
                   objJs = {
@@ -891,8 +891,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             Lazy($scope.glKowledgeList['节点']).each(_do);
             obj.data['考试组设置'] = $scope.guanliParams.selectKsz['考试组设置'] || {};
             if(kszZsd['知识大纲ID'] && kszZsd['知识点ID'].length > 0){
-              kszZsd['知识点ID'] = JSON.stringify(kszZsd['知识点ID']);
+              kszZsd['知识点ID'] = kszZsd['知识点ID'];
               obj.data['考试组设置']['考试组知识点'] = kszZsd;
+              obj.data['考试组设置'] = JSON.stringify(obj.data['考试组设置']);
               $scope.loadingImgShow = true;
               $http(obj).success(function(data){
                 if(data.result){

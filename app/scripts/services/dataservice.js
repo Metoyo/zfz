@@ -153,6 +153,11 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           tm['题目内容']['答案'] = daAnArr.join('；');
         }
         if(tm['考生作答']){
+          if(tm['考生作答']['阅卷'] && tm['考生作答']['阅卷'].length > 0){
+            tm['考生作答']['阅卷教师'] = Lazy(tm['考生作答']['阅卷']).map(function(yj){
+              return yj['评分教师姓名'];
+            }).join(',');
+          }
           if(tm['题型ID'] == 2){
 
           }

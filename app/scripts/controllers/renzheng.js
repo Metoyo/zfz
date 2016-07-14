@@ -112,7 +112,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               if(data.data['用户类别'] == 2){ //判断是否是学生
                 urlArr.push(module[6]);
                 urlArr.push(module[7]);
-                urlArr.push(module[8]);
+                //urlArr.push(module[8]);
                 config.loginUsr = data.data;
                 $rootScope.urlArrs = urlArr;
                 $cookieStore.put('ckUrl', JSON.stringify(urlArr));

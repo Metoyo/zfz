@@ -828,15 +828,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               url: faBuKaoShiZuUrl,
               params: { '考试组ID': kszId }
             };
-            $http(obj).success(function(data){
-              if(data.result && data.data){
-                $scope.showKaoShiZuList($scope.kwParams.kszListZt);
-                DataService.alertInfFun('suc', '发布成功！');
-              }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-            });
+            if(confirm('确定要发布此考试吗？')){
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.showKaoShiZuList($scope.kwParams.kszListZt);
+                  DataService.alertInfFun('suc', '发布成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
           };
 
           /**

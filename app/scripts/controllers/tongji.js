@@ -22,6 +22,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           var kaoShiZuTiMuDeFenLvUrl = '/kaoshizu_timu_defenlv'; //查询考试组题目得分率
           var tiMuDeFenLvUrl = '/timu_defenlv'; //题目得分率
           var zhiShiDianDeFenLvUrl = '/zhishidian_defenlv'; //查询知识点得分率
+          var kaoShengZuoDaUrl = '/kaosheng_zuoda'; //考生作答的接口
           var exportStuUrl = '/json2excel'; //导出考生
           var itemNumPerPage = 10; //每页多少条数据
           var paginationLength = 11; //分页部分，页码的长度，目前设定为11
@@ -30,6 +31,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           var tjBarData = []; //柱状图数据
           var tjZsdOriginData = []; //存放知识点原始数据的
           var zsdDeFenLvArr = []; //知识点得分率的数组
+          var tiMuDeFenLvArr = []; //存放题目得分率原始数据
           $scope.defaultKeMu = dftKm; //默认科目
           $scope.pageParam = { //分页参数
             activePage: '',
@@ -54,28 +56,21 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             jgScore: 60,
             sltKszZsd: '', //选择的考试组知识点
             sltKxhPjf: '', //选中的课序号平均分
-            sltKxhName: '' //选中的课序号名称
+            sltKxhName: '', //选中的课序号名称
+            letterArr: config.letterArr, //题支的序号
+            cnNumArr: config.cnNumArr //汉语的大写数字
           };
+          $scope.tiMuDeFenLv = []; //存放题目得分率
           var tjParaObj = { //存放统计参数的Object
-            pieBoxAll: '',
-            pieBoxKxh: '',
             barBox: '',
-            lineBox: '',
             radarBox: '',
             radarBoxZsd: '',
-            pieData: '',
-            lineDataAll: '',
-            lineDataKxh: '',
             radarDataZsd: {
               zsdName: [],
               zsdPerAll: [],
               zsdPerKxh: []
             }
           };
-
-          //$scope.selectKsz = ''; //选中考试组
-          //$scope.needToXgYxJgLv = true; //允许修改优秀和及格率
-          //$scope.isRenKeJiaoShi = false; //是否是任课教师
 
           /**
            * 判断是否为数组
@@ -121,184 +116,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
            */
           var chartShowFun = function(kind){
             var kszPjf = $scope.kszPubData['考试组平均分']; //考试组平均分
-            //var kszJgl = $scope.kszPubData['及格率']; //考试组及格率
-            //var kszYxl = $scope.kszPubData['优秀率']; //考试组优秀率
-            var sgKxh = $scope.singleData || ''; //单个课序号需要的参数
-            //var dataStyle = {
-            //  normal: {
-            //    label: {
-            //      show: false,
-            //      position : 'inner',
-            //      formatter : function (params) {
-            //        return params.percent + '%';
-            //      },
-            //      textStyle : {
-            //        fontSize : 14
-            //      }
-            //    },
-            //    labelLine: {show:false}
-            //  }
-            //};
-            //var placeHolderStyle = {
-            //  normal : {
-            //    color: 'rgba(0,0,0,0)',
-            //    label: {show:false},
-            //    labelLine: {show:false}
-            //  },
-            //  emphasis : {
-            //    color: 'rgba(0,0,0,0)'
-            //  }
-            //};
-            //var optPieAll = { // 环形图
-            //  title: {
-            //    text: '全部考生',
-            //    subtext: '',
-            //    sublink: '',
-            //    x: 'center',
-            //    y: 'center',
-            //    itemGap: 20,
-            //    textStyle : {
-            //      color : 'rgba(30,144,255,0.8)',
-            //      fontFamily : '微软雅黑',
-            //      fontSize : 24,
-            //      fontWeight : 'bolder'
-            //    }
-            //  },
-            //  tooltip : {
-            //    show: false,
-            //    formatter: "{a} <br/>{b} : {c} ({d}%)"
-            //  },
-            //  legend: {
-            //    orient : 'vertical',
-            //    //x : document.getElementById('chartPie').offsetWidth / 2,
-            //    x : '52%',
-            //    y : 30,
-            //    itemGap:12,
-            //    data:['及格率:' + kszJgl + '%', '优秀率:' + kszYxl + '%']
-            //  },
-            //  toolbox: {
-            //    show : false,
-            //    feature : {
-            //      mark : {show: true},
-            //      dataView : {show: true, readOnly: false},
-            //      restore : {show: true},
-            //      saveAsImage : {show: true}
-            //    }
-            //  },
-            //  series : [
-            //    {
-            //      name:'1',
-            //      type:'pie',
-            //      clockWise:false,
-            //      radius : [100, 120],
-            //      itemStyle : dataStyle,
-            //      data:[
-            //        {
-            //          value: kszJgl,
-            //          name: '及格率:' + kszJgl + '%'
-            //        },
-            //        {
-            //          value: 100 - kszJgl,
-            //          name:'invisible',
-            //          itemStyle : placeHolderStyle
-            //        }
-            //      ]
-            //    },
-            //    {
-            //      name:'2',
-            //      type:'pie',
-            //      clockWise:false,
-            //      radius : [80, 100],
-            //      itemStyle : dataStyle,
-            //      data:[
-            //        {
-            //          value: kszYxl,
-            //          name: '优秀率:' + kszYxl + '%'
-            //        },
-            //        {
-            //          value: 100 - kszYxl,
-            //          name:'invisible',
-            //          itemStyle : placeHolderStyle
-            //        }
-            //      ]
-            //    }
-            //  ]
-            //};
-            //var optPieKxh = { // 环形图
-            //  title: {
-            //    text: '',
-            //    subtext: '',
-            //    sublink: '',
-            //    x: 'center',
-            //    y: 'center',
-            //    itemGap: 20,
-            //    textStyle : {
-            //      color : 'rgba(30,144,255,0.8)',
-            //      fontFamily : '微软雅黑',
-            //      fontSize : 24,
-            //      fontWeight : 'bolder'
-            //    }
-            //  },
-            //  tooltip : {
-            //    show: false,
-            //    formatter: "{a} <br/>{b} : {c} ({d}%)"
-            //  },
-            //  legend: {
-            //    orient : 'vertical',
-            //    //x : document.getElementById('chartPie').offsetWidth / 2,
-            //    x : '52%',
-            //    y : 30,
-            //    itemGap:12,
-            //    data: []
-            //  },
-            //  toolbox: {
-            //    show : false,
-            //    feature : {
-            //      mark : {show: true},
-            //      dataView : {show: true, readOnly: false},
-            //      restore : {show: true},
-            //      saveAsImage : {show: true}
-            //    }
-            //  },
-            //  series : [
-            //    {
-            //      name:'1',
-            //      type:'pie',
-            //      clockWise:false,
-            //      radius : [100, 120],
-            //      itemStyle : dataStyle,
-            //      data:[
-            //        {
-            //          value: '',
-            //          name: ''
-            //        },
-            //        {
-            //          value: '',
-            //          name:'invisible',
-            //          itemStyle : placeHolderStyle
-            //        }
-            //      ]
-            //    },
-            //    {
-            //      name:'2',
-            //      type:'pie',
-            //      clockWise:false,
-            //      radius : [80, 100],
-            //      itemStyle : dataStyle,
-            //      data:[
-            //        {
-            //          value: '',
-            //          name: ''
-            //        },
-            //        {
-            //          value: '',
-            //          name:'invisible',
-            //          itemStyle : placeHolderStyle
-            //        }
-            //      ]
-            //    }
-            //  ]
-            //};
             var optBar = {
               tooltip : {
                 trigger : 'axis',
@@ -358,92 +175,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 }
               }]
             };
-            var optLine = {
-              tooltip : {
-                trigger: 'axis',
-                formatter: function (params, ticket, callback) {
-                  return params.seriesName + '</br>' + params.data[0] + '分：' +  params.data[1] + '人';
-                }
-              },
-              legend: {
-                data:['所有考生','本班考生']
-              },
-              grid : {
-                x : 40,
-                x2 : 30,
-                y : 30,
-                y2 : 30
-              },
-              calculable : true,
-              xAxis : [
-                {
-                  type : 'value',
-                  scale:true,
-                  axisLabel : {
-                    formatter: '{value}分'
-                  }
-                }
-              ],
-              yAxis : [
-                {
-                  type : 'value',
-                  scale:false,
-                  axisLabel : {
-                    formatter: '{value}人'
-                  }
-                }
-              ],
-              series : [
-                {
-                  name: '所有考生',
-                  type: 'line',
-                  data: tjParaObj.lineDataAll
-                },
-                {
-                  name: '本班考生',
-                  type: 'line',
-                  data: ''
-                }
-              ]
-            };
-            //var optRadar = {
-            //  tooltip : {
-            //    trigger: 'axis'
-            //  },
-            //  legend: {
-            //    orient : 'vertical',
-            //    x : 'right',
-            //    y : 'bottom',
-            //    data:['整体','班级']
-            //  },
-            //  polar : [
-            //    {
-            //      indicator : [
-            //        { text: '及格率', max: 100},
-            //        { text: '优秀率', max: 100},
-            //        { text: '平均人数', max: pjrs},
-            //        { text: '平均分', max: pjfsMax}
-            //      ]
-            //    }
-            //  ],
-            //  calculable : true,
-            //  series : [
-            //    {
-            //      name: '整体对比',
-            //      type: 'radar',
-            //      data : [
-            //        {
-            //          value : radarAll,
-            //          name : '整体'
-            //        },
-            //        {
-            //          value : radarKxh,
-            //          name : '班级'
-            //        }
-            //      ]
-            //    }
-            //  ]
-            //};
             var optRadarZsd = {
               tooltip : {
                 trigger: 'axis'
@@ -477,28 +208,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 }
               ]
             };
-            //饼状图数据
-            if(kind == 'all'){
-              optLine.series[1].data = '';
-            }
-            else{
-              optLine.series[1].data = tjParaObj.lineDataKxh;
-              //optPieKxh.title.text = $scope.tjParas.sltWeiDu;
-              //optPieKxh.legend.data = ['及格率:' + sgKxh['及格率'] + '%', '优秀率:' + sgKxh['优秀率'] + '%'];
-              //optPieKxh.series[0].data[0].value = sgKxh['及格率'];
-              //optPieKxh.series[0].data[0].name = '及格率:' + sgKxh['及格率'] + '%';
-              //optPieKxh.series[0].data[1].value = 100 - sgKxh['及格率'];
-              //optPieKxh.series[1].data[0].value = sgKxh['优秀率'];
-              //optPieKxh.series[1].data[0].name = '优秀率:' + sgKxh['优秀率'] + '%';
-              //optPieKxh.series[1].data[1].value = 100 - sgKxh['优秀率'];
-            }
-            if(sgKxh){
-              //radarKxh[0] = sgKxh['及格率'];
-              //radarKxh[1] = sgKxh['优秀率'];
-              //radarKxh[2] = sgKxh['实考人数'];
-              //radarKxh[3] = sgKxh['平均分'];
-              //optRadar.series[0].data[1].value = radarKxh;
-            }
             //柱状图数据
             if($scope.kszPubData['统计维度'] && $scope.kszPubData['统计维度'].length > 0){
               tjBarData = Lazy($scope.kszPubData['统计维度']).sortBy(function(kxh){return -kxh['平均分'];}).toArray();
@@ -519,39 +228,15 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             else{
               optBar.dataZoom.end = (5 / tjBarData.length) * 100;
             }
-            //tjParaObj.pieBoxAll.setOption(optPieAll);
-            //tjParaObj.pieBoxKxh.setOption(optPieKxh);
-            //tjParaObj.radarBox.setOption(optRadar);
             tjParaObj.radarBoxZsd.setOption(optRadarZsd);
-            tjParaObj.lineBox.setOption(optLine);
             tjParaObj.barBox.setOption(optBar);
+            $scope.loadingImgShow = false;
             $timeout(function (){
               window.onresize = function () {
-                //tjParaObj.pieBoxAll.resize();
-                //tjParaObj.pieBoxKxh.resize();
                 tjParaObj.barBox.resize();
-                tjParaObj.lineBox.resize();
-                //tjParaObj.radarBox.resize();
                 tjParaObj.radarBoxZsd.resize();
               }
             }, 200);
-          };
-
-          /**
-           * 折线图数据处理函数
-           */
-          var lineDataDealFun = function(data){
-            var lineDataArr = [];
-            var disByScore = Lazy(data).groupBy(function(item){return item['实际评分']}).toObject();
-            Lazy(disByScore).each(function(v, k, l){
-              if(k && parseInt(k) >= 0){
-                var ary = [];
-                ary[0] = parseInt(k);
-                ary[1] = v.length;
-                lineDataArr.push(ary);
-              }
-            });
-            return lineDataArr;
           };
 
           /**
@@ -627,6 +312,9 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
            */
           $scope.kszChart = function(ksz){
             if(ksz){
+              $scope.loadingImgShow = true;
+              $scope.showKaoShengList = false;
+              tiMuDeFenLvArr = [];
               $scope.kszPubData = {
                 '考试组名称': ksz['考试组名称'],
                 '考试组平均分': 0,
@@ -634,9 +322,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 '总人数': ksz['总人数'],
                 '开考时间': '',
                 '统计维度': [],
-                '课序号摘要': '',
-                '及格率': '',
-                '优秀率': ''
+                '课序号摘要': ''
               };
               var stuObj = {
                 method: 'GET',
@@ -655,17 +341,10 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 if(students.result && students.data){
                   allStutents = angular.copy(students.data);
                   $scope.studentData = students.data;
-                  tjParaObj.pieData = angular.copy(students.data);
                   //考试组数据处理
                   $scope.kszPubData['考试组平均分'] = parseFloat((Lazy(students.data).reduce(function(memo, stu){ //考试组平均分
                     return memo + stu['实际评分'];
                   }, 0)/ksz['已作答人数']).toFixed(1));
-                  $scope.kszPubData['及格率'] = parseFloat((Lazy(students.data).filter(function(xs){ //及格率
-                    return xs['实际评分'] >= $scope.tjParas.jgScore;
-                  }).size()/ksz['已作答人数'] * 100).toFixed(1));
-                  $scope.kszPubData['优秀率'] = parseFloat((Lazy(students.data).filter(function(xs){ //优秀率
-                    return xs['实际评分'] >= $scope.tjParas.yxScore;
-                  }).size()/ksz['已作答人数'] * 100).toFixed(1));
                   //课序号整理
                   var disByKeXuHao = Lazy(students.data).groupBy(function(stu){
                     return stu['课序号名称'];
@@ -695,8 +374,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                     activeIdx: 0,
                     kxhIdx: 0
                   };
-                  //按分数分组统计数据，用在按分数和人数统计的折线图
-                  tjParaObj.lineDataAll = lineDataDealFun(allStutents);
                   //知识点的统计
                   var zsdObj = {
                     method: 'GET',
@@ -760,12 +437,28 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                     //具体数据展示
                     $scope.tjByKxh('all');
                     //初始化统计表格容器
-                    //tjParaObj.pieBoxAll = echarts.init(document.getElementById('chartPieAll'));
-                    //tjParaObj.pieBoxKxh = echarts.init(document.getElementById('chartPieBj'));
                     tjParaObj.barBox = echarts.init(document.getElementById('chartBar'));
-                    tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
-                    //tjParaObj.radarBox = echarts.init(document.getElementById('chartRadar'));
                     tjParaObj.radarBoxZsd = echarts.init(document.getElementById('chartRadarZsd'));
+                  });
+                  //题目得分率
+                  var tmObj = {
+                    method: 'GET',
+                    url: kaoShiZuTiMuDeFenLvUrl,
+                    params: {
+                      '考试组ID': ksz['考试组ID']
+                    }
+                  };
+                  $http(tmObj).success(function(tiMu){
+                    if(tiMu.result && tiMu.data){
+                      Lazy(tiMu.data).each(function(tm){
+                        tm['得分率'] = parseFloat((tm['得分率'] * 100).toFixed(1));
+                      });
+                      tiMuDeFenLvArr = Lazy(tiMu.data).sortBy('得分率').toArray();
+                      $scope.tiMuDeFenLv = tiMuDeFenLvArr.slice(0, 11);
+                    }
+                    else{
+                      DataService.alertInfFun('err', tiMu.error);
+                    }
                   });
                 }
                 else{
@@ -777,6 +470,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               $scope.tjSubTpl = 'views/tongji/tj_ks_chart.html';
             }
             else{
+              $scope.loadingImgShow = false;
               DataService.alertInfFun('pmt', '请选择考试组！');
             }
           };
@@ -822,13 +516,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
            */
           $scope.tjByKxh = function(kxh){
             var addActiveFun;
-            $scope.singleData = {
-              '平均分': 0,
-              '实考人数': 0,
-              '及格率': 0,
-              '优秀率': 0
-            };
-            tjParaObj.lineDataKxh = '';
             tjParaObj.radarDataZsd.zsdPerKxh = [];
             $scope.tjParas.lastSltKxh = {
               activeIdx: $scope.tjParas.tjWdPgOn,
@@ -852,8 +539,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               }
               //折线数据，单个班级
               addActiveFun = function(){
-                tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
-                //tjParaObj.pieBoxKxh = echarts.init(document.getElementById('chartPieBj'));
                 chartShowFun('all');
               };
               $timeout(addActiveFun, 100);
@@ -864,20 +549,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               $scope.studentData = angular.copy(kxh['课序号学生']);
               $scope.tjParas.sltKxhPjf = kxh['平均分'];
               $scope.tjParas.sltKxhName = kxh['课序号名称'];
-              //饼状图数据处理
-              $scope.singleData['实考人数'] = Lazy(kxh['课序号学生']).reject(function(xs){return xs['实际评分'] == null;}).size();
-              var skrs = $scope.singleData['实考人数'] || 1;
-              $scope.singleData['平均分'] = parseFloat((Lazy(kxh['课序号学生']).reduce(function(memo, stu){ //考试组平均分
-                return memo + stu['实际评分'];
-              }, 0)/skrs).toFixed(1));
-              $scope.singleData['及格率'] = parseFloat((Lazy(kxh['课序号学生']).filter(function(xs){ //及格率
-                return xs['实际评分'] >= $scope.tjParas.jgScore;
-              }).size()/skrs * 100).toFixed(1));
-              $scope.singleData['优秀率'] = parseFloat((Lazy(kxh['课序号学生']).filter(function(xs){ //优秀率
-                return xs['实际评分'] >= $scope.tjParas.yxScore;
-              }).size()/skrs * 100).toFixed(1));
-              //折线图，班级数据
-              tjParaObj.lineDataKxh = lineDataDealFun(kxh['课序号学生']);
               //知识点数据整理
               var distZsd = Lazy(tjZsdOriginData).filter(function(zsd){
                 return zsd['课序号ID'] == kxh['课序号ID'];
@@ -916,7 +587,6 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               }
               //点击单个考序号重现组装数据
               addActiveFun = function(){
-                tjParaObj.lineBox = echarts.init(document.getElementById('chartLine'));
                 chartShowFun();
               };
               $timeout(addActiveFun, 100);
@@ -1047,65 +717,52 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             submitFORMDownload(exportStuUrl, {json: JSON.stringify(ksData)}, 'post');
           };
 
-          ///**
-          // * 作答重现
-          // */
-          //$scope.zuoDaReappear = function(ksd){
-          //  var answerReappearUrl = answerReappearBaseUrl,
-          //    dataDis, tmVal,
-          //    finaData = {
-          //      sj_name: '',
-          //      sj_tm: []
-          //    };
-          //  if(ksd.UID){
-          //    answerReappearUrl += '&kaoshengid=' + ksd.UID;
-          //  }
-          //  else{
-          //    DataService.alertInfFun('pmt', '缺少考生UID');
-          //    return;
-          //  }
-          //  if(ksd.KAOSHI_ID){
-          //    answerReappearUrl += '&kaoshiid=' + ksd.KAOSHI_ID;
-          //  }
-          //  else{
-          //    DataService.alertInfFun('pmt', '缺少考试ID');
-          //    return;
-          //  }
-          //  DataService.getData(answerReappearUrl).then(function(data) {
-          //    if(data && data.length > 0){
-          //      finaData.sj_name = data[0].SHIJUAN_MINGCHENG;
-          //      dataDis = Lazy(data).groupBy('DATI_XUHAO').toObject();
-          //      Lazy(dataDis).each(function(val, key, list){
-          //        var dObj = {
-          //          tx_id: key,
-          //          tx_name: val[0].DATIMINGCHENG,
-          //          tm: ''
-          //        };
-          //        Lazy(val).each(function(tm, idx, lst){
-          //          var findVal = Lazy(itemDeFenLv).find(function(item){return item.TIMU_ID == tm.TIMU_ID});
-          //          if(findVal){
-          //            tm.itemDeFenLv = (findVal.DEFENLV * 100).toFixed(1);
-          //          }
-          //          if(typeof(tm.TIGAN) == 'string'){
-          //            tm.TIGAN = JSON.parse(tm.TIGAN);
-          //          }
-          //          DataService.formatDaAn(tm);
-          //        });
-          //        dObj.tm = val;
-          //        finaData.sj_tm.push(dObj);
-          //      });
-          //      $scope.showKaoShengList = false;
-          //      $scope.kaoShengShiJuan = finaData;
-          //    }
-          //  });
-          //};
-          //
-          ///**
-          // * 关闭作答重新内容
-          // */
-          //$scope.closeZuoDaReappear = function(){
-          //  $scope.showKaoShengList = true;
-          //};
+          /**
+          * 作答重现
+          */
+          $scope.zuoDaReappear = function(ks){
+            var obj = {
+              method: 'GET',
+              url: kaoShengZuoDaUrl,
+              params: {
+                '考试组ID': ks['考试组ID'],
+                'UID': ks['UID']
+              }
+            };
+            var finaData = {
+              sj_name: '',
+              sj_tm: []
+            };
+            $scope.kaoShengShiJuan = '';
+            $scope.showKaoShengList = true;
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                finaData.sj_name = data.data['试卷组名称'];
+                Lazy(data.data['试卷题目']).each(function(dt){
+                  Lazy(dt['题目']).each(function(tm){
+                    var findTar = Lazy(tiMuDeFenLvArr).find(function(dfl){
+                      return dfl['题目ID'] == tm['题目'];
+                    });
+                    tm['得分率'] = findTar ? findTar['得分率'] : 0;
+                    tm = DataService.formatDaAn(tm);
+                  });
+                });
+                finaData.sj_tm = data.data['试卷题目'];
+                $scope.showKaoShengList = false;
+                $scope.kaoShengShiJuan = finaData;
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          };
+
+          /**
+          * 关闭作答重新内容
+          */
+          $scope.closeZuoDaReappear = function(){
+            $scope.showKaoShengList = true;
+          };
 
           ///**
           // * 查询知识点统计的数据
