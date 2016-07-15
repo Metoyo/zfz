@@ -51,6 +51,11 @@
         <label class="checkbox-inline">
           <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['允许计算器']"> 允许计算器
         </label>
+        <label class="checkbox-inline">
+          每页题目数 <select ng-options="nm for nm in tiMuNumPerPage" ng-model="kaoShiZuData['考试组设置']['每页题目数']">
+          <option value="">请选择</option>
+        </select>
+        </label>
       </div>
     </div>
     <!--在线报名时显示报名的开始和结束时间-->

@@ -49,6 +49,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             pageArr: [],
             disPage: []
           };
+          $scope.tiMuNumPerPage = [1, 2, 3, 4, 5];
 
           /**
            * 查询考点
@@ -221,6 +222,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
            */
           $scope.addNewKaoShiZu = function(ksz){
             //var editKaoShiZu = false;
+            $scope.loadingImgShow = false;
             $scope.kaoShiZuData = {
               //'考试组ID': '',
               '考试组名称': '',
@@ -234,7 +236,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
                 '选项乱序': false,
                 '题目乱序': false,
                 '填空题笔答': false,
-                '允许计算器': false
+                '允许计算器': false,
+                '每页题目数': 1
               },
               '考试': []
             };
@@ -252,6 +255,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             //  $scope.kaoShiZuData['考试组设置']['题目乱序'] = ksz['考试组设置']['题目乱序'];
             //  $scope.kaoShiZuData['考试组设置']['填空题笔答'] = ksz['考试组设置']['填空题笔答'];
             //  $scope.kaoShiZuData['考试组设置']['允许计算器'] = ksz['考试组设置']['允许计算器'];
+            //  $scope.kaoShiZuData['考试组设置']['每页题目数'] = ksz['考试组设置']['每页题目数'];
             //  if(ksz['报名方式'] == 2){
             //    $scope.kaoShiZuData['报名开始时间'] = ksz['报名开始时间'];
             //    $scope.kaoShiZuData['报名截止时间'] = ksz['报名截止时间'];
@@ -718,6 +722,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             var kdkwErr = [];
             var allKaoWei = 0;
             var dataPar = angular.copy($scope.kaoShiZuData);
+            dataPar['考试组设置']['每页题目数'] = dataPar['考试组设置']['每页题目数'] || 1;
             if(dataPar['报名方式'] == 1){ //非在线报名
               Lazy(dataPar['考试']).each(function(cc){
                 delete cc.tempIdx;

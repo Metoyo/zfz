@@ -29,6 +29,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         var kaoShiZuZhiShiDianUrl = '/kaoshizu_zhishidian'; //考试组知识点
         var keMuConfUrl = '/kemu_conf'; //科目设置
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
+        var kaoDianUrl = '/kaodian'; //考点
         $scope.defaultKeMu = dftKm; //默认科目
         $scope.guanliParams = {
           tabActive: '',
@@ -253,6 +254,29 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
+         * 由学校ID查询考点列表
+         */
+        var getKaoDianList = function(){
+          $scope.kaoChangList = '';
+          if(jgID){
+            var obj = {method: 'GET', url: kaoDianUrl, params: {'学校ID': jgID}};
+            $scope.loadingImgShow = true;
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                $scope.kaoChangList = data.data;
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择学校！');
+          }
+        };
+
+        /**
          * 考生内容切换 --
          */
         $scope.guanLiTabSlide = function (tab) {
@@ -273,6 +297,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             getDaGangData();
             $scope.guanliParams.tabActive = 'tongji';
             $scope.guanLiTpl = 'views/guanli/tongjiset.html';
+          }
+          if (tab == 'kaodian') {
+            getKaoDianList();
+            $scope.guanliParams.tabActive = 'kaodian';
+            $scope.guanLiTpl = 'views/guanli/kaodian.html';
           }
         };
         $scope.guanLiTabSlide('kexuhao');
