@@ -40,16 +40,22 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           singleStuID: '', //学生学号
           singleStuBanJi: '', //学生班级
           errorInfo: '',
-          selectKsz: '' //选中的考试组
+          selectKsz: '', //选中的考试组
+          year: '', //课序号年份
+          term: '' //课序号学期
         };
         $scope.glEditBoxShow = ''; //弹出层显示那一部分内容
         $scope.jgKmTeachers = ''; //本机构科目下的老师
         $scope.keXuHaoPgData = ''; //课序号数据
         $scope.selectKxh = ''; //选中的课序号
         $scope.showMoreBtn = false; //课序号管理更多按钮
+        $scope.kxhData = { //课序号的日期区分字段
+          '年份': [],
+          '学期': [{val: 1, name: '上学期'}, {val: 2, name: '下学期'}]
+        };
 
         /**
-         * 查询科目下的老师 --
+         * 查询科目下的老师
          */
         var qryKeMuTeachers = function(){
           var obj = {
@@ -100,7 +106,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 查询课序号 --
+         * 查询课序号
          */
         var queryKeXuHao = function(){
           var objKxh = {
@@ -112,6 +118,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               '返回学生人数': true
             }
           };
+          $scope.kxhData['年份'] = [];
+          var mydateNew = new Date();
+          var year = mydateNew.getFullYear();
+          $scope.kxhData['年份'].push(year);
+          $scope.kxhData['年份'].push(year + 1);
+          console.log($scope.kxhData);
           $http(objKxh).success(function(data){
             if(data.result && data.data){
               var objJs = {
@@ -277,7 +289,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 考生内容切换 --
+         * 考生内容切换
          */
         $scope.guanLiTabSlide = function (tab) {
           $scope.guanliParams.tabActive = '';
@@ -307,7 +319,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         $scope.guanLiTabSlide('kexuhao');
 
         /**
-         * 文件上传 --
+         * 文件上传
          */
         $scope.uploadFiles = []; //存放上传文件的数组
         $scope.$on("fileSelected", function (event, args) { //将选择的文件加入到数组
@@ -317,18 +329,22 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         });
 
         /**
-         * 显示弹出层 --
+         * 显示弹出层
          */
         $scope.showKeXuHaoPop = function(item, data){
           $scope.showKeXuHaoManage = true;
           $scope.glEditBoxShow = item;
           $scope.uploadFiles = [];
           $scope.guanliParams.modifyKxh = '';
+          $scope.guanliParams.year = '';
+          $scope.guanliParams.term = '';
           if(item == 'addKeXuHao'){
             qryKeMuTeachers();
           }
           else if(item == 'modifyKeXuHao'){
             $scope.guanliParams.modifyKxh = data;
+            $scope.guanliParams.year = data['年度'];
+            $scope.guanliParams.term = data['学期'];
             qryKeMuTeachers();
           }
           else{
@@ -337,7 +353,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 关闭课序号管理的弹出层 --
+         * 关闭课序号管理的弹出层
          */
         $scope.closeKeXuHaoManage = function(){
           $scope.showKeXuHaoManage = false;
@@ -346,7 +362,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 课序号的分页数据 --
+         * 课序号的分页数据
          */
         $scope.keXuHaoDist = function(pg){
           var startPage = (pg-1) * numPerPage;
@@ -373,7 +389,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 删除课序号 --
+         * 删除课序号
          */
         $scope.deleteKeXuHao = function(kxh){
           var obj = {
@@ -412,7 +428,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 导入用户 --
+         * 导入用户
          */
         $scope.impYongHu = function(kind){
           var fd = new FormData();
@@ -493,7 +509,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 查询课序号学生 --
+         * 查询课序号学生
          */
         $scope.chaXunKxhYongHu = function(kxh){
           $scope.studentsData = '';
@@ -552,7 +568,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 学生分页 --
+         * 学生分页
          */
         $scope.studentPgDist = function(pg){
           var startPage = (pg-1) * numPerPage;
@@ -579,7 +595,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 删除课序号用户 --
+         * 删除课序号用户
          */
         $scope.deleteKxhYh = function(yh, kind){
           if(kind && kind == 'imp'){
@@ -637,7 +653,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-         * 课序号管理保存数据 --
+         * 课序号管理保存数据
          */
         $scope.saveKeXuHaoModify = function(){
           var saveType = $scope.glEditBoxShow;
@@ -663,6 +679,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               obj.data = {'课序号名称': $scope.guanliParams.addNewKxh, '学校ID':jgID, '科目ID':keMuId};
               checkJiaoShi();
             }
+            if($scope.guanliParams.year){
+              obj.data['年度'] = $scope.guanliParams.year;
+            }
+            if($scope.guanliParams.term){
+              obj.data['学期'] = $scope.guanliParams.term;
+            }
             else{
               allTrue = false;
               DataService.alertInfFun('pmt', '新课序号为空！');
@@ -686,6 +708,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               if($scope.guanliParams.modifyKxh['备注']){
                 obj.data['备注'] = $scope.guanliParams.modifyKxh['备注'];
               }
+              obj.data['年度'] = $scope.guanliParams.year;
+              obj.data['学期'] = $scope.guanliParams.term;
               checkJiaoShi();
             }
           }

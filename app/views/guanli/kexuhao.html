@@ -135,6 +135,19 @@
         </div>
         <div class="clearfix mt15">
           <div class="col-md-2 text-right">
+            <span class="mt5 dpb">年份学期</span>
+          </div>
+          <div class="col-md-8 mt5">
+            <select class="fz16" ng-model="guanliParams.year" ng-options="dt for dt in kxhData['年份']">
+              <option value="">请选择年份</option>
+            </select>
+            <select class="ml15 fz16" ng-model="guanliParams.term" ng-options="dt.val as dt.name for dt in kxhData['学期']">
+              <option value="">请选择学期</option>
+            </select>
+          </div>
+        </div>
+        <div class="clearfix mt15">
+          <div class="col-md-2 text-right">
             <span class="mt5 dpb">教师</span>
           </div>
           <div class="col-md-8 mt5">
@@ -160,6 +173,19 @@
           </div>
           <div class="col-md-8">
             <input type="text" class="form-control" placeholder="课序号" ng-model="guanliParams.modifyKxh['课序号名称']"/>
+          </div>
+        </div>
+        <div class="clearfix mt15">
+          <div class="col-md-2 text-right">
+            <span class="mt5 dpb">年份学期</span>
+          </div>
+          <div class="col-md-8 mt5">
+            <select class="fz16" ng-model="guanliParams.year" ng-options="dt for dt in kxhData['年份']">
+              <option value="">请选择年份</option>
+            </select>
+            <select class="ml15 fz16" ng-model="guanliParams.term" ng-options="dt.val as dt.name for dt in kxhData['学期']">
+              <option value="">请选择学期</option>
+            </select>
           </div>
         </div>
         <div class="clearfix mt15">
