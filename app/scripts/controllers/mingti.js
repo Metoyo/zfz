@@ -326,7 +326,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                 Lazy(data.data).each(function(tm, idx, lst){
                   tm = DataService.formatDaAn(tm);
                 });
-                $scope.timuDetails = data.data;
+                $scope.timuDetails = Lazy(data.data).sortBy('题目ID').reverse().toArray();
               }
               else{
                 DataService.alertInfFun('err', data.error);
@@ -590,7 +590,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           }
           $http(obj).success(function(tmlb){ //查询题目列表
             if(tmlb.result && tmlb.data){
-              var timuliebiao = Lazy(tmlb.data).reverse().toArray();
+              var timuliebiao = Lazy(tmlb.data).sortBy('题目ID').reverse().toArray();
               allTiMuIds = angular.copy(timuliebiao);
               pageMake(tmlb.data);
             }
@@ -669,7 +669,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.qryTiMuByTiKu = function(){
           qryTmPar.tk = [];
           if($scope.mingTiParam.tiKuId){
-            qryTmPar.tk($scope.mingTiParam.tiKuId);
+            qryTmPar.tk.push($scope.mingTiParam.tiKuId);
           }
           else{
             qryTmPar.tk = angular.copy($scope.mingTiParam.allTkIds);
@@ -900,7 +900,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.fuZhiFun = function(idx){
           var tzSlt = document.querySelector('.formulaEditTiZhi');
           $scope.loopArr[idx].itemVal = angular.element(tzSlt).val();
-          //$scope.mingTiParam.xuanZheTiZhi
         };
 
         /**

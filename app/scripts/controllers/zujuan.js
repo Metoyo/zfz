@@ -28,7 +28,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           zsd: [], //知识点
           nd: '', //难度id
           tm: '', //题目id
-          tk: '', //题库id
+          tk: [], //题库id
           tx: '', //题型id
           tmly: '', //题目来源ID
           ctr: '', //出题人UID
@@ -41,6 +41,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         var allTiMuIds = ''; //存放所有题目id
         var txName = config.tiXingArr; //题型名称
         var gdtmTempIds = []; //临时存放固定题目ID的数组
+        var allTkIds = []; //所有题库ID
         $scope.letterArr = config.letterArr; //题支的序号
         $scope.cnNumArr = config.cnNumArr; //题支的序号
         $scope.defaultKeMu = dftKm; //默认科目
@@ -172,13 +173,37 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         var qryTiKu = function(){
           if(!($scope.tiKuList && $scope.tiKuList.length > 0)){
-            var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId}};
-            $http(obj).success(function(data){
-              if(data.result && data.data){
-                $scope.tiKuList = data.data;
+            //var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId}};
+            //$http(obj).success(function(data){
+            //  if(data.result && data.data){
+            //    $scope.tiKuList = data.data;
+            //  }
+            //  else{
+            //    $scope.tiKuList = '';
+            //    DataService.alertInfFun('err', data.error);
+            //  }
+            //});
+            var objZj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId, '类型': 2}};
+            var zjTk = [];
+            var ggTk = [];
+            $http(objZj).success(function(data){
+              if(data.result){
+                zjTk = data.data ? data.data : [];
+                var objGg = {method: 'GET', url: tiKuUrl, params: {'领域ID': lingYuId, '类型': 1}};
+                $http(objGg).success(function(ggData){
+                  if(ggData.result){
+                    ggTk = ggData.data ? ggData.data : [];
+                    $scope.tiKuList = Lazy(zjTk).union(ggTk).toArray();
+                    var allTkId = Lazy($scope.tiKuList).map(function(tk){ return tk['题库ID'];}).toArray();
+                    allTkIds = angular.copy(allTkId);
+                    qryTmPar.tk = allTkId;
+                  }
+                  else{
+                    DataService.alertInfFun('err', ggData.error);
+                  }
+                });
               }
               else{
-                $scope.tiKuList = '';
                 DataService.alertInfFun('err', data.error);
               }
             });
@@ -313,7 +338,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                 if(count == data.data.length){
                   $scope.removeThisPage = true;
                 }
-                $scope.timuDetails = data.data;
+                $scope.timuDetails = Lazy(data.data).sortBy('题目ID').reverse().toArray();
               }
               else{
                 DataService.alertInfFun('err', data.error);
@@ -423,7 +448,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             zsd: [], //知识点
             nd: '', //难度id
             tm: '', //题目id
-            tk: '', //题库id
+            tk: [], //题库id
             tx: '', //题型id
             tmly: '', //题目来源ID
             ctr: '', //出题人UID
@@ -818,6 +843,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           if(qryTmPar.tx){
             obj.params['题型ID'] = qryTmPar.tx;
           }
+          if(qryTmPar.tk && qryTmPar.tk.length > 0){
+            obj.params['题库ID'] = JSON.stringify(qryTmPar.tk);
+          }
           if(qryTmPar.tm){
             obj.params['题目ID'] = qryTmPar.tm;
           }
@@ -841,7 +869,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
           $http(obj).success(function(tmlb){ //查询题目列表
             if(tmlb.result && tmlb.data){
-              var timuliebiao = Lazy(tmlb.data).reverse().toArray();
+              var timuliebiao = Lazy(tmlb.data).sortBy('题目ID').reverse().toArray();
               allTiMuIds = angular.copy(timuliebiao);
               if(tmlb.data && tmlb.data.length > 0){
                 pageMake(tmlb.data);
@@ -916,7 +944,13 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          * 通过录题库查询试题
          */
         $scope.qryTiMuByTiKu = function(){
-          qryTmPar.tk = $scope.zuJuanParam.tiKuId ? $scope.zuJuanParam.tiKuId : '';
+          qryTmPar.tk = [];
+          if($scope.zuJuanParam.tiKuId){
+            qryTmPar.tk.push($scope.zuJuanParam.tiKuId);
+          }
+          else{
+            qryTmPar.tk = angular.copy(allTkIds);
+          }
           qryTestFun();
         };
 

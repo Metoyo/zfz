@@ -123,9 +123,13 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           var year = mydateNew.getFullYear();
           $scope.kxhData['年份'].push(year);
           $scope.kxhData['年份'].push(year + 1);
-          console.log($scope.kxhData);
           $http(objKxh).success(function(data){
             if(data.result && data.data){
+              Lazy(data.data).each(function(kxh){
+                if(kxh['学期']){
+                  kxh['中文学期'] = kxh['学期'] == 1 ? '上学期' : '下学期';
+                }
+              });
               var objJs = {
                 method: 'GET',
                 url: kxhJiaoShiUrl,

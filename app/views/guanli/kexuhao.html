@@ -13,9 +13,8 @@
         </tr>
         <tr ng-repeat="kxh in keXuHaoData" class="cursorPointer">
           <td ng-click="chaXunKxhYongHu(kxh)">
-            <span class="cursorPointer mr5">
-              {{kxh['课序号名称']}}
-            </span>
+            <span class="cursorPointer mr5" ng-bind="kxh['课序号名称']"></span>
+            <span ng-bind="'(' + kxh['年度'] + kxh['中文学期'] + ')'" ng-if="kxh['年度']"></span>
             <span>{{'('+kxh['学生人数']+'人)'}}</span>
           </td>
           <td class="text-right">
