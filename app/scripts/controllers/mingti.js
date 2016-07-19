@@ -22,6 +22,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var tiKuUrl = '/tiku'; //题库
         var tiMuLaiYuanUrl = '/timulaiyuan'; //题目来源
         var yongHuUrl = '/yonghu'; //用户的增删改查
+        var uploadUrl = '/upload'; //命题的文件上传
+        var showFileUrl =  '/show_file/';//文件显示
         var tiMuIdArr = []; //获得查询题目ID的数组
         var pageArr = []; //根据得到的数据定义一个分页数组
         var qryTmPar = { //查询题目参数对象
@@ -39,6 +41,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var regRN = /\r\n/g; //匹配enter换行
         var regN = /\n/g; //匹配换行
         var replaceStr = '<br/>'; //匹配<br/>
+        var fileTypeReg = /\.\b\w+$\b/; // 匹配文件类型/\.(\w+)$/  \.\b\w+$\b
         $scope.defaultKeMu = dftKm; //默认科目
         $scope.keMuList = true; //科目选择列表内容隐藏
         $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
@@ -895,7 +898,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 给题支选项赋值
          */
         $scope.fuZhiFun = function(idx){
-          $scope.loopArr[idx].itemVal = $scope.mingTiParam.xuanZheTiZhi;
+          var tzSlt = document.querySelector('.formulaEditTiZhi');
+          $scope.loopArr[idx].itemVal = angular.element(tzSlt).val();
+          //$scope.mingTiParam.xuanZheTiZhi
         };
 
         /**
@@ -1193,86 +1198,98 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           renderTpl(tpl);
         };
 
-//        /**
-//         * 文件上传
-//         */
-//        //存放上传文件的数组
-//        $scope.uploadFiles = [];
-//
-//        //将选择的文件加入到数组
-//        $scope.$on("fileSelected", function (event, args) {
-//          $scope.$apply(function () {
-//            $scope.uploadFiles.push(args.file);
-//          });
-//          console.log($scope.uploadFiles);
-//        });
-//
-//        //添加文件
-//        $scope.addMyFile = function(){
-//          $('input.addFileBtn').click();
-//        };
-//
-//        //删除选择的文件
-//        $scope.deleteSelectFile = function(idx){
-//          $scope.uploadFiles.splice(idx, 1);
-//        };
-//
-//        //关闭上传文件弹出层
-//        $scope.closeMediaPlugin = function(){
-//          $('#mediaPlugin').hide();
-//        };
-//
-//        //保存上传文件
-//        $scope.uploadMyFiles = function() {
-//          var file = $scope.uploadFiles,
-//            fields = [{"name": "token", "data": token}],
-//            isFileSizeRight = true,
-//            limitedFileSize = config.uploadFileSizeLimit; //文件大小限制，目前大小限制2MB
-//          Lazy($scope.uploadFiles).each(function(fl, idx, lst){
-//            if(fl.size > limitedFileSize){
-//              isFileSizeRight = false;
-//            }
-//          });
-//          if(isFileSizeRight){
-//            DataService.uploadFileAndFieldsToUrl(file, fields, uploadFileUrl).then(function(result){
-//              console.log(result);
-//              var i, mediaLength;
-//              $scope.uploadFileUrl = result.data;
-//              $scope.uploadFiles = [];
-//              if(result.data && result.data.length > 0){
-//                mediaLength = result.data.length;
-//                for(i = 0; i < mediaLength; i++){
-//                  var findFileType = result.data[i].match(fileTypeReg)[0], //得到文件格式
-//                    isImg = Lazy(config.imgType).contains(findFileType),
-//                    isVideo = Lazy(config.videoType).contains(findFileType),
-//                    isAudio = Lazy(config.audioType).contains(findFileType),
-//                    src = showFileUrl + result.data[i]; //媒体文件路径
-//                  if(isImg){
-//                    $.markItUp(
-//                      { replaceWith:'<img src="'+src+'" alt=""(!( class="[![Class]!]")!) />' }
-//                    );
-//                  }
-//                  if(isAudio){
-//                    $.markItUp(
-//                      { replaceWith:'<audio src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></audio>' }
-//                    );
-//                  }
-//                  if(isVideo){
-//                    $.markItUp(
-//                      { replaceWith:'<video src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></video>' }
-//                    );
-//                  }
-//                }
-//                $('#mediaPlugin').hide();
-//                $('.formulaEditTiGan').keyup();
-//                return false;
-//              }
-//            });
-//          }
-//          else{
-//            DataService.alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
-//          }
-//        };
+        /**
+         * 文件上传
+         */
+        //存放上传文件的数组
+        $scope.uploadFiles = [];
+
+        //将选择的文件加入到数组
+        $scope.$on("fileSelected", function (event, args) {
+          $scope.$apply(function () {
+            $scope.uploadFiles.push(args.file);
+          });
+          console.log($scope.uploadFiles);
+        });
+
+        //添加文件
+        $scope.addMyFile = function(){
+          $('input.addFileBtn').click();
+        };
+
+        //删除选择的文件
+        $scope.deleteSelectFile = function(idx){
+          $scope.uploadFiles.splice(idx, 1);
+        };
+
+        //关闭上传文件弹出层
+        $scope.closeMediaPlugin = function(){
+          $('#mediaPlugin').hide();
+        };
+
+        //保存上传文件
+        $scope.uploadMyFiles = function() {
+          var file = $scope.uploadFiles;
+          var fileLen = file.length;
+          var isFileSizeRight = true;
+          var limitedFileSize = config.uploadFileSizeLimit; //文件大小限制，目前大小限制2MB
+          Lazy($scope.uploadFiles).each(function(fl, idx, lst){
+            if(fl.size > limitedFileSize){
+              isFileSizeRight = false;
+            }
+          });
+          if(isFileSizeRight){
+            var fd = new FormData();
+            for(var i = 1; i <= fileLen; i++){
+              fd.append('file' + 1, file[i - 1]);
+            }
+            $scope.loadingImgShow = true;
+            $http.post(uploadUrl, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}}).success(function(data){
+              if(data.result && data.data){
+                $scope.loadingImgShow = false;
+                var i, mediaLength;
+                $scope.uploadFileUrl = data.data;
+                $scope.uploadFiles = [];
+                if(data.data && data.data.length > 0){
+                  mediaLength = data.data.length;
+                  for(i = 0; i < mediaLength; i++){
+                    var findFileType = data.data[i].match(fileTypeReg)[0]; //得到文件格式
+                    var isImg = Lazy(config.imgType).contains(findFileType);
+                    var isVideo = Lazy(config.videoType).contains(findFileType);
+                    var isAudio = Lazy(config.audioType).contains(findFileType);
+                    var src = showFileUrl + data.data[i]; //媒体文件路径
+                    if(isImg){
+                      $.markItUp(
+                        { replaceWith:'<img src="'+src+'" alt=""(!( class="[![Class]!]")!) />' }
+                      );
+                    }
+                    if(isAudio){
+                      $.markItUp(
+                        { replaceWith:'<audio src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></audio>' }
+                      );
+                    }
+                    if(isVideo){
+                      $.markItUp(
+                        { replaceWith:'<video src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></video>' }
+                      );
+                    }
+                  }
+                  $('#mediaPlugin').hide();
+                  $('.formulaEditTiGan').keyup();
+                  return false;
+                }
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.uploadFiles = [];
+              $scope.loadingImgShow = false;
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
+          }
+        };
 
         /**
          * 显示题干预览
@@ -1306,6 +1323,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.saveTiMu = function(){
           var mis = [];
           var tiMuData = angular.copy($scope.timu);
+          var tgSlt = document.querySelector('.formulaEditTiGan');
+          tiMuData['题目内容']['题干'] = angular.element(tgSlt).val();
           if($scope.newTiXingId == 1 || $scope.newTiXingId == 2){ //整理单选和多选题答案
             var tzArr = [];
             var daArr = [];
@@ -1356,6 +1375,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               return ;
             }
           }
+          if($scope.newTiXingId >= 5){ //解答题
+            var tzSlt = document.querySelector('.formulaEditTiZhi');
+            tiMuData['题目内容']['答案'] = angular.element(tzSlt).val();
+          }
           Lazy(tiMuData).each(function(v, k, l){ //判断必要字段
             if(k == '题库ID' || k == '科目ID' || k == '题型ID' || k == '难度' || k == '知识点'){
               if(!v){
@@ -1393,6 +1416,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                   '提示': ''
                 };
                 $scope.timu['备注'] = '';
+                $scope.mingTiParam.xuanZheTiZhi = '';
+                var tzSlt = document.querySelector('.formulaEditTiZhi');
+                angular.element(tzSlt).val('');
                 if($scope.newTiXingId < 3){
                   $scope.loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];
                 }
