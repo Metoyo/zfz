@@ -1,31 +1,5 @@
 define( "config", [], function () {
   return {
-    token: '12345',
-    apiurl_rz: "http://test.taianting.com:3000/api/",//认证的url
-    apiurl_mt: "http://test.taianting.com:4000/api/",//命题的url
-    apiurl_kw: "http://test.taianting.com:4100/api/",//考务的url
-    apiurl_tj: "http://test.taianting.com:4300/api/",//统计的url
-    apiurl_bm: "http://test.taianting.com:4400/api/",//报名的url
-    apiurl_gg: "http://test.taianting.com:5500/",//公共的url
-    apiurl_sm: "http://test.taianting.com:4280/",//扫描的url
-
-    //apiurl_rz: "http://www.zhifz.com:3000/api/",//认证的url
-    //apiurl_mt: "http://www.zhifz.com:4000/api/",//命题的url
-    //apiurl_kw: "http://www.zhifz.com:4100/api/",//考务的url
-    //apiurl_tj: "http://www.zhifz.com:4300/api/",//统计的url
-    //apiurl_bm: "http://www.zhifz.com:4400/api/",//报名的url
-    //apiurl_gg: "http://www.zhifz.com:5500/",//公共的url
-    //apiurl_sm: "http://www.zhifz.com:4280/",//扫描的url
-
-    //apiurl_rz: "/renzheng/",//认证的url
-    //apiurl_mt: "/mingti/",//命题的url
-    //apiurl_kw: "/kaowu/",//考务的url
-    //apiurl_tj: "/tongji/",//统计的url
-    //apiurl_bm: "/baoming/",//报名的url
-    //apiurl_gg: "/gonggong/",//公共的url
-    //apiurl_sm: "/saomiao/",//扫描的url
-    secret: '076ee61d63aa10a125ea872411e433b9',
-    hostname: 'localhost:3000',
     letterArr: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
       'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'], //英文字母序号数组
     cnNumArr: ['一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五','十六','十七','十八','十九',
@@ -66,11 +40,6 @@ define( "config", [], function () {
         controller: 'KaowuCtrl',
         requireLogin: true
       },
-      //'/lingyu': {
-      //  templateUrl: '../views/renzheng/selectLingYu.html',
-      //  controller: 'RenzhengCtrl',
-      //  requireLogin: true
-      //},
       '/tongji': {
         templateUrl: '../views/tongji/tongji.html',
         controller: 'TongjiCtrl',
@@ -98,6 +67,11 @@ define( "config", [], function () {
       },
       '/weiluke': {
         templateUrl: '../views/student/luke.html',
+        controller: 'StudentCtrl',
+        requireLogin: true
+      },
+      '/lianxi': {
+        templateUrl: '../views/student/lianxi.html',
         controller: 'StudentCtrl',
         requireLogin: true
       }
@@ -138,6 +112,10 @@ define( "config", [], function () {
       {
         myUrl : 'weiluke',
         urlName: '微课'
+      },
+      {
+        myUrl : 'lianxi',
+        urlName: '练习'
       }
     ],
     tiXingArr: ['单选题','多选题','判断题','填空题','计算题','证明题','解答题'],

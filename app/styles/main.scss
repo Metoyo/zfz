@@ -27,26 +27,8 @@ body {
 .container {
   width: 100%;
 }
-.renZhengPart{
-  background: #f0f0f0;
-  .container{
-    width: 960px;
-  }
-}
-.footer {
-  display: none;
-}
 .form-control{
   font-size: 15px;
-}
-.wp10 {
-  width: 10%;
-}
-.wp15 {
-  width: 15%;
-}
-.wp20 {
-  width: 20%;
 }
 .wp22 {
   width: 22%;
@@ -69,14 +51,8 @@ body {
 .wp56 {
   width: 56%;
 }
-.wp60 {
-  width: 60%;
-}
 .wp70 {
   width: 70%;
-}
-.wp75 {
-  width: 75%;
 }
 .wp80 {
   width: 80%;
@@ -239,35 +215,11 @@ body {
 .cYell{
   color: #f60;
 }
-.cWhite{
-  color: #fff;
-}
-.kssCl0{
-  background-color: #fce3f2;
-}
-.kssCl2{
-  background-color: #c6ebf5;
-}
-.kssCl3{
-  background-color: #f2d46f;
-}
-.kssCl5,.kssCl6{
-  background-color: #87c5d6;
-}
 .bgcFFF{
   background-color: #fff;
 }
 .cursorPointer{
   cursor: pointer;
-}
-.tagnCent{
-  text-align: center;
-}
-.wordBreak{
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  width: 300px;
 }
 .btn {
   padding: 3px 12px;
@@ -788,6 +740,9 @@ a.add-btn:hover span {
 }
 .weiluke .nav-icon {
   background-position: left -320px;
+}
+.lianxi .nav-icon {
+  background-position: left -360px;
 }
 .dropdownToggle:hover {
   text-decoration: none;
