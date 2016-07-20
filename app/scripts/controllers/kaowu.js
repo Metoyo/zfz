@@ -40,7 +40,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             forbidBtn: false, //提交后的禁止按钮
             showCcSjz: false, //显示场次用到的试卷组
             showStu: false, //显示考生列表
-            selectedCc: '' //选中的场次
+            selectedCc: '', //选中的场次
+            year: '', //课序号的筛选年份
+            term: '' //课序号的筛选学期
           };
           $scope.kaochangData = '';
           $scope.pageParam = { //分页参数
@@ -50,6 +52,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             disPage: []
           };
           $scope.tiMuNumPerPage = [1, 2, 3, 4, 5];
+          $scope.kxhData = { //课序号的日期区分字段
+            '年份': [],
+            '学期': [{val: 1, name: '秋'}, {val: 2, name: '春'}]
+          };
 
           /**
            * 查询考点
@@ -106,6 +112,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             $scope.pageParam.pageArr = Lazy.generate(function(i) { return i + 1; }, lastPage).toArray();
             $scope.pageParam.lastPage = lastPage;
             $scope.pageParam.activePage = 1;
+            cutPageFun(1);
           };
 
           /**
@@ -241,6 +248,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               },
               '考试': []
             };
+            $scope.kxhData['年份'] = [];
+            var mydateNew = new Date();
+            var year = mydateNew.getFullYear();
+            $scope.kxhData['年份'].push(year - 1);
+            $scope.kxhData['年份'].push(year);
+            $scope.kxhData['年份'].push(year + 1);
             qryKaoDianList();
             qryShiJuanZuList();
             //if(editKaoShiZu){
@@ -509,43 +522,108 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           };
 
           /**
+           * 查询课序号
+           */
+          $scope.qryKxh = function(){
+            var obj = {
+              method: 'GET',
+              url: keXuHaoUrl,
+              params: {'学校ID': jgID, '科目ID': keMuId, '返回学生人数': true}
+            };
+            if($scope.kwParams.year){
+              obj.params['年度'] = $scope.kwParams.year;
+            }
+            if($scope.kwParams.term){
+              obj.params['学期'] = $scope.kwParams.term;
+            }
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                var dataLength = data.data.length; //课序号的长度
+                Lazy(data.data).each(function(kxh){
+                  if(kxh['学期']){
+                    kxh['中文学期'] = kxh['学期'] == 1 ? '秋' : '春';
+                  }
+                });
+                keXuHaoStore = data.data;
+                pageMake(data.data);
+                if(dataLength > 10){
+                  $scope.keXuHaoDist(1);
+                }
+                else{
+                  $scope.keXuHaoData = data.data;
+                }
+              }
+              else{
+                $scope.keXuHaoData = '';
+                keXuHaoStore = '';
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          };
+
+          /**
            * 由课序号添加考生
            */
           $scope.addStuByKxh = function(){
-            if(keXuHaoStore && keXuHaoStore.length > 0){
-              pageMake(keXuHaoStore);
-              $scope.keXuHaoDist(1);
-              $scope.showAddStuBox = true;
-              $scope.kwParams.addChangCi = false;
-              $scope.kwParams.addXsBuKxh = true;
-            }
-            else{
-              var obj = {
-                method: 'GET',
-                url: keXuHaoUrl,
-                params: {'学校ID': jgID, '科目ID': keMuId, '返回学生人数': true}
-              };
-              $http(obj).success(function(data){
-                if(data.result && data.data){
-                  var dataLength = data.data.length; //课序号的长度
-                  keXuHaoStore = data.data;
-                  if(dataLength > 10){
-                    pageMake(data.data);
-                    $scope.keXuHaoDist(1);
-                  }
-                  else{
-                    $scope.keXuHaoData = data.data;
-                  }
-                  $scope.showAddStuBox = true;
-                  $scope.kwParams.addChangCi = false;
-                  $scope.kwParams.addXsBuKxh = true;
-                }
-                else{
-                  DataService.alertInfFun('err', data.error);
-                }
-              });
-            }
+            $scope.kwParams.year = '';
+            $scope.kwParams.term = '';
+            $scope.qryKxh();
+            $scope.showAddStuBox = true;
+            $scope.kwParams.addChangCi = false;
+            $scope.kwParams.addXsBuKxh = true;
+            //if(keXuHaoStore && keXuHaoStore.length > 0){
+            //  //pageMake(keXuHaoStore);
+            //  //$scope.keXuHaoDist(1);
+            //  //$scope.showAddStuBox = true;
+            //  //$scope.kwParams.addChangCi = false;
+            //  //$scope.kwParams.addXsBuKxh = true;
+            //}
+            //else{
+            //  //var obj = {
+            //  //  method: 'GET',
+            //  //  url: keXuHaoUrl,
+            //  //  params: {'学校ID': jgID, '科目ID': keMuId, '返回学生人数': true}
+            //  //};
+            //  //$http(obj).success(function(data){
+            //  //  if(data.result && data.data){
+            //  //    var dataLength = data.data.length; //课序号的长度
+            //  //    Lazy(data.data).each(function(kxh){
+            //  //      if(kxh['学期']){
+            //  //        kxh['中文学期'] = kxh['学期'] == 1 ? '秋' : '春';
+            //  //      }
+            //  //    });
+            //  //    keXuHaoStore = data.data;
+            //  //    if(dataLength > 10){
+            //  //      pageMake(data.data);
+            //  //      $scope.keXuHaoDist(1);
+            //  //    }
+            //  //    else{
+            //  //      $scope.keXuHaoData = data.data;
+            //  //    }
+            //  //    $scope.showAddStuBox = true;
+            //  //    $scope.kwParams.addChangCi = false;
+            //  //    $scope.kwParams.addXsBuKxh = true;
+            //  //  }
+            //  //  else{
+            //  //    DataService.alertInfFun('err', data.error);
+            //  //  }
+            //  //});
+            //}
           };
+
+          ///**
+          // * 由年份查询课序号
+          // */
+          //$scope.getKxhByYear = function(){
+          //
+          //};
+          //
+          ///**
+          // * 由学期查询课序号
+          // */
+          //$scope.getKxhByYear = function(){
+          //
+          //};
 
           /**
            * 课序号的分页数据

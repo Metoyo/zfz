@@ -51,7 +51,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         $scope.showMoreBtn = false; //课序号管理更多按钮
         $scope.kxhData = { //课序号的日期区分字段
           '年份': [],
-          '学期': [{val: 1, name: '上学期'}, {val: 2, name: '下学期'}]
+          '学期': [{val: 1, name: '秋'}, {val: 2, name: '春'}]
         };
 
         /**
@@ -127,7 +127,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             if(data.result && data.data){
               Lazy(data.data).each(function(kxh){
                 if(kxh['学期']){
-                  kxh['中文学期'] = kxh['学期'] == 1 ? '上学期' : '下学期';
+                  kxh['中文学期'] = kxh['学期'] == 1 ? '秋' : '春';
                 }
               });
               var objJs = {

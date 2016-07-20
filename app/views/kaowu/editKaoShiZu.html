@@ -231,6 +231,18 @@
         <!--由课序号添加-->
         <div ng-if="kwParams.addXsBuKxh">
           <span class="title">由课序号添加考生</span>
+          <span class="ml15">
+            年度: <select class="fz16" ng-model="kwParams.year" ng-change="qryKxh(kwParams.year)"
+                      ng-options="dt for dt in kxhData['年份']">
+              <option value="">全部年份</option>
+            </select>
+          </span>
+          <span class="ml15">
+            学期: <select class="fz16" ng-model="kwParams.term" ng-change="qryKxh(kwParams.term)"
+                    ng-options="dt.val as dt.name for dt in kxhData['学期']">
+              <option value="">全部学期</option>
+            </select>
+          </span>
           <button type="button" class="btn btn-primary pull-right mt5 ml15" ng-click="chaXunKxhYongHu()">确定</button>
           <button type="button" class="btn btn-danger pull-right mt5" ng-click="closeAddStuBox()">关闭</button>
         </div>
@@ -245,8 +257,8 @@
           <table class="table table-striped mt15 newTable">
             <tr>
               <th>课序号</th>
+              <th>年份学期</th>
               <th>人数</th>
-              <!--<th>任课教师</th>-->
             </tr>
             <tr ng-repeat="kxh in keXuHaoData">
               <td>
@@ -254,8 +266,10 @@
                   <input type="checkbox" ng-click="pickOnKxh(kxh)" ng-checked="kxh.ckd"/> {{kxh['课序号名称']}}
                 </label>
               </td>
+              <td>
+                <span ng-bind="'(' + kxh['年度'] + kxh['中文学期'] + ')'" ng-if="kxh['年度']"></span>
+              </td>
               <td ng-bind="kxh['学生人数'] + '人'"></td>
-              <!--<td ng-bind="kxh.jiaoShiStr"></td>-->
             </tr>
           </table>
         </div>
@@ -273,7 +287,7 @@
           </div>
         </form>
       </div>
-      <div class="pwi-footer plr10 text-center">
+      <div class="pwi-footer plr10 text-center" ng-if="keXuHaoData.length">
         <!--由课序号添加-->
         <div ng-if="kwParams.addXsBuKxh">
           <div class="paging text-right">
