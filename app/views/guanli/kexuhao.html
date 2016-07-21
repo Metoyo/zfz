@@ -218,16 +218,24 @@
         <div ng-if="impUsrStepNum=='list'">
           <table class="table table-striped" ng-if="impStus.length>0">
             <tr>
+              <th>序号</th>
               <th>学号</th>
               <th>姓名</th>
-              <th width="80px" class="text-center">操作</th>
+              <th width="100px" class="text-center">操作</th>
             </tr>
             <tr ng-repeat="stu in impStus">
+              <td class="text-center" ng-bind="stu['序号'] + 1"></td>
               <td ng-bind="stu['学号']"></td>
               <td ng-bind="stu['姓名']"></td>
               <td class="text-center">
-                <a href="javascript:void(0)" ng-click="deleteKxhYh(stu, 'imp')">
+                <a ng-click="deleteKxhYh(stu, 'imp')">
                   <span class="glyphicon glyphicon-trash"></span>
+                </a>
+                <a ng-click="moveStu($index, -1, stu)" ng-hide="$first">
+                  <span class="glyphicon glyphicon-arrow-up"></span>
+                </a>
+                <a ng-click="moveStu($index, 1, stu)" ng-hide="$last">
+                  <span class="glyphicon glyphicon glyphicon-arrow-down"></span>
                 </a>
               </td>
             </tr>

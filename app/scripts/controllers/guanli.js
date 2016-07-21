@@ -657,6 +657,21 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
+         * 课序号学生的移动
+         */
+        $scope.moveStu = function(idx, dirt, stu){
+          var toIndex = idx + dirt;
+          if(dirt > 0){
+            $scope.impStus.splice(toIndex + 1, 0, stu);
+            $scope.impStus.splice(idx, 1);
+          }
+          else{
+            $scope.impStus.splice(idx, 1);
+            $scope.impStus.splice(toIndex, 0, stu);
+          }
+        };
+
+        /**
          * 课序号管理保存数据
          */
         $scope.saveKeXuHaoModify = function(){
