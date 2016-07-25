@@ -6,9 +6,133 @@
           在线练习
         </a>
       </li>
+      <li class="pull-right mr15" ng-if="lianXiShiJuan.length">
+        <button type="button" class="btn btn-primary mt5 ml15" ng-if="lianXiScore == ''" ng-click="endLianXi()">结束练习</button>
+        <button type="button" class="btn btn-primary mt5 ml15" ng-click="cancelLianXi()">返回</button>
+      </li>
+      <li class="pull-right mr15" ng-if="lianXiScore != ''">
+        <p class="mt10">答题总数:{{lianXiScore['答题总数']}}, 答对题数:{{lianXiScore['答对题数']}}</p>
+      </li>
     </ul>
   </div>
-  <div class="tab-content wp80 mt65 ml50">
-
+  <!--规则选择-->
+  <div class="tab-content mt65" ng-hide="lianXiShiJuan.length">
+    <div class="col-md-6 form-horizontal">
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          科目
+        </label>
+        <div class="col-md-10">
+          <select class="form-control daGangLySelect" ng-options="km['科目ID'] as km['科目名称'] for km in keMuList"
+                  ng-model="stuParams.sltKm" ng-change="getXueXiaoKeMuTiXing(stuParams.sltKm)">
+            <option value="">请选择科目</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          题型
+        </label>
+        <div class="col-md-10">
+          <ul class="list-inline m0 mt7">
+            <li ng-repeat="tx in tiXing">
+              <span ng-bind="tx['题型名称']"></span>
+              <select class="fz16" ng-model="tx['题目数量']" ng-options="nm for nm in tiMuNum">
+                <option value="">题目数量</option>
+              </select>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-md-2 control-label">
+          难度
+        </label>
+        <div class="col-md-10">
+          <label class="checkbox-inline mr15" ng-repeat="nd in nanDuList">
+            <input type="checkbox" value="nd['难度ID']" ng-checked="nd.ckd" ng-click="getNanDuId(nd)"> {{nd['难度名称']}}
+          </label>
+        </div>
+      </div>
+      <div class="form-group text-center">
+        <button type="button" class="btn btn-primary mt30" style="width: 200px;height: 40px;" ng-click="beginLianXi()">
+          开始练习
+        </button>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h4 class="pb10">
+        <span ng-if="glKowledgeList" ng-bind="glKowledgeList['知识大纲名称']"></span>
+      </h4>
+      <div class="pointTree pl10">
+        <ul class="list-unstyled levelOne" id="glDaGangList">
+          <li ng-repeat="nd1 in glKowledgeList['节点']" repeat-done>
+            <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd1.fld}" ng-show="nd1['子节点'].length" ng-click="toggleChildNode(nd1)"></div>
+            <div class="checkbox">
+              <label><input type="checkbox" name="point" ng-checked="nd1.ckd" ng-click="toggleSelection(nd1)"/>
+                {{nd1['知识点名称']}}
+              </label>
+            </div>
+            <ul class="list-unstyled" ng-show="nd1.fld">
+              <li ng-repeat="nd2 in nd1['子节点']">
+                <div class="checkbox">
+                  <label><input type="checkbox" name="point" ng-checked="nd2.ckd" ng-click="toggleSelection(nd2)"/>
+                    {{nd2['知识点名称']}}
+                  </label>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--试卷展示-->
+  <div id="lianXiSjWrap" class="tab-content wp90 ml50 mt65" ng-show="lianXiShiJuan.length">
+    <div ng-repeat="dati in lianXiShiJuan" repeat-done>
+      <h4>
+        <span>{{stuParams.cnNumArr[$index]}}、</span>
+        <span ng-bind="dati['大题名称']"></span>
+      </h4>
+      <ul class="list-unstyled">
+        <li class="ptb5" ng-repeat="xtm in dati['题目']">
+          <h4 class="ar-tiGan itemHasImg">
+            <span ng-bind-html="($index + 1) + '、' + xtm['题目内容']['题干']"></span>
+          </h4>
+          <!-- 单选题 -->
+          <div class="ar-tzs" ng-if="xtm['题型ID'] == 1">
+            <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
+              <p class="positionAb">
+                <input type="radio" name="{{'radio' + $parent.$index}}" value="{{$index}}" ng-model="xtm['考生答案']"
+                       ng-click="lianXiDaTi(xtm, $index, xtm['考生答案'])"/>
+                {{'(' + stuParams.letterArr[$index] + ')'}}
+              </p>
+              <p class="pl40" ng-bind-html="tznr"></p>
+            </div>
+          </div>
+          <!-- 多选题 -->
+          <div class="ar-tzs" ng-if="xtm['题型ID'] == 2">
+            <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
+              <p class="positionAb">
+                <input type="checkbox" name="{{'checkbox' + $parent.$index}}" ng-model="ksKsDa.$index"
+                       ng-click="lianXiDaTi(xtm, $index, ksKsDa.$index)"/> {{'(' + stuParams.letterArr[$index] + ')'}}
+              </p>
+              <p class="pl40" ng-bind-html="tznr"></p>
+            </div>
+          </div>
+          <!-- 判读题 -->
+          <div class="ar-tzs" ng-if="xtm['题型ID'] == 3">
+            <span ng-class="{clRed:xtm['考生作答']['考生答案'] == 1}">
+              <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="1" ng-model="xtm['考生答案']"
+                     ng-click="lianXiDaTi(xtm, 1, xtm['考生答案'])"/>  对
+            </span>
+            <span ng-class="{clRed:xtm['考生作答']['考生答案'] == 0}">
+              <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="0" style="margin: 0 0 0 20px"
+                     ng-model="xtm['考生答案']" ng-click="lianXiDaTi(xtm, 1, xtm['考生答案'])"/>  错
+            </span>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

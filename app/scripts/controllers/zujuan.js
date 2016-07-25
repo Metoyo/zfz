@@ -916,19 +916,19 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             mis.push('知识点');
           }
           if(!$scope.zuJuanParam.rlTxId){
-            mis.push('题型');
+            mis.push('题型ID');
           }
           if(!$scope.zuJuanParam.rlNd.length){
             mis.push('难度');
           }
           if(!$scope.zuJuanParam.rlTk.length){
-            mis.push('题库');
+            mis.push('题库ID');
           }
           if(!mis.length){
             obj.params['知识点'] = JSON.stringify($scope.zuJuanParam.rlZsd);
-            obj.params['题型'] = $scope.zuJuanParam.rlTxId;
+            obj.params['题型ID'] = $scope.zuJuanParam.rlTxId;
             obj.params['难度'] = JSON.stringify($scope.zuJuanParam.rlNd);
-            obj.params['题库'] = JSON.stringify($scope.zuJuanParam.rlTk);
+            obj.params['题库ID'] = JSON.stringify($scope.zuJuanParam.rlTk);
             $http(obj).success(function(data){ //查询题目列表
               if(data.result && data.data){
                 $scope.zuJuanParam.timuNum = data.data['题目数'];

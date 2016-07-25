@@ -18,6 +18,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         var xueXiaoUrl = '/xuexiao'; //机构的增删改查
         var kaoShengZhiShiDianDeFenLvUrl = '/kaosheng_zhishidian_defenlv'; //查询考生知识点得分率
         var kaoShengZuoDaUrl = '/kaosheng_zuoda'; //考生作答的接口
+        var xueShengKeXuHaoUrl = '/xuesheng_kexuhao'; //学生课序号
+        var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
+        var keMuConfUrl = '/kemu_conf'; //科目设置
+        var tiKuUrl = '/tiku'; //查询题库
+        var lingYuUrl = '/lingyu'; //查询领域
+        var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
+        var lianXiUrl = '/lianxi'; //练习
+        var daTiUrl = '/dati'; //答题
         var tjParaObj = { //存放统计参数的Object
           radarBoxZsd: '',
           radarDataZsd: {
@@ -26,18 +34,46 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             zsdPerSf: []
           }
         };
-        //$scope.bmKaoChang = '';
+        var currentPath = $location.$$path;
         $scope.stuParams = {
           bmKszArr: [],
           letterArr: config.letterArr, //题支的序号
           cnNumArr: config.cnNumArr, //汉语的大写数字
-          zsdTjShow: false //是否显示考生的知识点
+          zsdTjShow: false, //是否显示考生的知识点
+          sltKm: '', //选中的科目
+          lianXiID: '' //练习ID
         };
         $scope.kaoShiArrs = '';
+        $scope.lianXiShiJuan = '';
         $scope.showKaoShengList = true;
-        //
-        var currentPath = $location.$$path;
-
+        $scope.tiMuNum = [10, 20, 50];
+        $scope.nanDuList = [
+          {
+            '难度ID': 1,
+            '难度名称': '容易',
+            ckd: false
+          },
+          {
+            '难度ID': 2,
+            '难度名称': '较易',
+            ckd: false
+          },
+          {
+            '难度ID': 3,
+            '难度名称': '一般',
+            ckd: false
+          },
+          {
+            '难度ID': 4,
+            '难度名称': '较难',
+            ckd: false
+          },
+          {
+            '难度ID': 5,
+            '难度名称': '困难',
+            ckd: false
+          }
+        ];
         /**
         * 查询考生有几场考试
         */
@@ -194,6 +230,126 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         };
 
         /**
+         * 练习查询数据
+         */
+        var loadLianXi = function(){
+          var kxhObj = {
+            method: 'GET',
+            url: xueShengKeXuHaoUrl,
+            params: {
+              'UID': logUid
+            }
+          };
+          $scope.keMuList = [];
+          $scope.lianXiShiJuan = '';
+          $scope.stuParams.lianXiID = '';
+          $http(kxhObj).success(function(kxh){
+            if(kxh.result && kxh.data && kxh.data.length > 0){
+              var dis = Lazy(kxh.data).groupBy('科目ID').toObject();
+              Lazy(dis).each(function(v, k, l){
+                var tmp = {
+                  '科目ID': parseInt(k),
+                  '科目名称': v[0]['科目名称']
+                };
+                $scope.keMuList.push(tmp);
+              });
+            }
+            else{
+              DataService.alertInfFun('err', kxh.error);
+            }
+          });
+        };
+
+        /**
+         * 获得大纲数据
+         */
+        var getDaGangData = function(keMuId){
+          //得到知识大纲知识点的递归函数
+          function _do(item) {
+            item.ckd = false;
+            item.fld = true;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          var sObj = {
+            method: 'GET',
+            url: keMuConfUrl,
+            params: {
+              '学校ID': jgID,
+              '科目ID': keMuId
+            }
+          };
+          var obj = {
+            method: 'GET',
+            url: zhiShiDaGangUrl,
+            params: {}
+          };
+          $http(sObj).success(function(sData){
+            if(sData.result && sData.data){
+              if(sData.data['默认大纲'] && sData.data['默认大纲']['知识大纲ID']){
+                obj.params['知识大纲ID'] = sData.data['默认大纲']['知识大纲ID'];
+              }
+              else{
+                obj.params['学校ID'] = jgID;
+                obj.params['科目ID'] = keMuId;
+              }
+              $http(obj).success(function(data){
+                if(data.result && data.data){
+                  Lazy(data.data[0]['节点']).each(_do);
+                  $scope.glKowledgeList = data.data[0];
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('err', sData.error || '没有默认大纲！');
+            }
+          });
+        };
+
+        /**
+         * 查询题库
+         */
+        var qryTiKu = function(kmId){
+          var lyObj = {
+            method: 'GET',
+            url: lingYuUrl,
+            params: {
+              '学校ID': jgID,
+              '科目ID': kmId
+            }
+          };
+          var tkObj = {
+            method: 'GET',
+            url: tiKuUrl,
+            params: {
+              '学校ID': jgID,
+              '领域ID': ''
+            }
+          };
+          $scope.tiKu = '';
+          $http(lyObj).success(function(lingYu){
+            if(lingYu.result && lingYu.data){
+              tkObj.params['领域ID'] = lingYu.data['领域ID'];
+              $http(tkObj).success(function(tiKu){
+                if(tiKu.result && tiKu.data){
+                  $scope.tiKu = tiKu.data;
+                }
+                else{
+                  DataService.alertInfFun('err', tiKu.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('err', lingYu.error);
+            }
+          });
+        };
+
+        /**
          * 判断是报名还是成绩
          */
         switch (currentPath) {
@@ -205,6 +361,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             break;
           case '/weiluke':
             loadVideoList();
+            break;
+          case '/lianxi':
+            loadLianXi();
             break;
         }
 
@@ -306,7 +465,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               finaData.sj_tm = data.data['试卷题目'];
               $scope.showKaoShengList = false;
               $scope.kaoShengShiJuan = finaData;
-              console.log(finaData);
             }
             else{
               DataService.alertInfFun('err', data.error);
@@ -480,7 +638,210 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
           $scope.showKaoShengList = true;
         };
 
+        /**
+         * 查询学校科目题型
+         */
+        $scope.getXueXiaoKeMuTiXing = function(kmId){
+          var obj = {
+            method: 'GET',
+            url: xueXiaoKeMuTiXingUrl,
+            params: {
+              '学校ID': jgID,
+              '科目ID': ''
+            }
+          };
+          $scope.tiXing = '';
+          if(kmId){
+            obj.params['科目ID'] = kmId;
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                $scope.tiXing = Lazy(data.data).filter(function(tx){ return tx['题型ID'] <= 3 }).toArray();
+                Lazy($scope.tiXing).each(function(tx){ tx['题目数量'] = '' });
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+            getDaGangData(kmId);
+            qryTiKu(kmId);
+          }
+        };
 
+        /**
+         * 获得难度查询条件
+         */
+        $scope.getNanDuId = function(nd){
+          nd.ckd = !nd.ckd;
+        };
+
+        /**
+         * 点击展开和收起的按钮子一级显示和隐藏
+         */
+        $scope.toggleChildNode = function(nd) {
+          function _do(item) {
+            item.fld = nd.fld;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          nd.fld = !nd.fld;
+          Lazy(nd['子节点']).each(_do);
+        };
+
+        /**
+         点击checkbox得到checkbox的值
+         */
+        $scope.toggleSelection = function(zsd) {
+          zsd.ckd = !zsd.ckd;
+        };
+
+        /**
+         * 开始练习
+         */
+        $scope.beginLianXi = function(){
+          var obj = {
+            method: 'PUT',
+            url: lianXiUrl,
+            data: {
+              '学校ID': jgID,
+              '科目ID': $scope.stuParams.sltKm,
+              '练习设置': {
+                '试卷数量': 1,
+                '组卷方式': '规则',
+                '组卷规则': []
+              }
+            }
+          };
+          $scope.lianXiScore = '';
+          var mis = [];
+          //难度整理
+          var ndArr = [];
+          Lazy($scope.nanDuList).each(function(nd){
+            if(nd.ckd){
+              ndArr.push(nd['难度ID']);
+            }
+          });
+          //知识点整理
+          var zsdId = [];
+          function _do(item) {
+            if(item.ckd){
+              zsdId.push(item['知识点ID']);
+            }
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          Lazy($scope.glKowledgeList['节点']).each(_do);
+          //题库整理
+          var tkId = Lazy($scope.tiKu).map(function(tk){
+            return tk['题库ID'];
+          }).toArray();
+          if(!$scope.stuParams.sltKm){
+            mis.push('科目');
+          }
+          if(!(tkId.length > 0)){
+            mis.push('题库');
+          }
+          if(!(ndArr.length > 0)){
+            mis.push('难度');
+          }
+          if(!(zsdId.length > 0)){
+            mis.push('知识点');
+          }
+          //题型整理
+          if($scope.tiXing && $scope.tiXing.length > 0){
+            Lazy($scope.tiXing).each(function(tx){
+              if(tx['题目数量']){
+                var gz = {
+                  '大题名称': tx['题型名称'],
+                  '随机题目': [
+                    {
+                      '题目分值': 1,
+                      '题目数量': tx['题目数量'],
+                      '限定题库': tkId,
+                      '题型': tx['题型ID'],
+                      '难度': ndArr,
+                      '知识点': zsdId
+                    }
+                  ]
+                };
+                obj.data['练习设置']['组卷规则'].push(gz);
+              }
+            });
+          }
+          else{
+            mis.push('题型');
+          }
+          if(!(obj.data['练习设置']['组卷规则'].length > 0)){
+            mis.push('组卷规则');
+          }
+          if(!(mis.length > 0)){
+            obj.data['练习设置'] = JSON.stringify(obj.data['练习设置']);
+            $http(obj).success(function(data){
+              if(data.result && data.data['练习题目'] && data.data['练习题目'].length > 0){
+                Lazy(data.data['练习题目']).each(function(dt){
+                  Lazy(dt['题目']).each(function(tm){
+                    tm = DataService.formatDaAn(tm);
+                    tm['考生答案'] = '';
+                  });
+                });
+                $scope.lianXiShiJuan = data.data['练习题目'];
+                $scope.stuParams.lianXiID = data.data['练习ID'];
+              }
+              else{
+                $scope.lianXiShiJuan = '';
+                $scope.stuParams.lianXiID = '';
+                DataService.alertInfFun('err', data.error || '没有练习题目！');
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('err', '缺少：' + mis.join('；'));
+          }
+        };
+
+        /**
+         * 练习答题
+         */
+        $scope.lianXiDaTi = function(xtm, idxDa, mdDa){
+          console.log(xtm);
+          console.log(idxDa);
+          console.log(mdDa);
+        };
+
+        /**
+         * 结束练习
+         */
+        $scope.endLianXi = function(){
+          var obj = {
+            method: 'POST',
+            url: lianXiUrl,
+            data: {
+              '练习ID': ''
+            }
+          };
+          if($scope.stuParams.lianXiID){
+            obj.data['练习ID'] = $scope.stuParams.lianXiID;
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                $scope.lianXiScore = data.data;
+              }
+              else{
+                $scope.lianXiScore = '';
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+        };
+
+        /**
+         * 取消练习
+         */
+        $scope.cancelLianXi = function(){
+          $scope.lianXiShiJuan = '';
+          $scope.stuParams.lianXiID = '';
+          $scope.lianXiScore = '';
+        };
 
         ///**
         // * 视频分页
@@ -560,6 +921,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
             processEscapes: true
           });
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "answerReappearShiJuan"]);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "glDaGangList"]);
+          MathJax.Hub.Queue(["Typeset", MathJax.Hub, "lianXiSjWrap"]);
         });
 
       }]);

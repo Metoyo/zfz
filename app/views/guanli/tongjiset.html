@@ -18,7 +18,7 @@
     </h4>
     <div class="pointTree glZsdgWrap pl10 bd1">
       <ul class="list-unstyled levelOne" id="glDaGangList">
-        <li ng-repeat="nd1 in glKowledgeList['节点']">
+        <li ng-repeat="nd1 in glKowledgeList['节点']" repeat-done>
           <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd1.fld}" ng-show="nd1['子节点'].length" ng-click="toggleChildNode(nd1)"></div>
           <div class="checkbox">
             <label><input type="checkbox" name="point" ng-checked="nd1.ckd" ng-click="toggleSelection(nd1)"/>
