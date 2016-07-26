@@ -45,6 +45,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         };
         $scope.kaoShiArrs = '';
         $scope.lianXiShiJuan = '';
+        $scope.lianXiScore = '';
         $scope.showKaoShengList = true;
         $scope.tiMuNum = [10, 20, 50];
         $scope.nanDuList = [
@@ -712,8 +713,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               }
             }
           };
-          $scope.lianXiScore = '';
           var mis = [];
+          $scope.lianXiScore = '';
+          $scope.lianXiShiJuan = '';
+          $scope.stuParams.lianXiID = '';
           //难度整理
           var ndArr = [];
           Lazy($scope.nanDuList).each(function(nd){
@@ -783,14 +786,22 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                   Lazy(dt['题目']).each(function(tm){
                     tm = DataService.formatDaAn(tm);
                     tm['考生答案'] = '';
+                    if(tm['题型ID'] == 2){
+                      tm['题目内容']['新选项'] = [];
+                      Lazy(tm['题目内容']['选项']).each(function(tz){
+                        var tzObj = {
+                          cont: tz,
+                          ckd: false
+                        };
+                        tm['题目内容']['新选项'].push(tzObj);
+                      });
+                    }
                   });
                 });
                 $scope.lianXiShiJuan = data.data['练习题目'];
                 $scope.stuParams.lianXiID = data.data['练习ID'];
               }
               else{
-                $scope.lianXiShiJuan = '';
-                $scope.stuParams.lianXiID = '';
                 DataService.alertInfFun('err', data.error || '没有练习题目！');
               }
             });
@@ -803,10 +814,56 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
         /**
          * 练习答题
          */
-        $scope.lianXiDaTi = function(xtm, idxDa, mdDa){
-          console.log(xtm);
-          console.log(idxDa);
-          console.log(mdDa);
+        $scope.lianXiDaTi = function(xtm, idxDa){
+          var obj = {
+            method: 'POST',
+            url: daTiUrl,
+            data: {
+              '练习ID': '',
+              '题目ID': '',
+              '答案': ''
+            }
+          };
+          if($scope.stuParams.lianXiID){
+            obj.data['练习ID'] = $scope.stuParams.lianXiID;
+          }
+          else{
+            DataService.alertInfFun('err', '缺少练习ID！');
+            return ;
+          }
+          if(xtm['题目ID']){
+            obj.data['题目ID'] = xtm['题目ID'];
+          }
+          else{
+            DataService.alertInfFun('err', '缺少题目ID！');
+            return ;
+          }
+          if(xtm['题型ID'] == 2){ //多选题
+            var da = [];
+            Lazy(xtm['题目内容']['新选项']).each(function(tz, idx, lst){
+              if(tz.ckd){
+                da.push(idx);
+              }
+            });
+            if(da.length > 0){
+              obj.data['答案'] = JSON.stringify(da);
+            }
+            else{
+              DataService.alertInfFun('err', '请选择答案！');
+              return ;
+            }
+          }
+          else{ //单选和判断
+            obj.data['答案'] = parseInt(xtm['考生答案']);
+          }
+          $http(obj).success(function(data){
+            if(data.result && data.data){
+              console.log(data.result);
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
         };
 
         /**

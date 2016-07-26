@@ -102,34 +102,38 @@
           <!-- 单选题 -->
           <div class="ar-tzs" ng-if="xtm['题型ID'] == 1">
             <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
-              <p class="positionAb">
-                <input type="radio" name="{{'radio' + $parent.$index}}" value="{{$index}}" ng-model="xtm['考生答案']"
-                       ng-click="lianXiDaTi(xtm, $index, xtm['考生答案'])"/>
-                {{'(' + stuParams.letterArr[$index] + ')'}}
-              </p>
-              <p class="pl40" ng-bind-html="tznr"></p>
+              <label>
+                <p class="positionAb">
+                  <input type="radio" name="{{'radio' + $parent.$index}}" value="{{$index}}" ng-model="xtm['考生答案']"
+                         ng-click="lianXiDaTi(xtm, $index, xtm['考生答案'])"/>
+                  {{'(' + stuParams.letterArr[$index] + ')'}}
+                </p>
+                <p class="pl40" ng-bind-html="tznr"></p>
+              </label>
             </div>
           </div>
           <!-- 多选题 -->
           <div class="ar-tzs" ng-if="xtm['题型ID'] == 2">
-            <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
-              <p class="positionAb">
-                <input type="checkbox" name="{{'checkbox' + $parent.$index}}" ng-model="ksKsDa.$index"
-                       ng-click="lianXiDaTi(xtm, $index, ksKsDa.$index)"/> {{'(' + stuParams.letterArr[$index] + ')'}}
-              </p>
-              <p class="pl40" ng-bind-html="tznr"></p>
+            <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['新选项'] track by $index">
+              <label>
+                <p class="positionAb">
+                  <input type="checkbox" name="{{'checkbox' + $parent.$index}}" ng-model="tznr.ckd"
+                         ng-click="lianXiDaTi(xtm, $index)"/> {{'(' + stuParams.letterArr[$index] + ')'}}
+                </p>
+                <p class="pl40" ng-bind-html="tznr.cont"></p>
+              </label>
             </div>
           </div>
           <!-- 判读题 -->
           <div class="ar-tzs" ng-if="xtm['题型ID'] == 3">
-            <span ng-class="{clRed:xtm['考生作答']['考生答案'] == 1}">
+            <label>
               <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="1" ng-model="xtm['考生答案']"
                      ng-click="lianXiDaTi(xtm, 1, xtm['考生答案'])"/>  对
-            </span>
-            <span ng-class="{clRed:xtm['考生作答']['考生答案'] == 0}">
+            </label>
+            <label>
               <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="0" style="margin: 0 0 0 20px"
                      ng-model="xtm['考生答案']" ng-click="lianXiDaTi(xtm, 1, xtm['考生答案'])"/>  错
-            </span>
+            </label>
           </div>
         </li>
       </ul>
