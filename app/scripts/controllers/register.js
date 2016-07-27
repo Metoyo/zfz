@@ -3,7 +3,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
 
   angular.module('zhifzApp.controllers.RegisterCtrl', [])
     .controller('RegisterCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', 'DataService',
-      function ($rootScope, $scope, $location, $http, urlRedirect, DataService) {
+      '$routeParams', '$timeout',
+      function ($rootScope, $scope, $location, $http, urlRedirect, DataService, $routeParams, $timeout) {
 
         //新方法用到的变量
         var xueXiaoUrl = '/xuexiao';
@@ -29,7 +30,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         if($location.$$path == '/register'){
           $rootScope.urlArrs = [];
         }
-
+        var ifStuFndUn = $routeParams.stuFndUn;
         /**
          * 返回
          */
@@ -205,6 +206,16 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $scope.stepNum = 1;
           $scope.rzTpl = 'views/renzheng/rz_regStudent.html';
         };
+
+        /**
+         * 学生找回用户名
+         */
+        if(ifStuFndUn){
+          var jumpToStu = function() {
+            $scope.studentRegister();
+          };
+          $timeout(jumpToStu, 1);
+        }
 
         /**
          * 检查是否选择角色

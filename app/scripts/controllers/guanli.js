@@ -1,8 +1,8 @@
 define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, config, $, lazy, mathjax) {
   'use strict';
   angular.module('zhifzApp.controllers.GuanLiCtrl', [])
-    .controller('GuanLiCtrl', ['$rootScope', '$scope', 'DataService', '$http', '$timeout', '$cookieStore',
-      function ($rootScope, $scope, DataService, $http, $timeout, $cookieStore) {
+    .controller('GuanLiCtrl', ['$rootScope', '$scope', 'DataService', '$http', '$cookieStore',
+      function ($rootScope, $scope, DataService, $http, $cookieStore) {
 
         /**
          * 声明变量

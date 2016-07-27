@@ -10,7 +10,7 @@
         <div class="form-group">
           <label class="col-sm-3 control-label text-right">新登录密码:</label>
           <div class="col-sm-9">
-            <input type="password" class="form-control" name="newPw" ng-model="newPasswordObj.newPw"
+            <input type="password" class="form-control" name="newPw" ng-model="newPasswordObj['密码']"
                    ng-pattern="/^.{6,20}$/" required>
             <p ng-show="resetPwForm.newPw.$error.pattern" class="clRed">密码需要6-20个字符！</p>
           </div>
@@ -18,8 +18,8 @@
         <div class="form-group">
           <label class="col-sm-3 control-label text-right">确认新密码:</label>
           <div class="col-sm-9">
-            <input type="password" class="form-control" name="confirmNewPw" data-password-verify="newPasswordObj.newPw"
-                   ng-model="newPasswordObj.confirmNewPw" required>
+            <input type="password" class="form-control" name="confirmNewPw" data-password-verify="newPasswordObj['密码']"
+                   ng-model="newPasswordObj['确认密码']" required>
             <p ng-show="resetPwForm.confirmNewPw.$error.passwordVerify" class="clRed">
               确认密码和密码不匹配！
             </p>

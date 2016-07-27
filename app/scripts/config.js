@@ -30,6 +30,11 @@ define( "config", [], function () {
         controller: 'RegisterCtrl',
         requireLogin: false
       },
+      '/register/:stuFndUn': {
+        templateUrl: '../views/renzheng/register.html',
+        controller: 'RegisterCtrl',
+        requireLogin: false
+      },
       '/zujuan': {
         templateUrl: '../views/zujuan/zujuan.html',
         controller: 'ZujuanCtrl',

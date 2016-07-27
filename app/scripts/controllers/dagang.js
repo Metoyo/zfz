@@ -2,8 +2,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
   'use strict';
 
   angular.module('zhifzApp.controllers.DagangCtrl', [])
-    .controller('DagangCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$cookieStore',
-      function ($rootScope, $scope, $http, $timeout, DataService, $cookieStore) {
+    .controller('DagangCtrl', ['$rootScope', '$scope', '$http', 'DataService', '$cookieStore',
+      function ($rootScope, $scope, $http, DataService, $cookieStore) {
         /**
          * 声明变量
          */

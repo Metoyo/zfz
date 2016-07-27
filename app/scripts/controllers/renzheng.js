@@ -6,17 +6,15 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
       'DataService', '$routeParams', '$timeout',
       function ($rootScope, $scope, $location, $http, urlRedirect, $cookieStore, DataService, $routeParams, $timeout) {
 
-        //var baseRzAPIUrl = config.apiurl_rz;
-        //var token = config.token;
         var login = { //教师登录数据格式
           userName: '',
           password: ''
         };
         var urlArr = [];
         var currentPath = $location.$$path;
-        //var checkUserUrlBase = config.apiurl_rz + 'check_user?token=' + config.token; //检测用户是否存在的url
-        //var findPwUrlBase = baseRzAPIUrl + 'find_password?token=' + token + '&registeremail='; //忘记密码
-        //var resetPwUrl = baseRzAPIUrl + 'reset_password'; //重置密码
+        var checkEmailUrl = '/exists_youxiang'; //检测邮箱是否存在
+        var findPwUrlUrl = '/find_password'; //忘记密码
+        var resetPwUrl = '/reset_password'; //重置密码
         var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目URL
         var module = config.moduleObj;
         var loginUrl = '/login'; //登录的URL
@@ -32,7 +30,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           homeUrl: '',
           resetPwSuccess: false
         };
-        $scope.rzParams.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register';
+        $scope.rzParams.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register/stuFindUsername';
         $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
         $scope.dengluInfo = false;
         $rootScope.urlArrs = [];
@@ -49,6 +47,13 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          */
         $scope.showFindPw = function(){
           $scope.rzTpl = 'views/renzheng/rz_findPw.html';
+        };
+
+        /**
+         * 学生找回用户名
+         */
+        $scope.stuFindUsrName = function(){
+          urlRedirect.goTo(currentPath, '/register/stuFindUsername');
         };
 
         /**
@@ -215,60 +220,92 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          * 忘记密码
          */
-        //$scope.sendFindPwEmail = function() {
-        //  if($scope.registerEmail){
-        //    var findPwUrl = findPwUrlBase + $scope.registerEmail,
-        //      mailLink = 'http://mail.' + $scope.registerEmail.split('@').pop();
-        //    $http.get(findPwUrl).success(function(data){
-        //      if(data.result && data.data){
-        //        $scope.rzParams.emailLink = mailLink;
-        //        $scope.rzParams.sendEmailSuccess = true;
-        //      }
-        //      else{
-        //        DataService.alertInfFun('err', data.error)
-        //      }
-        //    });
-        //  }
-        //};
+        $scope.sendFindPwEmail = function() {
+          if($scope.rzParams.registerEmail){
+            var obj = {
+              method: 'GET',
+              url: findPwUrlUrl,
+              params: {
+                '注册邮箱': $scope.rzParams.registerEmail
+              }
+            };
+            var mailLink = 'http://mail.' + $scope.rzParams.registerEmail.split('@').pop();
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.rzParams.emailLink = mailLink;
+                $scope.rzParams.sendEmailSuccess = true;
+              }
+              else{
+                DataService.alertInfFun('err', data.error)
+              }
+            });
+          }
+        };
 
         /**
          * 检查输入的邮箱或者是用户名，在数据库中是否存在
          */
-        //$scope.checkUsrExist = function(nme, info){
-        //  var checkUserUrl = checkUserUrlBase + '&' + nme + '=' + info;
-        //  $http.get(checkUserUrl).success(function(data){
-        //    if(data.result && data.data){
-        //      $scope.youxiangExist = false;
-        //    }
-        //    else{
-        //      $scope.youxiangExist = true;
-        //      DataService.alertInfFun('err', '邮箱不存在！')
-        //    }
-        //  });
-        //};
+        $scope.checkUsrExist = function(info){
+          var obj = {
+            method: 'GET',
+            url: checkEmailUrl,
+            params: {
+              '邮箱': ''
+            }
+          };
+          if(info){
+            obj.params['邮箱'] = info;
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                if(data.data['存在']){
+                  $scope.youxiangExist = false;
+                }
+                else{
+                  $scope.youxiangExist = true;
+                  DataService.alertInfFun('err', '邮箱不存在！');
+                }
+              }
+              else{
+                $scope.youxiangExist = true;
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+        };
 
         /**
          * 重置密码
          */
-        //$scope.newPasswordObj = {
-        //  token: token,
-        //  email: $routeParams.email,
-        //  newPw: '',
-        //  confirmNewPw: ''
-        //};
-        //$scope.restPassword = function(){
-        //  if($scope.newPasswordObj.newPw == $scope.newPasswordObj.confirmNewPw){
-        //    $http.post(resetPwUrl, $scope.newPasswordObj).success(function(data){
-        //      if(data.result && data.data){
-        //        $scope.rzParams.resetPwSuccess = true;
-        //        var jumpToHome = function() {
-        //          urlRedirect.goTo(currentPath, '/renzheng');
-        //        };
-        //        $timeout(jumpToHome, 5000);
-        //      }
-        //    });
-        //  }
-        //};
+        $scope.newPasswordObj = {
+          '邮箱': $routeParams.email,
+          '密码': '',
+          '确认密码': ''
+        };
+        $scope.restPassword = function(){
+          if($scope.newPasswordObj['密码'] == $scope.newPasswordObj['确认密码']){
+            //delete $scope.newPasswordObj['确认密码'];
+            var obj = {
+              method: 'POST',
+              url: resetPwUrl,
+              data: $scope.newPasswordObj
+            };
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.rzParams.resetPwSuccess = true;
+                var jumpToHome = function() {
+                  urlRedirect.goTo(currentPath, '/renzheng');
+                };
+                $timeout(jumpToHome, 5000);
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('err', '两次密码输入的不一样！');
+          }
+        };
 
       }]);
 });
