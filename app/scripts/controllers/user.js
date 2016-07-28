@@ -408,7 +408,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 if(data.result){
                   $scope.closeAddNewJiGou();
                   DataService.alertInfFun('suc', '新增成功');
-                  getJgList();
+                  getJgList(1);
                 }
                 else{
                   DataService.alertInfFun('err', data.error);
@@ -526,7 +526,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 if(rlt.result){
                   $scope.closeManageAdmin();
                   DataService.alertInfFun('suc', '新增成功');
-                  getJgList();
+                  getJgList(1);
                   $scope.newXxgly = '';
                 }
                 else{
@@ -560,7 +560,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               $http(obj).success(function(data){
                 if(data.result){
                   DataService.alertInfFun('suc', '删除成功！');
-                  getJgList();
+                  $scope.isAddNewAdminBoxShow = false;
+                  getJgList(1);
                 }
                 else{
                   DataService.alertInfFun('err', data.error);
