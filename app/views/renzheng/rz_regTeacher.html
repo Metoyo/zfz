@@ -131,7 +131,8 @@
               </td>
               <td>
                 <label class="checkbox-inline" ng-repeat="js in juese_list">
-                  <input type="checkbox" name="rightName" value="{{js['角色ID']}}" ng-checked="js.ckd" ng-click="getJueSe(js)">
+                  <!--<input type="checkbox" name="rightName" value="{{js['角色ID']}}" ng-checked="js.ckd" ng-click="getJueSe(js)">-->
+                  <input type="radio" value="{{js['角色ID']}}" ng-model="registerParam.sltJsId" ng-click="getJueSe(js)">
                   <span>{{js['角色名称']}}</span>
                 </label>
               </td>

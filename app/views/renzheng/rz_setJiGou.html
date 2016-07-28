@@ -4,7 +4,7 @@
   <tr>
     <th>学校名称</th>
     <th>学校管理员</th>
-    <th width="232px">操作</th>
+    <th width="240px">操作</th>
   </tr>
   <tr ng-repeat="jg in jigou_list">
     <td ng-bind="jg['学校名称']"></td>
@@ -19,14 +19,11 @@
   </tr>
 </table>
 <div class="add-btn-box text-right">
-  <button type="button" class="btn btn-primary" ng-click="addNewJiGouBoxShow()">
-    新增学校
-  </button>
+  <button type="button" class="btn btn-primary" ng-click="addNewJiGouBoxShow()">新增学校</button>
 </div>
 <div class="form-horizontal add-new-box" ng-show="isAddNewJiGouBoxShow">
   <div class="form-group">
     <label class="col-sm-2 control-label">学校名称</label>
-
     <div class="col-sm-10">
       <input type="text" class="form-control" placeholder="学校名称" ng-model="addNewJiGou['学校名称']">
     </div>
@@ -50,16 +47,16 @@
       <th width="250px">操作</th>
     </tr>
     <tr ng-repeat="adm in selectJg.ADMINISTRATORS">
-      <td ng-bind="adm['用户名']"></td>
+      <td>
+        <span class="pull-left" ng-bind="adm['用户名']"></span>
+        <span class="pull-right" ng-bind="'重置后密码:' + adm['默认密码']" ng-show="adm['默认密码']"></span>
+      </td>
       <td>
         <a href="javascript:void(0)" ng-click="deleteJiGouAdmin(adm)">删除</a>
         <a href="javascript:void(0)" ng-click="modifyAdminPassWord(adm)">重置密码</a>
       </td>
     </tr>
   </table>
-  <div class="reset-admin-psw" ng-show="isResetJgAdminPsw">
-    管理员<strong ng-bind="jgAdminName"></strong>的密码重置成功，新密码为：<strong ng-bind="jgAmdinNewPsw"></strong>
-  </div>
   <h5>添加管理员</h5>
   <div class="form-group">
     <label class="col-sm-2 control-label">管理员账号</label>

@@ -1341,6 +1341,9 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }
           $http(obj).success(function(data){
             if(data.result){
+              if(adm){
+                adm['默认密码'] = 'tat12345';
+              }
               DataService.alertInfFun('suc', '密码修改成功!');
             }
             else{

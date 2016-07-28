@@ -42,7 +42,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $scope.registerParam = {
           selectJgId: '',
           selectJgName: '',
-          isSelectJs: false //对应的科目是否选择了角色
+          isSelectJs: false, //对应的科目是否选择了角色
+          sltJsId: '' //注册是选择的角色ID
         };
         $scope.stuRegisterInfo = {
           '学校ID': '',
@@ -51,6 +52,45 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           '邮箱': '',
           '密码': '',
           '确认密码': ''
+        };
+
+        /**
+         * 查询科目代码
+         */
+        var qryJgKeMu = function(jgId){
+          if(jgId){
+            var obj = {method: 'GET', url: xueXiaoKeMuUrl, params: ''};
+            obj.params = {
+              '学校ID': jgId
+            };
+            $http(obj).success(function(data) {
+              if(data.result && data.data){
+                $scope.xxkm_list = data.data;
+              }
+              else{
+                $scope.xxkm_list = '';
+                DataService.alertInfFun('err', '没有相关领域！');
+              }
+            });
+          }
+        };
+
+        /**
+         *  查询角色的代码
+         */
+        var qryJueSe = function(){
+          $scope.juese_list = [
+            {
+              "角色ID": 3,
+              "角色名称": "任课教师",
+              ckd: false
+            },
+            {
+              "角色ID": 5,
+              "角色名称": "助教",
+              ckd: false
+            }
+          ];
         };
 
         /**
@@ -138,45 +178,6 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-         * 查询科目代码
-         */
-        var qryJgKeMu = function(jgId){
-          if(jgId){
-            var obj = {method: 'GET', url: xueXiaoKeMuUrl, params: ''};
-            obj.params = {
-              '学校ID': jgId
-            };
-            $http(obj).success(function(data) {
-              if(data.result && data.data){
-                $scope.xxkm_list = data.data;
-              }
-              else{
-                $scope.xxkm_list = '';
-                DataService.alertInfFun('err', '没有相关领域！');
-              }
-            });
-          }
-        };
-
-        /**
-         *  查询角色的代码
-         */
-        var qryJueSe = function(){
-          $scope.juese_list = [
-            {
-              "角色ID": 3,
-              "角色名称": "任课教师",
-              ckd: false
-            },
-            {
-              "角色ID": 5,
-              "角色名称": "助教",
-              ckd: false
-            }
-          ];
-        };
-
-        /**
          * 显示教师注册
          */
         $scope.teacherRegister = function(){
@@ -236,12 +237,18 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $scope.getKeMuVal = function(km){
           km['角色'] = km['角色'] || [];
           $scope.select_km = km;
-          Lazy($scope.juese_list).each(function(js){
-            var ifIn = Lazy(km['角色']).find(function(k){
-              return k['角色ID'] == js['角色ID'];
-            });
-            js.ckd = ifIn ? true : false;
-          });
+          if(km['角色'].length > 0){
+            $scope.registerParam.sltJsId = km['角色'][0]['角色ID'];
+          }
+          else{
+            $scope.registerParam.sltJsId = '';
+          }
+          //Lazy($scope.juese_list).each(function(js){
+          //  var ifIn = Lazy(km['角色']).find(function(k){
+          //    return k['角色ID'] == js['角色ID'];
+          //  });
+          //  js.ckd = ifIn ? true : false;
+          //});
           checkHaveJs();
         };
 
@@ -249,15 +256,17 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          * 获得角色juese（科目权限）的代码
          */
         $scope.getJueSe = function(js){
-          js.ckd = !js.ckd;
-          var jsId = [];
-          Lazy($scope.juese_list).each(function(js){
-            if(js.ckd){
-              jsId.push(js);
-            }
-          });
-          $scope.select_km['角色'] = jsId;
-          checkHaveJs();
+          //js.ckd = !js.ckd;
+          //var jsId = [];
+          //Lazy($scope.juese_list).each(function(js){
+          //  if(js.ckd){
+          //    jsId.push(js);
+          //  }
+          //});
+          if(js){
+            $scope.select_km['角色'].push(js);
+            checkHaveJs();
+          }
         };
 
         /**
