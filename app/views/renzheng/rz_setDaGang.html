@@ -5,12 +5,19 @@
 <div class="dagangInput setDaGangBox">
   <div class="row">
     <div class="col-md-6">
-      <select class="form-control daGangLySelect" ng-options="km['科目ID'] as km['科目名称'] for km in keMuList"
+      <select class="form-control" ng-model="ly_id" ng-change="getLingYuKeMu(ly_id)" ng-options="ly['领域ID'] as ly['领域名称'] for ly in setZsdLingYu">
+        <option value="">请选择领域</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <select class="form-control daGangLySelect" ng-options="km['科目ID'] as km['科目名称'] for km in lyKeMu"
               ng-model="selected_km" ng-change="getPubDaGangList(selected_km)">
         <option value="">请选择科目</option>
       </select>
     </div>
-    <div class="col-md-6">
+  </div>
+  <div class="row">
+    <div class="col-md-12">
       <select class="form-control daGangListSelect" ng-model="adminParams.selected_dg" ng-change="getPubDgZsdData(adminParams.selected_dg)"
               ng-options="dg['知识大纲ID'] as dg['知识大纲名称'] for dg in pubZsdgList">
         <option value="">请选择大纲</option>
@@ -91,7 +98,11 @@
   </div>
   <div class="publicKnowledgeBox">
     <h4>
-      <strong>已有知识点:</strong>
+      <!--<strong>已有知识点:</strong>-->
+      <select class="form-control daGangLySelect" ng-options="km['科目ID'] as km['科目名称'] for km in lyKeMu"
+              ng-model="slt_km" ng-change="getHasPubZsd(slt_km)">
+        <option value="">请选择科目</option>
+      </select>
     </h4>
     <div class="publicKnowledge" ng-show="publicKnowledge.length">
       <p ng-repeat="zsd in publicKnowledge" title="点击加入到知识大纲">

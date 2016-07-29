@@ -68,13 +68,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             method:'GET',
             url:zhiShiDianUrl,
             params:{
-              '领域ID':lingYuId,
+              '科目ID':keMuId,
               '类型': tp
             }
           };
           $scope.dgParam.zsdKind = tp;
           $http(obj).success(function(data){
             if(data.result && data.data){
+              data.data = Lazy(data.data).sortBy('知识点名称').reverse().toArray();
               $scope.allPublicZsd = angular.copy(data.data);
               $scope.publicZsd = data.data;
             }

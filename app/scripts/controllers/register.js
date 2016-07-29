@@ -65,7 +65,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             };
             $http(obj).success(function(data) {
               if(data.result && data.data){
-                $scope.xxkm_list = data.data;
+                $scope.xxkm_list = Lazy(data.data).sortBy('科目名称').toArray();
               }
               else{
                 $scope.xxkm_list = '';
@@ -156,7 +156,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             $scope.loadingImgShow = true;
             $http.get(xueXiaoUrl).success(function(schools){
               if(schools.result && schools.data){
-                $scope.jigou_list = schools.data;
+                $scope.jigou_list = Lazy(schools.data).sortBy('学校名称').reverse().toArray();
               }
               else{
                 $scope.jigou_list = '';

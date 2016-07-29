@@ -1487,8 +1487,8 @@ label.checkbox {
       margin: 10px 0 0 10px; }
   .renzhengWrapper .publicKnowledgeBox {
     position: fixed;
-    top: 100px;
-    bottom: 90px;
+    top: 150px;
+    bottom: 100px;
     right: 10px;
     width: 250px; }
     .renzhengWrapper .publicKnowledgeBox .publicKnowledge {

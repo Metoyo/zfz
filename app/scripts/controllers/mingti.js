@@ -358,6 +358,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result && data.data){
+              data.data = Lazy(data.data).sortBy('姓名').reverse().toArray();
               $scope.keMuJiaoShi = data.data;
             }
             else{

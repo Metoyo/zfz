@@ -193,7 +193,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           var pageHeight = document.querySelector('.dashboard').clientHeight - 180 + 'px';
           $http(obj).success(function(data) {
             if(data.result && data.data){
-              $scope.glKaoShiZuList = Lazy(data.data).reverse().toArray();
+              $scope.glKaoShiZuList = Lazy(data.data).sortBy('创建时间').reverse().toArray();
               var wrapWt = document.querySelectorAll('.glZsdgWrap');
               angular.element(wrapWt).css({height: pageHeight, 'overflow-y': 'auto'});
             }

@@ -1,9 +1,14 @@
 <h4 class="admin-title">公共知识点设置</h4>
 <div class="dagangInput setDaGangBox">
   <div class="row">
-    <div class="col-md-12">
-      <select class="form-control" ng-model="ly_id" ng-change="getPublicZsd(ly_id)" ng-options="ly['领域ID'] as ly['领域名称'] for ly in setZsdLingYu">
+    <div class="col-md-6">
+      <select class="form-control" ng-model="ly_id" ng-change="getLingYuKeMu(ly_id)" ng-options="ly['领域ID'] as ly['领域名称'] for ly in setZsdLingYu">
         <option value="">请选择领域</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <select class="form-control" ng-model="km_id" ng-change="getPublicZsd(km_id)" ng-options="km['科目ID'] as km['科目名称'] for km in lyKeMu">
+        <option value="">请选择科目</option>
       </select>
     </div>
   </div>

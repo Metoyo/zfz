@@ -339,6 +339,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               zsdDeFenLvArr = [];
               $http(stuObj).success(function(students){
                 if(students.result && students.data){
+                  students.data = Lazy(students.data).sortBy('序号').toArray();
                   allStutents = angular.copy(students.data);
                   $scope.studentData = students.data;
                   //考试组数据处理

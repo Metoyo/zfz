@@ -241,6 +241,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
               'UID': logUid
             }
           };
+          var kmTmp = [];
           $scope.keMuList = [];
           $scope.lianXiShiJuan = '';
           $scope.stuParams.lianXiID = '';
@@ -252,8 +253,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                   '科目ID': parseInt(k),
                   '科目名称': v[0]['科目名称']
                 };
-                $scope.keMuList.push(tmp);
+                kmTmp.push(tmp);
               });
+              $scope.keMuList = Lazy(kmTmp).sortBy('科目名称').toArray();
               var pageHeight = document.querySelector('.dashboard').clientHeight - 140 + 'px';
               var wrapWt = document.querySelectorAll('.pointTree');
               angular.element(wrapWt).css({height: pageHeight, 'overflow-y': 'auto'});

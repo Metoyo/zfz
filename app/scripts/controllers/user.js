@@ -31,10 +31,10 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.adminParams = {
           selectKeMu: '',
           selected_dg: '',
-          lastLyId: '',
+          lastKmId: '',
           saveDGBtnDisabled: false,
           newPsd: '',
-          selectLinYuId: '',
+          selectKeMuId: '',
           selectZsdId: '',
           zsdOldName: '', //知识
           zsdNewName: '', //知识点修改新名称
@@ -340,7 +340,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   }
                 });
               }
-              $scope.jigou_list = schools.data;
+              $scope.jigou_list = Lazy(schools.data).sortBy('学校名称').reverse().toArray();
             }
             else{
               $scope.jigou_list = '';
@@ -955,15 +955,17 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $scope.pubZsdgList = '';
           $scope.allPubZsdgData = '';
           $scope.pubZsdgData = '';
-          $scope.adminParams.lastLyId = '';
+          $scope.adminParams.lastKmId = '';
           $scope.adminParams.selectKeMu = '';
           $scope.allPublicZsdData = '';
-          var obj = {method:'GET', url:keMuUrl};
+          var obj = {method:'GET', url: lingYuUrl};
           $http(obj).success(function(data){
             if(data.result && data.data){
-              $scope.keMuList = data.data;
+              data.data = Lazy(data.data).sortBy('领域名称').reverse().toArray();
+              $scope.setZsdLingYu = data.data;
             }
             else{
+              $scope.setZsdLingYu = '';
               DataService.alertInfFun('err', data.error);
             }
             $scope.loadingImgShow = false;
@@ -994,14 +996,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 DataService.alertInfFun('err', data.error);
               }
             });
-            var find = Lazy($scope.keMuList).find(function(km){
+            var find = Lazy($scope.lyKeMu).find(function(km){
               return km['科目ID'] == kmid;
             });
             if(find){
               var getNewPubZsd = false;
               $scope.adminParams.selectKeMu = find;
-              if(find['领域ID'] != $scope.adminParams.lastLyId){ //领域ID变化重现查询公共知识点
-                $scope.adminParams.lastLyId = angular.copy(find['领域ID']);
+              if(find['科目ID'] != $scope.adminParams.lastKmId){ //领域ID变化重现查询公共知识点
+                $scope.adminParams.lastKmId = angular.copy(find['科目ID']);
                 getNewPubZsd = true;
               }
               else{
@@ -1013,9 +1015,10 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 }
               }
               if(getNewPubZsd){
-                var objZsd = {method:'GET', url:zhiShiDianUrl, params:{'领域ID':$scope.adminParams.lastLyId, '类型': 1}};
+                var objZsd = {method:'GET', url:zhiShiDianUrl, params:{'科目ID':$scope.adminParams.lastKmId, '类型': 1}};
                 $http(objZsd).success(function(data){
                   if(data.result && data.data){
+                    data.data = Lazy(data.data).sortBy('知识点名称').toArray();
                     $scope.allPublicZsdData = angular.copy(data.data);
                     $scope.publicKnowledge = data.data;
                   }
@@ -1067,6 +1070,30 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
+         * 已有公共知识点查询
+         */
+        $scope.getHasPubZsd = function(kmId){
+          var objZsd = {method:'GET', url:zhiShiDianUrl, params:{'科目ID': '', '类型': 1}};
+          if(kmId){
+            objZsd.params['科目ID'] = kmId;
+            $http(objZsd).success(function(data){
+              if(data.result && data.data){
+                $scope.allPublicZsdData = angular.copy(data.data);
+                $scope.publicKnowledge = data.data;
+              }
+              else{
+                $scope.allPublicZsdData = '';
+                $scope.publicKnowledge = '';
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择科目！');
+          }
+        };
+
+        /**
          * 添加知识点
          */
         $scope.dgAddNd = function(nd, ndl) {
@@ -1092,7 +1119,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               var zsd = {
                 '知识点ID': item['知识点ID'],
                 '知识点名称': item['知识点名称'],
-                '领域ID': $scope.adminParams.lastLyId,
+                '科目ID': $scope.adminParams.lastKmId,
                 '学校ID': 0,
                 '类型': 1,
                 '状态': 1
@@ -1246,7 +1273,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   DataService.alertInfFun('err', txData.error);
                 }
               });
-              $scope.xueXiaoKeMu = xxkm.data;
+              $scope.xueXiaoKeMu = Lazy(xxkm.data).sortBy('科目名称').reverse().toArray();
               $scope.isShenHeBox = false;
               $scope.adminSubWebTpl = 'views/renzheng/rz_selectTiXing.html';
             }
@@ -1369,6 +1396,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $http(obj).success(function(data){
             if(data.result && data.data){
               $scope.isShenHeBox = false;
+              data.data = Lazy(data.data).sortBy('领域名称').reverse().toArray();
               $scope.setZsdLingYu = data.data;
               $scope.adminSubWebTpl = 'views/renzheng/rz_setPubZsd.html';
             }
@@ -1377,6 +1405,35 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             }
             $scope.loadingImgShow = false;
           });
+        };
+
+        /**
+         * 查询科目领域
+         */
+        $scope.getLingYuKeMu = function(lyId){
+          var obj = {
+            method: 'GET',
+            url: keMuUrl,
+            params: {
+              '领域ID': ''
+            }
+          };
+          $scope.lyKeMu = '';
+          if(lyId){
+            obj.params['领域ID'] = lyId;
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                data.data = Lazy(data.data).sortBy('科目名称').reverse().toArray();
+                $scope.lyKeMu = data.data;
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('err', '请选择领域！');
+          }
         };
 
         /**
@@ -1394,15 +1451,16 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          * 得到所选领域的的公共知识点
          */
-        $scope.getPublicZsd = function(lyId){
-          if(lyId){
-            $scope.adminParams.selectLinYuId = lyId;
+        $scope.getPublicZsd = function(kmId){
+          if(kmId){
+            $scope.adminParams.selectKeMuId = kmId;
             $scope.zsdSetZsdData = '';
-            var obj = {method:'GET', url:zhiShiDianUrl, params:{'领域ID':lyId, '类型': 1}};
+            var obj = {method:'GET', url:zhiShiDianUrl, params:{'科目ID':kmId, '类型': 1}};
             $http(obj).success(function(data){
               if(data.result && data.data){
                 pageMake(data.data);
-                $scope.allPublicZsdData = angular.copy(data.data);
+                var newData = Lazy(data.data).sortBy('知识点名称').toArray();
+                $scope.allPublicZsdData = angular.copy(newData);
                 $scope.currentPage = 1;
                 $scope.publicZsdDist(1);
               }
@@ -1417,7 +1475,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             });
           }
           else{
-            $scope.adminParams.selectLinYuId = '';
+            $scope.adminParams.selectKeMuId = '';
             DataService.alertInfFun('pmt', '请选择领域！');
           }
         };
@@ -1480,6 +1538,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             };
             $http(obj).success(function(data){
               if(data.result){
+                $scope.adminParams.zsdNewName = '';
+                $scope.getPublicZsd($scope.adminParams.selectKeMuId);
                 DataService.alertInfFun('suc', '删除成功！');
               }
               else{
@@ -1513,7 +1573,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               obj.data = {
                 '知识点名称':$scope.adminParams.zsdNewName,
                 '学校ID':jgID,
-                '领域ID':$scope.adminParams.selectLinYuId,
+                '科目ID':$scope.adminParams.selectKeMuId,
                 '类型': 1
               };
             }
@@ -1524,7 +1584,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }
           $http(obj).success(function(data){
             if(data.result){
-              $scope.getPublicZsd($scope.adminParams.selectLinYuId);
+              $scope.getPublicZsd($scope.adminParams.selectKeMuId);
               DataService.alertInfFun('suc', '知识点保存成功！');
             }
             else{
@@ -1626,7 +1686,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                       jsjs['科目角色'] = angular.copy($scope.xxkmList);
                     }
                   });
-                  $scope.teacherData = user.data;
+                  $scope.teacherData = Lazy(user.data).sortBy('姓名').reverse().toArray();
                   $scope.isShenHeBox = true; //判断是不是审核页面
                   $scope.adminParams.navHide = true;
                   $scope.adminSubWebTpl = 'views/renzheng/rz_setTeacher.html';
@@ -2016,7 +2076,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             var obj = {method:'GET', url:xueXiaoKeMuUrl, params: {'学校ID': jgid}};
             $http(obj).success(function(data){
               if(data.result && data.data){
-                $scope.kemu_list = data.data;
+                $scope.kemu_list = Lazy(data.data).sortBy('科目名称').reverse().toArray();
               }
               else{
                 $scope.kemu_list = '';

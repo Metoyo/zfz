@@ -71,6 +71,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               };
               $http(obj).success(function(data){
                 if(data.result && data.data){
+                  data.data = Lazy(data.data).sortBy('考点名称').reverse().toArray();
                   $scope.allKaoChangList = data.data;
                 }
                 else{
