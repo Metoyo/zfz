@@ -936,6 +936,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             return km['科目ID'];
           }).toArray();
           obj['学校ID'] = jgID;
+          obj['科目'] = JSON.stringify(obj['科目']);
           $http.post(xueXiaoKeMuUrl, obj).success(function(data){
             if(data.result){
               qryXxKm();
@@ -1324,7 +1325,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          * 保存已选的题型
          */
         $scope.saveSelectTiXing = function(){
-          var obj = {method: 'POST', url: xueXiaoKeMuTiXingUrl, data: {'学校ID': jgID, '科目ID': $scope.activeKeMu}};
+          var obj = {
+            method: 'POST',
+            url: xueXiaoKeMuTiXingUrl,
+            data: {
+              '学校ID': jgID,
+              '科目ID': $scope.activeKeMu
+            }
+          };
           var txArr = [];
           Lazy($scope.allTiXing).each(function(atx){
             if(atx.ckd){
@@ -1332,7 +1340,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             }
           });
           if(txArr && txArr.length > 0){
-            obj.data['题型'] = txArr;
+            obj.data['题型'] = JSON.stringify(txArr);
             $http(obj).success(function(data){
               if(data.result){
                 DataService.alertInfFun('suc', '保存成功！');
