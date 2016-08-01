@@ -13,7 +13,7 @@
       返回登录
     </button>
     <button type="button" class="btn btn-success pull-right" ng-click="sendFindPwEmail()"
-            ng-disabled="sendEmailForm.registerEmail.$error.pattern || youxiangExist">
+            ng-disabled="sendEmailForm.registerEmail.$error.pattern || youxiangExist || loginBtn">
       找回密码
     </button>
   </form>

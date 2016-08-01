@@ -9,12 +9,12 @@
     <div class="form-horizontal">
       <div class="form-header">
         <div class="form-group">
-          <label class="col-sm-1 control-label">题目来源</label>
-          <div class="col-sm-8">
-            <select class="form-control" ng-model="timu['题目来源ID']" ng-options="tmly['题目来源ID'] as tmly['题目来源名称'] for tmly in mingTiParam.tiMuLaiYuan">
-              <option value="">请选择题目来源</option>
-            </select>
-          </div>
+          <!--<label class="col-sm-1 control-label">题目来源</label>-->
+          <!--<div class="col-sm-8">-->
+            <!--<select class="form-control" ng-model="timu['题目来源ID']" ng-options="tmly['题目来源ID'] as tmly['题目来源名称'] for tmly in mingTiParam.tiMuLaiYuan">-->
+              <!--<option value="">请选择题目来源</option>-->
+            <!--</select>-->
+          <!--</div>-->
         </div>
         <div class="form-group">
           <label class="col-sm-1 control-label">出题人</label>
@@ -119,7 +119,7 @@
         </div>
         <div class="form-group">
           <div class="col-sm-offset-1 col-sm-8 text-right">
-            <button type="button" class="btn btn-primary" ng-click="saveTiMu()">保存</button>
+            <button type="button" class="btn btn-primary" ng-click="saveTiMu()" ng-disabled="fbdBtn">保存</button>
             <div class="pull-left" ng-show="mingTiParam.isConvertTiXing">
               <select ng-model="mingTiParam.tiXingId" class="form-control pull-left w200 h28 mr5 ng-pristine ng-valid"
                       ng-options="tx.txId as tx.txName for tx in tiXingIdArr">

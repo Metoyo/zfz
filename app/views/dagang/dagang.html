@@ -16,10 +16,10 @@
       <button class="btn btn-primary" ng-click="deleteDaGang()" ng-if="dgParam.dgType==2">
         删除大纲
       </button>
-      <button class="btn btn-primary" ng-click="saveDaGang()" ng-if="dgParam.dgType==2" ng-disabled="prDgBtnDisabled">
+      <button class="btn btn-primary" ng-click="saveDaGang()" ng-if="dgParam.dgType==2" ng-disabled="fbdBtn">
         保存大纲
       </button>
-      <button class="btn btn-primary" ng-click="setDefaultDg()" ng-disabled="!dgParam.slt_dg">
+      <button class="btn btn-primary" ng-click="setDefaultDg()" ng-disabled="!dgParam.slt_dg || fbdBtn">
         用作默认大纲
       </button>
     </div>
@@ -51,7 +51,7 @@
         </div>
         <div class="pwi-footer plr10">
           <button type="button" class="btn btn-danger pull-left mt5" ng-click="dgParam.showDaGangAsNew = false">关闭</button>
-          <button type="button" class="btn btn-primary pull-right mt5" ng-click="saveDaGang()">保存新大纲</button>
+          <button type="button" class="btn btn-primary pull-right mt5" ng-click="saveDaGang()" ng-disabled="fbdBtn">保存新大纲</button>
         </div>
       </div>
     </div>

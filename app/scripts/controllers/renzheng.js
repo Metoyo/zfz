@@ -33,6 +33,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.rzParams.zhuCeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/register/stuFindUsername';
         $scope.rzParams.homeUrl = $location.$$protocol + '://' +$location.$$host + ':' + $location.$$port + '/#/renzheng';
         $scope.dengluInfo = false;
+        $scope.loginBtn = false;
         $rootScope.urlArrs = [];
         $rootScope.loginUsr = '';
 
@@ -86,6 +87,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             obj.params['用户名'] = login.userName;
           }
           urlArr = [];
+          $scope.loginBtn = true;
           $http(obj).success(function(data){
             if(data.result && data.data){
               var usrInfo = { //登录用户的cookies
@@ -172,8 +174,10 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   DataService.alertInfFun('pmt', '您注册的信息正在审核中，新耐心等待……');
                 }
               }
+              $scope.loginBtn = false;
             }
             else{
+              $scope.loginBtn = false;
               DataService.alertInfFun('err', data.error);
             }
           });
@@ -230,12 +234,15 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               }
             };
             var mailLink = 'http://mail.' + $scope.rzParams.registerEmail.split('@').pop();
+            $scope.loginBtn = true;
             $http(obj).success(function(data){
               if(data.result){
+                $scope.loginBtn = false;
                 $scope.rzParams.emailLink = mailLink;
                 $scope.rzParams.sendEmailSuccess = true;
               }
               else{
+                $scope.loginBtn = false;
                 DataService.alertInfFun('err', data.error)
               }
             });
@@ -289,6 +296,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               url: resetPwUrl,
               data: $scope.newPasswordObj
             };
+            $scope.loginBtn = true;
             $http(obj).success(function(data){
               if(data.result){
                 $scope.rzParams.resetPwSuccess = true;
@@ -296,8 +304,10 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   urlRedirect.goTo(currentPath, '/renzheng');
                 };
                 $timeout(jumpToHome, 5000);
+                $scope.loginBtn = false;
               }
               else{
+                $scope.loginBtn = false;
                 DataService.alertInfFun('err', data.error);
               }
             });

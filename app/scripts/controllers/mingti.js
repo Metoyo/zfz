@@ -103,6 +103,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             ckd: false
           }
         ];
+        $scope.fbdBtn = false;
 
         /**
          * 查询科目题型
@@ -326,9 +327,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                 Lazy(data.data).each(function(tm, idx, lst){
                   tm = DataService.formatDaAn(tm);
                 });
+                $scope.fbdBtn = false;
                 $scope.timuDetails = Lazy(data.data).sortBy('题目ID').reverse().toArray();
               }
               else{
+                $scope.fbdBtn = false;
                 DataService.alertInfFun('err', data.error);
               }
               $scope.loadingImgShow = false;
@@ -343,7 +346,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           var obj = {method: 'GET', url: chuTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result && data.data){
-              $scope.chuTiRens = data.data;
+              $scope.chuTiRens = DataService.cnSort(data.data, '姓名');
             }
             else{
               DataService.alertInfFun('err', data.error);
@@ -358,8 +361,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result && data.data){
-              data.data = Lazy(data.data).sortBy('姓名').reverse().toArray();
-              $scope.keMuJiaoShi = data.data;
+              $scope.keMuJiaoShi = DataService.cnSort(data.data, '姓名');
             }
             else{
               DataService.alertInfFun('err', data.error);
@@ -374,7 +376,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           var obj = {method: 'GET', url: luTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
           $http(obj).success(function(data){
             if(data.result && data.data){
-              $scope.luTiRens = data.data;
+              $scope.luTiRens = DataService.cnSort(data.data, '姓名');
             }
             else{
               DataService.alertInfFun('err', data.error);
@@ -589,6 +591,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           if(qryTmPar.ltr){
             obj.params['录题人UID'] = qryTmPar.ltr;
           }
+          $scope.fbdBtn = true;
           $http(obj).success(function(tmlb){ //查询题目列表
             if(tmlb.result && tmlb.data){
               var timuliebiao = Lazy(tmlb.data).sortBy('题目ID').reverse().toArray();
@@ -602,6 +605,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               $scope.timuDetails = '';
               $scope.mingTiParam.tiMuLen = '';
               allTiMuIds = '';
+              $scope.fbdBtn = false;
               DataService.alertInfFun('err', tmlb.error || '没有数据！');
             }
             $scope.loadingImgShow = false;
@@ -658,7 +662,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
          * 通过录题人的UID查询试题
          */
         $scope.qryTiMuByLuTiRenId = function(){
-          qryTmPar.ctr = $scope.mingTiParam.ltr ? $scope.mingTiParam.ltr : '';
+          qryTmPar.ltr = $scope.mingTiParam.ltr ? $scope.mingTiParam.ltr : '';
           $scope.mingTiParam.tiMuId = '';
           qryTmPar.tm = '';
           $scope.qryTestFun();
@@ -734,6 +738,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.addTiMuTpl = function(txId){
           $scope.newTiXingId = txId;
           $scope.timu['题型ID'] = txId;
+          $scope.timu['题库ID'] = $scope.tiKuList[0]['题库ID'];
           $scope.loopArr = '';
           $scope.loadingImgShow = true;
           $('#prevDoc').html('');
@@ -1408,6 +1413,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
             else{
               obj.method = 'POST';
             }
+            $scope.fbdBtn = true;
             $http(obj).success(function(data){
               if(data.result){
                 $scope.timu['题目内容'] = {
@@ -1427,12 +1433,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                 $scope.mingTiParam.panDuanDaAn = '';
                 tkLoopArr = [];
                 $scope.tkLoopArr = '';
+                $scope.fbdBtn = false;
                 DataService.alertInfFun('suc', '保存成功！');
                 if(!$scope.mingTiParam.isAddTiMu){
                   $scope.cancelAddPattern();
                 }
               }
               else{
+                $scope.fbdBtn = false;
                 DataService.alertInfFun('err', data.error);
               }
             });

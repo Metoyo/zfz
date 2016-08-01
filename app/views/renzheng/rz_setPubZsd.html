@@ -18,7 +18,7 @@
         <div class="input-group" ng-show="adminParams.zsdWrapShow">
           <input type="text" class="form-control" ng-model="adminParams.zsdNewName"/>
           <span class="input-group-btn">
-            <button class="btn btn-success" type="button" ng-click="modifyPubZsd()">保存</button>
+            <button class="btn btn-success" type="button" ng-click="modifyPubZsd()" ng-disabled="loadingImgShow">保存</button>
           </span>
         </div>
       </div>

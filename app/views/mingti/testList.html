@@ -5,7 +5,8 @@
       <p>数据加载中，请耐心等待……</p>
     </div>
     <div class="pull-left">
-      <a href="javascript:void(0)" class="btn btn-primary" ng-hide="patternListToggle || alterTiMuTiXing" ng-click="addNewShiTi()">
+      <a href="javascript:void(0)" class="btn btn-primary h30" ng-hide="patternListToggle || alterTiMuTiXing"
+         ng-click="addNewShiTi()" style="padding: 5px 12px">
         <span class="glyphicon glyphicon-plus"></span> 添加试题
       </a>
     </div>
@@ -14,28 +15,28 @@
     </div>
     <div class="pull-right">
       <div class="pull-left">
-        <select ng-model="mingTiParam.tiKuId" class="form-control pull-right h28 mr5" ng-change="qryTiMuByTiKu()"
+        <select ng-model="mingTiParam.tiKuId" class="form-control pull-right h30 mr5" ng-change="qryTiMuByTiKu()"
                 ng-options="tk['题库ID'] as tk['题库名称'] for tk in tiKuList">
           <option value="">请选择题库</option>
         </select>
       </div>
       <div class="pull-left ml10">
-        <select ng-model="mingTiParam.ctr" class="form-control pull-right h28 mr5" ng-change="qryTiMuByChuTiRenId()"
+        <select ng-model="mingTiParam.ctr" class="form-control pull-right h30 mr5" ng-change="qryTiMuByChuTiRenId()"
                 ng-options="ctr.UID as ctr['姓名'] for ctr in chuTiRens">
           <option value="">请选择出题人</option>
         </select>
       </div>
       <div class="pull-left ml10">
-        <select ng-model="mingTiParam.ltr" class="form-control pull-right h28 mr5" ng-change="qryTiMuByLuTiRenId()"
+        <select ng-model="mingTiParam.ltr" class="form-control pull-right h30 mr5" ng-change="qryTiMuByLuTiRenId()"
                 ng-options="ltr.UID as ltr['姓名'] for ltr in luTiRens">
           <option value="">请选择录题人</option>
         </select>
       </div>
       <div class="pull-left ml10">
         <form>
-          <input type="text" ng-model="mingTiParam.tiMuId" placeholder="题目ID" class="pull-left w80 mr5 h28"
+          <input type="text" ng-model="mingTiParam.tiMuId" placeholder="题目ID" class="pull-left w80 mr5 h30"
                  onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
-          <button type="submit" class="btn btn-primary" ng-click="qryTestByTiMuId()">查询</button>
+          <button type="submit" class="btn btn-primary h30" ng-click="qryTestByTiMuId()" ng-disabled="fbdBtn">查询</button>
         </form>
       </div>
     </div>

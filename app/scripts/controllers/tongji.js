@@ -365,7 +365,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                     kxhArr.push(kxhObj);
                     idxCount ++;
                   });
-                  kxhArr = Lazy(kxhArr).sortBy(function(stu){ return stu['课序号名称'];}).toArray();
+                  //kxhArr = Lazy(kxhArr).sortBy(function(stu){ return stu['课序号名称'];}).toArray();
+                  kxhArr = DataService.cnSort(kxhArr, '课序号名称');
                   tjBarData = kxhArr;
                   $scope.kszPubData['统计维度'] = kxhArr;
                   $scope.tjKxh = kxhArr.slice(0, 5);
@@ -601,43 +602,34 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             switch (sortItem){
               case 'stuId' : //学号排序
                 if($scope.tjParas.stuIdCount){
-                  $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
-                    return stu['学号'];
-                  }).toArray();
+                  //$scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
+                  //  return stu['学号'];
+                  //}).toArray();
+                  $scope.studentData = DataService.cnSort($scope.studentData, '学号');
                   $scope.tjParas.stuIdCount = false;
                 }
                 else{
-                  $scope.studentData = Lazy($scope.studentData).sortBy(function(stu){
-                    return stu['学号'];
-                  }).toArray().reverse();
+                  $scope.studentData = DataService.cnSort($scope.studentData, '学号').reverse();
                   $scope.tjParas.stuIdCount = true;
                 }
                 break;
               case 'name' : //姓名排序，中文
                 if($scope.tjParas.nameCount){
-                  $scope.studentData.sort(function(a,b){
-                    return a['姓名'].localeCompare(b['姓名']);
-                  });
+                  $scope.studentData = DataService.cnSort($scope.studentData, '姓名');
                   $scope.tjParas.nameCount = false;
                 }
                 else{
-                  $scope.studentData.sort(function(a,b){
-                    return a['姓名'].localeCompare(b['姓名']);
-                  }).reverse();
+                  $scope.studentData = DataService.cnSort($scope.studentData, '姓名').reverse();
                   $scope.tjParas.nameCount = true;
                 }
                 break;
               case 'kxh' : //课序号名称
                 if($scope.tjParas.kxhCount){
-                  $scope.studentData.sort(function(a,b){
-                    return a['课序号名称'].localeCompare(b['课序号名称']);
-                  });
+                  $scope.studentData = DataService.cnSort($scope.studentData, '课序号名称');
                   $scope.tjParas.kxhCount = false;
                 }
                 else{
-                  $scope.studentData.sort(function(a,b){
-                    return a['课序号名称'].localeCompare(b['课序号名称']);
-                  }).reverse();
+                  $scope.studentData = DataService.cnSort($scope.studentData, '课序号名称').reverse();
                   $scope.tjParas.kxhCount = true;
                 }
                 break;

@@ -119,11 +119,11 @@
         <div class="student-list">
           <table class="table table-striped">
             <tr>
-              <th ng-click="ksSortDataFun('xuhao')">序号</th>
-              <th ng-click="ksSortDataFun('stuId')">学号</th>
-              <th ng-click="ksSortDataFun('name')">姓名</th>
-              <th ng-click="ksSortDataFun('score')">成绩</th>
-              <th ng-click="ksSortDataFun('kxh')">课序号</th>
+              <th class="cursorPointer" ng-click="ksSortDataFun('xuhao')">序号</th>
+              <th class="cursorPointer" ng-click="ksSortDataFun('stuId')">学号</th>
+              <th class="cursorPointer" ng-click="ksSortDataFun('name')">姓名</th>
+              <th class="cursorPointer" ng-click="ksSortDataFun('score')">成绩</th>
+              <th class="cursorPointer" ng-click="ksSortDataFun('kxh')">课序号</th>
             </tr>
             <tr ng-repeat="ksd in studentData">
               <td ng-bind="ksd['序号'] + 1">

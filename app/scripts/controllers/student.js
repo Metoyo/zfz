@@ -255,7 +255,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, conf
                 };
                 kmTmp.push(tmp);
               });
-              $scope.keMuList = Lazy(kmTmp).sortBy('科目名称').toArray();
+              $scope.keMuList = DataService.cnSort(kmTmp, '科目名称');
               var pageHeight = document.querySelector('.dashboard').clientHeight - 140 + 'px';
               var wrapWt = document.querySelectorAll('.pointTree');
               angular.element(wrapWt).css({height: pageHeight, 'overflow-y': 'auto'});

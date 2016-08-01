@@ -83,6 +83,9 @@ label {
 .h28 {
   height: 28px; }
 
+.h30 {
+  height: 30px; }
+
 .h300 {
   max-height: 300px;
   overflow-y: auto; }

@@ -19,6 +19,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         $scope.publicZsdgList = []; //存放公共知识大纲的数组
         $scope.privateZsdgList = []; //存放自建知识大纲的数组
         $scope.loadingImgShow = false;
+        $scope.fbdBtn = false;
         $scope.dgParam = { //大纲参数
           dgType: '', //大纲类型
           slt_dg: '', //选择的大纲
@@ -78,7 +79,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           }
           $http(obj).success(function(data){
             if(data.result && data.data){
-              data.data = Lazy(data.data).sortBy('知识点名称').reverse().toArray();
+              data.data = DataService.cnSort(data.data, '知识点名称');
               $scope.allPublicZsd = angular.copy(data.data);
               $scope.publicZsd = data.data;
             }
@@ -302,6 +303,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             return ;
           }
           $scope.loadingImgShow = true;
+          $scope.fbdBtn = true;
           $http(obj).success(function(data){
             if(data.result){
               if($scope.dgParam.dgType == 2){
@@ -310,9 +312,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                 $scope.dgParam.slt_dg = '';
               }
               $scope.dgParam.showDaGangAsNew = false;
+              $scope.fbdBtn = false;
               DataService.alertInfFun('suc', '大纲保存成功！');
             }
             else{
+              $scope.fbdBtn = false;
               DataService.alertInfFun('err', data.error);
             }
             $scope.loadingImgShow = false;
@@ -341,12 +345,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             }
           };
           var setPar = {};
+          $scope.fbdBtn = true;
           $http(gObj).success(function(gData){
             if(gData.result && gData.data){
               if(typeof(gData.data) == 'string'){
                 gData.data = JSON.parse(gData.data);
               }
               setPar = gData.data;
+              $scope.fbdBtn = false;
             }
             else{
               setPar = {
@@ -355,6 +361,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                   '知识大纲名称': ''
                 }
               };
+              $scope.fbdBtn = false;
             }
             if($scope.dgParam.dgType == 1){
               setPar['默认大纲']['知识大纲ID'] = $scope.knowledgePb['知识大纲ID'];
@@ -365,11 +372,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               setPar['默认大纲']['知识大纲名称'] = $scope.knowledgePr['知识大纲名称'];
             }
             pObj.data['科目设置'] = JSON.stringify(setPar);
+            $scope.fbdBtn = true;
             $http(pObj).success(function(pData){
               if(pData.result){
+                $scope.fbdBtn = false;
                 DataService.alertInfFun('suc', '设置成功！');
               }
               else{
+                $scope.fbdBtn = false;
                 DataService.alertInfFun('err', pData.error);
               }
             });

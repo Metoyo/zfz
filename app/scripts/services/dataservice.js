@@ -95,6 +95,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             if(daanStr && typeof(daanStr) == 'string'){
               daanArr = JSON.parse(daanStr);
             }
+            else{
+              daanArr = daanStr;
+            }
             var daanLen = daanArr.length || 0;
             for(var i = 0; i < daanLen; i++){
               daan.push(letterArr[daanArr[i]]);
@@ -183,25 +186,11 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         return tm;
       };
 
-      //文件上传
-      this.uploadFileAndFieldsToUrl = function(file, fields, uploadUrl){
-        var fd = new FormData();
-        for(var j = 1; j <= file.length; j++){
-          fd.append('file' + j, file[j - 1]);
-        }
-        for(var i = 0; i < fields.length; i++){
-          fd.append(fields[i].name, fields[i].data)
-        }
-        return $http.post(uploadUrl, fd, {
-          transformRequest: angular.identity,
-          headers: {'Content-Type': undefined}
-        })
-          .success(function(data){
-            return data;
-          })
-          .error(function(error){
-            return error;
-          });
+      //中文排序
+      this.cnSort = function(data, par){
+        return data.sort(function(a,b){
+          return a[par].localeCompare(b[par]);
+        });
       };
 
       //格式化时间

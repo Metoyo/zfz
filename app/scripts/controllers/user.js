@@ -340,7 +340,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   }
                 });
               }
-              $scope.jigou_list = Lazy(schools.data).sortBy('学校名称').reverse().toArray();
+              $scope.jigou_list = DataService.cnSort(schools.data, '学校名称');
             }
             else{
               $scope.jigou_list = '';
@@ -596,9 +596,11 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                     return km['领域ID'];
                   }).toObject();
                   Lazy(allLy.data).each(function(ly){
-                    ly['科目'] = allKmSortObj[ly['领域ID']];
+                    if(allKmSortObj[ly['领域ID']] && allKmSortObj[ly['领域ID']].length > 0){
+                      ly['科目'] = DataService.cnSort(allKmSortObj[ly['领域ID']], '科目名称');
+                    }
                   });
-                  $scope.lingyu_list = allLy.data;
+                  $scope.lingyu_list = DataService.cnSort(allLy.data, '领域名称');
                   $scope.isShenHeBox = false;
                   $scope.lyKmSetPageShow = false;
                   $scope.lyOrKmSet = {
@@ -764,6 +766,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               return ;
             }
           }
+          $scope.loadingImgShow = true;
           $http(obj).success(function(data){
             if(data.result){
               if($scope.lyOrKmSet.type == 'nl'){
@@ -798,6 +801,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             else{
               DataService.alertInfFun('err', data.error);
             }
+            $scope.loadingImgShow = false;
           });
           $scope.lyKmSetPageShow = false;
         };
@@ -937,6 +941,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }).toArray();
           obj['学校ID'] = jgID;
           obj['科目'] = JSON.stringify(obj['科目']);
+          $scope.loadingImgShow = true;
           $http.post(xueXiaoKeMuUrl, obj).success(function(data){
             if(data.result){
               qryXxKm();
@@ -945,6 +950,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             else{
               DataService.alertInfFun('err', data.error);
             }
+            $scope.loadingImgShow = false;
           });
         };
 
@@ -962,8 +968,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           var obj = {method:'GET', url: lingYuUrl};
           $http(obj).success(function(data){
             if(data.result && data.data){
-              data.data = Lazy(data.data).sortBy('领域名称').reverse().toArray();
-              $scope.setZsdLingYu = data.data;
+              $scope.setZsdLingYu = DataService.cnSort(data.data, '领域名称');
             }
             else{
               $scope.setZsdLingYu = '';
@@ -1019,7 +1024,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 var objZsd = {method:'GET', url:zhiShiDianUrl, params:{'科目ID':$scope.adminParams.lastKmId, '类型': 1}};
                 $http(objZsd).success(function(data){
                   if(data.result && data.data){
-                    data.data = Lazy(data.data).sortBy('知识点名称').toArray();
+                    data.data = DataService.cnSort(data.data, '知识点名称');
                     $scope.allPublicZsdData = angular.copy(data.data);
                     $scope.publicKnowledge = data.data;
                   }
@@ -1240,6 +1245,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             };
             if($scope.adminParams.selected_dg){
               obj.data['知识大纲ID'] = $scope.adminParams.selected_dg;
+              $scope.loadingImgShow = true;
               $http(obj).success(function(data){
                 if(data.result){
                   $scope.getPubDaGangList($scope.adminParams.selectKeMu['科目ID'], 'savedg');
@@ -1248,12 +1254,12 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 else{
                   DataService.alertInfFun('err', data.error);
                 }
+                $scope.loadingImgShow = false;
               });
             }
             else{
               DataService.alertInfFun('err', '请选择要删出的大纲');
             }
-
           }
         };
 
@@ -1274,7 +1280,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   DataService.alertInfFun('err', txData.error);
                 }
               });
-              $scope.xueXiaoKeMu = Lazy(xxkm.data).sortBy('科目名称').reverse().toArray();
+              $scope.xueXiaoKeMu = DataService.cnSort(xxkm.data, '科目名称');
               $scope.isShenHeBox = false;
               $scope.adminSubWebTpl = 'views/renzheng/rz_selectTiXing.html';
             }
@@ -1341,6 +1347,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           });
           if(txArr && txArr.length > 0){
             obj.data['题型'] = JSON.stringify(txArr);
+            $scope.loadingImgShow = true;
             $http(obj).success(function(data){
               if(data.result){
                 DataService.alertInfFun('suc', '保存成功！');
@@ -1348,6 +1355,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               else{
                 DataService.alertInfFun('err', data.error);
               }
+              $scope.loadingImgShow = false;
             });
           }
           else{
@@ -1404,7 +1412,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $http(obj).success(function(data){
             if(data.result && data.data){
               $scope.isShenHeBox = false;
-              data.data = Lazy(data.data).sortBy('领域名称').reverse().toArray();
+              data.data = DataService.cnSort(data.data, '领域名称');
               $scope.setZsdLingYu = data.data;
               $scope.adminSubWebTpl = 'views/renzheng/rz_setPubZsd.html';
             }
@@ -1431,8 +1439,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             obj.params['领域ID'] = lyId;
             $http(obj).success(function(data){
               if(data.result && data.data){
-                data.data = Lazy(data.data).sortBy('科目名称').reverse().toArray();
-                $scope.lyKeMu = data.data;
+                $scope.lyKeMu = DataService.cnSort(data.data, '科目名称');
               }
               else{
                 DataService.alertInfFun('err', data.error);
@@ -1467,7 +1474,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             $http(obj).success(function(data){
               if(data.result && data.data){
                 pageMake(data.data);
-                var newData = Lazy(data.data).sortBy('知识点名称').toArray();
+                var newData = DataService.cnSort(data.data, '知识点名称');
                 $scope.allPublicZsdData = angular.copy(newData);
                 $scope.currentPage = 1;
                 $scope.publicZsdDist(1);
@@ -1590,6 +1597,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               return ;
             }
           }
+          $scope.loadingImgShow = true;
           $http(obj).success(function(data){
             if(data.result){
               $scope.getPublicZsd($scope.adminParams.selectKeMuId);
@@ -1598,6 +1606,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             else{
               DataService.alertInfFun('err', data.error);
             }
+            $scope.loadingImgShow = false;
           });
         };
 
@@ -1694,7 +1703,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                       jsjs['科目角色'] = angular.copy($scope.xxkmList);
                     }
                   });
-                  $scope.teacherData = Lazy(user.data).sortBy('姓名').reverse().toArray();
+                  $scope.teacherData = DataService.cnSort(user.data, '姓名');
                   $scope.isShenHeBox = true; //判断是不是审核页面
                   $scope.adminParams.navHide = true;
                   $scope.adminSubWebTpl = 'views/renzheng/rz_setTeacher.html';
@@ -1733,6 +1742,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           });
           if(dsArr && dsArr.length > 0){
             obj.data['角色'] = JSON.stringify(dsArr);
+            $scope.loadingImgShow = true;
             $http(obj).success(function(data){
               if(data.result){
                 DataService.alertInfFun('pmt', '保存成功！');
@@ -1740,6 +1750,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               else{
                 DataService.alertInfFun('err', data.error);
               }
+              $scope.loadingImgShow = false;
             });
           }
           else{
@@ -1877,6 +1888,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               obj.method = 'POST';
               obj.data = {'题库ID':tkInfo['题库ID'], '题库名称':tkName};
             }
+            $scope.loadingImgShow = true;
             $http(obj).success(function(data){
               if(data.result){
                 $scope.tkSetPageShow = false;
@@ -1888,6 +1900,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               else{
                 DataService.alertInfFun('err', data.error);
               }
+              $scope.loadingImgShow = false;
             });
           }
           else{
@@ -1930,7 +1943,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             $scope.loadingImgShow = true;
             $http(obj).success(function(data){
               if(data.result && data.data){
-                $scope.kaoChangList = data.data;
+                $scope.kaoChangList = DataService.cnSort(data.data, '考点名称');
               }
               else{
                 $scope.kaoChangList = '';
@@ -2084,7 +2097,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             var obj = {method:'GET', url:xueXiaoKeMuUrl, params: {'学校ID': jgid}};
             $http(obj).success(function(data){
               if(data.result && data.data){
-                $scope.kemu_list = Lazy(data.data).sortBy('科目名称').reverse().toArray();
+                $scope.kemu_list = DataService.cnSort(data.data, '科目名称');
               }
               else{
                 $scope.kemu_list = '';
@@ -2276,6 +2289,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             });
             obj.xuexiaoname = findXueXiao['学校名称'];
             obj.kaoshizuname = findKaoShiZu['考试组名称'];
+            $scope.loadingImgShow = true;
             $http({method: 'GET', url: createPdfUrl, params: obj}).success(function(data){
               if(data.result){
                 DataService.alertInfFun('suc', '生成成功！');
@@ -2283,6 +2297,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               else{
                 DataService.alertInfFun('err', data.error);
               }
+              $scope.loadingImgShow = false;
             });
           }
           else{
@@ -2335,7 +2350,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   km['设置'] = pObj;
                 });
                 $scope.adminParams.sltJg = xueXiao;
-                $scope.sspKmList = data.data;
+                $scope.sspKmList = DataService.cnSort(data.data, '科目名称');
               }
               else{
                 $scope.sspKmList = '';
@@ -2366,6 +2381,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             });
             obj.data['学校设置']['成绩和作答'] = cjAndZd;
             obj.data['学校设置'] = JSON.stringify(obj.data['学校设置']);
+            $scope.loadingImgShow = true;
             $http(obj).success(function(data) {
               if(data.result) {
                 $scope.adminParams.sltJgId = '';
@@ -2376,6 +2392,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               else{
                 DataService.alertInfFun('err', data.error);
               }
+              $scope.loadingImgShow = false;
             });
           }
           else{

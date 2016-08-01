@@ -32,7 +32,7 @@
     </div>
   </div>
   <div class="form-group text-right">
-    <button type="button" class="btn btn-info" ng-click="createPdf('daan')">生成答案PDF</button>
-    <button type="button" class="btn btn-primary" ng-click="createPdf('zuoda')">生成作答PDF</button>
+    <button type="button" class="btn btn-info" ng-click="createPdf('daan')" ng-disabled="loadingImgShow">生成答案PDF</button>
+    <button type="button" class="btn btn-primary" ng-click="createPdf('zuoda')" ng-disabled="loadingImgShow">生成作答PDF</button>
   </div>
 </div>

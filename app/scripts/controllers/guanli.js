@@ -53,6 +53,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           '年份': [],
           '学期': [{val: 1, name: '秋'}, {val: 2, name: '春'}]
         };
+        $scope.fbdBtn = false;
 
         /**
          * 查询科目下的老师
@@ -752,6 +753,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             }
           }
           if(allTrue){
+            $scope.loadingImgShow = true;
             $http(obj).success(function(data){
               if(data.result){
                 var objJs = '';
@@ -768,10 +770,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                       $scope.guanliParams.addNewKxhSetting = '';
                       $scope.showKeXuHaoManage = false; //课序号重置
                       $scope.guanliParams.modifyKxh = '';
+                      $scope.loadingImgShow = false;
                       queryKeXuHao();
                       DataService.alertInfFun('suc', '新增课序号成功！');
                     }
                     else{
+                      $scope.loadingImgShow = false;
                       DataService.alertInfFun('err', jsData.error);
                     }
                   });
@@ -790,10 +794,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                       $scope.showKeXuHaoManage = false; //课序号重置
                       $scope.guanliParams.modifyKxh = '';
                       $scope.guanliParams.errorInfo = '';
+                      $scope.loadingImgShow = false;
                       queryKeXuHao();
                       DataService.alertInfFun('suc', '新增课序修改成功！');
                     }
                     else{
+                      $scope.loadingImgShow = false;
                       DataService.alertInfFun('err', jsData.error);
                     }
                   });

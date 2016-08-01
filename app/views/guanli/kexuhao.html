@@ -267,7 +267,7 @@
             </div>
           </div>
           <div class="text-center mt15">
-            <button type="button" class="btn btn-success mt5" ng-click="impYongHu('single')">导入学生</button>
+            <button type="button" class="btn btn-success mt5" ng-click="impYongHu('single')" ng-disabled="loadingImgShow">导入学生</button>
           </div>
         </div>
         <div ng-if="impUsrStepNum=='more'">
@@ -285,7 +285,7 @@
             </div>
           </div>
           <div class="text-center mt15">
-            <button type="button" class="btn btn-success mt5" ng-click="impYongHu('batch')">导入学生</button>
+            <button type="button" class="btn btn-success mt5" ng-click="impYongHu('batch')" ng-disabled="loadingImgShow">导入学生</button>
           </div>
         </div>
       </div>

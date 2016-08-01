@@ -1218,6 +1218,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             DataService.alertInfFun('err', '缺少：' + mis.join('；'));
           }
           else{
+            $scope.fbdBtn = true;
             $http(obj).success(function(data){
               if(data.result){
                 $scope.btnDisable = false;

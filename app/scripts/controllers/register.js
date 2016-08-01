@@ -26,6 +26,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $scope.ifTheStuHasRegister = false;
         $scope.studentInfo = '';
         $scope.stuIfPswTheSame = false;
+        $scope.fbdBtn = false;
         $scope.jigou_list = '';
         if($location.$$path == '/register'){
           $rootScope.urlArrs = [];
@@ -65,7 +66,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             };
             $http(obj).success(function(data) {
               if(data.result && data.data){
-                $scope.xxkm_list = Lazy(data.data).sortBy('科目名称').toArray();
+                $scope.xxkm_list = DataService.cnSort(data.data, '科目名称');
               }
               else{
                 $scope.xxkm_list = '';
@@ -156,7 +157,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             $scope.loadingImgShow = true;
             $http.get(xueXiaoUrl).success(function(schools){
               if(schools.result && schools.data){
-                $scope.jigou_list = Lazy(schools.data).sortBy('学校名称').reverse().toArray();
+                $scope.jigou_list = DataService.cnSort(schools.data, '学校名称');
               }
               else{
                 $scope.jigou_list = '';
@@ -318,14 +319,17 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           delete $scope.teacherInfo['确认密码'];
           $scope.teacherInfo['角色'] = JSON.stringify($scope.teacherInfo['角色']);
           var obj = {method: 'PUT', url: yongHuUrl, data: $scope.teacherInfo};
+          $scope.fbdBtn = true;
           $http(obj).success(function(data){
             if(data.result){
               DataService.alertInfFun('suc', '提交成功！');
               $scope.stepTwo = false;
               $scope.stepThree = false;
+              $scope.fbdBtn = false;
               urlRedirect.goTo($location.$$path, '/renzheng');
             }
             else{
+              $scope.fbdBtn = false;
               DataService.alertInfFun('err', data.error);
             }
           });
