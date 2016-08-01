@@ -73,6 +73,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
             }
           };
           $scope.dgParam.zsdKind = tp;
+          if(tp == 2){
+            obj.params['学校ID'] = jgID;
+          }
           $http(obj).success(function(data){
             if(data.result && data.data){
               data.data = Lazy(data.data).sortBy('知识点名称').reverse().toArray();
