@@ -8,9 +8,11 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          * 声明变量
          */
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
+        var logUid = loginUsr['UID']; //登录用户的UID
         var jgID = loginUsr['学校ID']; //登录用户学校
         var yongHuSet = loginUsr['用户设置']; //用户设置
         var dftKm = JSON.parse($cookieStore.get('ckKeMu')); //默认选择的科目
+        var jsArr = JSON.parse($cookieStore.get('ckJs')) || []; //登录用户的角色数组
         var keMuId = dftKm['科目ID']; //默认的科目ID
         var lingYuId = dftKm['领域ID']; //默认的科目ID
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
@@ -60,6 +62,12 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         $scope.kmtxList = ''; //科目题型
         $scope.sjzKmtx = ''; //试卷组用到的科目题型
         $scope.slt_dg = ''; //默认大纲
+
+        /**
+         * 判断用户的角色
+         */
+        var kmfzrQx = Lazy(jsArr).contains(2); //判断科目负责人
+        var rkjsQx = Lazy(jsArr).contains(3); //判断任课教师
 
         /**
          * 获得大纲数据
@@ -217,8 +225,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           var obj = {
             method: 'GET',
             url: shiJuanZuUrl,
-            params: {'学校ID': jgID, '科目ID': keMuId, '返回试卷': true, '返回题目内容': true}
+            params: {
+              '学校ID': jgID,
+              '科目ID': keMuId,
+              '返回试卷': true,
+              '返回题目内容': true
+            }
           };
+          if(!kmfzrQx && rkjsQx){
+            obj.params['创建人UID'] = logUid;
+          }
           $scope.loadingImgShow = true;
           $scope.sjzPage.allPages = [];
           $http(obj).success(function(data){

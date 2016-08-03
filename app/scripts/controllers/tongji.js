@@ -11,19 +11,17 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
           var jgID = loginUsr['学校ID']; //登录用户学校
           var logUid = loginUsr['UID']; //登录用户的UID
-          var yongHuSet = loginUsr['用户设置']; //用户设置
           var dftKm = JSON.parse($cookieStore.get('ckKeMu')); //默认选择的科目
+          var jsArr = JSON.parse($cookieStore.get('ckJs')) || []; //登录用户的角色数组
           var keMuId = dftKm['科目ID']; //默认的科目ID
-          var lingYuId = dftKm['领域ID']; //默认的科目ID
           var kaoShiZuUrl = '/kaoshizu'; //考试组
-          var kaoShiZuZhiShiDianUrl = '/kaoshizu_zhishidian'; //考试组知识点
           var kaoShengChengJiUrl = '/kaosheng_chengji'; //查询考生成绩
           var kaoShengZhiShiDianDeFenLvUrl = '/kaosheng_zhishidian_defenlv'; //查询考生知识点得分率
           var kaoShiZuTiMuDeFenLvUrl = '/kaoshizu_timu_defenlv'; //查询考试组题目得分率
           var tiMuDeFenLvUrl = '/timu_defenlv'; //题目得分率
-          var zhiShiDianDeFenLvUrl = '/zhishidian_defenlv'; //查询知识点得分率
           var kaoShengZuoDaUrl = '/kaosheng_zuoda'; //考生作答的接口
           var exportStuUrl = '/json2excel'; //导出考生
+          var jiaoShiKeXuHaoUrl = '/jiaoshi_kexuhao'; //查询教师课序号
           var itemNumPerPage = 10; //每页多少条数据
           var paginationLength = 11; //分页部分，页码的长度，目前设定为11
           var kaoShiZuStore = ''; //存放考试组的变量
@@ -61,6 +59,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             cnNumArr: config.cnNumArr //汉语的大写数字
           };
           $scope.tiMuDeFenLv = []; //存放题目得分率
+          $scope.jiaoShiKxh = []; //登录到教师课序号
           var tjParaObj = { //存放统计参数的Object
             barBox: '',
             radarBox: '',
@@ -71,6 +70,33 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               zsdPerKxh: []
             }
           };
+
+          /**
+           * 判断登录用户角色
+           */
+          var kmfzrQx = Lazy(jsArr).contains(2); //判断科目负责人
+          var rkjsQx = Lazy(jsArr).contains(3); //判断任课教师
+          var qryJsKxh = function(){
+            var obj = {
+              method: 'GET',
+              url: jiaoShiKeXuHaoUrl,
+              params: {
+                UID: logUid
+              }
+            };
+            $scope.jiaoShiKxh = [];
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                $scope.jiaoShiKxh = data.data;
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          };
+          if(!kmfzrQx && rkjsQx){
+            qryJsKxh();
+          }
 
           /**
            * 判断是否为数组
@@ -365,13 +391,32 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                     kxhArr.push(kxhObj);
                     idxCount ++;
                   });
-                  //kxhArr = Lazy(kxhArr).sortBy(function(stu){ return stu['课序号名称'];}).toArray();
                   kxhArr = DataService.cnSort(kxhArr, '课序号名称');
-                  tjBarData = kxhArr;
-                  $scope.kszPubData['统计维度'] = kxhArr;
-                  $scope.tjKxh = kxhArr.slice(0, 5);
+                  var rkjsKxhArr = [];
+                  var newKxhArr = [];
+                  if(!kmfzrQx && rkjsQx){
+                    var newStuData = [];
+                    Lazy(kxhArr).each(function(kxh){
+                      var fnTar = Lazy($scope.jiaoShiKxh).find(function(jsKxh){
+                        return jsKxh['课序号ID'] == kxh['课序号ID'];
+                      });
+                      if(fnTar){
+                        newStuData = Lazy(newStuData).union(kxh['课序号学生']).toArray();
+                        rkjsKxhArr.push(kxh);
+                      }
+                    });
+                    newKxhArr = rkjsKxhArr;
+                    allStutents = angular.copy(newStuData);
+                    $scope.studentData = newStuData;
+                  }
+                  else{
+                    newKxhArr = kxhArr;
+                  }
+                  tjBarData = newKxhArr;
+                  $scope.kszPubData['统计维度'] = newKxhArr;
+                  $scope.tjKxh = newKxhArr.slice(0, 5);
                   $scope.tjParas.tjWdPgOn = 0;
-                  $scope.tjParas.tjWdPgLen = Math.ceil(kxhArr.length / 5);
+                  $scope.tjParas.tjWdPgLen = Math.ceil((newKxhArr.length || 0) / 5);
                   $scope.tjParas.lastSltKxh = {
                     activeIdx: 0,
                     kxhIdx: 0
@@ -734,7 +779,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
                 Lazy(data.data['试卷题目']).each(function(dt){
                   Lazy(dt['题目']).each(function(tm){
                     var findTar = Lazy(tiMuDeFenLvArr).find(function(dfl){
-                      return dfl['题目ID'] == tm['题目'];
+                      return dfl['题目ID'] == tm['题目ID'];
                     });
                     tm['得分率'] = findTar ? findTar['得分率'] : 0;
                     tm = DataService.formatDaAn(tm);

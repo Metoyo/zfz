@@ -257,13 +257,6 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          * 获得角色juese（科目权限）的代码
          */
         $scope.getJueSe = function(js){
-          //js.ckd = !js.ckd;
-          //var jsId = [];
-          //Lazy($scope.juese_list).each(function(js){
-          //  if(js.ckd){
-          //    jsId.push(js);
-          //  }
-          //});
           if(js){
             $scope.select_km['角色'].push(js);
             checkHaveJs();

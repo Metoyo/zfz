@@ -1,17 +1,17 @@
 <h4 class="pb10 bdb">
-  <span class="cYell">{{kwParams.dftKmName['科目名称']}}</span><span>新建考试组</span>
+  <span class="cYell">{{kwParams.dftKmName['科目名称']}}</span><span>新建考试</span>
   <em style="font-size:12px" class="ml15">带 <i>*</i>为必填项</em>
 </h4>
 <div class="row editKaoShi">
   <form class="form-horizontal" name="kaoshiForm">
     <div class="form-group">
-      <label class="col-sm-2 control-label">考试名称组<i>*</i></label>
+      <label class="col-sm-2 control-label">考试名称<i>*</i></label>
       <div class="col-sm-6">
-        <input type="text" name="ksName" class="form-control" placeholder="考试名称组" required autofocus="true"
+        <input type="text" name="ksName" class="form-control" placeholder="考试名称" required autofocus="true"
                ng-model="kaoShiZuData['考试组名称']"/>
       </div>
       <div class="col-sm-4">
-        <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">考试组名称不能为空！</p>
+        <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">考试名称不能为空！</p>
       </div>
     </div>
     <div class="form-group">
@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label">考试组设置</label>
+      <label class="col-sm-2 control-label">考试设置</label>
       <div class="col-sm-10">
         <label class="checkbox-inline">
           <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['选项乱序']"> 选项乱序

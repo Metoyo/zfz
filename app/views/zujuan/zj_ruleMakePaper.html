@@ -17,9 +17,9 @@
       <div class="form-horizontal p10 bd1" ng-if="addSjz.sltTp=='random'">
         <div class="form-group">
           <label class="col-sm-1 control-label">题型</label>
-          <div class="col-sm-5">
+          <div class="col-sm-4">
             <select class="form-control ruleMakePaperSelectId" ng-model="zuJuanParam.rlTxId" disabled="disabled"
-                    ng-change="rmpGetTxId(zuJuanParam.rlTxId)" ng-options="tx['题型ID'] as tx['题型名称'] for tx in kmtxList">
+                    ng-options="tx['题型ID'] as tx['题型名称'] for tx in kmtxList">
               <option value="">请选择题型</option>
             </select>
           </div>
@@ -29,7 +29,7 @@
                    onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-model="zuJuanParam.rlTmNum" style="width: 60px;display: inline-block;"/>
             <span ng-bind="'/'+ zuJuanParam.timuNum" ng-show="zuJuanParam.timuNum"></span>
           </div>
-          <label class="col-sm-1 control-label">小题分值</label>
+          <label class="col-sm-2 control-label">每小题分值</label>
           <div class="col-sm-2">
             <input type="text" class="form-control txNum" maxlength="3" onkeyup="this.value=this.value.replace(/\D/g,'')"
                    onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-model="zuJuanParam.rlTmFz"/>
@@ -87,7 +87,7 @@
           </tr>
           <tr ng-repeat="sjtm in addSjz.sltDati['随机题目']">
             <td>
-              <input type="text" value="{{sjtm['知识点名称'].join('；')}}" disabled class="font-cut">
+              <input type="text" value="{{sjtm['知识点名称'].join('；')}}" disabled class="font-cut" title="{{sjtm['知识点名称'].join('；')}}">
             </td>
             <td ng-bind="tiXingArr[sjtm['题型']-1]"></td>
             <td ng-bind="sjtm['题目数量']"></td>

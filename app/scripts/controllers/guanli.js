@@ -806,6 +806,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                 }
                 else{ //课序号添加考生
                   $scope.showKeXuHaoManage = false;
+                  $scope.loadingImgShow = false;
                   $scope.chaXunKxhYongHu($scope.selectKxh);
                   DataService.alertInfFun('suc', '课序号添加考生成功!');
                 }
@@ -940,8 +941,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         };
 
         /**
-        * 保存统计设定的值
-        */
+         * 保存统计设定的值
+         */
         $scope.glSaveTongJiSet = function(){
           var obj = {
             method: 'POST',

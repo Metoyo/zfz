@@ -11,6 +11,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         var logUid = loginUsr['UID']; //登录用户的UID
         var yongHuSet = loginUsr['用户设置']; //用户设置
         var dftKm = JSON.parse($cookieStore.get('ckKeMu')); //默认选择的科目
+        var jsArr = JSON.parse($cookieStore.get('ckJs')) || []; //登录用户的角色数组
         var keMuId = dftKm['科目ID']; //默认的科目ID
         var lingYuId = dftKm['领域ID']; //默认的科目ID
         var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
@@ -64,7 +65,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           isAddTiMu: true, //是否是编辑题目
           xuanZheTiZhi: '', //选择题题支内容
           tianKongDaAn: '', //填空题答案
-          allTkIds: [] //所有题库ID
+          allTkIds: [], //所有题库ID
+          tiXingId: '' //题型转换
         };
         $scope.tiXingIdArr = [ //题型转换数组
           {txId: 5, txName: '计算题'},
@@ -395,12 +397,38 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         /**
          * 初始化需要查询到数据
          */
-        cxKmTx();
-        getDaGangData();
-        qryLuTiRen();
-        qryChuTiRen();
-        qryKeMuJiaoShi();
-        //qryTiKu();
+        //cxKmTx();
+        //getDaGangData();
+        //qryLuTiRen();
+        //qryChuTiRen();
+        //qryKeMuJiaoShi();
+        ////qryTiKu();
+
+        /**
+         * 判断用户的角色
+         */
+        var kmfzrQx = Lazy(jsArr).contains(2); //判断科目负责人
+        var rkjsQx = Lazy(jsArr).contains(3); //判断任课教师
+        var judgeJs = function(){
+          if(kmfzrQx){
+            cxKmTx();
+            getDaGangData();
+            qryLuTiRen();
+            qryChuTiRen();
+            qryKeMuJiaoShi();
+          }
+          else{
+            if(rkjsQx){
+              qryTmPar.ctr = logUid;
+              qryTmPar.ltr = logUid;
+              cxKmTx();
+              getDaGangData();
+              qryKeMuJiaoShi();
+            }
+          }
+          $scope.txTpl = 'views/mingti/testList.html';
+        };
+        judgeJs();
 
         /**
          * 由所选的知识大纲，得到知识点
@@ -562,11 +590,25 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         /**
          * 查询试题的函数
          */
-        $scope.qryTestFun = function(pg){
+        $scope.qryTestFun = function(parms){
           $scope.loadingImgShow = true;
           tiMuIdArr = [];
           pageArr = [];
+          function _do(item) {
+            qryTmPar.zsd.push(item['知识点ID']);
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
           var obj = {method: 'GET', url: tiMuUrl, params: {'学校ID': jgID, '科目ID': keMuId, '返回题目内容': false}};
+          if(parms == 'qryByTiMuId'){
+            qryTmPar.zsd = [];
+          }
+          else{
+            if(!(qryTmPar.zsd && qryTmPar.zsd.length > 0)){
+              Lazy($scope.kowledgeList['节点']).each(_do);
+            }
+          }
           if(qryTmPar.zsd && qryTmPar.zsd.length > 0){
             obj.params['知识点'] = JSON.stringify(qryTmPar.zsd);
           }
@@ -640,8 +682,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               ctr: '', //出题人UID
               ltr: ''  //录题人ID
             };
+            if(!kmfzrQx && rkjsQx){
+              qryTmPar.ctr = logUid;
+              qryTmPar.ltr = logUid;
+            }
             qryTmPar.tm = $scope.mingTiParam.tiMuId; //题目id
-            $scope.qryTestFun();
+            $scope.qryTestFun('qryByTiMuId');
           }
           else{
             DataService.alertInfFun('pmt', '请输入要查询的题目ID！');
@@ -705,6 +751,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           $scope.patternListToggle = true;
           $scope.newTiXingId = 1;
           $scope.mingTiParam.isConvertTiXing = false;
+          $scope.mingTiParam.tiXingId = '';
           $scope.alterTiMuTiXing = '';
           $scope.timu = {
             '题库ID': '',
@@ -804,6 +851,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           $scope.patternListToggle = false;
           $scope.alterTiMuTiXing = '';
           $scope.mingTiParam.panDuanDaAn = '';
+          $scope.mingTiParam.isConvertTiXing = false;
+          $scope.mingTiParam.tiXingId = '';
           $scope.timu = {
             '题库ID': '',
             '科目ID': '',
@@ -827,7 +876,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           }
           Lazy($scope.kowledgeList['节点']).each(_do);
           qryTmPar.zsd = [];
-          $scope.qryTestFun($scope.currentPage);
+          $scope.qryTestFun();
           $scope.txTpl = 'views/mingti/testList.html';
         };
 
@@ -1167,6 +1216,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               $scope.tkLoopArr = tkLoopArr;
             }
             else{
+              $scope.mingTiParam.isConvertTiXing = true;
+              $scope.mingTiParam.tiXingId = '';
               $scope.timu['题目内容']['答案'] = daan;
             }
           };
@@ -1414,6 +1465,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               obj.method = 'POST';
             }
             $scope.fbdBtn = true;
+            if($scope.mingTiParam.isConvertTiXing && obj.data['题型ID'] != $scope.mingTiParam.tiXingId){
+              obj.data['题型ID'] = $scope.mingTiParam.tiXingId;
+            }
             $http(obj).success(function(data){
               if(data.result){
                 $scope.timu['题目内容'] = {

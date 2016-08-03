@@ -1,17 +1,17 @@
 <h4 class="pb10">
-  <span class="cYell">{{kwParams.dftKmName['科目名称']}}</span><span>考试组管理</span>
+  <span class="cYell">{{kwParams.dftKmName['科目名称']}}</span><span>考试管理</span>
   <span class="fz16">
     <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.kszListZt == 'all' }"
-       ng-click="showKaoShiZuList('all')">全部考试组</a> |
+       ng-click="showKaoShiZuList('all')">全部考试</a> |
     <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.kszListZt == 'done' }"
-       ng-click="showKaoShiZuList('done')">已完成考试组</a> |
+       ng-click="showKaoShiZuList('done')">已完成考试</a> |
     <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.kszListZt == 'ing' }"
-       ng-click="showKaoShiZuList('ing')">未完成考试组</a>
+       ng-click="showKaoShiZuList('ing')">未完成考试</a>
   </span>
 </h4>
 <table class="table table-striped">
   <tr class="active">
-    <th>考试组名称</th>
+    <th>考试名称</th>
     <th class="text-center">报名方式</th>
     <th width="80px" class="text-center">场次数</th>
     <th width="100px" class="text-center">报考人数</th>
@@ -95,6 +95,11 @@
             <td class="text-center">{{cc['总人数'] || 0}}/{{kaoShiZuDtl['总人数']}}</td>
             <td class="text-center cursorPointer" title="导出考生" ng-click="exportKsInfo('mdOff', cc)">
               <span class="glyphicon glyphicon-export"></span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <span ng-repeat="(k, v) in kaoShiZuDtl['考试组设置']" class="mr15">{{k}}:{{v}}</span>
             </td>
           </tr>
         </table>
