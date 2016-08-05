@@ -1917,7 +1917,7 @@ label.checkbox {
     margin-bottom: 5px; }
 .tongjiWrapper .answer-cont {
   position: relative;
-  display: none; }
+  display: block; }
   .tongjiWrapper .answer-cont .daAnLabel {
     position: absolute; }
   .tongjiWrapper .answer-cont .daAnBox {

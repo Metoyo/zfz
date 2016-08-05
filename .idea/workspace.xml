@@ -2,25 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/student/baoming.html" afterPath="$PROJECT_DIR$/app/views/student/baoming.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/services/dataservice.js" afterPath="$PROJECT_DIR$/app/scripts/services/dataservice.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/kaowu/editKaoShiZu.html" afterPath="$PROJECT_DIR$/app/views/kaowu/editKaoShiZu.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/guanli.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/guanli.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/kaowu/kaoShiZuList.html" afterPath="$PROJECT_DIR$/app/views/kaowu/kaoShiZuList.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/kaowu/kaowu.html" afterPath="$PROJECT_DIR$/app/views/kaowu/kaowu.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/mingti.html" afterPath="$PROJECT_DIR$/app/views/mingti/mingti.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/config.js" afterPath="$PROJECT_DIR$/app/scripts/config.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.css" afterPath="$PROJECT_DIR$/app/styles/main.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.scss" afterPath="$PROJECT_DIR$/app/styles/main.scss" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/mingti.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/register.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/register.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/renzheng/rz_pdf.html" afterPath="$PROJECT_DIR$/app/views/renzheng/rz_pdf.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/renzheng/rz_scanner.html" afterPath="$PROJECT_DIR$/app/views/renzheng/rz_scanner.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/testList.html" afterPath="$PROJECT_DIR$/app/views/mingti/testList.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/tongji/tj_ks.html" afterPath="$PROJECT_DIR$/app/views/tongji/tj_ks.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/nav.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/nav.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/tongji/tj_ks_chart.html" afterPath="$PROJECT_DIR$/app/views/tongji/tj_ks_chart.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/tongji.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/tongji.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/guanli/tongjiset.html" afterPath="$PROJECT_DIR$/app/views/guanli/tongjiset.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html" afterPath="$PROJECT_DIR$/app/views/zujuan/zj_radomMakePaper.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" afterPath="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
     </list>
     <ignored path="zhifz.iws" />
@@ -45,45 +34,42 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="jieda.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/views/mingti/jieda.html">
+      <file leaf-file-name="mingti.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/mingti.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.442307" vertical-offset="1445" max-vertical-offset="2208">
-              <caret line="121" column="52" selection-start-line="121" selection-start-column="32" selection-end-line="121" selection-end-column="52" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="24492" max-vertical-offset="25216">
+              <caret line="1542" column="17" selection-start-line="1542" selection-start-column="17" selection-end-line="1542" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mingti.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/scripts/controllers/mingti.js">
+      <file leaf-file-name="tongji.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/tongji.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="21128" max-vertical-offset="22352">
-              <caret line="1453" column="13" selection-start-line="1453" selection-start-column="13" selection-end-line="1453" selection-end-column="13" />
-              <folding>
-                <element signature="e#1539#1770#0" expanded="false" />
-                <element signature="e#3273#3768#0" expanded="false" />
-                <element signature="e#3875#4276#0" expanded="false" />
-                <element signature="e#10028#10349#0" expanded="false" />
-                <element signature="e#10431#10870#0" expanded="false" />
-                <element signature="e#10958#11746#0" expanded="false" />
-                <element signature="e#11826#12207#0" expanded="false" />
-                <element signature="e#12756#13135#0" expanded="false" />
-                <element signature="e#16173#17308#0" expanded="false" />
-                <element signature="e#16911#17105#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="15468" max-vertical-offset="16192">
+              <caret line="1005" column="5" selection-start-line="1005" selection-start-column="5" selection-end-line="1005" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="register.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/scripts/controllers/register.js">
+      <file leaf-file-name="config.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/config.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22360249" vertical-offset="4736" max-vertical-offset="6464">
-              <caret line="305" column="10" selection-start-line="305" selection-start-column="10" selection-end-line="305" selection-end-column="10" />
-              <folding>
-                <element signature="e#11497#12995#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2304">
+              <caret line="0" column="35" selection-start-line="0" selection-start-column="35" selection-end-line="0" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nav.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/nav.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.95129377" vertical-offset="1663" max-vertical-offset="2400">
+              <caret line="143" column="3" selection-start-line="143" selection-start-column="3" selection-end-line="143" selection-end-column="3" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -96,13 +82,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/views/mingti/jisuan.html" />
-        <option value="$PROJECT_DIR$/app/views/mingti/panduan.html" />
-        <option value="$PROJECT_DIR$/app/views/mingti/tiankong.html" />
-        <option value="$PROJECT_DIR$/app/views/mingti/zhengming.html" />
-        <option value="$PROJECT_DIR$/app/views/guanli/kexuhao.html" />
-        <option value="$PROJECT_DIR$/app/views/renzheng/rz_setJiGou.html" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/user.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/renzheng/rz_setJiGou.html" />
         <option value="$PROJECT_DIR$/app/views/renzheng/rz_setLingYu.html" />
         <option value="$PROJECT_DIR$/app/views/renzheng/rz_setPubZsd.html" />
@@ -119,17 +98,12 @@
         <option value="$PROJECT_DIR$/app/views/mingti/testList.html" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/mingti/mingti.html" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/mingti/testList.html" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/routes/router.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/routes/api.js" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/tongji.js" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/tongji.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/register.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/guanli.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/guanli.js" />
         <option value="$PROJECT_DIR$/app/views/kaowu/kaowu.html" />
-        <option value="$PROJECT_DIR$/app/views/tongji/tj_ks_chart.html" />
         <option value="$PROJECT_DIR$/app/views/tongji/tj_ks.html" />
         <option value="$PROJECT_DIR$/app/views/guanli/tongjiset.html" />
         <option value="$PROJECT_DIR$/app/views/student/baoming.html" />
@@ -144,9 +118,21 @@
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_radomMakePaper.html" />
         <option value="$PROJECT_DIR$/app/views/kaowu/kaoShiZuList.html" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/kaowu/kaoShiZuList.html" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/register.js" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js" />
+        <option value="$PROJECT_DIR$/app/styles/main.scss" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css" />
+        <option value="$PROJECT_DIR$/app/scripts/config.js" />
+        <option value="$PROJECT_DIR$/app/views/tongji/tj_ks_chart.html" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/tongji/tj_ks_chart.html" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/config.js" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/tongji.js" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/tongji.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/mingti.js" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/register.js" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/nav.js" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/nav.js" />
       </list>
     </option>
   </component>
@@ -423,6 +409,50 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="tongji" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="partials" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="mingti" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -660,137 +690,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/scripts/controllers/mingti.js</url>
-          <line>752</line>
-          <option name="timeStamp" value="535" />
+          <line>1188</line>
+          <option name="timeStamp" value="541" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/app/scripts/controllers/renzheng.js</url>
+          <line>55</line>
+          <option name="timeStamp" value="543" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/app/scripts/controllers/mingti.js</url>
-          <line>1217</line>
-          <option name="timeStamp" value="536" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/app/scripts/controllers/mingti.js</url>
-          <line>1491</line>
-          <option name="timeStamp" value="537" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/app/scripts/controllers/mingti.js</url>
-          <line>1467</line>
-          <option name="timeStamp" value="538" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/app/scripts/controllers/mingti.js</url>
-          <line>1139</line>
-          <option name="timeStamp" value="539" />
+          <line>459</line>
+          <option name="timeStamp" value="544" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="540" />
+      <option name="time" value="545" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/renzheng/rz_setTiKu.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.74151856" vertical-offset="117" max-vertical-offset="736">
-          <caret line="36" column="112" selection-start-line="36" selection-start-column="112" selection-end-line="36" selection-end-column="112" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5656402" vertical-offset="30307" max-vertical-offset="36256">
-          <caret line="2060" column="31" selection-start-line="2060" selection-start-column="17" selection-end-line="2060" selection-end-column="31" />
-          <folding>
-            <element signature="e#3076#4816#0" expanded="false" />
-            <element signature="e#5594#5628#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/renzheng/rz_kaoDian.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66397417" vertical-offset="1541" max-vertical-offset="2160">
-          <caret line="122" column="78" selection-start-line="122" selection-start-column="66" selection-end-line="122" selection-end-column="78" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/services/dataservice.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.04870624" vertical-offset="0" max-vertical-offset="3584">
-          <caret line="2" column="2" selection-start-line="2" selection-start-column="2" selection-end-line="2" selection-end-column="2" />
-          <folding>
-            <element signature="e#104#228#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/services/dataservice.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1476408" vertical-offset="2991" max-vertical-offset="3680">
-          <caret line="193" column="13" selection-start-line="193" selection-start-column="13" selection-end-line="193" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../kaoshi/app/scripts/controllers/mingti.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.7407408" vertical-offset="3003" max-vertical-offset="29296">
-          <caret line="194" column="60" selection-start-line="194" selection-start-column="60" selection-end-line="194" selection-end-column="60" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../kaoshi/app/views/mingti/testList.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4394184" vertical-offset="688" max-vertical-offset="2080">
-          <caret line="60" column="101" selection-start-line="60" selection-start-column="77" selection-end-line="60" selection-end-column="101" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/nav.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.04414" vertical-offset="146" max-vertical-offset="1248">
-          <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
-          <folding>
-            <element signature="e#1242#2865#0" expanded="false" />
-            <element signature="e#3097#3749#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/renzheng.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1760" max-vertical-offset="4896">
-          <caret line="145" column="40" selection-start-line="145" selection-start-column="36" selection-end-line="145" selection-end-column="40" />
-          <folding>
-            <element signature="e#3184#3421#0" expanded="false" />
-            <element signature="e#3511#3783#0" expanded="false" />
-            <element signature="e#3802#3988#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../kaoshi/app/scripts/controllers/tongji.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33225283" vertical-offset="17123" max-vertical-offset="25024">
-          <caret line="1083" column="30" selection-start-line="1083" selection-start-column="22" selection-end-line="1083" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/mingti/testList.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.034710743" vertical-offset="27" max-vertical-offset="2112">
-          <caret line="3" column="68" selection-start-line="3" selection-start-column="68" selection-end-line="3" selection-end-column="68" />
-          <folding>
-            <element signature="n#style#0;n#a#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/mingti/mingti.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.25040388" vertical-offset="1061" max-vertical-offset="1760">
@@ -798,22 +716,6 @@
           <folding>
             <element signature="n#style#0;n#label#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#!!top" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42857143" vertical-offset="28268" max-vertical-offset="28992">
-          <caret line="1784" column="57" selection-start-line="1784" selection-start-column="57" selection-end-line="1784" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5310559" vertical-offset="3354" max-vertical-offset="28992">
-          <caret line="231" column="28" selection-start-line="231" selection-start-column="28" selection-end-line="231" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -833,24 +735,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/tongji.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0496894" vertical-offset="14316" max-vertical-offset="15408">
-          <caret line="937" column="50" selection-start-line="937" selection-start-column="50" selection-end-line="937" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/tongji.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="12088" max-vertical-offset="15328">
-          <caret line="765" column="37" selection-start-line="765" selection-start-column="37" selection-end-line="765" selection-end-column="37" />
-          <folding>
-            <element signature="e#1787#1910#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/register.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="6428" max-vertical-offset="7152">
@@ -863,22 +747,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0062111802" vertical-offset="13884" max-vertical-offset="16048">
           <caret line="868" column="52" selection-start-line="0" selection-start-column="0" selection-end-line="997" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/mingti.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.533118" vertical-offset="0" max-vertical-offset="1760">
-          <caret line="98" column="10" selection-start-line="98" selection-start-column="10" selection-end-line="98" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/testList.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32911393" vertical-offset="0" max-vertical-offset="2112">
-          <caret line="13" column="55" selection-start-line="13" selection-start-column="55" selection-end-line="13" selection-end-column="55" />
           <folding />
         </state>
       </provider>
@@ -903,14 +771,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.6835443" vertical-offset="432" max-vertical-offset="1312">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/tongji/tj_ks_chart.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="84" max-vertical-offset="4688">
-          <caret line="17" column="39" selection-start-line="17" selection-start-column="36" selection-end-line="17" selection-end-column="39" />
           <folding />
         </state>
       </provider>
@@ -992,15 +852,15 @@
         <state vertical-scroll-proportion="92.30769" vertical-offset="5136" max-vertical-offset="7744">
           <caret line="21" column="20" selection-start-line="0" selection-start-column="0" selection-end-line="478" selection-end-column="0" />
           <folding>
-            <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h3#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#div#0;n#div#2;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#3;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#2;n#div#3;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#2;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#h3#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#1;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#3;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#3;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#2;n#div#3;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1107,22 +967,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/mingti.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1552795" vertical-offset="23708" max-vertical-offset="24432">
-          <caret line="1488" column="38" selection-start-line="1488" selection-start-column="38" selection-end-line="1488" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/jieda.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.442307" vertical-offset="1445" max-vertical-offset="2208">
-          <caret line="121" column="52" selection-start-line="121" selection-start-column="32" selection-end-line="121" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/controllers/guanli.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.5838509" vertical-offset="24" max-vertical-offset="16048">
@@ -1131,32 +975,207 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/mingti.js">
+    <entry file="file://$PROJECT_DIR$/app/scripts/services/dataservice.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="21128" max-vertical-offset="22352">
-          <caret line="1453" column="13" selection-start-line="1453" selection-start-column="13" selection-end-line="1453" selection-end-column="13" />
-          <folding>
-            <element signature="e#1539#1770#0" expanded="false" />
-            <element signature="e#3273#3768#0" expanded="false" />
-            <element signature="e#3875#4276#0" expanded="false" />
-            <element signature="e#10028#10349#0" expanded="false" />
-            <element signature="e#10431#10870#0" expanded="false" />
-            <element signature="e#10958#11746#0" expanded="false" />
-            <element signature="e#11826#12207#0" expanded="false" />
-            <element signature="e#12756#13135#0" expanded="false" />
-            <element signature="e#16173#17308#0" expanded="false" />
-            <element signature="e#16911#17105#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.56164384" vertical-offset="2719" max-vertical-offset="3680">
+          <caret line="193" column="13" selection-start-line="193" selection-start-column="13" selection-end-line="193" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/jieda.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8293919" vertical-offset="1445" max-vertical-offset="2208">
+          <caret line="121" column="52" selection-start-line="121" selection-start-column="32" selection-end-line="121" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.4720497" vertical-offset="28044" max-vertical-offset="29104">
+          <caret line="1812" column="10" selection-start-line="1812" selection-start-column="10" selection-end-line="1812" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.54658383" vertical-offset="19264" max-vertical-offset="29104">
+          <caret line="1226" column="11" selection-start-line="1226" selection-start-column="11" selection-end-line="1226" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5219595" vertical-offset="38667" max-vertical-offset="73072">
+          <caret line="2436" column="19" selection-start-line="2436" selection-start-column="19" selection-end-line="2436" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="61744">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="3853" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="112">
+          <caret line="0" column="78417" selection-start-line="0" selection-start-column="78417" selection-end-line="0" selection-end-column="78417" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/mingti.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.98869145" vertical-offset="956" max-vertical-offset="1760">
+          <caret line="98" column="10" selection-start-line="98" selection-start-column="10" selection-end-line="98" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/testList.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6455696" vertical-offset="728" max-vertical-offset="2112">
+          <caret line="71" column="14" selection-start-line="67" selection-start-column="8" selection-end-line="71" selection-end-column="14" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/controllers/register.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22360249" vertical-offset="4736" max-vertical-offset="6464">
-          <caret line="305" column="10" selection-start-line="305" selection-start-column="10" selection-end-line="305" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="318" max-vertical-offset="6464">
+          <caret line="33" column="22" selection-start-line="33" selection-start-column="12" selection-end-line="33" selection-end-column="22" />
           <folding>
             <element signature="e#11497#12995#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/tongji/tj_ks_chart.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.84491116" vertical-offset="3893" max-vertical-offset="4528">
+          <caret line="276" column="6" selection-start-line="276" selection-start-column="6" selection-end-line="276" selection-end-column="6" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#2;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#input#0;n#span#1;n#div#2;n#li#0;n#ul#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#2;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/tongji/tj_ks_chart.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35379645" vertical-offset="2629" max-vertical-offset="3408">
+          <caret line="248" column="16" selection-start-line="248" selection-start-column="16" selection-end-line="248" selection-end-column="16" />
+          <folding>
+            <element signature="n#div#2;n#!!top" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/renzheng.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.10372771" vertical-offset="0" max-vertical-offset="4896">
+          <caret line="4" column="93" selection-start-line="4" selection-start-column="79" selection-end-line="4" selection-end-column="93" />
+          <folding>
+            <element signature="e#3184#3421#0" expanded="false" />
+            <element signature="e#3511#3783#0" expanded="false" />
+            <element signature="e#3802#3988#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/tongji.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15468" max-vertical-offset="16192">
+          <caret line="1005" column="5" selection-start-line="1005" selection-start-column="5" selection-end-line="1005" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/partials/nav.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.025316456" vertical-offset="32" max-vertical-offset="3216">
+          <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/nav.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.39269406" vertical-offset="302" max-vertical-offset="1632">
+          <caret line="35" column="40" selection-start-line="0" selection-start-column="0" selection-end-line="144" selection-end-column="0" />
+          <folding>
+            <element signature="e#1305#2928#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/tongji.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4037267" vertical-offset="13004" max-vertical-offset="16192">
+          <caret line="829" column="19" selection-start-line="827" selection-start-column="16" selection-end-line="829" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3409437" vertical-offset="0" max-vertical-offset="2304">
+          <caret line="14" column="33" selection-start-line="14" selection-start-column="33" selection-end-line="14" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/mingti.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6693679" vertical-offset="2339" max-vertical-offset="22368">
+          <caret line="262" column="29" selection-start-line="0" selection-start-column="0" selection-end-line="1570" selection-end-column="0" />
+          <folding>
+            <element signature="e#1575#1806#0" expanded="false" />
+            <element signature="e#3309#3804#0" expanded="false" />
+            <element signature="e#3950#4351#0" expanded="false" />
+            <element signature="e#4446#4953#0" expanded="false" />
+            <element signature="e#5028#6140#0" expanded="false" />
+            <element signature="e#11356#11795#0" expanded="false" />
+            <element signature="e#11883#12671#0" expanded="false" />
+            <element signature="e#12751#13132#0" expanded="false" />
+            <element signature="e#13216#13602#0" expanded="false" />
+            <element signature="e#13681#14060#0" expanded="false" />
+            <element signature="e#14146#14257#0" expanded="false" />
+            <element signature="e#17708#18843#0" expanded="false" />
+            <element signature="e#18446#18640#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/mingti.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="24492" max-vertical-offset="25216">
+          <caret line="1542" column="17" selection-start-line="1542" selection-start-column="17" selection-end-line="1542" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2304">
+          <caret line="0" column="35" selection-start-line="0" selection-start-column="35" selection-end-line="0" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/nav.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.95129377" vertical-offset="1663" max-vertical-offset="2400">
+          <caret line="143" column="3" selection-start-line="143" selection-start-column="3" selection-end-line="143" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>

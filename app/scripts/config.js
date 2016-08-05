@@ -10,6 +10,11 @@ define( "config", [], function () {
         controller: 'MingtiCtrl',
         requireLogin: true
       },
+      '/mingti/:id': {
+        templateUrl: '../views/mingti/mingti.html',
+        controller: 'MingtiCtrl',
+        requireLogin: true
+      },
       '/dagang': {
         templateUrl: '../views/dagang/dagang.html',
         controller: 'DagangCtrl',

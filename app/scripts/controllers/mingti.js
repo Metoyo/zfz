@@ -2,7 +2,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
   'use strict';
   angular.module('zhifzApp.controllers.MingtiCtrl', [])
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'DataService', '$cookieStore',
-      function ($rootScope, $scope, $http, $q, $timeout, DataService, $cookieStore) {
+      '$routeParams',
+      function ($rootScope, $scope, $http, $q, $timeout, DataService, $cookieStore, $routeParams) {
         /**
          * 声明变量
          */
@@ -106,6 +107,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           }
         ];
         $scope.fbdBtn = false;
+
+        var tiMuId = $routeParams.id;
 
         /**
          * 查询科目题型
@@ -244,6 +247,27 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                     $scope.mingTiParam.slt_dg = sltDg['知识大纲ID'];
                     $scope.kowledgeList = sltDg;
                     qryTiKu();
+                    if(tiMuId){
+                      var obj = {
+                        method: 'GET',
+                        url: tiMuUrl,
+                        params: {
+                          '返回题目内容': true,
+                          '题目ID': tiMuId
+                        }
+                      };
+                      $http(obj).success(function(data){ //查询题目详情
+                        if(data.result && data.data){
+                          Lazy(data.data).each(function(tm, idx, lst){
+                            tm = DataService.formatDaAn(tm);
+                          });
+                          $scope.editItem(data.data[0]);
+                        }
+                        else{
+                          DataService.alertInfFun('err', data.error);
+                        }
+                      });
+                    }
                   }
                   else{
                     $scope.mingTiParam.slt_dg = '';
@@ -429,6 +453,31 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           $scope.txTpl = 'views/mingti/testList.html';
         };
         judgeJs();
+
+        /**
+         * 判断是否从统计过来的修改题目
+         */
+        //if(tiMuId){
+        //  var obj = {
+        //    method: 'GET',
+        //    url: tiMuUrl,
+        //    params: {
+        //      '返回题目内容': true,
+        //      '题目ID': tiMuId
+        //    }
+        //  };
+        //  $http(obj).success(function(data){ //查询题目详情
+        //    if(data.result && data.data){
+        //      $scope.editItem(data.data[0]);
+        //    }
+        //    else{
+        //      DataService.alertInfFun('err', data.error);
+        //    }
+        //  });
+        //}
+        //else{
+        //  judgeJs();
+        //}
 
         /**
          * 由所选的知识大纲，得到知识点

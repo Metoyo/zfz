@@ -3,7 +3,8 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
     'use strict';
     angular.module('zhifzApp.controllers.TongjiCtrl', [])
       .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$location', '$cookieStore',
-        function ($rootScope, $scope, $http, $timeout, DataService, $location, $cookieStore) {
+        'urlRedirect',
+        function ($rootScope, $scope, $http, $timeout, DataService, $location, $cookieStore, urlRedirect) {
 
           /**
            * 声明变量
@@ -18,7 +19,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           var kaoShengChengJiUrl = '/kaosheng_chengji'; //查询考生成绩
           var kaoShengZhiShiDianDeFenLvUrl = '/kaosheng_zhishidian_defenlv'; //查询考生知识点得分率
           var kaoShiZuTiMuDeFenLvUrl = '/kaoshizu_timu_defenlv'; //查询考试组题目得分率
-          var tiMuDeFenLvUrl = '/timu_defenlv'; //题目得分率
+          var tiMuUrl = '/timu'; //题目的URL
           var kaoShengZuoDaUrl = '/kaosheng_zuoda'; //考生作答的接口
           var exportStuUrl = '/json2excel'; //导出考生
           var jiaoShiKeXuHaoUrl = '/jiaoshi_kexuhao'; //查询教师课序号
@@ -56,10 +57,13 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             sltKxhPjf: '', //选中的课序号平均分
             sltKxhName: '', //选中的课序号名称
             letterArr: config.letterArr, //题支的序号
-            cnNumArr: config.cnNumArr //汉语的大写数字
+            cnNumArr: config.cnNumArr, //汉语的大写数字
+            sltTmId: '' //题目修改选中的题目ID
           };
           $scope.tiMuDeFenLv = []; //存放题目得分率
           $scope.jiaoShiKxh = []; //登录到教师课序号
+          $scope.tiXingArr = config.tiXingArr; //题型名称数组
+          $scope.letterArr = config.letterArr; //题支的序号
           var tjParaObj = { //存放统计参数的Object
             barBox: '',
             radarBox: '',
@@ -340,6 +344,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
             if(ksz){
               $scope.loadingImgShow = true;
               $scope.showKaoShengList = false;
+              $scope.showTiMuDetailWrap = true;
               tiMuDeFenLvArr = [];
               $scope.kszPubData = {
                 '考试组名称': ksz['考试组名称'],
@@ -800,6 +805,50 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
           */
           $scope.closeZuoDaReappear = function(){
             $scope.showKaoShengList = true;
+            $scope.showTiMuDetailWrap = true;
+            $scope.timuDetails = '';
+            $scope.tjParas.sltTmId = '';
+          };
+
+          /**
+           * 查询题目
+           */
+          $scope.showTiMuDetail = function(tmId){
+            var obj = {
+              method: 'GET',
+              url: tiMuUrl,
+              params: {
+                '返回题目内容': true,
+                '题目ID': tmId
+              }
+            };
+            $scope.tjParas.sltTmId = '';
+            $http(obj).success(function(data){ //查询题目详情
+              if(data.result && data.data){
+                Lazy(data.data).each(function(tm, idx, lst){
+                  tm = DataService.formatDaAn(tm);
+                });
+                $scope.tjParas.sltTmId = tmId;
+                $scope.timuDetails = data.data;
+                $scope.showTiMuDetailWrap = false;
+              }
+              else{
+                $scope.timuDetails = '';
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          };
+
+          /**
+           * 修改题目
+           */
+          $scope.editItem = function(){
+            var currentPath = $location.$$path;
+            if($scope.tjParas.sltTmId){
+              var goUrl = '/mingti/' + $scope.tjParas.sltTmId;
+              urlRedirect.goTo(currentPath, goUrl);
+            }
+
           };
 
           ///**
@@ -950,7 +999,7 @@ define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
               processEscapes: true
             });
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "answerReappearShiJuan"]);
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList1"]);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
           });
 
         }]);

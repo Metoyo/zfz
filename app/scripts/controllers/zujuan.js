@@ -1175,6 +1175,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
           var gzObj = angular.copy($scope.sjzSet);
           var mis = [];
+          var isHasRule = 0;
           Lazy(gzObj['组卷规则']).each(function(dt){
             var gdtmArr = angular.copy(dt['固定题目']);
             var sjtmArr = dt['随机题目'];
@@ -1202,6 +1203,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             else{
               delete dt['随机题目'];
             }
+            if(!(gdtmArr && gdtmArr.length > 0) && !(sjtmArr && sjtmArr.length > 0)){
+              isHasRule ++;
+            }
           });
           if($scope.sjzSet['组卷方式'] == '随机'){
             gzObj['试卷数量'] = 1;
@@ -1210,7 +1214,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             gzObj['试卷数量'] = parseInt(gzObj['试卷数量']) ? parseInt(gzObj['试卷数量']) : mis.push('试卷数量');
           }
           if(!$scope.zuJuanParam.sjzName){
-            mis.push('试卷组名称')
+            mis.push('试卷组名称');
           }
           if(gzObj['限定时间']){
             gzObj['限定时间'] = DataService.formatDateZh(gzObj['限定时间']);
@@ -1218,22 +1222,25 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           else{
             delete gzObj['限定时间'];
           }
-          var obj = {
-            method: 'POST',
-            url: zuJuanUrl,
-            data: {
-              '学校ID': jgID,
-              '科目ID': keMuId,
-              '返回题目内容': true,
-              '组卷规则': JSON.stringify(gzObj)
-            }
-          };
+          if(isHasRule == gzObj['组卷规则'].length){
+            mis.push('固定题目或规则');
+          }
           $scope.btnDisable = true;
           if(mis && mis.length > 0){
             $scope.btnDisable = false;
             DataService.alertInfFun('err', '缺少：' + mis.join('；'));
           }
           else{
+            var obj = {
+              method: 'POST',
+              url: zuJuanUrl,
+              data: {
+                '学校ID': jgID,
+                '科目ID': keMuId,
+                '返回题目内容': true,
+                '组卷规则': JSON.stringify(gzObj)
+              }
+            };
             $scope.fbdBtn = true;
             $http(obj).success(function(data){
               if(data.result){

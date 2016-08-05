@@ -99,7 +99,9 @@
               <th>作答人数</th>
             </tr>
             <tr ng-repeat="tm in tiMuDeFenLv">
-              <td ng-bind="tm['题目ID']"></td>
+              <td>
+                <a href="javascript:void(0)" ng-bind="tm['题目ID']" ng-click="showTiMuDetail(tm['题目ID'])"></a>
+              </td>
               <td ng-bind="tm['得分率'] + '%'"></td>
               <td ng-bind="tm['答题数']"></td>
             </tr>
@@ -141,75 +143,6 @@
           </table>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-<!--考试选择-->
-<div class="popup-wrap" ng-show="showMoreKaoShi">
-  <div class="popup-wrap-inner">
-    <div class="pwi-header plr10 text-right">
-      <button type="button" class="btn btn-success mt5" ng-click="kszChart(tjParas.selectedKaoShi);showMoreKaoShi=false">确定</button>
-      <button type="button" class="btn btn-danger mt5 ml10" ng-click="showMoreKaoShi=false">关闭</button>
-    </div>
-    <div class="pwi-body plr10">
-      <table class="table table-striped">
-        <tr>
-          <th>考试名称</th>
-          <th>试卷名称</th>
-          <th width="120px" class="text-center">考试人数</th>
-          <th width="120px" class="text-center">考试时间</th>
-        </tr>
-        <tr ng-repeat="ks in tjKaoShiList">
-          <td>
-            <input type="checkbox" ng-click="addKaoShiToTj($event, ks)"/> {{ks.KAOSHI_MINGCHENG}}
-          </td>
-          <td>
-            <p class="m0" ng-repeat="kssj in ks.SHIJUAN" ng-bind="kssj.SHIJUAN_MINGCHENG"></p>
-          </td>
-          <td class="text-center" ng-bind="ks.KSRS"></td>
-          <td class="text-center" ng-bind="ks.KAISHISHIJIAN | localDate | date : 'yyyy-MM-dd'"></td>
-        </tr>
-      </table>
-    </div>
-    <div class="pwi-footer plr10 text-center">
-      <ul class="pagination pagination-sm pull-right" ng-hide="!tjKaoShiList">
-        <li ng-class="{disabled: currentPage == 1}">
-          <a href ng-click="tjPaging(1)">首页</a>
-        </li>
-        <li ng-class="{disabled: currentPage == 1}">
-          <a href
-             ng-click="tjPaging(prevPg = currentPage > 1 ? currentPage - 1 : 1)">
-            上一页
-          </a>
-        </li>
-        <li ng-repeat="pg in tjPages" ng-class="{active: currentPage == pg}">
-          <a href ng-click="tjPaging(pg)">{{pg}}</a>
-        </li>
-        <li ng-class="{disabled: currentPage == lastPageNum}">
-          <a href
-             ng-click="tjPaging(nextPg = currentPage < lastPageNum ? currentPage + 1 : lastPageNum)">
-            下一页
-          </a>
-        </li>
-        <li ng-class="{disabled: currentPage == lastPageNum}">
-          <a href ng-click="tjPaging(lastPageNum)">尾页</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-<!--试卷选择-->
-<div class="popup-wrap" ng-show="showMoreShiJuan">
-  <div class="popup-wrap-inner no-header">
-    <div class="pwi-body plr10">
-      <label class="checkbox-inline" ng-repeat="sj in kszPubData.shijuan">
-        <input type="checkbox" value="sj.SHIJUAN_ID" checked>
-        {{sj.SHIJUAN_MINGCHENG}}
-      </label>
-    </div>
-    <div class="pwi-footer plr10 text-center">
-      <button type="button" class="btn btn-danger mt5" ng-click="showMoreShiJuan=false">关闭</button>
-      <button type="button" class="btn btn-success mt5 ml10" ng-click="tjByShiJuan();showMoreKaoShi=false">确定</button>
     </div>
   </div>
 </div>
@@ -282,6 +215,63 @@
           </ul>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<!--题目详情-->
+<div class="popup-percent" ng-hide="showTiMuDetailWrap">
+  <div class="popup-percent-inner">
+    <div class="closePaperDetailBtn">
+      <button type="button" class="btn btn-primary" ng-click="editItem()">修改</button>
+      <button type="button" class="btn btn-danger" ng-click="closeZuoDaReappear()">关闭</button>
+    </div>
+    <div class="inner-box">
+      <ul class="list-unstyled testList" id="testList">
+        <li ng-repeat="tm in timuDetails" class="pr130" repeat-done>
+          <div class="item-sub-title pull-left">
+            <p class="knowledge-point">
+              题型：<span ng-bind="tiXingArr[tm['题型ID']-1]"></span>
+            </p>
+            <p class="knowledge-point-zsd">
+              知识点：<span ng-repeat="zsd in tm['知识点']">【{{zsd['知识点名称']}}】</span>
+            </p>
+            <p class="level-num">
+              难易度：<span class="pull-right level-star-{{tm['难度']}}"></span>
+            </p>
+            <p class="knowledge-point">
+              出题人：<span class="pull-right" ng-bind="tm['出题人姓名']"></span>
+            </p>
+            <p class="knowledge-point">
+              录题人：<span class="pull-right" ng-bind="tm['录题人姓名']"></span>
+            </p>
+            <p class="knowledge-point">
+              ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
+            </p>
+            <p>
+              创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
+            </p>
+          </div>
+          <div class="item-cont">
+            <h3 class="item-tigan" ng-bind-html="$index + 1 + '、' + tm['题目内容']['题干']"></h3>
+            <div class="item-tizhi-wrap">
+              <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+                <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
+                <span class="tiZhiSpan" ng-bind-html="tz"></span>
+              </p>
+            </div>
+          </div>
+          <div class="answer-cont">
+            <div class="positionRe">
+              <span class="daAnLabel">答案：</span>
+              <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
+            </div>
+            <div class="positionRe" ng-show="tm['备注']">
+              <span class="daAnLabel">备注：</span>
+              <div class="daAnBox" ng-bind-html="tm['备注']"></div>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
