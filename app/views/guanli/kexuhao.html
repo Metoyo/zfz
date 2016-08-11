@@ -2,6 +2,18 @@
   <div class="pull-left wp56">
     <h4 class="pb10">
       <span class="cYell" ng-bind="defaultKeMu['科目名称']"></span><span>课序号管理</span>
+      <span class="ml15 fz16">
+        年度: <select ng-model="guanliParams.yearQry" ng-change="queryKeXuHao()"
+                    ng-options="dt for dt in kxhData['年份']">
+          <option value="">全部年份</option>
+        </select>
+      </span>
+      <span class="ml15 fz16">
+        学期: <select ng-model="guanliParams.termQry" ng-change="queryKeXuHao()"
+                    ng-options="dt.val as dt.name for dt in kxhData['学期']">
+          <option value="">全部学期</option>
+        </select>
+      </span>
       <button type="button" class="btn btn-primary fz14 pull-right" ng-click="showKeXuHaoPop('addKeXuHao')">新增课序号</button>
     </h4>
     <div>
@@ -18,7 +30,7 @@
             <span>{{'('+kxh['学生人数']+'人)'}}</span>
           </td>
           <td class="text-right">
-            <span ng-repeat="js in kxh['教师']" ng-bind="js['姓名']"></span>
+            <span class="ml10" ng-repeat="js in kxh['教师']" ng-bind="js['姓名']"></span>
           </td>
           <td class="text-center">
             <a href="javascript:void(0)" ng-click="showKeXuHaoPop('modifyKeXuHao', kxh)">

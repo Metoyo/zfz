@@ -10,7 +10,7 @@
       <td ng-bind="tk['领域名称']"></td>
       <td>
         <p class="bdb plr10" ng-repeat="tkInfo in tk['题库']">
-          <span ng-bind="tkInfo['题库名称']"></span>
+          <span ng-bind="tkInfo['题库名称']+'('+tiKuType[tkInfo['类型']-1]+')'"></span>
           <a href="javascript:void(0)" title="删除" class="pull-right ml15 co676767" ng-click="deleteTiKu($index, tk, tkInfo)">
             <span class="glyphicon glyphicon-trash"></span>
           </a>
@@ -28,8 +28,24 @@
 <div class="popup-wrap popup-wrap-350" ng-show="tkSetPageShow">
   <div class="popup-wrap-inner no-header">
     <div class="pwi-body">
-      <div class="form-group">
-        <input type="text" class="form-control wp90 mlp5 mt65" ng-model="tiKuSet.name">
+      <div class="form-horizontal p10">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">题库名称</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="tiKuSet.name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">题库类型</label>
+          <div class="col-sm-10">
+            <label class="radio-inline">
+              <input type="radio" ng-model="tiKuSet.type" value="1">公共
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="tiKuSet.type" value="2">私有
+            </label>
+          </div>
+        </div>
       </div>
     </div>
     <div class="pwi-footer plr10 text-center">

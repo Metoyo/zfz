@@ -22,6 +22,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         var shiJuanZuUrl = '/shijuanzu'; //试卷组
         var createPdfUrl = '/create_pdf'; //创建PDF
         var transferFromOmrUrl = '/transfer_from_omr'; //扫描设定
+        var copyTiMuUrl = '/copy_timu'; //复制题目
         var loginUsr = JSON.parse($cookieStore.get('ckUsr'));
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
@@ -67,6 +68,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.cnNumArr = config.cnNumArr; //题支的序号
         $scope.usrInfo = loginUsr;
         $scope.kaochangData = '';
+        $scope.tiKuType = ['公共', '私有'];
 
         /**
          * 检查对象是否为空
@@ -354,9 +356,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          * 展示设置机构的页面
          */
         $scope.renderJiGouSetTpl = function(){
-          if(!($scope.jigou_list && $scope.jigou_list.length)){
-            getJgList(1);
-          }
+          getJgList(1);
           $scope.isShenHeBox = false;
           $scope.adminSubWebTpl = 'views/renzheng/rz_setJiGou.html';
         };
@@ -965,6 +965,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $scope.adminParams.lastKmId = '';
           $scope.adminParams.selectKeMu = '';
           $scope.allPublicZsdData = '';
+          $scope.lyKeMu = '';
           var obj = {method:'GET', url: lingYuUrl};
           $http(obj).success(function(data){
             if(data.result && data.data){
@@ -1408,6 +1409,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $scope.pageParam.pageArr = [];
           $scope.pages = [];
           $scope.adminParams.zsdWrapShow = false;
+          $scope.lyKeMu = '';
           var obj = {method:'GET', url: lingYuUrl};
           $http(obj).success(function(data){
             if(data.result && data.data){
@@ -1797,31 +1799,39 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.renderTiKu = function(){
           $scope.tiKuList = '';
           $scope.tkSetPageShow = false;
-          $scope.tiKuSet = {name: '', step: '', select: ''};
+          $scope.tiKuSet = {name: '', step: '', select: '', type: 2};
           var objLy = {method: 'GET', url: lingYuUrl, params: {'学校ID': jgID}};
           $http(objLy).success(function(xxLy){ //查询学校领域
             if(xxLy.result && xxLy.data){
               var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID}};
               $http(obj).success(function(tiku){ //得到题目
-                if(tiku.result && tiku.data){
-                  var distTkByLy = Lazy(tiku.data).groupBy('领域ID').toObject();
+                if(tiku.result){
+                  var distTkByLy = {};
+                  if(tiku.data && tiku.data.length > 0){
+                    distTkByLy = Lazy(tiku.data).groupBy('领域ID').toObject();
+                  }
                   Lazy(xxLy.data).each(function(ly){
-                    var tkArr = distTkByLy[ly['领域ID']];
-                    if(tkArr && tkArr.length > 0){
-                      ly['题库'] = tkArr;
+                    if(tiku.data && tiku.data.length > 0){
+                      var tkArr = distTkByLy[ly['领域ID']];
+                      if(tkArr && tkArr.length > 0){
+                        ly['题库'] = tkArr;
+                      }
+                      else{
+                        ly['题库'] = [];
+                      }
                     }
                     else{
                       ly['题库'] = [];
                     }
-                    $scope.tiKuList = xxLy.data;
                   });
-                  $scope.isShenHeBox = false; //判断是不是审核页面
-                  $scope.adminSubWebTpl = 'views/renzheng/rz_setTiKu.html';
                 }
                 else{
                   DataService.alertInfFun('err', tiku.error);
                 }
               });
+              $scope.tiKuList = xxLy.data;
+              $scope.isShenHeBox = false; //判断是不是审核页面
+              $scope.adminSubWebTpl = 'views/renzheng/rz_setTiKu.html';
             }
             else{
               DataService.alertInfFun('err', xxLy.error);
@@ -1870,6 +1880,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $scope.tkSetPageShow = true;
           $scope.tiKuSet.step = 'alt';
           $scope.tiKuSet.select = tk;
+          $scope.tiKuSet.name = tk['题库名称'];
+          $scope.tiKuSet.type = tk['类型'];
         };
 
         /**
@@ -1878,15 +1890,25 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.saveAddTk = function(){
           var tkName = $scope.tiKuSet.name;
           var tkInfo = $scope.tiKuSet.select;
+          var tkType = parseInt($scope.tiKuSet.type);
           if(tkName){
             var obj = {method:'', url:tiKuUrl};
             if($scope.tiKuSet.step == 'add'){
               obj.method = 'PUT';
-              obj.data = {'学校ID':jgID, '领域ID':tkInfo['领域ID'], '题库名称':tkName};
+              obj.data = {
+                '学校ID':jgID,
+                '领域ID':tkInfo['领域ID'],
+                '题库名称':tkName,
+                '类型': tkType
+              };
             }
             if($scope.tiKuSet.step == 'alt'){
               obj.method = 'POST';
-              obj.data = {'题库ID':tkInfo['题库ID'], '题库名称':tkName};
+              obj.data = {
+                '题库ID':tkInfo['题库ID'],
+                '题库名称':tkName,
+                '类型': tkType
+              };
             }
             $scope.loadingImgShow = true;
             $http(obj).success(function(data){
@@ -2084,6 +2106,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           if(!($scope.jigou_list && $scope.jigou_list.length)){
             getJgList(1);
           }
+          $scope.kemu_list = '';
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.loadingImgShow = false;
           $scope.adminSubWebTpl = 'views/renzheng/rz_scanner.html';
@@ -2264,6 +2287,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           if(!($scope.jigou_list && $scope.jigou_list.length)){
             getJgList(1);
           }
+          $scope.kemu_list = '';
           $scope.isShenHeBox = false; //判断是不是审核页面
           $scope.adminSubWebTpl = 'views/renzheng/rz_pdf.html';
         };
@@ -2398,7 +2422,113 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           else{
             DataService.alertInfFun('pmt', '请选择学校！');
           }
-        }
+        };
+
+        /**
+         * 题目复制
+         */
+        $scope.renderTiMuCopy = function(){
+          $scope.tiMuCopy = {
+            '原学校ID': '',
+            '原科目ID': '',
+            '原题目ID': '',
+            '目标科目ID': '',
+            '目标题库ID': ''
+          };
+          getJgList();
+          $scope.kemu_list = '';
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.loadingImgShow = false;
+          $scope.adminSubWebTpl = 'views/renzheng/rz_copyTiMu.html';
+        };
+
+        /**
+         * 给目标科目赋值
+         */
+        $scope.assignKeMuVal = function(){
+          $scope.tiMuCopy['目标科目ID'] = $scope.tiMuCopy['原科目ID'];
+          $scope.qryTiKuByKm($scope.tiMuCopy['目标科目ID']);
+        };
+
+        /**
+         * 通过领域查询题库
+         */
+        $scope.qryTiKuByKm = function(kmId){
+          var lyObj = {
+            method: 'GET',
+            url: lingYuUrl,
+            params: {
+              '学校ID': 1,
+              '科目ID': kmId
+            }
+          };
+          $scope.tarTiKuList = '';
+          if(kmId){
+            $http(lyObj).success(function(ly){
+              if(ly.result && ly.data){
+                var tkObj = {
+                  method: 'GET',
+                  url: tiKuUrl,
+                  params: {
+                    '学校ID': 1,
+                    '领域ID': ly.data[0]['领域ID'],
+                    '类型': 1
+                  }
+                };
+                $http(tkObj).success(function(tk){
+                  if(tk.result && tk.data){
+                    $scope.tarTiKuList = tk.data;
+                  }
+                  else{
+                    DataService.alertInfFun('err', tk.error);
+                  }
+                });
+              }
+              else{
+                DataService.alertInfFun('err', ly.error);
+              }
+            });
+          }
+        };
+
+        /**
+         * 保存题目复制
+         */
+        $scope.saveCopyTiMu = function(){
+          var obj = {
+            method: 'POST',
+            url: copyTiMuUrl,
+            data: {
+              '原学校ID': $scope.tiMuCopy['原学校ID'],
+              '原科目ID': $scope.tiMuCopy['原科目ID'],
+              '目标科目ID': $scope.tiMuCopy['目标科目ID'],
+              '目标题库ID': $scope.tiMuCopy['目标题库ID']
+            }
+          };
+          var mis = [];
+          if($scope.tiMuCopy['原题目ID']){
+            var yTiMuId = $scope.tiMuCopy['原题目ID'].split('；');
+            obj.data['原题目ID'] = JSON.stringify(yTiMuId);
+          }
+          Lazy(obj.data).each(function(v, k, l){
+            if(!v){
+              mis.push(k);
+            }
+          });
+          if(mis && mis.length > 0){
+            DataService.alertInfFun('err', '缺少：' + mis.join('；'));
+          }
+          else{
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                DataService.alertInfFun('suc', '成功复制了' + data.data['记录数'] + '条数据！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+        };
 
       }]);
 });

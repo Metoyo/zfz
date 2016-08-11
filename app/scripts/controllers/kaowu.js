@@ -40,6 +40,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             forbidBtn: false, //提交后的禁止按钮
             showCcSjz: false, //显示场次用到的试卷组
             showStu: false, //显示考生列表
+            notice: false, //显示考试须知
             selectedCc: '', //选中的场次
             year: '', //课序号的筛选年份
             term: '' //课序号的筛选学期
@@ -55,6 +56,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
           $scope.kxhData = { //课序号的日期区分字段
             '年份': [],
             '学期': [{val: 1, name: '秋'}, {val: 2, name: '春'}]
+          };
+
+          /**
+           * 检查object对象是否为空
+           */
+          var isEmpty = function(obj){
+            for (var name in obj)
+            {
+              return false;
+            }
+            return true;
           };
 
           /**
@@ -198,6 +210,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             $scope.loadingImgShow = true;
             $http(obj).success(function(data){
               if(data.result && data.data){
+                Lazy(data.data).each(function(ksz){
+                  if(ksz['报名方式'] == 2 && ksz['状态'] == 1){
+                    ksz['报名周期'] = DataService.formatDateZh(ksz['报名开始时间']) + '—' + DataService.formatDateZh(ksz['报名截止时间']);
+                  }
+                });
                 pageMake(data.data);
                 kaoShiZuStore = Lazy(data.data).reverse().toArray();
                 $scope.kaoShiZuDist(1);
@@ -982,6 +999,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               DataService.alertInfFun('pmt', '请选择考试组！');
             }
             $scope.kwParams.showCcSjz = true;
+            $scope.kwParams.notice = false;
           };
 
           /**
@@ -1015,6 +1033,84 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
             if(stat == 'on'){ //已报名的人数
               $scope.changCiKaoSheng = cc['考生'];
               $scope.kwParams.selectedCc = cc;
+            }
+          };
+
+          /**
+           * 显示报名须知
+           */
+          $scope.showKszNotice = function(){
+            $scope.kwParams.showCcSjz = true;
+            $scope.kwParams.notice = true;
+          };
+
+          /**
+           * 保存考试须知
+           */
+          $scope.saveKszNotice = function(){
+            if($scope.kaoShiZuDtl['考试组ID']){
+              var obj = {
+                method: 'POST',
+                url: kaoShiZuUrl,
+                data: {
+                  '考试组ID': $scope.kaoShiZuDtl['考试组ID'],
+                  '考试须知': ''
+                }
+              };
+              if($scope.kaoShiZuDtl['考试须知']){
+                obj.data['考试须知'] = $scope.kaoShiZuDtl['考试须知'];
+                $http(obj).success(function(data){
+                  if(data.result){
+                    //$scope.showKaoShiZuList($scope.kwParams.kszListZt);
+                    DataService.alertInfFun('suc', '考试须知修改成功！');
+                  }
+                  else{
+                    DataService.alertInfFun('err', data.error);
+                  }
+                });
+              }
+            }
+            else{
+              DataService.alertInfFun('err', '请选择考试！');
+            }
+          };
+
+          /**
+           * 保存考试组设置
+           */
+          $scope.saveKszSet = function(){
+            if($scope.kaoShiZuDtl['考试组ID']){
+              var obj = {
+                method: 'POST',
+                url: kaoShiZuUrl,
+                data: {
+                  '考试组ID': $scope.kaoShiZuDtl['考试组ID'],
+                  '考试组设置': ''
+                }
+              };
+              var setDt = angular.copy($scope.kaoShiZuDtl['考试组设置']);
+              Lazy(setDt).each(function(v, k, l){
+                if(!v){
+                  delete setDt['k'];
+                }
+              });
+              if(isEmpty(setDt)){
+                DataService.alertInfFun('err', '请选择考试设置！');
+              }
+              else{
+                obj.data['考试组设置'] = JSON.stringify(setDt);
+                $http(obj).success(function(data){
+                  if(data.result){
+                    DataService.alertInfFun('suc', '考试设置保存成功！');
+                  }
+                  else{
+                    DataService.alertInfFun('err', data.error);
+                  }
+                });
+              }
+            }
+            else{
+              DataService.alertInfFun('err', '请选择考试！');
             }
           };
 

@@ -41,8 +41,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           singleStuBanJi: '', //学生班级
           errorInfo: '',
           selectKsz: '', //选中的考试组
-          year: '', //课序号年份
-          term: '' //课序号学期
+          year: '', //课序号年份(新建课序号)
+          term: '', //课序号学期(新建课序号)
+          yearQry: '', //课序号年份(查询课序号)
+          termQry: '' //课序号学期(查询课序号)
         };
         $scope.glEditBoxShow = ''; //弹出层显示那一部分内容
         $scope.jgKmTeachers = ''; //本机构科目下的老师
@@ -109,7 +111,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
         /**
          * 查询课序号
          */
-        var queryKeXuHao = function(){
+        $scope.queryKeXuHao = function(){
           var objKxh = {
             method: 'GET',
             url: keXuHaoUrl,
@@ -119,11 +121,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               '返回学生人数': true
             }
           };
-          $scope.kxhData['年份'] = [];
-          var mydateNew = new Date();
-          var year = mydateNew.getFullYear();
-          $scope.kxhData['年份'].push(year);
-          $scope.kxhData['年份'].push(year + 1);
+          //$scope.kxhData['年份'] = [];
+          //var mydateNew = new Date();
+          //var year = mydateNew.getFullYear();
+          //$scope.kxhData['年份'].push(year);
+          //$scope.kxhData['年份'].push(year + 1);
+          if($scope.guanliParams.yearQry){
+            objKxh.params['年度'] = $scope.guanliParams.yearQry;
+          }
+          if($scope.guanliParams.termQry){
+            objKxh.params['学期'] = $scope.guanliParams.termQry;
+          }
           $http(objKxh).success(function(data){
             if(data.result && data.data){
               Lazy(data.data).each(function(kxh){
@@ -160,11 +168,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                         keXuHaoPagesArr.push(i);
                       }
                     }
-                    keXuHaoStore = data.data;
+                    keXuHaoStore = Lazy(data.data).reverse().toArray();
                     $scope.keXuHaoDist(1);
                   }
                   else{
-                    $scope.keXuHaoData = data.data;
+                    $scope.keXuHaoData = Lazy(data.data).reverse().toArray();
                   }
                 }
                 else{
@@ -173,6 +181,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               });
             }
             else{
+              $scope.keXuHaoData = '';
+              keXuHaoStore = '';
               DataService.alertInfFun('err', data.error);
             }
           });
@@ -304,8 +314,15 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           $scope.studentsOrgData = '';
           $scope.studentsData = '';
           $scope.studentsPages = [];
+          $scope.guanliParams.yearQry = '';
+          $scope.guanliParams.termQry = '';
           if (tab == 'kexuhao') {
-            queryKeXuHao();
+            $scope.kxhData['年份'] = [];
+            var mydateNew = new Date();
+            var year = mydateNew.getFullYear();
+            $scope.kxhData['年份'].push(year);
+            $scope.kxhData['年份'].push(year + 1);
+            $scope.queryKeXuHao();
             $scope.guanliParams.tabActive = 'kexuhao';
             $scope.guanLiTpl = 'views/guanli/kexuhao.html';
           }
@@ -415,7 +432,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                   $scope.studentsPages = [];
                   $scope.selectKxh = '';
                   DataService.alertInfFun('suc', '删除成功！');
-                  queryKeXuHao();
+                  $scope.queryKeXuHao();
                 }
                 else{
                   DataService.alertInfFun('err', data.error);
@@ -679,6 +696,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           var saveType = $scope.glEditBoxShow;
           var uidArr = [];
           var allTrue = true;
+          var mis = [];
           $scope.guanliParams.errorInfo = '';
           var obj = {method: '', url: ''};
           var checkJiaoShi = function(){
@@ -699,16 +717,26 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
               obj.data = {'课序号名称': $scope.guanliParams.addNewKxh, '学校ID':jgID, '科目ID':keMuId};
               checkJiaoShi();
             }
+            else{
+              mis.push('课序号名称');
+            }
             if($scope.guanliParams.year){
               obj.data['年度'] = $scope.guanliParams.year;
+            }
+            else{
+              mis.push('年度');
             }
             if($scope.guanliParams.term){
               obj.data['学期'] = $scope.guanliParams.term;
             }
-            else{
+            if(mis.length > 0){
               allTrue = false;
-              DataService.alertInfFun('pmt', '新课序号为空！');
+              DataService.alertInfFun('pmt', '缺少：' + mis.join('；'));
             }
+            //else{
+            //  allTrue = false;
+            //  DataService.alertInfFun('pmt', '新课序号为空！');
+            //}
           }
           if(saveType == 'modifyKeXuHao'){ //修改课序号
             if($scope.guanliParams.modifyKxh){
@@ -771,7 +799,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                       $scope.showKeXuHaoManage = false; //课序号重置
                       $scope.guanliParams.modifyKxh = '';
                       $scope.loadingImgShow = false;
-                      queryKeXuHao();
+                      $scope.queryKeXuHao();
                       DataService.alertInfFun('suc', '新增课序号成功！');
                     }
                     else{
@@ -795,7 +823,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                       $scope.guanliParams.modifyKxh = '';
                       $scope.guanliParams.errorInfo = '';
                       $scope.loadingImgShow = false;
-                      queryKeXuHao();
+                      $scope.queryKeXuHao();
                       DataService.alertInfFun('suc', '新增课序修改成功！');
                     }
                     else{
