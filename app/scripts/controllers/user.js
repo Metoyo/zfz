@@ -2508,7 +2508,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           var mis = [];
           if($scope.tiMuCopy['原题目ID']){
             var yTiMuId = $scope.tiMuCopy['原题目ID'].split('；');
-            obj.data['原题目ID'] = JSON.stringify(yTiMuId);
+            obj.data['原题目ID'] = yTiMuId;
+            //obj.data['原题目ID'] = JSON.stringify(yTiMuId);
           }
           Lazy(obj.data).each(function(v, k, l){
             if(!v){
