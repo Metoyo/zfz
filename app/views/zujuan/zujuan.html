@@ -68,27 +68,13 @@
   <div class="content">
     <div class="contentInner">
       <div class="contentWraps">
-        <div class="sub-nav">
-          <ul class="nav nav-tabs">
-            <li ng-class="{active: zj_tabActive == 'shiJuan' }">
-              <a href="javascript:void(0)" ng-click="showPaperList()">
-                试卷列表
-              </a>
-            </li>
-            <li ng-class="{active: zj_tabActive == 'ruleMakePaper' }">
-              <a href="javascript:void(0)" ng-click="makePaper('规则')">
-                规则组卷
-              </a>
-            </li>
-            <li ng-class="{active: zj_tabActive == 'randomMakePaper'}">
-              <a href="javascript:void(0)" ng-click="makePaper('随机')">
-                随机组卷
-              </a>
-            </li>
-          </ul>
+        <div class="crumbs">
+          <a href="javascript:void(0)">
+            试卷列表
+          </a>
+          <button type="button" class="btn btn-primary pull-right">新建考试组</button>
         </div>
-        <div class="tab-content" ng-include="zjTpl">
-        </div>
+        <div ng-include="zjTpl"></div>
       </div>
     </div>
   </div>

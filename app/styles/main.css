@@ -245,10 +245,6 @@ label {
   width: 80%;
   border: 1px solid #ccc; }
 
-.itemHasImgWith120 img {
-  height: 120px;
-  border: 1px solid #ccc; }
-
 .ar-tiGan {
   font-size: 16px; }
   .ar-tiGan .ar-tk-da {
@@ -369,27 +365,6 @@ a.add-btn:hover span {
     width: 130px;
     margin-top: 0; }
 
-.moreBtn {
-  cursor: pointer;
-  border: 1px solid #fff;
-  z-index: 2;
-  position: relative; }
-
-.moreBtnCont {
-  display: none;
-  position: absolute;
-  width: 192px;
-  right: 34px;
-  top: 3px;
-  background-color: #FFFFFF;
-  border: 1px solid #AFC1CF;
-  padding: 10px;
-  text-align: right;
-  z-index: 1;
-  overflow: hidden; }
-  .moreBtnCont .mbc-inner {
-    width: 172px; }
-
 .newTable > thead > tr > td,
 .newTable > tbody > tr > td,
 .newTable > tfoot > tr > td {
@@ -454,11 +429,6 @@ a.add-btn:hover span {
       font-size: 18px; }
 .popup-wrap-350 .no-header .pwi-body {
   height: 290px; }
-
-.saveStuSelectInfo .popup-wrap-inner {
-  height: 300px; }
-  .saveStuSelectInfo .popup-wrap-inner .pwi-body {
-    height: 200px; }
 
 .popup-percent {
   width: 100%;
@@ -667,22 +637,6 @@ a.add-btn:hover span {
 .dashboard .active .nav-name {
   color: #fff; }
 
-.toggle-menu {
-  list-style: none;
-  padding: 0;
-  display: none; }
-
-.menuitem {
-  padding: 5px 15px 5px 25px;
-  display: block;
-  text-decoration: none;
-  font-size: 14px;
-  color: #67717e; }
-  .menuitem:hover {
-    text-decoration: none;
-    color: #262626;
-    background: url("../images/icon-right.png") no-repeat 10px 12px; }
-
 .select:focus {
   text-decoration: none;
   color: #262626;
@@ -739,27 +693,6 @@ a.add-btn:hover span {
     color: #285e8e; }
   .popInfoWrap .mesError {
     color: #c9302c; }
-
-.right-pop-fixed {
-  font-size: 14px;
-  position: fixed;
-  right: 0;
-  top: 20%;
-  border: 1px solid #aaa;
-  background-color: #f5f5f5; }
-  .right-pop-fixed .title {
-    margin: 0;
-    font-size: 16px;
-    text-align: right;
-    padding: 6px 0;
-    background-color: #428bca;
-    border-bottom: 1px solid #aaa; }
-    .right-pop-fixed .title .glyphicon {
-      margin-right: 10px;
-      cursor: pointer;
-      color: #fff; }
-      .right-pop-fixed .title .glyphicon:hover {
-        color: #eee; }
 
 .main {
   padding: 0 0 20px 80px; }
@@ -929,12 +862,6 @@ a.add-btn:hover span {
     margin: 5px 0; }
 
 /* 分页的样式 结束*/
-.back-home-box {
-  position: fixed;
-  right: 10px;
-  top: 10px;
-  z-index: 1000; }
-
 .save-box {
   position: fixed;
   right: 10px;
@@ -953,20 +880,6 @@ a.add-btn:hover span {
     height: 64px; }
   .loading-box p {
     color: red; }
-
-.subjectBox {
-  padding: 10px;
-  float: left;
-  width: 100%; }
-  .subjectBox h2 {
-    font-size: 15px;
-    display: inline;
-    margin: 0;
-    color: #f60;
-    font-weight: bold; }
-  .subjectBox a {
-    font-size: 12px;
-    text-decoration: none; }
 
 label.checkbox {
   font-weight: normal;
@@ -1056,14 +969,6 @@ label.checkbox {
 .dgDeleteBtn {
   background-color: #d5dadf; }
 
-.inlineBlock {
-  display: inline-block;
-  margin-right: -1px; }
-
-.dgInputWelcome p {
-  margin: 20px;
-  font-size: 18px; }
-
 /*大纲  结束*/
 /**
 *日期选择器的样式
@@ -1142,13 +1047,6 @@ label.checkbox {
   z-index: 5;
   background-color: #fff; }
 
-.hover-style {
-  cursor: pointer; }
-  .hover-style:hover {
-    color: #f60; }
-    .hover-style:hover table td {
-      border: 2px solid #f60; }
-
 .renzhengWrapper {
   position: relative;
   width: 960px;
@@ -1159,10 +1057,6 @@ label.checkbox {
   .renzhengWrapper em {
     font-weight: normal;
     font-size: 12px; }
-  .renzhengWrapper .mt {
-    margin-top: 8px; }
-  .renzhengWrapper .mb0 {
-    margin-bottom: 0; }
   .renzhengWrapper .btn {
     padding: 6px 20px; }
   .renzhengWrapper .row {
@@ -1178,31 +1072,6 @@ label.checkbox {
   .renzhengWrapper h4.logo img {
     width: 300px;
     height: auto; }
-  .renzhengWrapper .loginBox {
-    padding-right: 30px;
-    color: #000;
-    border-right: 1px solid #969696; }
-  .renzhengWrapper .loginWithXh {
-    padding-left: 30px;
-    color: #fff; }
-  .renzhengWrapper .loginWithXh .btn {
-    margin-top: 25px;
-    width: 100%; }
-  .renzhengWrapper .userBox {
-    padding: 50px 0; }
-  .renzhengWrapper .thumbnail {
-    border: 0;
-    background: none;
-    margin-bottom: 0; }
-  .renzhengWrapper .thumbnail img {
-    width: 236px;
-    height: 236px; }
-  .renzhengWrapper .caption p {
-    padding: 0 12px; }
-  .renzhengWrapper .loginInfo h2 {
-    margin-top: 0; }
-  .renzhengWrapper .loginInfo h4 {
-    margin: 30px 0; }
   .renzhengWrapper .entries h4 {
     margin-top: 20px; }
   .renzhengWrapper .entries li {
@@ -1266,84 +1135,9 @@ label.checkbox {
     float: left;
     background-position: 0 -45px;
     margin: 2px 5px 0 0; }
-  .renzhengWrapper .objectWrapSub {
-    float: left;
-    width: 100%; }
-  .renzhengWrapper .subjectBox {
-    padding: 10px;
-    border: 1px solid #cfcfcf; }
-  .renzhengWrapper .selectedObjectBox {
-    padding: 10px 0 5px 0;
-    margin-bottom: 15px;
-    color: #000;
-    width: 100%; }
-  .renzhengWrapper .selectedObjectList {
-    width: 49%;
-    margin-bottom: 16px;
-    background: #f0f0f0;
-    padding: 10px;
-    position: relative; }
-  .renzhengWrapper .selectedObjectList p {
-    width: 100%; }
-  .renzhengWrapper .btn-can {
-    position: absolute;
-    top: -8px;
-    right: -15px;
-    font-size: 15px; }
-  .renzhengWrapper .btn-can .btn {
-    padding: 2px 15px;
-    border-radius: 0;
-    margin-bottom: 1px; }
-  .renzhengWrapper .selectedObjectBox span {
-    margin-right: 10px; }
-  .renzhengWrapper .objectToggleBox {
-    border: 1px solid #cfcfcf;
-    padding-top: 15px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    float: left;
-    width: 100%;
-    padding-left: 10px;
-    padding-right: 10px; }
-  .renzhengWrapper .addNewObject {
-    margin-left: 10px; }
-  .renzhengWrapper .addNewObject span {
-    font-size: 13px; }
   .renzhengWrapper span.msgBox {
     display: none;
     font-weight: normal; }
-  .renzhengWrapper .errorMsg {
-    color: red;
-    float: left;
-    margin-right: 10px; }
-  .renzhengWrapper .errorMsg span {
-    color: red;
-    float: left;
-    margin-right: 10px; }
-  .renzhengWrapper .errorMsg .msgBox {
-    display: block; }
-  .renzhengWrapper .privilegeBtn:hover {
-    text-decoration: none; }
-  .renzhengWrapper .privilegeBtn span {
-    margin-right: 5px; }
-  .renzhengWrapper .privilegeBox {
-    position: relative;
-    border: 1px solid #cfcfcf;
-    background-color: #fff;
-    padding: 15px 10px;
-    display: none;
-    float: right; }
-  .renzhengWrapper .privilegeBox .sanj {
-    position: absolute;
-    right: 40px;
-    top: -11px; }
-  .renzhengWrapper .privilegeBox .btn {
-    margin-top: 10px;
-    padding: 2px 12px; }
-  .renzhengWrapper .jueseVal {
-    width: 400px;
-    height: 40px;
-    display: none; }
   .renzhengWrapper .yonghuming {
     background-color: #fff;
     padding-left: 10px; }
@@ -1443,8 +1237,6 @@ label.checkbox {
     color: #d80000;
     font-size: 15px;
     margin-top: 5px; }
-  .renzhengWrapper .alterBtn, .renzhengWrapper .shYonghuId, .renzhengWrapper .shJigouId, .renzhengWrapper .shLingyuId, .renzhengWrapper .originZT {
-    display: none; }
   .renzhengWrapper .active {
     display: block; }
   .renzhengWrapper .fix-to-top-right {
@@ -1472,22 +1264,12 @@ label.checkbox {
       margin-top: 0; }
     .renzhengWrapper .dagangInput .text-left {
       text-align: left; }
-  .renzhengWrapper .teacherInfo {
-    padding: 10px; }
-    .renzhengWrapper .teacherInfo table {
-      width: 100%; }
-      .renzhengWrapper .teacherInfo table th, .renzhengWrapper .teacherInfo table td {
-        padding: 5px;
-        font-size: 14px; }
   .renzhengWrapper .setDaGangBox {
     float: left;
     width: 100%; }
     .renzhengWrapper .setDaGangBox .dagangBox {
       margin-left: 5px;
       margin-top: 10px; }
-    .renzhengWrapper .setDaGangBox .ly-select-box {
-      width: 50%;
-      margin: 10px 0 0 10px; }
   .renzhengWrapper .publicKnowledgeBox {
     position: fixed;
     top: 150px;
@@ -1515,26 +1297,6 @@ label.checkbox {
   /*main styles end*/ }
   .dagangWrapper .content {
     padding-top: 50px; }
-  .dagangWrapper .itemTitle {
-    font-size: 120%;
-    font-weight: 600;
-    margin-left: 20px; }
-  .dagangWrapper .list-sheet li {
-    margin-top: 5px;
-    width: 46%;
-    border: 1px solid #cfcfcf;
-    float: left;
-    margin-left: 2%; }
-  .dagangWrapper .list-sheet a {
-    width: 100%;
-    text-align: center;
-    float: left;
-    padding: 80px 0;
-    font-size: 20px;
-    background-color: #f0f0f0; }
-    .dagangWrapper .list-sheet a:hover {
-      text-decoration: none;
-      background-color: #f3f3f3; }
   .dagangWrapper .publicKnowledgeWrap {
     position: fixed;
     right: 20px;
@@ -1566,28 +1328,6 @@ label.checkbox {
     .dagangWrapper .dg-list-box .daGangListSelect {
       display: inline;
       width: 80%; }
-  .dagangWrapper .keMuName {
-    width: 100%;
-    float: left;
-    padding: 0 10px; }
-    .dagangWrapper .keMuName h2 {
-      margin-top: 10px;
-      margin-bottom: 0; }
-    .dagangWrapper .keMuName .keMuNameDetail {
-      font-size: 20px;
-      display: inline;
-      margin: 0;
-      color: #f60;
-      font-weight: bold;
-      line-height: 30px; }
-  .dagangWrapper .selectedDgName {
-    width: 100%;
-    float: left;
-    padding: 0 10px; }
-    .dagangWrapper .selectedDgName h2 {
-      margin-top: 10px; }
-    .dagangWrapper .selectedDgName p {
-      line-height: 26px; }
 
 .mingtiWrapper {
   /* test list styls begin*/
@@ -1645,6 +1385,12 @@ label.checkbox {
   margin-top: 8px;
   color: red; }
 
+.zujuanWrapper .crumbs {
+  padding: 10px 15px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background: #fff; }
 .zujuanWrapper .daTiName .datiMoveBtns {
   display: none; }
 .zujuanWrapper .daTiName:hover .datiMoveBtns {
@@ -1662,14 +1408,6 @@ label.checkbox {
       .zujuanWrapper .contentWraps .kmTxBox ul li a, .zujuanWrapper .contentWraps .nanduBox ul li a {
         font-size: 12px;
         padding: 0 5px; }
-      .zujuanWrapper .contentWraps .kmTxBox ul .tiXingId_all, .zujuanWrapper .contentWraps .kmTxBox ul .nanDuId_all, .zujuanWrapper .contentWraps .nanduBox ul .tiXingId_all, .zujuanWrapper .contentWraps .nanduBox ul .nanDuId_all {
-        height: auto;
-        background: none;
-        width: auto; }
-        .zujuanWrapper .contentWraps .kmTxBox ul .tiXingId_all a, .zujuanWrapper .contentWraps .kmTxBox ul .nanDuId_all a, .zujuanWrapper .contentWraps .nanduBox ul .tiXingId_all a, .zujuanWrapper .contentWraps .nanduBox ul .nanDuId_all a {
-          font-size: 14px;
-          font-weight: normal;
-          padding: 0 5px 0 10px; }
   .zujuanWrapper .contentWraps .kmTxBox ul {
     margin-top: 10px; }
 .zujuanWrapper .paper-list {
@@ -1686,13 +1424,6 @@ label.checkbox {
       vertical-align: middle; }
   .zujuanWrapper .paper-list .table-title th {
     border-top: 0; }
-  .zujuanWrapper .paper-list .more-info {
-    display: none;
-    padding: 10px; }
-    .zujuanWrapper .paper-list .more-info h5 {
-      font-weight: bold; }
-    .zujuanWrapper .paper-list .more-info span {
-      margin-right: 10px; }
   .zujuanWrapper .paper-list .paging {
     padding: 10px 0;
     border-top: 1px solid #ddd;
@@ -1756,11 +1487,6 @@ label.checkbox {
   .zujuanWrapper .ruleMakePaper-body .txTotalNum {
     font-size: 14px;
     margin-left: 15px; }
-.zujuanWrapper .sub-nav {
-  position: fixed;
-  background: #fff;
-  width: 100%;
-  z-index: 3; }
 .zujuanWrapper .pointTree {
   top: 10px; }
 .zujuanWrapper .tab-content {
@@ -1782,47 +1508,6 @@ label.checkbox {
   font-size: 12px; }
 .kaowuWrapper .fixed-top {
   left: 80px; }
-.kaowuWrapper .kaowu-table {
-  margin-top: 15px; }
-  .kaowuWrapper .kaowu-table th {
-    text-align: center; }
-  .kaowuWrapper .kaowu-table td {
-    vertical-align: middle;
-    position: relative; }
-    .kaowuWrapper .kaowu-table td p {
-      margin: 0; }
-.kaowuWrapper .kaoChangList .moreBtnCont {
-  width: 300px;
-  right: 75px; }
-  .kaowuWrapper .kaoChangList .moreBtnCont .mbc-inner {
-    width: 280px;
-    text-align: center; }
-.kaowuWrapper .paper-cont {
-  height: 440px;
-  overflow-x: hidden;
-  overflow-y: auto; }
-.kaowuWrapper .paper-list {
-  padding: 0;
-  margin: 0 0 5px 0;
-  list-style: none;
-  float: left;
-  width: 100%; }
-  .kaowuWrapper .paper-list li {
-    border-bottom: 1px solid #ddd;
-    padding: 10px;
-    float: left;
-    width: 100%;
-    margin: 0; }
-    .kaowuWrapper .paper-list li .more-info {
-      display: none;
-      float: left;
-      width: 100%; }
-      .kaowuWrapper .paper-list li .more-info p {
-        margin-bottom: 0; }
-        .kaowuWrapper .paper-list li .more-info p span {
-          margin-right: 10px; }
-    .kaowuWrapper .paper-list li a {
-      line-height: 24px; }
 .kaowuWrapper .paging {
   height: 48px; }
   .kaowuWrapper .paging .pagination {
@@ -1833,18 +1518,6 @@ label.checkbox {
     font-size: 13px;
     color: indianred;
     font-style: italic; }
-  .kaowuWrapper .tab-content .start-date-valid {
-    display: none; }
-.kaowuWrapper .student-info,
-.kaowuWrapper .selectFileBox {
-  border-top: 2px solid #8699a4;
-  padding: 15px 10px; }
-.kaowuWrapper .student-list .kaowu-table {
-  margin-top: 0; }
-.kaowuWrapper .findFileBtn {
-  margin-top: 10px; }
-.kaowuWrapper .advanced-set a {
-  margin-right: 15px; }
 .kaowuWrapper .editKaoShi .table-changci td {
   padding: 0; }
   .kaowuWrapper .editKaoShi .table-changci td .checkbox, .kaowuWrapper .editKaoShi .table-changci td .radio {
@@ -1879,38 +1552,11 @@ label.checkbox {
 
 .tongjiWrapper .tj-ks .nav-tabs li:first-child {
   margin-left: 5%; }
-.tongjiWrapper .tj-btn-box {
-  width: 100%;
-  text-align: center;
-  display: block; }
-  .tongjiWrapper .tj-btn-box .btn {
-    margin-top: 10px; }
-.tongjiWrapper .tj-title {
-  font-size: 20px;
-  line-height: 56px;
-  padding: 0 20px;
-  margin: 0;
-  border-bottom: 1px solid #ddd; }
-  .tongjiWrapper .tj-title .btn {
-    margin-top: 14px; }
-  .tongjiWrapper .tj-title .tjt-avg-score {
-    font-size: 14px; }
 .tongjiWrapper .tab-content {
   padding: 15px;
   margin-top: 49px; }
 .tongjiWrapper .ptb10 {
   padding: 10px 0; }
-.tongjiWrapper .tm-err-rate {
-  background-color: #f5f5f5;
-  padding: 10px;
-  margin-bottom: 10px;
-  position: relative; }
-.tongjiWrapper ul.tm-err-rate-info {
-  padding: 0; }
-.tongjiWrapper ul.tm-err-rate-info li {
-  list-style: none;
-  display: inline;
-  margin-right: 30px; }
 .tongjiWrapper .item-tizhi-wrap {
   margin-top: 10px; }
   .tongjiWrapper .item-tizhi-wrap .item-tizhi {
@@ -1922,22 +1568,8 @@ label.checkbox {
     position: absolute; }
   .tongjiWrapper .answer-cont .daAnBox {
     margin-left: 45px; }
-.tongjiWrapper .chart-wrap .avg-score {
-  position: absolute;
-  text-align: center;
-  width: 100px;
-  left: 46%;
-  margin-left: -50px; }
-  .tongjiWrapper .chart-wrap .avg-score p {
-    font-size: 42px; }
 .tongjiWrapper .tj-stu .btn {
   padding: 6px 12px; }
-.tongjiWrapper .ks-chart-page .summary {
-  padding-right: 70px; }
-.tongjiWrapper .ks-chart-page .back-btn {
-  position: absolute;
-  right: 0;
-  bottom: 15px; }
 .tongjiWrapper .ks-chart-page .row {
   margin-bottom: 15px; }
 .tongjiWrapper .ks-chart-page .table {
@@ -1965,25 +1597,10 @@ label.checkbox {
     font-size: 16px;
     font-weight: bold;
     border-bottom: 1px solid #ddd; }
-    .tongjiWrapper .tj-ks-box .title .explain {
-      font-size: 12px;
-      font-weight: normal; }
-    .tongjiWrapper .tj-ks-box .title .all {
-      background-color: #95C880; }
-    .tongjiWrapper .tj-ks-box .title .bj {
-      background-color: #DFCC6D; }
-    .tongjiWrapper .tj-ks-box .title em {
-      font-size: 12px;
-      font-weight: normal; }
     .tongjiWrapper .tj-ks-box .title input[type='radio'] {
       margin-top: 10px; }
   .tongjiWrapper .tj-ks-box .chart {
     height: 320px;
-    padding: 10px;
-    overflow-y: auto; }
-  .tongjiWrapper .tj-ks-box .chart1 {
-    height: 320px;
-    width: 49%;
     padding: 10px;
     overflow-y: auto; }
   .tongjiWrapper .tj-ks-box .selectBanJi {
@@ -2036,23 +1653,8 @@ label.checkbox {
     margin-top: 70px;
     font-size: 32px;
     display: inline-block; }
-.tongjiWrapper .zsd-list li {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ddd; }
-  .tongjiWrapper .zsd-list li p {
-    margin-bottom: 0;
-    width: 100%; }
-    .tongjiWrapper .zsd-list li p span {
-      float: left;
-      text-align: center; }
-    .tongjiWrapper .zsd-list li p .zsd-all {
-      background-color: #95C880; }
-    .tongjiWrapper .zsd-list li p .zsd-bj {
-      background-color: #DFCC6D; }
 
-.studentWrapper .baoMingTable th, .studentWrapper .baoMingTable td {
-  text-align: center; }
-.studentWrapper .media-body, .studentWrapper .media-left, .studentWrapper .media-right {
+.studentWrapper .media-body, .studentWrapper .media-left {
   display: table-cell;
   vertical-align: top;
   position: relative; }
@@ -3834,7 +3436,6 @@ label.checkbox {
   padding-top: 60px;
   width: 90%;
   margin-left: 5%; }
-.guanLiWrapper .radio-inline,
 .guanLiWrapper .checkbox-inline {
   margin-left: 10px; }
 .guanLiWrapper .paging {
