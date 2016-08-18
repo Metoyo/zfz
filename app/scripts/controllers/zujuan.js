@@ -62,6 +62,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
         $scope.kmtxList = ''; //科目题型
         $scope.sjzKmtx = ''; //试卷组用到的科目题型
         $scope.slt_dg = ''; //默认大纲
+        $scope.showCrumbs = false; //显示面包屑导航
 
         /**
          * 判断用户的角色
@@ -446,11 +447,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             saveSjBtn: false, //保存试卷按钮
             timuNum: '', //符合条件的题目数量
             showZjRule: false, //显示组卷规则
-            sjScore: '' //试卷总分
+            sjScore: '', //试卷总分
+            showDaTi: false //大题弹出
           };
           Lazy($scope.tiKuList).each(function(tkl){
             tkl.ckd = false;
           });
+          $scope.stepNum = {
+            one: false,
+            two: false
+          };
           kmTxData();
           qryTiKu();
           qryChuTiRen();
@@ -553,7 +559,6 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.showPaperList = function(){
           resetFun();
-          $scope.zj_tabActive = 'shiJuan';
           $scope.zjDaGangListShow = false;
           $scope.subDsShow = true;
           $scope.selectSjz = '';
@@ -580,15 +585,90 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           $scope.sjzSet['组卷方式'] = tp;
           $scope.zjDaGangListShow = true; //控制加载规则组卷的css
           if(tp == '规则'){
-            $scope.sjzSet['试卷数量'] = 1;
-            $scope.zj_tabActive = 'ruleMakePaper';
+            $scope.showCrumbs = true;
+            $scope.stepNum = {
+              one: true,
+              two: false
+            };
             $scope.zjTpl = 'views/zujuan/zj_ruleMakePaper.html'; //加载规则组卷模板
-          }
-          if(tp == '随机'){
-            $scope.zj_tabActive = 'randomMakePaper';
-            $scope.zjTpl = 'views/zujuan/zj_radomMakePaper.html'; //加载随机组卷模板
+            //显示时间选择器
+            var showDatePicker = function() {
+              $('.start-date').intimidatetime({
+                buttons: [
+                  { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+                ]
+              });
+            };
+            $timeout(showDatePicker, 500);
           }
           $scope.subDsShow = true;
+          $scope.onlyShowAddRuleBox = true;
+        };
+
+        /**
+         * 执行步骤
+         */
+        $scope.stepTo = function(num){
+          if(num == 1){
+            $scope.stepNum = {
+              one: true,
+              two: false
+            };
+            $scope.zuJuanParam.showDaTi = false;
+            $scope.onlyShowAddRuleBox = true;
+            //显示时间选择器
+            var showDatePicker = function() {
+              $('.start-date').intimidatetime({
+                buttons: [
+                  { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+                ]
+              });
+            };
+            $timeout(showDatePicker, 500);
+          }
+          if(num == 2){
+            var lmtDt = document.querySelector('.limitDate');
+            $scope.sjzSet['限定时间'] = angular.element(lmtDt).val();
+            if($scope.zuJuanParam.rlTk && $scope.zuJuanParam.rlTk.length > 0){
+              if($scope.zuJuanParam.rlTmc){
+                if($scope.tiMuChi && $scope.tiMuChi.length > 0){
+                  $scope.stepNum = {
+                    one: true,
+                    two: true
+                  };
+                  $scope.onlyShowAddRuleBox = false;
+                }
+                else{
+                  $scope.stepNum = {
+                    one: true,
+                    two: false
+                  };
+                  DataService.alertInfFun('pmt', '题目池题目为空！');
+                }
+              }
+              else{
+                $scope.stepNum = {
+                  one: true,
+                  two: true
+                };
+                $scope.onlyShowAddRuleBox = false;
+              }
+            }
+            else{
+              $scope.stepNum = {
+                one: true,
+                two: false
+              };
+              DataService.alertInfFun('pmt', '请选择题库！');
+            }
+          }
+        };
+
+        /**
+         * 显示大题选择
+         */
+        $scope.showDaTiBox = function(){
+          $scope.zuJuanParam.showDaTi = true;
         };
 
         /**
@@ -614,6 +694,19 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             if(findTar){
               $scope.sjzSet['组卷规则'] = Lazy($scope.sjzSet['组卷规则']).reject({'题型ID': tx['题型ID']}).toArray();
             }
+          }
+        };
+
+        /**
+         * 删除本大题
+         */
+        $scope.deleteDaTi = function(tx){
+          if(confirm('确定要删除本大题吗？')){
+            $scope.sjzSet['组卷规则'] = Lazy($scope.sjzSet['组卷规则']).reject({'题型ID': tx['题型ID']}).toArray();
+            var findTar = Lazy($scope.sjzKmtx).find(function(kmtx){
+              return kmtx['题型ID'] == tx['题型ID'];
+            });
+            findTar.ckd = false;
           }
         };
 
@@ -665,17 +758,16 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           }
           if(tp == 'random'){
             $scope.onlyShowAddRuleBox = true;
-            $scope.zuJuanParam.rlTmc = false;
             $scope.zuJuanParam.rlTmNum = '';
             $scope.zuJuanParam.rlTmFz = '';
             Lazy($scope.nanDuList).each(function(nd){
               nd.ckd = false;
             });
-            Lazy($scope.tiKuList).each(function(tkl){
-              tkl.ckd = false;
-            });
+            //预留已选中的题库修改过
           }
           $scope.subDsShow = false;
+          $scope.showCrumbs = false;
+          $scope.onlyShowAddRuleBox = true;
         };
 
         /**
@@ -683,13 +775,15 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.closeAddTiMuPop = function(){
           $scope.subDsShow = true;
+          $scope.showCrumbs = true;
           $scope.onlyShowAddRuleBox = false;
           $scope.addSjz.sltDati = '';
           $scope.zuJuanParam.timuNum = '';
           $scope.zuJuanParam.rlZsd = '';
           $scope.zuJuanParam.rlTxId = '';
           $scope.zuJuanParam.rlNd = '';
-          $scope.zuJuanParam.rlTk = '';
+          $scope.addSjz.sltTp = '';
+          //$scope.zuJuanParam.rlTk = '';
         };
 
         /**
@@ -753,6 +847,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             nd.ckd = false;
           });
           $scope.subDsShow = false;
+          $scope.showCrumbs = false;
           qryTmPar.tx = '';
           qryTmPar.nd = '';
           qryTestFun(1);
@@ -1018,9 +1113,14 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             $scope.subDsShow = true;
             $scope.zuJuanParam.showTiMu = 'rulePage';
           }
+          if($scope.zuJuanParam.tmlTp == 'tmc'){
+            $scope.subDsShow = true;
+            //$scope.zuJuanParam.showTiMu = 'rulePage';
+          }
           if($scope.zuJuanParam.showTiMu == 'tiMuPage'){
             Lazy($scope.kowledgeList['节点']).each(_zsdDo);
             $scope.zuJuanParam.showTiMu = 'rulePage';
+            $scope.showCrumbs = true;
           }
           if($scope.zuJuanParam.showTiMu == 'sjltPage'){
             $scope.zuJuanParam.showTiMu = 'rulePage';
@@ -1028,6 +1128,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           if($scope.cgTiMuObj.isCgTm){
             cgTmResetFun();
           }
+          $scope.showCrumbs = true;
         };
 
         /**
@@ -1143,9 +1244,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             if(!$scope.zuJuanParam.rlNd.length){
               mis.push('难度');
             }
-            //if(!$scope.zuJuanParam.rlTk.length){
-            //  mis.push('题库');
-            //}
+            if(!$scope.zuJuanParam.rlTk.length){
+              mis.push('题库');
+            }
             if(!$scope.zuJuanParam.rlZsd.length){
               mis.push('知识点');
             }
@@ -1254,6 +1355,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
                   });
                 });
                 $scope.sjList = data.data;
+                $scope.showCrumbs = false;
                 $scope.showShiJuanDtl($scope.sjList[0], 0);
               }
               else{
@@ -1372,6 +1474,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          */
         $scope.closeSjzEdit = function(){
           $scope.zuJuanParam.sjzEdit = false;
+          $scope.zuJuanParam.showDaTi = false;
         };
 
         /**

@@ -28,7 +28,7 @@
     </li>
   </ul>
   <div class="paging text-right">
-    <button type="button" class="btn btn-primary pull-left">新建试卷组</button>
+    <button type="button" class="btn btn-primary pull-left" ng-click="makePaper('规则')">新建试卷组</button>
     <ul class="pagination pagination-sm" ng-if="sjzPage.pages.length>0">
       <li ng-class="{disabled:sjzPage.currentPage == 1}">
         <a href ng-click="getSjzPageData(1)">首页</a>
