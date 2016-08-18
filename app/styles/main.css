@@ -181,6 +181,13 @@ label {
 .ptb5 {
   padding: 5px 0; }
 
+.ptb10 {
+  padding: 10px 0; }
+
+.fz12 {
+  font-size: 12px;
+  font-weight: normal; }
+
 .fz14 {
   font-size: 14px;
   font-weight: normal; }
@@ -1386,11 +1393,12 @@ label.checkbox {
   color: red; }
 
 .zujuanWrapper .crumbs {
-  padding: 10px 15px;
+  padding: 5px 15px;
   position: fixed;
   left: 0;
   right: 0;
-  background: #fff; }
+  border-bottom: 1px solid #ccc;
+  background-color: #f5f5f5; }
 .zujuanWrapper .daTiName .datiMoveBtns {
   display: none; }
 .zujuanWrapper .daTiName:hover .datiMoveBtns {
@@ -1411,7 +1419,7 @@ label.checkbox {
   .zujuanWrapper .contentWraps .kmTxBox ul {
     margin-top: 10px; }
 .zujuanWrapper .paper-list {
-  padding: 10px 15px; }
+  padding: 15px; }
   .zujuanWrapper .paper-list ul {
     margin: 0;
     padding: 0; }
@@ -1490,9 +1498,13 @@ label.checkbox {
 .zujuanWrapper .pointTree {
   top: 10px; }
 .zujuanWrapper .tab-content {
-  padding-top: 47px; }
+  padding-top: 32px; }
 .zujuanWrapper .paperWrap .answer-cont {
   display: block; }
+.zujuanWrapper #zjTestList .testList {
+  padding: 0; }
+.zujuanWrapper #zjTestList .table {
+  margin-bottom: 0; }
 
 .subDsShow .subDashboard {
   display: none; }

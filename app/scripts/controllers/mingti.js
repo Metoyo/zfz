@@ -1514,7 +1514,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
               obj.method = 'POST';
             }
             $scope.fbdBtn = true;
-            if($scope.mingTiParam.isConvertTiXing && obj.data['题型ID'] != $scope.mingTiParam.tiXingId){
+            if($scope.mingTiParam.isConvertTiXing && $scope.mingTiParam.tiXingId && obj.data['题型ID'] != $scope.mingTiParam.tiXingId){
               obj.data['题型ID'] = $scope.mingTiParam.tiXingId;
             }
             $http(obj).success(function(data){
