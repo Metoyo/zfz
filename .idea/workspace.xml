@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="" />
+    <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.css" afterPath="$PROJECT_DIR$/app/styles/main.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.scss" afterPath="$PROJECT_DIR$/app/styles/main.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="zhifz.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,8 +31,8 @@
       <file leaf-file-name="main.4cdcb1a2.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="54828" max-vertical-offset="55552">
-              <caret line="3465" column="35" selection-start-line="3465" selection-start-column="35" selection-end-line="3465" selection-end-column="35" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="54924" max-vertical-offset="55648">
+              <caret line="3471" column="35" selection-start-line="3471" selection-start-column="35" selection-end-line="3471" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -37,8 +41,8 @@
       <file leaf-file-name="main.scss" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.12" vertical-offset="1724" max-vertical-offset="51344">
-              <caret line="106" column="5" selection-start-line="106" selection-start-column="1" selection-end-line="106" selection-end-column="5" />
+            <state vertical-scroll-proportion="-3.8653846" vertical-offset="455" max-vertical-offset="51568">
+              <caret line="41" column="7" selection-start-line="41" selection-start-column="7" selection-end-line="41" selection-end-column="7" />
               <folding>
                 <element signature="e#5916#6980#0" expanded="false" />
                 <element signature="e#6996#7215#0" expanded="false" />
@@ -66,16 +70,15 @@
                 <element signature="e#20383#20482#0" expanded="false" />
                 <element signature="e#23692#24052#0" expanded="false" />
                 <element signature="e#26372#26925#0" expanded="false" />
-                <element signature="e#28426#28568#0" expanded="false" />
-                <element signature="e#28580#28704#0" expanded="false" />
-                <element signature="e#28720#28749#0" expanded="false" />
-                <element signature="e#28765#29099#0" expanded="false" />
-                <element signature="e#29113#29766#0" expanded="false" />
-                <element signature="e#29783#29964#0" expanded="false" />
-                <element signature="e#29988#30353#0" expanded="false" />
-                <element signature="e#30369#30474#0" expanded="false" />
-                <element signature="e#31198#31279#0" expanded="false" />
-                <element signature="e#35343#36174#0" expanded="false" />
+                <element signature="e#28705#28829#0" expanded="false" />
+                <element signature="e#28845#28874#0" expanded="false" />
+                <element signature="e#28890#29224#0" expanded="false" />
+                <element signature="e#29238#29891#0" expanded="false" />
+                <element signature="e#29908#30089#0" expanded="false" />
+                <element signature="e#30113#30478#0" expanded="false" />
+                <element signature="e#30494#30599#0" expanded="false" />
+                <element signature="e#31323#31404#0" expanded="false" />
+                <element signature="e#35468#36299#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -84,8 +87,8 @@
       <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/styles/main.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.222222" vertical-offset="54935" max-vertical-offset="55552">
-              <caret line="3449" column="20" selection-start-line="3449" selection-start-column="20" selection-end-line="3449" selection-end-column="20" />
+            <state vertical-scroll-proportion="-8.037037" vertical-offset="55031" max-vertical-offset="55648">
+              <caret line="3453" column="20" selection-start-line="0" selection-start-column="0" selection-end-line="3472" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -112,11 +115,10 @@
       <file leaf-file-name="zujuan.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zujuan.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.52" vertical-offset="0" max-vertical-offset="848">
-              <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+            <state vertical-scroll-proportion="-16.96" vertical-offset="120" max-vertical-offset="752">
+              <caret line="78" column="15" selection-start-line="78" selection-start-column="15" selection-end-line="78" selection-end-column="15" />
               <folding>
                 <element signature="n#div#1;n#div#1;n#div#0;n#!!top" expanded="false" />
-                <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -125,8 +127,8 @@
       <file leaf-file-name="zj_paperList.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_paperList.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.72" vertical-offset="112" max-vertical-offset="1312">
-              <caret line="30" column="83" selection-start-line="0" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+            <state vertical-scroll-proportion="-8.64" vertical-offset="680" max-vertical-offset="1312">
+              <caret line="56" column="44" selection-start-line="56" selection-start-column="44" selection-end-line="56" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -135,16 +137,19 @@
       <file leaf-file-name="zj_ruleMakePaper.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.3022152" vertical-offset="1055" max-vertical-offset="7296">
-              <caret line="97" column="49" selection-start-line="97" selection-start-column="49" selection-end-line="97" selection-end-column="49" />
+            <state vertical-scroll-proportion="0.5929054" vertical-offset="433" max-vertical-offset="7328">
+              <caret line="84" column="61" selection-start-line="84" selection-start-column="61" selection-end-line="84" selection-end-column="61" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#div#1;n#div#1;n#!!top" expanded="false" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+                <element signature="n#style#0;n#div#1;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+                <element signature="n#style#0;n#div#1;n#div#1;n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#h3#0;n#div#0;n#div#0;n#div#3;n#div#2;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#div#1;n#div#3;n#div#2;n#div#1;n#!!top" expanded="false" />
                 <element signature="n#div#0;n#div#2;n#!!top" expanded="false" />
                 <element signature="n#style#0;n#div#3;n#div#0;n#div#2;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#3;n#!!top" expanded="true" />
@@ -204,14 +209,14 @@
         <option value="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/mingti.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_paperList.html" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zujuan.html" />
-        <option value="$PROJECT_DIR$/app/styles/main.scss" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zujuan.html" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zj_paperList.html" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zujuan.html" />
+        <option value="$PROJECT_DIR$/app/styles/main.scss" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html" />
       </list>
     </option>
@@ -421,7 +426,78 @@
     </navigator>
     <panes>
       <pane id="ProjectPane">
-        <subPane />
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zujuan" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="views" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
       <pane id="Scope" />
     </panes>
@@ -559,13 +635,13 @@
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2162386" sideWeight="0.33722627" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2162386" sideWeight="0.33722627" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896653" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1822701" sideWeight="0.49927008" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2162386" sideWeight="0.6627737" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2162386" sideWeight="0.6627737" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32846716" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -575,29 +651,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49343064" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38540146" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2162386" sideWeight="0.33722627" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896653" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.50218976" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1822701" sideWeight="0.49927008" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2162386" sideWeight="0.6627737" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32846716" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -1014,24 +1067,8 @@
         <state vertical-scroll-proportion="0.9483037" vertical-offset="853" max-vertical-offset="1552">
           <caret line="90" column="6" selection-start-line="90" selection-start-column="6" selection-end-line="90" selection-end-column="6" />
           <folding>
-            <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="54828" max-vertical-offset="55552">
-          <caret line="3465" column="35" selection-start-line="3465" selection-start-column="35" selection-end-line="3465" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_paperList.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.72" vertical-offset="112" max-vertical-offset="1312">
-          <caret line="30" column="83" selection-start-line="0" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1048,42 +1085,41 @@
         <state vertical-scroll-proportion="0.5443038" vertical-offset="7608" max-vertical-offset="8384">
           <caret line="497" column="6" selection-start-line="497" selection-start-column="6" selection-end-line="497" selection-end-column="6" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#div#0;n#div#2;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#3;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#2;n#div#3;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#3;n#div#0;n#div#2;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#3;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#2;n#div#3;n#!!top" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.222222" vertical-offset="54935" max-vertical-offset="55552">
-          <caret line="3449" column="20" selection-start-line="3449" selection-start-column="20" selection-end-line="3449" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zujuan.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.52" vertical-offset="0" max-vertical-offset="848">
-          <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+        <state vertical-scroll-proportion="-16.96" vertical-offset="120" max-vertical-offset="752">
+          <caret line="78" column="15" selection-start-line="78" selection-start-column="15" selection-end-line="78" selection-end-column="15" />
           <folding>
             <element signature="n#div#1;n#div#1;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_paperList.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.64" vertical-offset="680" max-vertical-offset="1312">
+          <caret line="56" column="44" selection-start-line="56" selection-start-column="44" selection-end-line="56" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.12" vertical-offset="1724" max-vertical-offset="51344">
-          <caret line="106" column="5" selection-start-line="106" selection-start-column="1" selection-end-line="106" selection-end-column="5" />
+        <state vertical-scroll-proportion="-3.8653846" vertical-offset="455" max-vertical-offset="51568">
+          <caret line="41" column="7" selection-start-line="41" selection-start-column="7" selection-end-line="41" selection-end-column="7" />
           <folding>
             <element signature="e#5916#6980#0" expanded="false" />
             <element signature="e#6996#7215#0" expanded="false" />
@@ -1111,32 +1147,50 @@
             <element signature="e#20383#20482#0" expanded="false" />
             <element signature="e#23692#24052#0" expanded="false" />
             <element signature="e#26372#26925#0" expanded="false" />
-            <element signature="e#28426#28568#0" expanded="false" />
-            <element signature="e#28580#28704#0" expanded="false" />
-            <element signature="e#28720#28749#0" expanded="false" />
-            <element signature="e#28765#29099#0" expanded="false" />
-            <element signature="e#29113#29766#0" expanded="false" />
-            <element signature="e#29783#29964#0" expanded="false" />
-            <element signature="e#29988#30353#0" expanded="false" />
-            <element signature="e#30369#30474#0" expanded="false" />
-            <element signature="e#31198#31279#0" expanded="false" />
-            <element signature="e#35343#36174#0" expanded="false" />
+            <element signature="e#28705#28829#0" expanded="false" />
+            <element signature="e#28845#28874#0" expanded="false" />
+            <element signature="e#28890#29224#0" expanded="false" />
+            <element signature="e#29238#29891#0" expanded="false" />
+            <element signature="e#29908#30089#0" expanded="false" />
+            <element signature="e#30113#30478#0" expanded="false" />
+            <element signature="e#30494#30599#0" expanded="false" />
+            <element signature="e#31323#31404#0" expanded="false" />
+            <element signature="e#35468#36299#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.037037" vertical-offset="55031" max-vertical-offset="55648">
+          <caret line="3453" column="20" selection-start-line="0" selection-start-column="0" selection-end-line="3472" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="54924" max-vertical-offset="55648">
+          <caret line="3471" column="35" selection-start-line="3471" selection-start-column="35" selection-end-line="3471" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.3022152" vertical-offset="1055" max-vertical-offset="7296">
-          <caret line="97" column="49" selection-start-line="97" selection-start-column="49" selection-end-line="97" selection-end-column="49" />
+        <state vertical-scroll-proportion="0.5929054" vertical-offset="433" max-vertical-offset="7328">
+          <caret line="84" column="61" selection-start-line="84" selection-start-column="61" selection-end-line="84" selection-end-column="61" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#div#1;n#div#1;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#2;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h3#0;n#div#0;n#div#0;n#div#3;n#div#2;n#div#1;n#!!top" expanded="true" />
+            <element signature="n#div#1;n#div#3;n#div#2;n#div#1;n#!!top" expanded="false" />
             <element signature="n#div#0;n#div#2;n#!!top" expanded="false" />
             <element signature="n#style#0;n#div#3;n#div#0;n#div#2;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#3;n#!!top" expanded="true" />
