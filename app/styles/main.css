@@ -163,6 +163,9 @@ label {
 .p10 {
   padding: 10px; }
 
+.p15 {
+  padding: 15px; }
+
 .pb10 {
   padding-bottom: 10px; }
 
@@ -1397,6 +1400,7 @@ label.checkbox {
   position: fixed;
   left: 0;
   right: 0;
+  z-index: 3;
   border-bottom: 1px solid #ccc;
   background-color: #f5f5f5; }
 .zujuanWrapper .breadcrumb {
@@ -1511,6 +1515,8 @@ label.checkbox {
   padding: 0; }
 .zujuanWrapper #zjTestList .table {
   margin-bottom: 0; }
+.zujuanWrapper .panel-title .active {
+  color: #f60; }
 
 .subDsShow .subDashboard {
   display: none; }
