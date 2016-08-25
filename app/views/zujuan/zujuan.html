@@ -69,20 +69,14 @@
     <div class="contentInner">
       <div class="contentWraps">
         <div class="crumbs" ng-if="showCrumbs">
-          <!--试卷组列表-->
-          <a href="javascript:void(0)" style="margin-left: 90px" ng-click="showPaperList()">
-            试卷组列表
-          </a>
-          <!--输入试卷组名称、题库、题池和限定时间-->
-          <span class="fz12" ng-if="stepNum.one">-></span>
-          <a href="javascript:void(0)" ng-if="stepNum.one" ng-click="stepTo(1)">
-            {{zuJuanParam.sjzName}}
-          </a>
-          <!--具体的规则输入-->
-          <span class="fz12" ng-if="stepNum.two">-></span>
-          <a href="javascript:void(0)" ng-if="stepNum.two" ng-click="stepTo(2)">
-            随机和固定题目添加
-          </a>
+          <ol class="breadcrumb">
+            <li><a href="javascript:void(0)" ng-click="showPaperList()">试卷组列表</a></li>
+            <li ng-if="stepNum.one" ng-class="{active:!stepNum.two}">
+              <a href="javascript:void(0)" ng-if="stepNum.two" ng-click="stepTo(1)">{{zuJuanParam.sjzName}}</a>
+              <span ng-if="!stepNum.two" ng-click="stepTo(1)">{{zuJuanParam.sjzName}}</span>
+            </li>
+            <li class="active" ng-if="stepNum.two">随机和固定题目添加</li>
+          </ol>
         </div>
         <div ng-include="zjTpl" ng-class="{'tab-content': showCrumbs}"></div>
       </div>
