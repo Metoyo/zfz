@@ -1,42 +1,29 @@
 <!--组卷试题显示-->
 <div class="ruleMakePaper zuanJuanTiMu">
-  <div class="row ruleMakePaper-header positionRe">
-    <!--换题时用到的科目题型-->
-    <div class="mt5" ng-if="cgTiMuObj.isCgTm">
-      <span class="ml10">题型：</span>
-      <label class="radio-inline">
-        <input type="radio" ng-model="zuJuanParam.txId" value="{{cgTiMuObj.tx['题型ID']}}"> {{cgTiMuObj.tx['题型名称']}}
-      </label>
+    <div class="row ruleMakePaper-header positionRe tiMuSgl">
+        <!--换题时用到的科目题型-->
+        <div>
+            <span class="ml10">题型：</span>
+            <label class="radio-inline">
+                <input type="radio" ng-model="zuJuanParam.txId" value="{{sglSjParam.sltDt['题型ID']}}">
+                {{txArr[sglSjParam.sltDt['题型ID']-1]}}
+            </label>
+        </div>
+        <div class="mt5">
+            <span class="ml10">难度：</span>
+            <label class="checkbox-inline mr15" ng-repeat="nd in tmNanDuList">
+                <input type="checkbox" value="nd['难度ID']" ng-checked="nd.ckd" ng-click="getNanDuId(nd, 'qr')">
+                {{nd['难度名称']}}
+            </label>
+        </div>
+        <div class="positionAb" style="top:15px;right:10px;">
+            <button type="button" class="btn btn-danger" ng-click="backToRule('single')">返回</button>
+        </div>
     </div>
-    <!--组卷时用到的科目题型-->
-    <div class="mt5" ng-if="!cgTiMuObj.isCgTm">
-      <span class="ml10">题型：</span>
-      <label class="radio-inline">
-        <input type="radio" ng-model="zuJuanParam.txId" value="0" ng-change="qryTiMuByTxId()"> 全部题型
-      </label>
-      <label class="radio-inline" ng-repeat="kmtx in kmtxList">
-        <input type="radio" ng-model="zuJuanParam.txId" value="{{kmtx['题型ID']}}" ng-change="qryTiMuByTxId()"> {{kmtx['题型名称']}}
-      </label>
-    </div>
-    <div class="mt5">
-      <span class="ml10">难度：</span>
-      <label class="checkbox-inline mr15" ng-repeat="nd in tmNanDuList">
-        <input type="checkbox" value="nd['难度ID']" ng-checked="nd.ckd" ng-click="getNanDuId(nd, 'qr')"> {{nd['难度名称']}}
-      </label>
-    </div>
-    <div class="positionAb" style="top:18px;right:10px;">
-      <button type="button" class="btn btn-danger" ng-click="backToSjz()">返回</button>
-    </div>
-  </div>
-  <div class="row ruleMakePaper-body">
+  <div class="row ruleMakePaper-body" style="padding-top: 63px;">
     <div class="total-test clearfix">
       <div class="pull-left allTestNums">
         <span>共<strong ng-bind="zuJuanParam.tiMuLen"></strong>题</span>
-        <span ng-if="zuJuanParam.tmlTp=='tmc'">
-          <button type="button" class="btn btn-primary ml15" ng-click="addTmToTmc('all')">全部加入题池</button>
-          <button type="button" class="btn btn-primary ml15" ng-click="addTmToTmc('page')" ng-hide="removeThisPage">本页加入题池</button>
-          <button type="button" class="btn btn-default ml15" ng-click="removeOut('page')" ng-show="removeThisPage">本页移出题池</button>
-        </span>
       </div>
       <div class="pull-right">
         <div class="pull-left">
@@ -82,17 +69,10 @@
             创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
           </p>
           <div class="editWrap">
-            <h3 class="item-title text-right" ng-if="zuJuanParam.tmlTp=='tmc'">
-              <button type="button" class="btn btn-primary" ng-click="addTmToTmc('sgl', tm)" ng-hide="tm.ckd">加入题目池 </button>
-              <button type="button" class="btn btn-default ng-hide" ng-click="removeOut('sgl', tm)" ng-show="tm.ckd">移除题目池 </button>
-            </h3>
-            <h3 class="item-title text-right" ng-if="zuJuanParam.tmlTp=='gdtm'">
-              <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入试卷</button>
-              <button type="button" class="btn btn-default ng-hide" ng-click="removeOut('sj', tm)" ng-show="tm.ckd">移出试卷</button>
-            </h3>
-            <h3 class="item-title text-right" ng-if="zuJuanParam.tmlTp=='cgtm'">
-              <button type="button" class="btn btn-primary" ng-click="changeThisTiMu(tm)">换此题</button>
-            </h3>
+              <h3 class="item-title text-right">
+                  <button type="button" class="btn btn-primary" ng-click="addToPaper(tm, 'single')" ng-hide="tm.ckd">加入试卷</button>
+                  <button type="button" class="btn btn-default ng-hide" ng-click="removeOutSgl(tm)" ng-show="tm.ckd">移出试卷</button>
+              </h3>
           </div>
         </div>
         <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">

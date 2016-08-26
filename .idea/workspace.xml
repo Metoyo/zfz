@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="" />
+    <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.css" afterPath="$PROJECT_DIR$/app/styles/main.css" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/styles/main.scss" afterPath="$PROJECT_DIR$/app/styles/main.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
+    </list>
     <ignored path="zhifz.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -24,124 +29,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="main.4cdcb1a2.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="55020" max-vertical-offset="55744">
-              <caret line="3458" column="0" selection-start-line="3458" selection-start-column="0" selection-end-line="3459" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.scss" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.76" vertical-offset="19020" max-vertical-offset="53568">
-              <caret line="1885" column="17" selection-start-line="1885" selection-start-column="17" selection-end-line="1885" selection-end-column="17" />
-              <folding>
-                <element signature="e#5941#7005#0" expanded="false" />
-                <element signature="e#7021#7240#0" expanded="false" />
-                <element signature="e#7255#8385#0" expanded="false" />
-                <element signature="e#8425#8951#0" expanded="false" />
-                <element signature="e#8963#9297#0" expanded="false" />
-                <element signature="e#9311#10192#0" expanded="false" />
-                <element signature="e#11630#11879#0" expanded="false" />
-                <element signature="e#11891#12153#0" expanded="false" />
-                <element signature="e#12204#12594#0" expanded="false" />
-                <element signature="e#12779#12925#0" expanded="false" />
-                <element signature="e#12975#13945#0" expanded="false" />
-                <element signature="e#13984#14111#0" expanded="false" />
-                <element signature="e#16368#16438#0" expanded="false" />
-                <element signature="e#16469#16632#0" expanded="false" />
-                <element signature="e#16647#16688#0" expanded="false" />
-                <element signature="e#16697#16898#0" expanded="false" />
-                <element signature="e#17037#18258#0" expanded="false" />
-                <element signature="e#18282#18385#0" expanded="false" />
-                <element signature="e#18396#18443#0" expanded="false" />
-                <element signature="e#18469#18552#0" expanded="false" />
-                <element signature="e#18643#19305#0" expanded="false" />
-                <element signature="e#19328#19346#0" expanded="false" />
-                <element signature="e#20408#20507#0" expanded="false" />
-                <element signature="e#23717#24077#0" expanded="false" />
-                <element signature="e#26397#26950#0" expanded="false" />
-                <element signature="e#28746#28870#0" expanded="false" />
-                <element signature="e#28886#28915#0" expanded="false" />
-                <element signature="e#28931#29265#0" expanded="false" />
-                <element signature="e#29279#29932#0" expanded="false" />
-                <element signature="e#29949#30130#0" expanded="false" />
-                <element signature="e#30154#30519#0" expanded="false" />
-                <element signature="e#30535#30640#0" expanded="false" />
-                <element signature="e#31422#31503#0" expanded="false" />
-                <element signature="e#35567#36398#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/styles/main.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="55100" max-vertical-offset="55744">
-              <caret line="3462" column="33" selection-start-line="0" selection-start-column="0" selection-end-line="3478" selection-end-column="0" />
-              <folding>
-                <marker date="1471673038000" expanded="true" signature="36926:36944" placeholder="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="zujuan.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js">
+        <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.15883306" vertical-offset="18734" max-vertical-offset="26512">
-              <caret line="1269" column="42" selection-start-line="1269" selection-start-column="42" selection-end-line="1269" selection-end-column="42" />
-              <folding>
-                <element signature="e#1490#1783#0" expanded="false" />
-                <element signature="e#2211#2327#0" expanded="false" />
-                <element signature="e#2356#2449#0" expanded="false" />
-                <element signature="e#13957#14504#0" expanded="false" />
-                <element signature="e#24255#24455#0" expanded="false" />
-                <element signature="e#25767#26503#0" expanded="false" />
-                <element signature="e#27123#27576#0" expanded="false" />
-                <element signature="e#53335#56662#0" expanded="false" />
-                <element signature="e#56845#59093#0" expanded="false" />
-                <element signature="e#59761#60319#0" expanded="false" />
-                <element signature="e#60413#60823#0" expanded="false" />
-                <element signature="e#60905#62147#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="zj_ruleMakePaper.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-63.384617" vertical-offset="0" max-vertical-offset="3456">
-              <caret line="413" column="13" selection-start-line="413" selection-start-column="13" selection-end-line="413" selection-end-column="13" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#2;n#div#1;n#div#1;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="false" />
-                <element signature="n#style#0;n#div#1;n#div#1;n#div#2;n#div#0;n#div#1;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#h3#0;n#div#0;n#li#0;n#ul#0;n#div#0;n#div#2;n#div#2;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#h3#0;n#div#0;n#div#0;n#div#3;n#div#2;n#div#1;n#!!top" expanded="true" />
-                <element signature="n#div#1;n#div#3;n#div#2;n#div#1;n#!!top" expanded="false" />
-                <element signature="n#div#2;n#!!top" expanded="false" />
-                <element signature="n#div#0;n#div#2;n#!!top" expanded="false" />
-                <element signature="n#style#0;n#div#3;n#div#0;n#div#2;n#!!top" expanded="true" />
-                <element signature="n#div#3;n#!!top" expanded="false" />
-                <element signature="n#div#1;n#div#3;n#!!top" expanded="false" />
-                <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#1;n#div#3;n#!!top" expanded="true" />
-                <element signature="n#div#2;n#div#3;n#!!top" expanded="false" />
-                <element signature="n#style#0;n#h3#0;n#div#0;n#div#2;n#div#3;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#span#0;n#h4#0;n#div#0;n#div#1;n#div#2;n#div#3;n#!!top" expanded="true" />
-                <element signature="n#div#3;n#div#3;n#!!top" expanded="false" />
-                <element signature="n#div#4;n#!!top" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.95046437" vertical-offset="33130" max-vertical-offset="33856">
+              <caret line="2109" column="10" selection-start-line="2109" selection-start-column="10" selection-end-line="2109" selection-end-column="10" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -195,16 +88,16 @@
         <option value="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/mingti.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_paperList.html" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zujuan.html" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zj_paperList.html" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zj_ruleMakePaper.html" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zujuan.html" />
-        <option value="$PROJECT_DIR$/app/styles/main.css" />
-        <option value="$PROJECT_DIR$/app/styles/main.scss" />
-        <option value="$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html" />
+        <option value="$PROJECT_DIR$/app/styles/main.scss" />
+        <option value="$PROJECT_DIR$/app/styles/main.css" />
+        <option value="$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
       </list>
     </option>
   </component>
@@ -412,7 +305,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -463,12 +355,35 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../KaoshiWeb" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
     <property name="editorconfig.notification" value="Applied .editorconfig settings" />
@@ -517,10 +432,14 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+      <method />
+    </configuration>
     <configuration default="true" type="DartUnitRunConfigurationType" factoryName="DartUnit">
       <method />
     </configuration>
-    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JSTestDriver:ConfigurationType" factoryName="JsTestDriver">
@@ -528,10 +447,6 @@
       <setting name="settingsFile" value="" />
       <setting name="serverType" value="INTERNAL" />
       <setting name="preferredDebugBrowser" value="Chrome" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma" config-file="">
-      <envs />
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
@@ -592,21 +507,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1249" height="777" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.49343064" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22286661" sideWeight="0.33722627" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22618061" sideWeight="0.33770016" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896653" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1822701" sideWeight="0.49927008" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22286661" sideWeight="0.6627737" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32846716" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22618061" sideWeight="0.6622999" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32751092" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38540146" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -658,18 +573,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js</url>
-          <line>1902</line>
+          <line>1933</line>
           <option name="timeStamp" value="584" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js</url>
-          <line>1652</line>
+          <line>1680</line>
           <option name="timeStamp" value="585" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js</url>
-          <line>1923</line>
-          <option name="timeStamp" value="586" />
         </line-breakpoint>
       </breakpoints>
       <option name="time" value="587" />
@@ -957,13 +867,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9503106" vertical-offset="30028" max-vertical-offset="30752">
-          <caret line="1915" column="10" selection-start-line="1915" selection-start-column="10" selection-end-line="1915" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/zujuan/zujuan.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.9483037" vertical-offset="853" max-vertical-offset="1552">
@@ -985,70 +888,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.76" vertical-offset="19020" max-vertical-offset="53568">
-          <caret line="1885" column="17" selection-start-line="1885" selection-start-column="17" selection-end-line="1885" selection-end-column="17" />
-          <folding>
-            <element signature="e#5941#7005#0" expanded="false" />
-            <element signature="e#7021#7240#0" expanded="false" />
-            <element signature="e#7255#8385#0" expanded="false" />
-            <element signature="e#8425#8951#0" expanded="false" />
-            <element signature="e#8963#9297#0" expanded="false" />
-            <element signature="e#9311#10192#0" expanded="false" />
-            <element signature="e#11630#11879#0" expanded="false" />
-            <element signature="e#11891#12153#0" expanded="false" />
-            <element signature="e#12204#12594#0" expanded="false" />
-            <element signature="e#12779#12925#0" expanded="false" />
-            <element signature="e#12975#13945#0" expanded="false" />
-            <element signature="e#13984#14111#0" expanded="false" />
-            <element signature="e#16368#16438#0" expanded="false" />
-            <element signature="e#16469#16632#0" expanded="false" />
-            <element signature="e#16647#16688#0" expanded="false" />
-            <element signature="e#16697#16898#0" expanded="false" />
-            <element signature="e#17037#18258#0" expanded="false" />
-            <element signature="e#18282#18385#0" expanded="false" />
-            <element signature="e#18396#18443#0" expanded="false" />
-            <element signature="e#18469#18552#0" expanded="false" />
-            <element signature="e#18643#19305#0" expanded="false" />
-            <element signature="e#19328#19346#0" expanded="false" />
-            <element signature="e#20408#20507#0" expanded="false" />
-            <element signature="e#23717#24077#0" expanded="false" />
-            <element signature="e#26397#26950#0" expanded="false" />
-            <element signature="e#28746#28870#0" expanded="false" />
-            <element signature="e#28886#28915#0" expanded="false" />
-            <element signature="e#28931#29265#0" expanded="false" />
-            <element signature="e#29279#29932#0" expanded="false" />
-            <element signature="e#29949#30130#0" expanded="false" />
-            <element signature="e#30154#30519#0" expanded="false" />
-            <element signature="e#30535#30640#0" expanded="false" />
-            <element signature="e#31422#31503#0" expanded="false" />
-            <element signature="e#35567#36398#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/styles/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="55100" max-vertical-offset="55744">
-          <caret line="3462" column="33" selection-start-line="0" selection-start-column="0" selection-end-line="3478" selection-end-column="0" />
-          <folding>
-            <marker date="1471673038000" expanded="true" signature="36926:36944" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="55020" max-vertical-offset="55744">
-          <caret line="3458" column="0" selection-start-line="3458" selection-start-column="0" selection-end-line="3459" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/views/zujuan/zj_ruleMakePaper.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-63.384617" vertical-offset="0" max-vertical-offset="3456">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3296" max-vertical-offset="3456">
           <caret line="413" column="13" selection-start-line="413" selection-start-column="13" selection-end-line="413" selection-end-column="13" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
@@ -1094,24 +936,81 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/styles/main.4cdcb1a2.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="112">
+          <caret line="0" column="70503" selection-start-line="0" selection-start-column="70503" selection-end-line="0" selection-end-column="70503" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15883306" vertical-offset="18734" max-vertical-offset="26512">
-          <caret line="1269" column="42" selection-start-line="1269" selection-start-column="42" selection-end-line="1269" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="20576" max-vertical-offset="33136">
+          <caret line="1297" column="13" selection-start-line="1297" selection-start-column="13" selection-end-line="1297" selection-end-column="13" />
           <folding>
             <element signature="e#1490#1783#0" expanded="false" />
-            <element signature="e#2211#2327#0" expanded="false" />
-            <element signature="e#2356#2449#0" expanded="false" />
-            <element signature="e#13957#14504#0" expanded="false" />
-            <element signature="e#24255#24455#0" expanded="false" />
-            <element signature="e#25767#26503#0" expanded="false" />
-            <element signature="e#27123#27576#0" expanded="false" />
-            <element signature="e#53335#56662#0" expanded="false" />
-            <element signature="e#56845#59093#0" expanded="false" />
-            <element signature="e#59761#60319#0" expanded="false" />
-            <element signature="e#60413#60823#0" expanded="false" />
-            <element signature="e#60905#62147#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17285945" vertical-offset="55253" max-vertical-offset="55872">
+          <caret line="3460" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="3486" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/styles/main.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17171717" vertical-offset="18346" max-vertical-offset="54016">
+          <caret line="1748" column="3" selection-start-line="0" selection-start-column="0" selection-end-line="4086" selection-end-column="0" />
+          <folding>
+            <element signature="e#5941#7005#0" expanded="false" />
+            <element signature="e#7021#7240#0" expanded="false" />
+            <element signature="e#7255#8385#0" expanded="false" />
+            <element signature="e#8425#8951#0" expanded="false" />
+            <element signature="e#8963#9297#0" expanded="false" />
+            <element signature="e#9311#10192#0" expanded="false" />
+            <element signature="e#11630#11879#0" expanded="false" />
+            <element signature="e#11891#12153#0" expanded="false" />
+            <element signature="e#12204#12594#0" expanded="false" />
+            <element signature="e#12779#12925#0" expanded="false" />
+            <element signature="e#12975#13945#0" expanded="false" />
+            <element signature="e#13984#14111#0" expanded="false" />
+            <element signature="e#16370#16440#0" expanded="false" />
+            <element signature="e#16471#16634#0" expanded="false" />
+            <element signature="e#16649#16690#0" expanded="false" />
+            <element signature="e#16699#16900#0" expanded="false" />
+            <element signature="e#17039#18260#0" expanded="false" />
+            <element signature="e#18284#18387#0" expanded="false" />
+            <element signature="e#18398#18445#0" expanded="false" />
+            <element signature="e#18471#18554#0" expanded="false" />
+            <element signature="e#18645#19307#0" expanded="false" />
+            <element signature="e#19330#19348#0" expanded="false" />
+            <element signature="e#20410#20509#0" expanded="false" />
+            <element signature="e#23719#24079#0" expanded="false" />
+            <element signature="e#26399#26952#0" expanded="false" />
+            <element signature="e#28492#28650#0" expanded="false" />
+            <element signature="e#28664#28775#0" expanded="false" />
+            <element signature="e#28787#28911#0" expanded="false" />
+            <element signature="e#28927#28956#0" expanded="false" />
+            <element signature="e#28972#29306#0" expanded="false" />
+            <element signature="e#29320#29973#0" expanded="false" />
+            <element signature="e#29990#30171#0" expanded="false" />
+            <element signature="e#30195#30560#0" expanded="false" />
+            <element signature="e#30720#31169#0" expanded="false" />
+            <element signature="e#31182#31202#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.95046437" vertical-offset="33130" max-vertical-offset="33856">
+          <caret line="2109" column="10" selection-start-line="2109" selection-start-column="10" selection-end-line="2109" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>

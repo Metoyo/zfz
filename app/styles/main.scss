@@ -1011,7 +1011,7 @@ a.add-btn:hover span {
     position: relative;
     font-size: 14px;
     line-height: 24px;
-    display: none;
+//    display: none;
     .daAnLabel{
       position: absolute;
     }
@@ -1698,6 +1698,9 @@ label.checkbox{
   .contentWraps{
     padding-top: 55px;
   }
+  .answer-cont{
+    display: none;
+  }
 }
 .tiKong{
   .tizhiWrap{
@@ -1848,6 +1851,7 @@ label.checkbox{
     bottom: 0;
     right: 0;
     padding: 10px;
+    z-index: 20;
     background-color: #f5f5f5;
   }
   .ruleMakePaper-body{
@@ -1898,6 +1902,17 @@ label.checkbox{
   .panel-title{
     .active{
       color: #f60;
+    }
+  }
+  .tiMuSgl{
+    position: fixed;
+    z-index: 3;
+    right: 0;
+    left: 300px;
+  }
+  .zuanJuanTiMu{
+    .answer-cont{
+      display: none;
     }
   }
 }
@@ -2011,7 +2026,6 @@ label.checkbox{
   }
   .answer-cont{
     position: relative;
-    display: block;
     .daAnLabel {
       position: absolute;
     }
