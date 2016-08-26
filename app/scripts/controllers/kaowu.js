@@ -257,6 +257,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 
               //'报名截止时间': '',
               '考试须知': '',
               '考试组设置': {
+                '随机试卷': false,
                 '选项乱序': false,
                 '题目乱序': false,
                 '填空题笔答': false,
