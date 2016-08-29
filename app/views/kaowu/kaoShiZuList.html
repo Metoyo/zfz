@@ -99,25 +99,32 @@
           </tr>
           <tr>
             <td colspan="6">
-              <label class="checkbox-inline">
-                <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['选项乱序']" ng-disabled="kaoShiZuDtl['状态']!=1"> 选项乱序
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['题目乱序']" ng-disabled="kaoShiZuDtl['状态']!=1"> 题目乱序
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['填空题笔答']" ng-disabled="kaoShiZuDtl['状态']!=1"> 填空题笔答
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['允许计算器']" ng-disabled="kaoShiZuDtl['状态']!=1"> 允许计算器
-              </label>
-              <label class="checkbox-inline">
-                每页题目数
-                <select ng-options="nm for nm in tiMuNumPerPage" ng-model="kaoShiZuDtl['考试组设置']['每页题目数']" ng-disabled="kaoShiZuDtl['状态']!=1">
-                  <option value="">请选择</option>
-                </select>
-              </label>
-              <button type="button" class="btn btn-primary pull-right" ng-click="saveKszSet()">保存</button>
+              <p>
+                <label class="checkbox-inline mr15">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['随机试卷']" ng-disabled="kaoShiZuDtl['状态']!=1"> 现场抽题
+                </label>
+                <label class="checkbox-inline mr15">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['选项乱序']" ng-disabled="kaoShiZuDtl['状态']!=1"> 选项乱序
+                </label>
+                <label class="checkbox-inline mr15">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['题目乱序']" ng-disabled="kaoShiZuDtl['状态']!=1"> 题目乱序
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['填空题笔答']" ng-disabled="kaoShiZuDtl['状态']!=1"> 填空题笔答
+                </label>
+              </p>
+              <p>
+                <label class="checkbox-inline">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['允许计算器']" ng-disabled="kaoShiZuDtl['状态']!=1"> 允许计算器
+                </label>
+                <label class="checkbox-inline">
+                  每页题目数
+                  <select ng-options="nm for nm in tiMuNumPerPage" ng-model="kaoShiZuDtl['考试组设置']['每页题目数']" ng-disabled="kaoShiZuDtl['状态']!=1">
+                    <option value="">请选择</option>
+                  </select>
+                </label>
+                <button type="button" class="btn btn-primary pull-right" ng-hide="kaoShiZuDtl['状态']!=1" ng-click="saveKszSet()">保存</button>
+              </p>
             </td>
           </tr>
         </table>

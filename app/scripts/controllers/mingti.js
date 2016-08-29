@@ -1524,7 +1524,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
                   '答案': '',
                   '提示': ''
                 };
-                $scope.timu['备注'] = '';
+                //$scope.timu['备注'] = '';
                 $scope.mingTiParam.xuanZheTiZhi = '';
                 var tzSlt = document.querySelector('.formulaEditTiZhi');
                 angular.element(tzSlt).val('');

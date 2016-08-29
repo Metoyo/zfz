@@ -1,7 +1,8 @@
 <!--组卷规则-->
 <div class="ruleMakePaper plr10">
   <div class="row text-center fz16 ptb10" style="font-weight: 500">
-    <input type="text" placeholder="点击输入试卷名称" class="text-center wp100 bd0" ng-model="zuJuanParam.sjzName"/>
+    <input type="text" placeholder="点击输入试卷名称" class="text-center wp100 ptb5" ng-class="{bdRed1:!zuJuanParam.sjzName, bd0:zuJuanParam.sjzName}"
+           ng-model="zuJuanParam.sjzName"/>
   </div>
   <!--第一步，试卷组名称和题库-->
   <div class="row" ng-if="stepNum.two == false">
@@ -64,14 +65,14 @@
     <div class="popup-wrap alter-dati" ng-if="zuJuanParam.showDaTi">
       <div class="popup-wrap-inner">
         <div class="pwi-header plr10 text-center"><span class="title">选择大题</span></div>
-        <div class="pwi-body p10 form-horizontal">
-          <label class="checkbox-inline" ng-repeat="kmtx in sjzKmtx">
+        <div class="pwi-body p10 form-horizontal clearCss">
+          <label class="checkbox-inline wp25" ng-repeat="kmtx in sjzKmtx">
             <input type="checkbox" name="sjTiXing" ng-checked="kmtx.ckd" ng-click="checkTiXing(kmtx, 'zu')"> {{kmtx['题型名称']}}
           </label>
         </div>
         <div class="pwi-footer plr10 text-center">
-          <button type="button" class="btn btn-danger mt5" ng-click="closeSjzEdit()">取消</button>
-          <button type="button" class="btn btn-primary mt5 ml15" ng-click="closeSjzEdit()">确定</button>
+          <button type="button" class="btn btn-primary mt5" ng-click="closeSjzEdit()">确定</button>
+          <button type="button" class="btn btn-danger mt5 ml15" ng-click="closeSjzEdit()">取消</button>
         </div>
       </div>
     </div>

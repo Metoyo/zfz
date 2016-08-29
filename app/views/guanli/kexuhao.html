@@ -226,6 +226,8 @@
               ng-click="impUsrStep('more')">批量导入</li>
           <li class="text-center cursorPointer mt10" ng-class="{active:impUsrStepNum=='list'}"
               ng-click="impUsrStep('list')">显示名单</li>
+          <li class="text-center cursorPointer mt10" ng-class="{active:impUsrStepNum=='clash'}" ng-if="impClash.length>0"
+              ng-click="impUsrStep('clash')">冲突数据</li>
         </ul>
         <div ng-if="impUsrStepNum=='list'">
           <table class="table table-striped" ng-if="impStus.length>0">
@@ -250,6 +252,20 @@
                   <span class="glyphicon glyphicon glyphicon-arrow-down"></span>
                 </a>
               </td>
+            </tr>
+          </table>
+        </div>
+        <div ng-if="impUsrStepNum=='clash'">
+          <table class="table table-striped" ng-if="impClash.length>0">
+            <tr>
+              <th>学号</th>
+              <th>新姓名</th>
+              <th>旧姓名</th>
+            </tr>
+            <tr ng-repeat="stu in impClash">
+              <td class="text-center" ng-bind="stu['学号']"></td>
+              <td ng-bind="stu['姓名']['新']"></td>
+              <td ng-bind="stu['姓名']['旧']"></td>
             </tr>
           </table>
         </div>

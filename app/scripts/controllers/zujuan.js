@@ -703,7 +703,7 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          * 删除本大题
          */
         $scope.deleteDaTi = function(tx){
-          if(confirm('确定要删除本大题吗？')){
+          if(confirm('删除大题会导致其下题目丢失，是否确认删除？')){
             $scope.sjzSet['组卷规则'] = Lazy($scope.sjzSet['组卷规则']).reject({'题型ID': tx['题型ID']}).toArray();
             var findTar = Lazy($scope.sjzKmtx).find(function(kmtx){
               return kmtx['题型ID'] == tx['题型ID'];
@@ -716,24 +716,28 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          * 删除组卷的条件
          */
         $scope.deleteRule = function(tx, idx){
-          tx['随机题目数量'] -= parseInt(tx['随机题目'][idx]['题目数量']);
-          tx['随机题目'].splice(idx, 1);
+          if(confirm('确定要删除吗？')){
+            tx['随机题目数量'] -= parseInt(tx['随机题目'][idx]['题目数量']);
+            tx['随机题目'].splice(idx, 1);
+          }
         };
 
         /**
          * 删除组卷的固定题目
          */
         $scope.deleteTiMu = function(tx, idx, tp){
-          if(tp == 'single'){
-            tx['题目'].splice(idx, 1);
+          if(confirm('确定要删除吗？')){
+            if(tp == 'single'){
+              tx['题目'].splice(idx, 1);
+            }
+            else{
+              tx['固定题目'].splice(idx, 1);
+            }
+            var reloadFun = function(){
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub, "zjTestList"]);
+            };
+            $timeout(reloadFun, 500);
           }
-          else{
-            tx['固定题目'].splice(idx, 1);
-          }
-          var reloadFun = function(){
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "zjTestList"]);
-          };
-          $timeout(reloadFun, 500);
         };
 
         /**
@@ -1202,19 +1206,11 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
          * 将题加入试卷
          */
         $scope.addToPaper = function(tm, tp){
+          tm.ckd = true;
           if(tp == 'single'){
-            var dtNum = $scope.sglSjParam.sltDt['题目数量'];
-            var addNum = $scope.sglSjParam.sltDt['题目'].length;
-            if(dtNum > addNum){
-              tm.ckd = true;
-              $scope.sglSjParam.sltDt['题目'].push(tm);
-            }
-            else{
-              DataService.alertInfFun('pmt', $scope.sglSjParam.sltDt['大题名称'] + '已全部选出！');
-            }
+            $scope.sglSjParam.sltDt['题目'].push(tm);
           }
           else{
-            tm.ckd = true;
             $scope.addSjz.sltDati['固定题目'].push(tm);
           }
         };
@@ -1923,14 +1919,9 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
           Lazy($scope.sjzSet['组卷规则']).each(function(gz){
             var dtObj = {
               '大题名称': gz['大题名称'],
-              '题目数量': 0,
               '题型ID': gz['题型ID'],
               '题目': []
             };
-            if(gz['固定题目'] && gz['固定题目'].length > 0){
-              dtObj['题目数量'] += gz['固定题目'].length;
-            }
-            dtObj['题目数量'] += gz['随机题目数量'];
             $scope.singleSj.push(dtObj);
           });
           $scope.zjTpl = 'views/zujuan/zj_addSj.html';
@@ -1986,29 +1977,34 @@ define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, co
             DataService.alertInfFun('pmt', '固定题目分值不能为空！');
             return ;
           }
-          var obj = {
-            method: 'PUT',
-            url: shiJuanZuShiJuanUrl,
-            data: {
-              '试卷组ID': '',
-              '试卷': ''
+          if($scope.zuJuanParam.sjScore == $scope.sglSjParam.sjScore){
+            var obj = {
+              method: 'PUT',
+              url: shiJuanZuShiJuanUrl,
+              data: {
+                '试卷组ID': '',
+                '试卷': ''
+              }
+            };
+            if($scope.selectSjz){
+              obj.data['试卷组ID'] = $scope.selectSjz['试卷组ID'];
+              obj.data['试卷'] = JSON.stringify(sjArr);
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.showPaperList();
+                  DataService.alertInfFun('err', '添加成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
             }
-          };
-          if($scope.selectSjz){
-            obj.data['试卷组ID'] = $scope.selectSjz['试卷组ID'];
-            obj.data['试卷'] = JSON.stringify(sjArr);
-            $http(obj).success(function(data){
-              if(data.result){
-                $scope.showPaperList();
-                DataService.alertInfFun('err', '添加成功！');
-              }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-            });
+            else{
+              DataService.alertInfFun('pmt', '请选择试卷组！');
+            }
           }
           else{
-            DataService.alertInfFun('pmt', '请选择试卷组！');
+            DataService.alertInfFun('pmt', '已选题目总分和试卷组总分不一致，请修改！');
           }
         };
 

@@ -360,6 +360,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           $scope.guanliParams.modifyKxh = '';
           $scope.guanliParams.year = '';
           $scope.guanliParams.term = '';
+          $scope.impClash = [];
           if(item == 'addKeXuHao'){
             qryKeMuTeachers();
           }
@@ -456,6 +457,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
           var fd = new FormData();
           var obj = {};
           var allRight = true;
+          $scope.impClash = [];
           if(kind == 'single'){
             if($scope.guanliParams.singleStuName){
               if($scope.guanliParams.singleStuID){
@@ -513,6 +515,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, co
                 $scope.impStus = Lazy($scope.impStus).union(data.data['导入成功']).toArray();
                 $scope.impStus = Lazy($scope.impStus).uniq('UID').toArray();
                 $scope.impUsrStepNum = 'list';
+                if(data.data['数据冲突'] && data.data['数据冲突'].length > 0){
+                  var msg = '';
+                  $scope.impClash = data.data['数据冲突'];
+                  if(data.data['导入成功'] && data.data['导入成功'].length > 0){
+                    msg = '导入成功：' + data.data['导入成功'].length + '；数据冲突：' + data.data['数据冲突'].length;
+                  }
+                  else{
+                    msg = '数据冲突：' + data.data['数据冲突'].length;
+                  }
+                  DataService.alertInfFun('err', msg);
+                }
                 if(kind == 'single'){
                   $scope.guanliParams.singleStuName = '';
                   $scope.guanliParams.singleStuID = '';
