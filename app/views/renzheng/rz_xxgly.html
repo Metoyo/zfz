@@ -14,11 +14,11 @@
   <div class="mt15 pull-left" ng-show="showAlterAdminBox">
     <span>请输入新密码：</span>
     <input type="text" class="newPassWord form-control" ng-model="adminParams.newPsd"/>
-    <button type="button" class="btn btn-danger mt5 ml15 pull-right" ng-click="showAlterAdminBox = !showAlterAdminBox">
-      取消
-    </button>
-    <button type="button" class="btn btn-primary mt5 pull-right" ng-click="modifyAdminPassWord()"
+    <button type="button" class="btn btn-primary mt5 ml15 pull-right" ng-click="modifyAdminPassWord()"
             ng-disabled="!adminParams.newPsd">修改
+    </button>
+    <button type="button" class="btn btn-danger mt5 pull-right" ng-click="showAlterAdminBox = !showAlterAdminBox">
+      取消
     </button>
     <p class="adminMiMaInfo"></p>
   </div>
