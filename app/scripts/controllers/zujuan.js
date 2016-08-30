@@ -1,4 +1,4 @@
-define(['angular', 'config', 'mathjax', 'jquery', 'lazy'], function (angular, config, mathjax, $, lazy) { // 001
+define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, lazy) { // 001
   'use strict';
   angular.module('zhifzApp.controllers.ZujuanCtrl', [])
     .controller('ZujuanCtrl', ['$rootScope', '$scope', '$location', '$http', 'urlRedirect', '$q', '$timeout',

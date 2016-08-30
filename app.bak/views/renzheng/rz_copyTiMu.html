@@ -1,0 +1,58 @@
+<h4>题目复制</h4>
+<div class="form-horizontal dagangInput p10">
+  <div class="loading-box text-center" ng-show="loadingImgShow">
+    <img src="/images/loading.gif" alt="" width="64" height="64"/>
+    <p>数据加载中，请耐心等待……</p>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      原学校ID
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="jg['学校ID'] as jg['学校名称'] for jg in jigou_list"
+              ng-model="tiMuCopy['原学校ID']" ng-change="getKeMuList(tiMuCopy['原学校ID'])">
+        <option value="">请选择</option>
+      </select>
+    </div>
+    <label class="col-md-2 control-label">
+      原科目ID
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="km['科目ID'] as km['科目名称'] for km in kemu_list"
+              ng-model="tiMuCopy['原科目ID']" ng-change="assignKeMuVal()">
+        <option value="">请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      原题目ID
+    </label>
+    <div class="col-md-10">
+      <textarea rows="3" class="form-control" ng-model="tiMuCopy['原题目ID']" placeholder="请用'；'分割"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      目标科目ID
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="km['科目ID'] as km['科目名称'] for km in kemu_list"
+              ng-model="tiMuCopy['目标科目ID']" ng-change="qryTiKuByKm(tiMuCopy['目标科目ID'])">
+        <option value="">请选择</option>
+      </select>
+    </div>
+    <label class="col-md-2 control-label">
+      目标题库ID
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="tk['题库ID'] as tk['题库名称'] for tk in tarTiKuList"
+              ng-model="tiMuCopy['目标题库ID']">
+        <option value="">请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group text-right">
+    <button type="button" class="btn btn-primary" ng-click="saveCopyTiMu()" ng-disabled="">提交</button>
+  </div>
+</div>

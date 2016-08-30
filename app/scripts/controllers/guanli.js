@@ -1,4 +1,4 @@
-define(['angular', 'config', 'jquery', 'lazy', 'mathjax'], function (angular, config, $, lazy, mathjax) {
+define(['angular', 'config', 'jquery', 'lazy', ], function (angular, config, $, lazy) {
   'use strict';
   angular.module('zhifzApp.controllers.GuanLiCtrl', [])
     .controller('GuanLiCtrl', ['$rootScope', '$scope', 'DataService', '$http', '$cookieStore',

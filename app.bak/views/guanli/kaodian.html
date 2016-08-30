@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="pull-left wp100">
+    <h4 class="pb10">
+      <span>考点信息</span>
+    </h4>
+    <table class="table table-striped">
+      <tr>
+        <th>考场名称</th>
+        <th class="text-center">考位数量</th>
+        <th class="text-center">考场地址</th>
+        <th class="text-center">激活码</th>
+      </tr>
+      <tr ng-repeat="kc in kaoChangList">
+        <td ng-bind="kc['考点名称']"></td>
+        <td class="text-center" ng-bind="kc['考位数']"></td>
+        <td class="text-center" ng-bind="kc['详情']['考场地址']"></td>
+        <td class="text-center" ng-bind="kc['激活码']"></td>
+      </tr>
+    </table>
+  </div>
+</div>

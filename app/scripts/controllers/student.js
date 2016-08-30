@@ -1,4 +1,4 @@
-define(['angular', 'config', 'jquery', 'lazy', 'polyv'], function (angular, config, $, lazy, polyv) {
+define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, lazy) {
   'use strict';
 
   angular.module('zhifzApp.controllers.StudentCtrl', [])

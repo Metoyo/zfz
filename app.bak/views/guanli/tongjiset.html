@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="pull-left wp40">
+    <h4 class="pb10">
+      考试
+    </h4>
+    <div class="glZsdgWrap pl10 bd1">
+      <div class="radio" ng-repeat="ksz in glKaoShiZuList">
+        <label>
+          <input type="radio" name="rdKaoShiZu" value="{{ksz['考试组ID']}}" ng-click="glQueryZsd(ksz)">{{ksz['考试组名称']}}
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="pull-right wp56">
+    <h4 class="pb10">
+      <span>知识大纲</span><span ng-if="glKowledgeList">—{{glKowledgeList['知识大纲名称']}}</span>
+      <!--<button type="button" class="btn btn-default pull-right" ng-click="glKaoWuGetZsd()">获取知识点</button>-->
+    </h4>
+    <div class="pointTree glZsdgWrap pl10 bd1">
+      <ul class="list-unstyled levelOne" id="glDaGangList">
+        <li ng-repeat="nd1 in glKowledgeList['节点']" repeat-done>
+          <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd1.fld}" ng-show="nd1['子节点'].length" ng-click="toggleChildNode(nd1)"></div>
+          <div class="checkbox">
+            <label><input type="checkbox" name="point" ng-checked="nd1.ckd" ng-click="toggleSelection(nd1)"/>
+              {{nd1['知识点名称']}}
+            </label>
+          </div>
+          <ul class="list-unstyled" ng-show="nd1.fld">
+            <li ng-repeat="nd2 in nd1['子节点']">
+              <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd2.fld}" ng-show="nd2['子节点'].length" ng-click="toggleChildNode(nd2)"></div>
+              <div class="checkbox">
+                <label><input type="checkbox" name="point" ng-checked="nd2.ckd" ng-click="toggleSelection(nd2)"/>
+                  {{nd2['知识点名称']}}
+                </label>
+              </div>
+              <ul class="list-unstyled" ng-show="nd2.fld">
+                <li ng-repeat="nd3 in nd2['子节点']">
+                  <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd3.fld}" ng-show="nd3['子节点'].length" ng-click="toggleChildNode(nd3)"></div>
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="point" ng-checked="nd3.ckd" ng-click="toggleSelection(nd3)"/>
+                      {{nd3['知识点名称']}}
+                    </label>
+                  </div>
+                  <ul class="list-unstyled levelFour" ng-show="nd3.fld">
+                    <li ng-repeat="nd4 in nd3['子节点']">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="point" ng-checked="nd4.ckd" ng-click="toggleSelection(nd4)"/>
+                          {{nd4['知识点名称']}}
+                        </label>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary mt15 pull-right" ng-click="glSaveTongJiSet()">保存修改</button>
+  </div>
+</div>

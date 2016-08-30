@@ -12,7 +12,7 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/bower_components/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
@@ -31,10 +31,11 @@
     <div class="popInfoWrap" ng-include="'views/partials/info.html'"></div>
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
-    <script src="bower_components/es5-shim/es5-shim.js"></script>
-    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/es5-shim/es5-shim.min.js"></script>
+    <script src="bower_components/json3/json3.min.js"></script>
     <![endif]-->
     <!-- endbuild -->
-    <script src="bower_components/requirejs/require.js" data-main="scripts/main.js"></script>
+    <script src="bower_components/requirejs/require.min.js" data-main="scripts/main.js"></script>
+    <script src="bower_components/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
   </body>
 </html>

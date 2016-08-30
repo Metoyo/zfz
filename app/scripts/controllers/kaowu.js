@@ -1,5 +1,5 @@
-define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'datepicker'], // 000 开始
-  function (angular, config, $, lazy, mathjax, datepicker) { // 001 开始
+define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
+  function (angular, config, $, lazy, datepicker) { // 001 开始
     'use strict';
     angular.module('zhifzApp.controllers.KaowuCtrl', []) //controller 开始
       .controller('KaowuCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$q', '$cookieStore',

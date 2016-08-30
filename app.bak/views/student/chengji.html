@@ -1,0 +1,116 @@
+<div class="studentWrapper">
+  <h2 class="loading-box" ng-hide="kszScoreData.length">暂无考试数据</h2>
+  <div class="sub-nav fixed-top">
+    <ul class="nav nav-tabs">
+      <li class="active" style="margin-left: 50px">
+        <a href="javascript:void(0)">
+          考试成绩
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content plr50 mt65">
+    <div class="row">
+      <h4 class="pb10">我的成绩</h4>
+      <div class="col-md-7">
+        <table class="table table-striped">
+          <tr>
+            <th>考试名称</th>
+            <th class="text-center">成绩</th>
+            <th class="text-center" width="80px">操作</th>
+            <th class="text-center" width="100px">知识点分析</th>
+          </tr>
+          <tr ng-repeat="ksz in kszScoreData">
+            <td ng-bind="ksz['考试组名称']"></td>
+            <td class="text-center">
+              <span ng-if="ksz['实际评分'] >= 0 && ksz.score == 'on'" ng-bind="ksz['实际评分']"></span>
+              <span ng-if="ksz['实际评分'] == null && ksz.score == 'on'">缺考</span>
+            </td>
+            <td class="text-center">
+              <a href="javascript:void(0)" ng-if="ksz.zuoda == 'on'" ng-click="zuoDaReappear(ksz)">作答重现</a>
+            </td>
+            <td class="text-center">
+              <a href="javascript:void(0)" ng-click="studentZsdFenXi(ksz)">查看</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-5" ng-show="stuParams.zsdTjShow">
+        <div id="studentZsd" style="width: 400px;height: 220px;"></div>
+      </div>
+    </div>
+    <div class="popup-percent" ng-hide="showKaoShengList">
+      <div class="popup-percent-inner">
+        <div>
+          <label class="closePaperDetailBtn fz16">
+            <input type="checkbox" ng-model="checkboxModel"> 只看失分题目
+          </label>
+          <button type="button" class="btn btn-danger closePaperDetailBtn" ng-click="closeZuoDaReappear()">
+            关闭
+          </button>
+        </div>
+        <div class="inner-box">
+          <h2 class="text-center">
+            <span ng-bind="kaoShengShiJuan.sj_name"></span>
+          </h2>
+          <div id="answerReappearShiJuan">
+            <div ng-repeat="dati in kaoShengShiJuan.sj_tm" repeat-done>
+              <h4>
+                <span>{{stuParams.cnNumArr[$index]}}、</span>
+                <span ng-bind="dati['大题名称']"></span>
+              </h4>
+              <ul class="list-unstyled">
+                <li class="ptb5" ng-repeat="xtm in dati['题目']" ng-hide="checkboxModel && xtm['考生作答']['得分'] == xtm['分值']">
+                  <h4 class="ar-tiGan itemHasImg">
+                    <span ng-bind-html="($index + 1) + '、' + xtm['题目内容']['题干']"></span>
+                    (本小题 <b ng-bind="xtm['分值']"></b> 分)
+                    (最后得分：<b class="clRed" ng-bind="xtm['考生作答']['得分']"></b> 分)
+                    <!--(本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)-->
+                  </h4>
+                  <!-- 单选题 -->
+                  <div class="ar-tzs" ng-if="xtm['题型ID'] == 1">
+                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
+                      <p class="positionAb">
+                        <input type="radio" name="{{'radio' + $parent.$index}}" value="{{$index}}"
+                               ng-model="xtm['考生作答']['考生答案']" disabled/> {{'(' + stuParams.letterArr[$index] + ')'}}
+                      </p>
+                      <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm['考生作答']['考生答案'] == stuParams.letterArr[$index]}"></p>
+                    </div>
+                  </div>
+                  <!-- 多选题 -->
+                  <div class="ar-tzs" ng-if="xtm['题型ID'] == 2">
+                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
+                      <p class="positionAb">
+                        <input type="checkbox" name="{{'checkbox' + $parent.$index}}"
+                               ng-checked="xtm['考生作答']['考生答案'].indexOf(stuParams.letterArr[$index]) > -1" disabled/>
+                        {{'(' + stuParams.letterArr[$index] + ')'}}
+                      </p>
+                      <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm['考生作答']['考生答案'] == stuParams.letterArr[$index]}"></p>
+                    </div>
+                  </div>
+                  <!-- 判读题 -->
+                  <div class="ar-tzs" ng-if="xtm['题型ID'] == 3">
+                    <span ng-class="{clRed:xtm['考生作答']['考生答案'] == 1}">
+                    <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="1" ng-model="xtm['考生作答']['考生答案']" disabled/>  对
+                    </span>
+                    <span ng-class="{clRed:xtm['考生作答']['考生答案'] == 0}">
+                    <input type="radio" name="{{'pdRadio' + $parent.$index}}" value="0" style="margin: 0 0 0 20px"
+                           ng-model="xtm['考生作答']['考生答案']" disabled/>  错
+                    </span>
+                  </div>
+                  <!--&lt;!&ndash; 填空题 &ndash;&gt;-->
+                  <!--<div class="ar-tzs" ng-if="xtm['题型ID'] == 4" ng-bind-html="xtm">-->
+                  <!--</div>-->
+                   <!-- 题型ID大于等于5 -->
+                  <div class="ar-tzs itemHasImg" ng-if="xtm['题型ID'] >= 5" ng-bind-html="xtm['考生作答']['考生答案']">
+                  </div>
+                  <h5>标准答案：<span ng-bind-html="xtm['题目内容']['答案']"></span></h5>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,184 @@
+<h4 class="pb10">
+  <span class="cYell">{{kwParams.dftKmName['科目名称']}}</span><span>考试管理</span>
+  <span class="fz16">
+    <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.kszListZt == 'all' }"
+       ng-click="showKaoShiZuList('all')">全部考试</a> |
+    <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.kszListZt == 'done' }"
+       ng-click="showKaoShiZuList('done')">已完成考试</a> |
+    <a href="javascript:void(0)" class="plr10" ng-class="{active:kwParams.kszListZt == 'ing' }"
+       ng-click="showKaoShiZuList('ing')">未完成考试</a>
+  </span>
+</h4>
+<table class="table table-striped">
+  <tr class="active">
+    <th>考试名称</th>
+    <th class="text-center">报名方式</th>
+    <th width="80px" class="text-center">场次数</th>
+    <th width="100px" class="text-center">报考人数</th>
+    <th width="100px" class="text-center">状态</th>
+    <th width="80px" class="text-center">操作</th>
+  </tr>
+  <tr ng-repeat="ksz in kaoShiZuList">
+    <td>
+      <a href="javascript:void(0)" ng-bind="ksz['考试组名称']" ng-click="seeKaoShiZuDetail(ksz)"></a>
+      <span class="fz14" ng-if="ksz['报名周期']" ng-bind="'(报名时间:' + ksz['报名周期'] + ')'"></span>
+    </td>
+    <td class="text-center" ng-bind="ksz['报名方式']==1 ? '非在线报名':'在线报名'"></td>
+    <td class="text-center" ng-bind="ksz['考试'].length || 0"></td>
+    <td class="text-center" ng-bind="ksz['已报名人数'] + '/' + ksz['总人数']"></td>
+    <td class="text-center {{'kssCl' + ksz['状态']}}" ng-bind="ksz['状态'] | examStatus"></td>
+    <td class="text-right">
+      <span ng-hide="kwParams.forbidBtn">
+        <span class="glyphicon glyphicon-send cBlue cursorPointer" ng-click="faBuKaoShiZu(ksz['考试组ID'])"
+              ng-hide="ksz['状态'] >= 3" title="发布" style="margin-right: 10px"></span>
+      </span>
+      <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKaoShiZu(ksz['考试组ID'])"
+            title="删除" style="margin-right: 10px"></span>
+    </td>
+  </tr>
+</table>
+<div class="paging text-right">
+  <ul class="pagination pagination-sm">
+    <li ng-class="{disabled: pageParam.activePage == 1}">
+      <a href ng-click="kaoShiZuDist(1)">首页</a>
+    </li>
+    <li ng-class="{disabled: pageParam.activePage == 1}">
+      <a href
+         ng-click="kaoShiZuDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
+        上一页
+      </a>
+    </li>
+    <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
+      <a href ng-click="kaoShiZuDist(pg)">{{pg}}</a>
+    </li>
+    <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
+      <a href
+         ng-click="kaoShiZuDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
+        下一页
+      </a>
+    </li>
+    <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+      <a href ng-click="kaoShiZuDist(pageParam.lastPage)">尾页</a>
+    </li>
+  </ul>
+</div>
+<div class="popup-wrap" ng-if="kaoShiZuDtl">
+  <div class="popup-wrap-inner no-footer">
+    <div class="pwi-header plr10">
+      <span class="title" ng-bind="kaoShiZuDtl['考试组名称']"></span>
+      <div class="pull-right">
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showPaperInfo()">查看试卷</a>
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showChangCiToggle()">查看场次</a>
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiZuDtl['报名方式']==2"
+           ng-click="showBaoMingStu('no')">未报名考生</a>
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiZuDtl['状态']==1" ng-click="showKszNotice()">考试须知</a>
+        <button type="button" class="btn btn-danger mt5" ng-click="closePaperDtl()">关闭</button>
+      </div>
+    </div>
+    <div class="pwi-body plr10">
+      <div ng-if="!kwParams.showCcSjz">
+        <!--场次的table-->
+        <table class="table table-striped mt15" ng-if="!kwParams.showStu">
+          <tr>
+            <th>场次</th>
+            <th class="text-center">考试时间</th>
+            <th class="text-center">时长</th>
+            <th class="text-center">考点</th>
+            <th class="text-center">考生</th>
+            <th class="text-center">导出考生</th>
+          </tr>
+          <tr ng-repeat="cc in kaoShiZuDtl['考试']">
+            <td  class="cursorPointer cBlue" ng-bind="cc['考试名称']" ng-click="showBaoMingStu('on', cc)"></td>
+            <td class="text-center" ng-bind="cc['开始时间'] | localDate:'ww'"></td>
+            <td class="text-center" ng-bind="cc['考试时长']"></td>
+            <td class="text-center" ng-bind="cc['考点名称']"></td>
+            <td class="text-center">{{cc['总人数'] || 0}}/{{kaoShiZuDtl['总人数']}}</td>
+            <td class="text-center cursorPointer" title="导出考生" ng-click="exportKsInfo('mdOff', cc)">
+              <span class="glyphicon glyphicon-export"></span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <p>
+                <label class="checkbox-inline mr15">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['随机试卷']" ng-disabled="kaoShiZuDtl['状态']!=1"> 现场抽题
+                </label>
+                <label class="checkbox-inline mr15">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['选项乱序']" ng-disabled="kaoShiZuDtl['状态']!=1"> 选项乱序
+                </label>
+                <label class="checkbox-inline mr15">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['题目乱序']" ng-disabled="kaoShiZuDtl['状态']!=1"> 题目乱序
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['填空题笔答']" ng-disabled="kaoShiZuDtl['状态']!=1"> 填空题笔答
+                </label>
+              </p>
+              <p>
+                <label class="checkbox-inline">
+                  <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['允许计算器']" ng-disabled="kaoShiZuDtl['状态']!=1"> 允许计算器
+                </label>
+                <label class="checkbox-inline">
+                  每页题目数
+                  <select ng-options="nm for nm in tiMuNumPerPage" ng-model="kaoShiZuDtl['考试组设置']['每页题目数']" ng-disabled="kaoShiZuDtl['状态']!=1">
+                    <option value="">请选择</option>
+                  </select>
+                </label>
+                <button type="button" class="btn btn-primary pull-right" ng-hide="kaoShiZuDtl['状态']!=1" ng-click="saveKszSet()">保存</button>
+              </p>
+            </td>
+          </tr>
+        </table>
+        <!--学生的table-->
+        <div ng-if="kwParams.showStu">
+          <a href="javascript:void(0)" class="pull-right p10" ng-click="exportKsInfo('mdOn', '')">导出考生</a>
+          <table class="table table-striped mt15">
+            <tr>
+              <th>序号</th>
+              <th>姓名</th>
+              <th class="text-center">学号</th>
+              <th class="text-center">座位号</th>
+              <th class="text-center">课序号名称</th>
+            </tr>
+            <tr ng-repeat="ks in changCiKaoSheng">
+              <td ng-bind="ks['序号']"></td>
+              <td ng-bind="ks['姓名']"></td>
+              <td class="text-center" ng-bind="ks['学号']"></td>
+              <td class="text-center" ng-bind="ks['座位号']"></td>
+              <td class="text-center" ng-bind="ks['课序号名称']"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div ng-if="kwParams.showCcSjz">
+        <!--修改试卷table-->
+        <div ng-if="!kwParams.notice">
+          <p class="text-right mt10" ng-if="kaoShiZuDtl['状态'] < 4">
+            <a href="javascript:void(0)" ng-click="alertPaperWrapShow()">修改试卷</a>
+            <a href="javascript:void(0)" class="ml15" ng-click="daBaoShiJuan()">重新打包试卷</a>
+          </p>
+          <div>
+            <table class="table table-striped">
+              <tr class="active">
+                <th>场次</th>
+                <th class="text-center">试卷组</th>
+              </tr>
+              <tr ng-repeat="cc in alertPaperCc">
+                <td ng-bind="cc['考试名称']"></td>
+                <td ng-bind="cc['试卷组信息']"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <!--修改考试须知-->
+        <div ng-if="kwParams.notice">
+          <p class="text-right mt10" ng-if="kaoShiZuDtl['状态'] == 1">
+            <a href="javascript:void(0)" ng-click="saveKszNotice()">保存</a>
+          </p>
+          <div>
+            <textarea class="form-control" rows="5" ng-model="kaoShiZuDtl['考试须知']"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
-define(['angular', 'config', 'charts', 'mathjax', 'jquery', 'lazy'],
-  function (angular, config, charts, mathjax, $, lazy) {
+define(['angular', 'config', 'charts', 'jquery', 'lazy'],
+  function (angular, config, charts, $, lazy) {
     'use strict';
     angular.module('zhifzApp.controllers.TongjiCtrl', [])
       .controller('TongjiCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$location', '$cookieStore',

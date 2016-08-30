@@ -1,0 +1,107 @@
+<h4 class="logo text-center">
+  <img src="/images/logo.png" alt="智夫子">
+</h4>
+<div class="col-md-10 col-md-offset-1 infoBox">
+  <div class="pull-right text-right mt10 pb10">
+    <a ng-href="/renzheng" ng-click="registerBackTo(0)">返回登录</a>
+    <a href="javascript:void(0)" class="ml15" ng-click="registerBackTo(1)">用户类型</a>
+  </div>
+  <form name="studForm">
+    <div class="tab-content">
+      <div class="tab-pane clearfix col-md-6 col-md-offset-3" ng-class="{'active': stepNum==1}">
+        <!-- 选择学校 -->
+        <div class="form-group col-md-12">
+          <label ng-show="jigou_list">选择学校<strong class="clRed">*</strong><em></em></label>
+          <select class="form-control" ng-options="jg['学校ID'] as jg['学校名称'] for jg in jigou_list"
+                  ng-model="stuRegisterInfo['学校ID']" ng-show="jigou_list">
+            <option value="">请选择</option>
+          </select>
+          <p ng-hide="jigou_list">没有相关学校信息，请刷新尝试！</p>
+        </div>
+        <!-- 下一步 -->
+        <div class="form-group col-md-12 pull-left text-right">
+          <button type="button" ng-disabled="!stuRegisterInfo['学校ID']" class="btn btn-success nextBtn"
+                  ng-click="stuShowStep(2)">下一步<span></span>
+          </button>
+        </div>
+      </div>
+      <div class="tab-pane clearfix col-md-6 col-md-offset-3" ng-class="{'active': stepNum==2}">
+        <!-- 学号 -->
+        <div class="form-group col-md-12">
+          <label>学号<strong class="clRed">*</strong></label>
+          <input type="text" name="xuehao" placeholder="学号" tabindex="1" class="form-control"
+                 ng-disabled="ifTheStuHasRegister"
+                 ng-pattern="xuHaoRegexp" ng-model="stuRegisterInfo['学号']" required autofocus="true"/>
+          <p ng-show="studForm.xuehao.$error.pattern" class="help-block yonghuming">学号格式不正确！</p>
+        </div>
+        <!-- 姓名 -->
+        <div class="form-group col-md-12">
+          <label>姓名<strong class="clRed">*</strong></label>
+          <input id="xingMing" type="text" name="xingMing" placeholder="姓名" tabindex="2" class="form-control"
+                 ng-disabled="ifTheStuHasRegister"
+                 ng-model="stuRegisterInfo['姓名']" required/>
+          <!--<p ng-show="studForm.xingMing.$error.pattern" class="help-block">姓名格式不正确！</p>-->
+        </div>
+        <div ng-show="ifTheStuHasRegister">
+          <!-- 邮箱 -->
+          <div class="form-group col-md-12">
+            <label>邮箱<strong class="clRed">*</strong></label>
+            <input type="email" name="youxiang" placeholder="邮箱" tabindex="3" class="form-control"
+                   ng-model="stuRegisterInfo['邮箱']" ng-pattern="emailRegexp" required/>
+            <p ng-show="studForm.youxiang.$error.pattern" class="help-block">请输入有效的邮箱地址！</p>
+          </div>
+          <!-- 密码 -->
+          <div class="form-group col-md-12">
+            <label>密码 <strong class="clRed">*</strong> <em>(6-20个字符)</em></label>
+            <input type="password" name="mima" placeholder="密码" tabindex="4"
+                   class="form-control regPassword" ng-minlength=6 ng-maxlength=20
+                   ng-model="stuRegisterInfo['密码']" ng-pattern="passwordRegexp" required
+                   ng-change="stuCheckPassword()"/>
+            <p ng-show="studForm.mima.$error.pattern" class="help-block">密码需要6-20个字符！</p>
+          </div>
+          <!-- 确认密码 -->
+          <div class="form-group col-md-12">
+            <label>确认密码<strong class="clRed">*</strong><em>(6-20个字符)</em></label>
+            <input type="password" name="confirmPassword" ng-model="stuRegisterInfo['确认密码']"
+                   data-password-verify="stuRegisterInfo['密码']" ng-change="stuCheckPassword()"
+                   required placeholder="确认密码" tabindex="5" class="form-control"/>
+            <p class="help-block" ng-show="studForm.confirmPassword.$error.passwordVerify">
+              确认密码和密码不匹配！
+            </p>
+            <p class="help-block" ng-show="stuIfPswTheSame">
+              确认密码和密码不匹配！
+            </p>
+          </div>
+        </div>
+        <div class="form-group col-md-12 pull-left">
+          <button type="button" class="btn btn-success prevBtn pull-left" ng-click="stuShowStep(1)">
+            上一步<span></span>
+          </button>
+          <button type="button" class="btn btn-success nextBtn pull-right" ng-click="confirmTheStuIn()"
+                  ng-disabled="studForm.xuehao.$invalid"
+                  ng-hide="ifTheStuHasRegister">
+            下一步<span></span>
+          </button>
+          <button type="button" class="btn btn-success submitBtn pull-right" ng-click="saveStudentInfo()"
+                  ng-show="ifTheStuHasRegister" ng-disabled="studForm.xuehao.$invalid ||
+                  studForm.youxiang.$invalid || studForm.mima.$invalid ||studForm.confirmPassword.$invalid || stuIfPswTheSame">
+            提交<span></span>
+          </button>
+        </div>
+      </div>
+      <div class="tab-pane clearfix col-md-6 col-md-offset-3" ng-class="{'active': stepNum==3}">
+        <div class="form-group col-md-12" ng-repeat="stu in studentInfo">
+          <p>该学生信息已注册！</p>
+          <p>姓名：<span ng-bind="stu['姓名']"></span></p>
+          <p>学号：<span ng-bind="stu['学号']"></span></p>
+          <p>邮箱：<span ng-bind="stu['邮箱']"></span></p>
+        </div>
+        <div class="form-group col-md-12 pull-left">
+          <button type="button" class="btn btn-success nextBtn pull-right" ng-click="backToLoginPage()">
+            返回登录
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

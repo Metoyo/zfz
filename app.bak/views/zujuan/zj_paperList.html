@@ -1,0 +1,76 @@
+<div class="row paper-list">
+  <ul class="list-unstyled zj_list">
+    <li>
+      <table class="table table-title">
+        <tr>
+          <th>试卷组名称</th>
+          <th width="100px">试卷类型</th>
+          <th width="100px">试卷数量</th>
+          <th width="120px">创建时间</th>
+          <th width="80px">操作</th>
+        </tr>
+      </table>
+    </li>
+    <li ng-repeat="pld in paperListData">
+      <table class="table">
+        <tr>
+          <td>
+            <a href="javascript:void(0)" ng-click="showPaperDetail(pld)" ng-bind="pld['试卷组名称']"></a>
+          </td>
+          <td width="100px" class="text-center" ng-bind="pld['试卷组设置']['组卷方式']"></td>
+          <td width="100px" class="text-center" ng-bind="pld['试卷'].length"></td>
+          <td width="120px" class="text-center" ng-bind="pld['创建时间'] | localDate | date : 'yyyy-MM-dd'"></td>
+          <td width="80px" class="text-center">
+            <button type="button" class="btn btn-default" ng-click="deleteSjzPop(pld['试卷组ID'], $index)">删除</button>
+          </td>
+        </tr>
+      </table>
+    </li>
+  </ul>
+  <div class="paging text-right">
+    <button type="button" class="btn btn-primary pull-left" ng-click="makePaper('规则', true)">新建试卷组</button>
+    <ul class="pagination pagination-sm" ng-if="sjzPage.pages.length>0">
+      <li ng-class="{disabled:sjzPage.currentPage == 1}">
+        <a href ng-click="getSjzPageData(1)">首页</a>
+      </li>
+      <li ng-class="{disabled:sjzPage.currentPage == 1}">
+        <a href
+           ng-click="getSjzPageData(prevPg = sjzPage.currentPage > 1 ? sjzPage.currentPage - 1 : 1)">
+          上一页
+        </a>
+      </li>
+      <li ng-repeat="pg in sjzPage.pages track by $index" ng-class="{active: sjzPage.currentPage == pg}">
+        <a href ng-click="getSjzPageData(pg)">{{pg}}</a>
+      </li>
+      <li ng-class="{disabled:sjzPage.currentPage == sjzPage.lastPage}">
+        <a href
+           ng-click="getSjzPageData(nextPg = sjzPage.currentPage < sjzPage.lastPage ? sjzPage.currentPage + 1 : sjzPage.lastPage)">
+          下一页
+        </a>
+      </li>
+      <li ng-class="{disabled:sjzPage.currentPage == sjzPage.lastPage}">
+        <a href ng-click="getSjzPageData(sjzPage.lastPage)">尾页</a>
+      </li>
+    </ul>
+  </div>
+  <div class="popup-wrap popup-wrap-350" ng-if="dltSjzPar['弹出']">
+    <div class="popup-wrap-inner no-header">
+      <div class="pwi-body plr10 text-center">
+        <form class="form-inline mt65">
+          <h2 class="fz20 mt10">请输正确输入验证码，已删除试卷组</h2>
+          <div class="form-group">
+            <label>验证码</label>
+            <input type="text" class="form-control" ng-model="dltSjzPar['输入验证码']" placeholder="验证码">
+          </div>
+          <div class="form-group">
+            <label class="fz20 ml10" ng-bind="dltSjzPar['生成验证码']"></label>
+          </div>
+        </form>
+      </div>
+      <div class="pwi-footer text-center plr10">
+        <button type="button" class="btn btn-primary mt7" ng-click="deleteSjz()">确定</button>
+        <button type="button" class="btn btn-danger mt7 ml15" ng-click="cancelDltSjz()">取消</button>
+      </div>
+    </div>
+  </div>
+</div>

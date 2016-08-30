@@ -1,4 +1,4 @@
-define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], function (angular, config, $, lazy, mathjax, markitup, setJs) {
+define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (angular, config, $, lazy, markitup, setJs) {
   'use strict';
   angular.module('zhifzApp.controllers.MingtiCtrl', [])
     .controller('MingtiCtrl', ['$rootScope', '$scope', '$http', '$q', '$timeout', 'DataService', '$cookieStore',
@@ -48,6 +48,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
         $scope.keMuList = true; //科目选择列表内容隐藏
         $scope.kmTxWrap = true; //初始化的过程中，题型和难度DOM元素显示
         $scope.letterArr = config.letterArr; //题支的序号
+        $scope.smlLteArr = config.smlLteArr; //题支的序号
         $scope.cnNumArr = config.cnNumArr;//大写汉字
         $scope.caozuoyuan = logUid;
         $scope.tiXingArr = config.tiXingArr; //题型名称数组
@@ -1414,6 +1415,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           if($scope.newTiXingId > 4){
             tzCont = $scope.timu['题目内容']['答案'];
           }
+          else if($scope.newTiXingId == 4){
+            tzCont = $scope.mingTiParam.tianKongDaAn;
+          }
           else{
             tzCont = $scope.mingTiParam.xuanZheTiZhi;
           }
@@ -1429,7 +1433,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'mathjax', 'markitup', 'setJs'], 
           var mis = [];
           var tiMuData = angular.copy($scope.timu);
           var tgSlt = document.querySelector('.formulaEditTiGan');
-          tiMuData['题目内容']['题干'] = angular.element(tgSlt).val();
+          //tiMuData['题目内容']['题干'] = angular.element(tgSlt).val();
           if($scope.newTiXingId == 1 || $scope.newTiXingId == 2){ //整理单选和多选题答案
             var tzArr = [];
             var daArr = [];

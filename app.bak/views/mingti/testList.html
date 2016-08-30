@@ -1,0 +1,126 @@
+<div class="row">
+  <div class="total-test clearfix">
+    <div class="loading-box text-center" ng-show="loadingImgShow">
+      <img src="/images/loading.gif" alt="" width="64" height="64"/>
+      <p>数据加载中，请耐心等待……</p>
+    </div>
+    <div class="pull-left">
+      <a href="javascript:void(0)" class="btn btn-primary h30" ng-hide="patternListToggle || alterTiMuTiXing"
+         ng-click="addNewShiTi()" style="padding: 5px 12px">
+        <span class="glyphicon glyphicon-plus"></span> 添加试题
+      </a>
+    </div>
+    <div class="pull-left allTestNums">
+      共<strong ng-bind="mingTiParam.tiMuLen"></strong>题
+    </div>
+    <div class="pull-right">
+      <div class="pull-left">
+        <select ng-model="mingTiParam.tiKuId" class="form-control pull-right h30 mr5" ng-change="qryTiMuByTiKu()"
+                ng-options="tk['题库ID'] as tk['题库名称'] for tk in tiKuList">
+          <option value="">请选择题库</option>
+        </select>
+      </div>
+      <div class="pull-left ml10" ng-if="chuTiRens && chuTiRens.length > 0">
+        <select ng-model="mingTiParam.ctr" class="form-control pull-right h30 mr5" ng-change="qryTiMuByChuTiRenId()"
+                ng-options="ctr.UID as ctr['姓名'] for ctr in chuTiRens">
+          <option value="">请选择出题人</option>
+        </select>
+      </div>
+      <div class="pull-left ml10" ng-if="luTiRens && luTiRens.length > 0">
+        <select ng-model="mingTiParam.ltr" class="form-control pull-right h30 mr5" ng-change="qryTiMuByLuTiRenId()"
+                ng-options="ltr.UID as ltr['姓名'] for ltr in luTiRens">
+          <option value="">请选择录题人</option>
+        </select>
+      </div>
+      <div class="pull-left ml10">
+        <form>
+          <input type="text" ng-model="mingTiParam.tiMuId" placeholder="题目ID" class="pull-left w80 mr5 h30"
+                 onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+          <button type="submit" class="btn btn-primary h30" ng-click="qryTestByTiMuId()" ng-disabled="fbdBtn">查询</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <ul class="list-unstyled testList" id="testList">
+    <li ng-repeat="tm in timuDetails" class="delete_{{tm['题目ID']}} pr130" repeat-done>
+      <div class="item-sub-title pull-left">
+        <p class="knowledge-point">
+          题型：<span ng-bind="tiXingArr[tm['题型ID']-1]"></span>
+        </p>
+        <p class="knowledge-point-zsd">
+          知识点：<span ng-repeat="zsd in tm['知识点']">【{{zsd['知识点名称']}}】</span>
+        </p>
+        <p class="level-num">
+          难易度：<span class="pull-right level-star-{{tm['难度']}}"></span>
+        </p>
+        <p class="knowledge-point">
+          出题人：<span class="pull-right" ng-bind="tm['出题人姓名']"></span>
+        </p>
+        <p class="knowledge-point">
+          录题人：<span class="pull-right" ng-bind="tm['录题人姓名']"></span>
+        </p>
+        <p class="knowledge-point">
+          ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
+        </p>
+        <p>
+          创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
+        </p>
+        <div class="editWrap">
+          <!--<div class="editWrap" ng-show="tm['出题人UID'] == caozuoyuan || isPromiseAlterOthersTimu">-->
+          <button type="button" class="btn btn-default" ng-click="deleteItem(tm['题目ID'], $index)">删除</button>
+          <button type="button" class="btn btn-default" ng-click="patternListToggle = true; editItem(tm)">修改</button>
+        </div>
+      </div>
+      <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
+        <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干']"></h3>
+        <div class="item-tizhi-wrap">
+          <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+            <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
+            <span class="tiZhiSpan" ng-bind-html="tz"></span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-cont">
+        <div class="positionRe">
+          <span class="daAnLabel">答案：</span>
+          <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
+        </div>
+        <div class="positionRe" ng-show="tm['备注']">
+          <span class="daAnLabel">备注：</span>
+          <div class="daAnBox" ng-bind-html="tm['备注']"></div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="paging text-right" ng-if="pageParam.pageArr.length">
+    <ul class="pagination pagination-sm">
+      <li ng-class="{disabled: currentPage == 1}">
+        <a href ng-click="pageGetData(1)">首页</a>
+      </li>
+      <li ng-class="{disabled: currentPage == 1}">
+        <a href ng-click="pageGetData(prevPg = currentPage > 1 ? currentPage - 1 : 1)">
+          上一页
+        </a>
+      </li>
+      <li ng-repeat="pg in pages" ng-class="{active: currentPage == pg}">
+        <a href ng-click="pageGetData(pg)">{{pg}}</a>
+      </li>
+      <li ng-class="{disabled: currentPage == pageParam.lastPage}">
+        <a href ng-click="pageGetData(nextPg = currentPage < pageParam.lastPage ? currentPage + 1 : pageParam.lastPage)">
+          下一页
+        </a>
+      </li>
+      <li ng-class="{disabled: currentPage == pageParam.lastPage}">
+        <a href ng-click="pageGetData(pageParam.lastPage)">尾页</a>
+      </li>
+    </ul>
+    <div>
+      <span>共 <strong ng-bind="lastPageNum"></strong> 页，</span>
+      <span>跳转到</span>
+      <input type="text" ng-model="mingTiParam.goToPageNum" class="w110" onkeyup="if(isNaN(value))execCommand('undo')"
+             onafterpaste="if(isNaN(value))execCommand('undo')"/>
+      <span>页</span>
+      <button ng-click="getFixedPageData()">GO</button>
+    </div>
+  </div>
+</div>

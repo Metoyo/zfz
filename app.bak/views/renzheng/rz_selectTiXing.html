@@ -1,0 +1,19 @@
+<h4>题型选择</h4>
+<div class="dagangInput row">
+  <!--已选科目-->
+  <div class="col-md-4 lingYu-list">
+    <h4><strong>本机构科目:</strong></h4>
+    <p ng-repeat="km in xueXiaoKeMu" ng-class="{active:activeKeMu == km['科目ID']}"
+       ng-click="whichLingYuActive(km['科目ID'])">
+      <span ng-bind="km['科目名称']"></span>
+    </p>
+  </div>
+  <div class="col-md-8 tiXing-list">
+    <label class="checkbox-inline" ng-repeat="tx in allTiXing">
+      <input type="checkbox" value="tx['题型ID']" ng-click="addOrRemoveTiXing(tx)" ng-checked="tx.ckd">{{tx['题型名称']}}
+    </label>
+  </div>
+</div>
+<div class="save-box">
+  <button class="btn btn-primary" ng-click="saveSelectTiXing()" ng-disabled="loadingImgShow">保存</button>
+</div>

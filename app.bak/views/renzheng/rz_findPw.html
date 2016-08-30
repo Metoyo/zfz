@@ -1,0 +1,25 @@
+<h4 class="logo text-center">
+  <img src="/images/logo.png" alt="智夫子">
+</h4>
+<div class="col-md-6 col-md-offset-3">
+  <form name="sendEmailForm" ng-hide="rzParams.sendEmailSuccess">
+    <input type="email" class="form-control mb10" ng-model="rzParams.registerEmail" required="true"
+           placeholder="请输入注册时的邮箱" autofocus="true" name="registerEmail"
+           ng-pattern="/^[0-9a-z][a-z0-9\._-]{1,}@[a-z0-9-]{1,}[a-z0-9]\.[a-z\.]{1,}[a-z]$/"
+           ng-blur="checkUsrExist(rzParams.registerEmail)">
+
+    <p class="clRed" ng-show="sendEmailForm.registerEmail.$error.pattern">邮箱格式错误！</p>
+    <button type="button" class="btn btn-danger" ng-click="rzBackTo(0)">
+      返回登录
+    </button>
+    <button type="button" class="btn btn-success pull-right" ng-click="sendFindPwEmail()"
+            ng-disabled="sendEmailForm.registerEmail.$error.pattern || youxiangExist || loginBtn">
+      找回密码
+    </button>
+  </form>
+  <div class="row" ng-show="rzParams.sendEmailSuccess">
+    <p class="clGreen">验证邮件已发送成功！</p>
+    <p class="fz14">验证邮件30分钟内有效，请尽快登录您的邮箱点击验证链接完成验证。</p>
+    <p><a ng-href="{{rzParams.emailLink}}" class="btn btn-danger" target="_blank">查看验证邮件</a></p>
+  </div>
+</div>

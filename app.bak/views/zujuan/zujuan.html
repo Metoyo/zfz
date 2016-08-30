@@ -1,0 +1,85 @@
+<div class="innerWrap innerWrapperSubDs zujuanWrapper" ng-class="{subDsShow: subDsShow}">
+  <div class="loading-box text-center" ng-show="loadingImgShow">
+    <img src="/images/loading.gif" alt="" width="64" height="64"/>
+    <p>数据加载中，请耐心等待……</p>
+  </div>
+  <div class="subDashboard">
+    <!--题目题型统计-->
+    <div class="tiMuTongJi" ng-hide="zjDaGangListShow">
+      <div class="plr10">
+        <h2 class="sdb-title">科目名称</h2>
+        <p ng-bind="defaultKeMu['科目名称']" class="sdb-cont cYell"></p>
+      </div>
+      <div class="plr10">
+        <h2 class="sdb-title">题库默认大纲</h2>
+        <select class="form-control" ng-model="slt_dg" ng-change="getDgZsdData(slt_dg)"
+                ng-options="dg['知识大纲ID'] as dg['知识大纲名称'] for dg in dgList">
+          <option value="">请选择大纲</option>
+        </select>
+      </div>
+    </div>
+    <!-- 大纲列表 -->
+    <div id="dagangListWrap" ng-show="zjDaGangListShow">
+      <div class="pointTree">
+        <ul class="list-unstyled levelOne" id="daGangList">
+          <li ng-repeat="nd1 in kowledgeList['节点']">
+            <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd1.fld}" ng-show="nd1['子节点'].length" ng-click="toggleChildNode(nd1)"></div>
+            <div class="checkbox">
+              <label><input type="checkbox" name="point" ng-checked="nd1.ckd" ng-click="toggleSelection(nd1)"/>
+                {{nd1['知识点名称']}}
+              </label>
+            </div>
+            <ul class="list-unstyled" ng-show="nd1.fld">
+              <li ng-repeat="nd2 in nd1['子节点']">
+                <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd2.fld}" ng-show="nd2['子节点'].length" ng-click="toggleChildNode(nd2)"></div>
+                <div class="checkbox">
+                  <label><input type="checkbox" name="point" ng-checked="nd2.ckd" ng-click="toggleSelection(nd2)"/>
+                    {{nd2['知识点名称']}}
+                  </label>
+                </div>
+                <ul class="list-unstyled" ng-show="nd2.fld">
+                  <li ng-repeat="nd3 in nd2['子节点']">
+                    <div class="foldBtn pull-left" ng-class="{unfoldBtn: nd3.fld}" ng-show="nd3['子节点'].length" ng-click="toggleChildNode(nd3)"></div>
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="point" ng-checked="nd3.ckd" ng-click="toggleSelection(nd3)"/>
+                        {{nd3['知识点名称']}}
+                      </label>
+                    </div>
+                    <ul class="list-unstyled levelFour" ng-show="nd3.fld">
+                      <li ng-repeat="nd4 in nd3['子节点']">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="point" ng-checked="nd4.ckd" ng-click="toggleSelection(nd4)"/>
+                            {{nd4['知识点名称']}}
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="contentInner">
+      <div class="contentWraps">
+        <div class="crumbs" ng-if="showCrumbs">
+          <ol class="breadcrumb">
+            <li><a href="javascript:void(0)" ng-click="showPaperList()">试卷组列表</a></li>
+            <li ng-if="stepNum.one" ng-class="{active:!stepNum.two}">
+              <a href="javascript:void(0)" ng-if="stepNum.two" ng-click="stepTo(1)">{{zuJuanParam.sjzName}}</a>
+              <span ng-if="!stepNum.two" ng-click="stepTo(1)">{{zuJuanParam.sjzName}}</span>
+            </li>
+            <li class="active" ng-if="stepNum.two">随机和固定题目添加</li>
+          </ol>
+        </div>
+        <div ng-include="zjTpl" ng-class="{'tab-content': showCrumbs}"></div>
+      </div>
+    </div>
+  </div>
+</div>

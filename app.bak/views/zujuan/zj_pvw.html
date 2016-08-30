@@ -1,0 +1,72 @@
+<!--试卷预览-->
+<div class="ruleMakePaper plr15">
+  <!--试卷名称-->
+  <div class="p10 text-center">
+    <span class="fz20">{{zuJuanParam.sjzName}}</span>
+    <span class="fz16">(总分:{{zuJuanParam.sjScore}})</span>
+  </div>
+  <!--试卷详情-->
+  <h4 class="text-center" ng-class="{clRed:zuJuanParam.msgClr, clGreen:!zuJuanParam.msgClr}" ng-bind="zuJuanParam.sjMsg"></h4>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">
+        <a href="javascript:void(0)" class="ml15" ng-repeat="sj in sjList" ng-class="{active: shiJuanActive == $index}"
+           ng-bind="'卷'+ ($index + 1)" ng-click="showShiJuanDtl(sj, $index)"></a>
+      </h3>
+    </div>
+    <div id="paperWrap" class="panel-body paperWrap">
+      <div class="pull-left wp100" ng-repeat="tx in paperDtl['试卷题目']" repeat-done>
+        <h4>
+          <span style="font-weight: 500" ng-bind="cnNumArr[$index] + '、' + tx['大题名称']"></span>
+          <span class="fz14">(本大题共 {{tx['题目'].length}} 小题，共 {{tx['大题分值']}} 分)</span>
+        </h4>
+        <ul class="list-unstyled testList">
+          <li ng-repeat="tm in tx['题目']">
+            <div class="item-cont positionRe daTiName">
+              <h3 class="item-tigan" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干'] + '(本小题' + tm['分值'] + '分)(题目ID:' + tm['题目ID'] + ')'"></h3>
+              <div class="item-tizhi-wrap">
+                <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+                  <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
+                  <span class="tiZhiSpan" ng-bind-html="tz"></span>
+                </p>
+              </div>
+              <div class="fenZhi">
+              <span class="datiMoveBtns">
+                <button type="button" class="btn btn-primary" ng-click="changeItem(tx, tm, $index, 'addNew')">换一题</button>
+                <button type="button" class="btn btn-default" ng-click="moveTM($index, -1, tx, tm, 'shijuan')" ng-hide="$first">上移</button>
+                <button type="button" class="btn btn-default" ng-click="moveTM($index, 1, tx, tm, 'shijuan')" ng-hide="$last">下移</button>
+              </span>
+              </div>
+            </div>
+            <div class="answer-cont" ng-show="zuJuanParam.showDaAn">
+              <div class="positionRe">
+                <span class="daAnLabel">答案：</span>
+                <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--最下面的功能按钮-->
+  <div class="row fixed-bottom">
+    <table>
+      <tr>
+        <td>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="zuJuanParam.showDaAn"> 显示答案
+          </label>
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary ml10" ng-click="backToRule()">
+            返回组卷
+          </button>
+          <button type="button" class="btn btn-primary ml10" ng-click="saveZjRule()" ng-disabled="zuJuanParam.msgClr">
+            保存试卷组
+          </button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

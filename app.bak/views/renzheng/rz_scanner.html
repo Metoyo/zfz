@@ -1,0 +1,107 @@
+<h4>扫描仪设定</h4>
+<div class="form-horizontal dagangInput p10">
+  <div class="loading-box text-center" ng-show="loadingImgShow">
+    <img src="/images/loading.gif" alt="" width="64" height="64"/>
+    <p>数据加载中，请耐心等待……</p>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      机构选择
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="jg['学校ID'] as jg['学校名称'] for jg in jigou_list"
+              ng-model="scanner.selectInfo.jgid" ng-change="getKeMuList(scanner.selectInfo.jgid)">
+        <option value="">请选择</option>
+      </select>
+    </div>
+    <label class="col-md-2 control-label">
+      科目选择
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="km['科目ID'] as km['科目名称'] for km in kemu_list"
+              ng-model="scanner.selectInfo.kmid" ng-change="getKaoShiZuList(scanner.selectInfo.kmid)">
+        <option value="">请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      考试选择
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="ksz['考试组ID'] as ksz['考试组名称'] for ksz in kaoshizu_list"
+              ng-model="scanner.selectInfo.kszid" ng-change="getKaoShiList(scanner.selectInfo.kszid)">
+        <option value="">请选择</option>
+      </select>
+    </div>
+    <label class="col-md-2 control-label">
+      考试选择
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="ks['考试ID'] as ks['考试名称'] for ks in kaoshi_list"
+              ng-model="scanner.selectInfo.ksid" ng-change="getShiJuanList(scanner.selectInfo.ksid)">
+        <option value="">请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      OMR考试ID
+    </label>
+    <div class="col-md-10">
+      <input type="text" class="form-control" ng-model="scanner.inputInfo.omrksid"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      A卷
+    </label>
+    <div class="col-md-4">
+      <input type="text" class="form-control" value="A"/>
+    </div>
+    <label class="col-md-2 control-label">
+      试卷ID
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="sj['试卷ID'] for sj in shijuan_list"
+              ng-model="scanner.inputInfo.sjaid">
+        <option value="">请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      B卷
+    </label>
+    <div class="col-md-4">
+      <input type="text" class="form-control" value="B"/>
+    </div>
+    <label class="col-md-2 control-label">
+      试卷ID
+    </label>
+    <div class="col-md-4">
+      <select class="form-control" ng-options="sj['试卷ID'] for sj in shijuan_list"
+              ng-model="scanner.inputInfo.sjbid">
+        <option value="">请选择</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      筛选
+    </label>
+    <div class="col-md-10">
+      <textarea name="" id="" cols="" rows="8" class="form-control" ng-model="scanner.inputInfo.xuehao"></textarea>
+    </div>
+  </div>
+  <div class="form-group text-right">
+    <button type="button" class="btn btn-primary" ng-click="saveScannerSet()">提交</button>
+  </div>
+  <div class="form-group" ng-show="scannerResInfo">
+    <p>scannerResInfo['主观题答题数']</p>
+    <p>scannerResInfo['客观题答题数']</p>
+    <p>scannerResInfo['考生人数']</p>
+    <p>scannerResInfo['试卷数']</p>
+    <p>scannerResInfo['题目数']</p>
+  </div>
+</div>
