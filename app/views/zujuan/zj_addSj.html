@@ -5,7 +5,7 @@
   </div>
   <div class="row text-right">
     <button type="button" class="btn btn-danger pull-right" ng-click="showPaperDetail(selectSjz)">返回</button>
-    <span class="pull-right mr10 mt5">目前题目总分：
+    <span class="pull-right mr10 mt5">目前试卷总分：
       <b ng-class="{clGreen:zuJuanParam.sjScore == sglSjParam.sjScore, clRed:zuJuanParam.sjScore != sglSjParam.sjScore}">
         {{sglSjParam.sjScore}}</b>分
     </span>
@@ -18,7 +18,7 @@
         <span class="cursorPointer" style="font-weight: 500" ng-bind="cnNumArr[$index] + '、' + tx['大题名称']" ng-click="showSjzEdit()"></span>
         <span class="fz14">(题目数量:{{tx['题目'].length || 0}})</span>
         <span class="fz14 ml15 cursorPointer" ng-click="addTiMuPop(tx, 'single')">
-          <span class="glyphicon glyphicon-plus cBlue"></span>添加试题
+          <span class="glyphicon glyphicon-plus cBlue"></span>添加题目
         </span>
       </h4>
       <ul class="list-unstyled testList">

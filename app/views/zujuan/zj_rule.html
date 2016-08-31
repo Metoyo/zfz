@@ -92,10 +92,10 @@
             <span class="glyphicon glyphicon-remove clRed"></span>删除本大题
           </span>
           <span class="fz14 ml15 cursorPointer" ng-click="addTiMuPop(tx, 'fiexd')">
-            <span class="glyphicon glyphicon-plus cBlue"></span>添加固定试题
+            <span class="glyphicon glyphicon-plus cBlue"></span>添加固定题目
           </span>
           <span class="fz14 ml15 cursorPointer" ng-click="addTiMuPop(tx, 'random')">
-            <span class="glyphicon glyphicon-plus cBlue"></span>添加随机试题
+            <span class="glyphicon glyphicon-plus cBlue"></span>添加随机题目
           </span>
           <span class="datiMoveBtns ml15">
             <button type="button" class="btn btn-default" ng-click="moveDaTi($index, -1)" ng-hide="$first">上移</button>
@@ -129,7 +129,7 @@
             </td>
           </tr>
         </table>
-        <h5 class="m0 mt10" ng-if="tx['固定题目'].length>0">固定试题：</h5>
+        <h5 class="m0 mt10" ng-if="tx['固定题目'].length>0">固定题目：</h5>
         <ul class="list-unstyled testList">
           <li ng-repeat="tm in tx['固定题目']">
             <div class="item-cont positionRe daTiName">
