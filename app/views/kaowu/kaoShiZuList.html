@@ -24,7 +24,7 @@
       <span class="fz14" ng-if="ksz['报名周期']" ng-bind="'(报名时间:' + ksz['报名周期'] + ')'"></span>
     </td>
     <td class="text-center" ng-bind="ksz['报名方式']==1 ? '非在线报名':'在线报名'"></td>
-    <td class="text-center" ng-bind="ksz['考试'].length || 0"></td>
+    <td class="text-center" ng-bind="ksz['场次数']"></td>
     <td class="text-center" ng-bind="ksz['已报名人数'] + '/' + ksz['总人数']"></td>
     <td class="text-center {{'kssCl' + ksz['状态']}}" ng-bind="ksz['状态'] | examStatus"></td>
     <td class="text-right">
@@ -140,7 +140,7 @@
               <th class="text-center">课序号名称</th>
             </tr>
             <tr ng-repeat="ks in changCiKaoSheng">
-              <td ng-bind="ks['序号']"></td>
+              <td ng-bind="ks['序号'] + 1"></td>
               <td ng-bind="ks['姓名']"></td>
               <td class="text-center" ng-bind="ks['学号']"></td>
               <td class="text-center" ng-bind="ks['座位号']"></td>

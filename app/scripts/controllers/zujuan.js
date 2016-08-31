@@ -458,9 +458,10 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             one: false,
             two: false
           };
-          kmTxData();
-          qryTiKu();
-          qryChuTiRen();
+          //getDaGangData();
+          //kmTxData();
+          //qryTiKu();
+          //qryChuTiRen();
         };
 
         /**
@@ -507,7 +508,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 加载默认数据
          */
-        getDaGangData();
+        //getDaGangData();
 
         /**
          * 由所选的知识大纲，得到知识点
@@ -574,6 +575,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           };
           qryShiJuanList();
           $scope.zjTpl = 'views/zujuan/zj_paperList.html';
+          getDaGangData();
         };
         $scope.showPaperList();
 
@@ -585,6 +587,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             resetFun();
             $scope.sjzSet['组卷方式'] = tp;
           }
+          kmTxData();
+          qryTiKu();
+          qryChuTiRen();
           $scope.zjDaGangListShow = true; //控制加载规则组卷的css
           if(tp == '规则'){
             $scope.showCrumbs = true;
@@ -1916,6 +1921,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             sltDt: '',
             sjScore: 0
           };
+          Lazy($scope.kowledgeList['节点']).each(_zsdDo);
           Lazy($scope.sjzSet['组卷规则']).each(function(gz){
             var dtObj = {
               '大题名称': gz['大题名称'],

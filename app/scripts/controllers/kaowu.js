@@ -187,10 +187,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
               params: {
                 '学校ID': jgID,
                 '科目ID': keMuId,
-                '返回考试': true,
-                '返回考生': true,
-                '返回考生详细信息': true,
-                '返回试卷': true
+                '返回考试': false,
+                '返回考生': false,
+                '返回考生详细信息': false,
+                '返回试卷': false
               }
             };
             var stat = zt || 'ing';
@@ -946,10 +946,31 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
            * 查看考试组详情
            */
           $scope.seeKaoShiZuDetail = function(ksz){
-            $scope.kaoShiZuDtl = ksz;
-            $scope.kwParams.showStu = false;
-            $scope.kwParams.showCcSjz = false;
-            $scope.changCiKaoSheng = '';
+            var obj = {
+              method: 'GET',
+              url: kaoShiZuUrl,
+              params: {
+                '学校ID': jgID,
+                '科目ID': keMuId,
+                '考试组ID': ksz['考试组ID'],
+                '返回考试': true,
+                '返回考生': true,
+                '返回考生详细信息': true,
+                '返回试卷': true
+              }
+            };
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                $scope.kaoShiZuDtl = data.data[0];
+                $scope.kwParams.showStu = false;
+                $scope.kwParams.showCcSjz = false;
+                $scope.changCiKaoSheng = '';
+              }
+              else{
+                $scope.kaoShiZuDtl = '';
+                DataService.alertInfFun('err', data.error);
+              }
+            });
           };
 
           /**
@@ -1035,6 +1056,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
               $scope.changCiKaoSheng = cc['考生'];
               $scope.kwParams.selectedCc = cc;
             }
+            $scope.changCiKaoSheng = Lazy($scope.changCiKaoSheng).sortBy('序号').toArray();
           };
 
           /**

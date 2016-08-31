@@ -94,23 +94,23 @@
   </ul>
   <div class="paging text-right" ng-if="pageParam.pageArr.length">
     <ul class="pagination pagination-sm">
-      <li ng-class="{disabled: currentPage == 1}">
+      <li ng-class="{disabled: pageParam.currentPage == 1}">
         <a href ng-click="pageGetData(1)">首页</a>
       </li>
-      <li ng-class="{disabled: currentPage == 1}">
-        <a href ng-click="pageGetData(prevPg = currentPage > 1 ? currentPage - 1 : 1)">
+      <li ng-class="{disabled: pageParam.currentPage == 1}">
+        <a href ng-click="pageGetData(prevPg = pageParam.currentPage > 1 ? pageParam.currentPage - 1 : 1)">
           上一页
         </a>
       </li>
-      <li ng-repeat="pg in pages" ng-class="{active: currentPage == pg}">
+      <li ng-repeat="pg in pages" ng-class="{active: pageParam.currentPage == pg}">
         <a href ng-click="pageGetData(pg)">{{pg}}</a>
       </li>
-      <li ng-class="{disabled: currentPage == pageParam.lastPage}">
-        <a href ng-click="pageGetData(nextPg = currentPage < pageParam.lastPage ? currentPage + 1 : pageParam.lastPage)">
+      <li ng-class="{disabled: pageParam.currentPage == pageParam.lastPage}">
+        <a href ng-click="pageGetData(nextPg = pageParam.currentPage < pageParam.lastPage ? pageParam.currentPage + 1 : pageParam.lastPage)">
           下一页
         </a>
       </li>
-      <li ng-class="{disabled: currentPage == pageParam.lastPage}">
+      <li ng-class="{disabled: pageParam.currentPage == pageParam.lastPage}">
         <a href ng-click="pageGetData(pageParam.lastPage)">尾页</a>
       </li>
     </ul>

@@ -335,11 +335,15 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
           var perNumOfPage = 15; //每页15条数据
           var dataLen = data.length; //数据长度
           var lastPage = Math.ceil(dataLen/perNumOfPage); //最后一页
+          var jumpPg = $scope.pageParam.currentPage;
           $scope.mingTiParam.tiMuLen = dataLen;
           $scope.pageParam.pageArr = Lazy.generate(function(i) { return i + 1; }, lastPage).toArray();
           $scope.pageParam.lastPage = lastPage;
-          $scope.pageParam.currentPage = 1;
-          $scope.pageGetData(1);
+          if($scope.mingTiParam.isAddTiMu){
+            jumpPg = 1;
+            $scope.pageParam.currentPage = 1;
+          }
+          $scope.pageGetData(jumpPg);
         };
 
         /**
@@ -617,7 +621,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
           var paginationLength = 11; //分页部分，页码的长度，目前设定为11
           var totalPage = $scope.pageParam.lastPage;
           var pageArr = $scope.pageParam.pageArr; //页面数组
-          $scope.currentPage = cPg;
+          //$scope.currentPage = cPg;
+          $scope.pageParam.currentPage = cPg;
           if(totalPage <= paginationLength){
             $scope.pages = pageArr;
           }
@@ -691,7 +696,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
               pageMake(tmlb.data);
             }
             else{
-              $scope.currentPage = '';
+              //$scope.currentPage = '';
+              $scope.pageParam.currentPage = '';
               $scope.pageParam.pageArr = [];
               $scope.pages = [];
               $scope.timuDetails = '';
@@ -1083,46 +1089,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
         };
 
         /**
-         * 填空题题干处理
-         */
-        $scope.addTkDaanInput = function(){
-          var tgVal = $scope.timu['题目内容']['题干'];
-          var loopArrObj;
-          var cnum = countInstances(tgVal, '<span>');
-          if($scope.tkLoopArr && $scope.tkLoopArr.length > 0){
-            var tkl = $scope.tkLoopArr.length;
-            var diff = cnum - tkl;
-            if(diff >= 0){
-              for(var j = 0; j < diff; j++){
-                var tmpTkl = $scope.tkLoopArr.length;
-                loopArrObj = {
-                  tiZhiNum: tmpTkl + 1,
-                  subTiZhiNum: [{itmVal: '请输入答案'}]
-                };
-                $scope.tkLoopArr.push(loopArrObj);
-              }
-            }
-            else{
-              for(var k = 0; k < -diff; k++){
-                $scope.tkLoopArr.pop();
-              }
-            }
-          }
-          else{
-            tkLoopArr = [];
-            for(var i = 1; i <= cnum; i++){
-              loopArrObj = {
-                tiZhiNum: '',
-                subTiZhiNum: [{itmVal: '请输入答案'}]
-              };
-              loopArrObj.tiZhiNum = i;
-              tkLoopArr.push(loopArrObj);
-            }
-            $scope.tkLoopArr = tkLoopArr;
-          }
-        };
-
-        /**
          * 添加更多变形答案
          */
         $scope.addSubTiZhi = function(tzCont){
@@ -1307,7 +1273,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
         /**
          * 文件上传
          */
-        //存放上传文件的数组
+          //存放上传文件的数组
         $scope.uploadFiles = [];
 
         //将选择的文件加入到数组
@@ -1401,7 +1367,46 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
          * 显示题干预览
          */
         $scope.previewTiGan = function(){
-          var tgCont = $scope.timu['题目内容']['题干'];
+          var tgCont = '';
+          if($scope.timu['题型ID'] == 4){
+            tgCont = $('.formulaEditTiGan').val();
+            var loopArrObj;
+            var cnum = countInstances(tgCont, '<span>');
+            if($scope.tkLoopArr && $scope.tkLoopArr.length > 0){
+              var tkl = $scope.tkLoopArr.length;
+              var diff = cnum - tkl;
+              if(diff >= 0){
+                for(var j = 0; j < diff; j++){
+                  var tmpTkl = $scope.tkLoopArr.length;
+                  loopArrObj = {
+                    tiZhiNum: tmpTkl + 1,
+                    subTiZhiNum: [{itmVal: '请输入答案'}]
+                  };
+                  $scope.tkLoopArr.push(loopArrObj);
+                }
+              }
+              else{
+                for(var k = 0; k < -diff; k++){
+                  $scope.tkLoopArr.pop();
+                }
+              }
+            }
+            else{
+              tkLoopArr = [];
+              for(var i = 1; i <= cnum; i++){
+                loopArrObj = {
+                  tiZhiNum: '',
+                  subTiZhiNum: [{itmVal: '请输入答案'}]
+                };
+                loopArrObj.tiZhiNum = i;
+                tkLoopArr.push(loopArrObj);
+              }
+              $scope.tkLoopArr = tkLoopArr;
+            }
+          }
+          else{
+            tgCont = $scope.timu['题目内容']['题干'];
+          }
           tgCont = tgCont.replace(/\n/g, '<br/>');
           $('#prevDoc').html(tgCont);
           MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
@@ -1433,7 +1438,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
           var mis = [];
           var tiMuData = angular.copy($scope.timu);
           var tgSlt = document.querySelector('.formulaEditTiGan');
-          //tiMuData['题目内容']['题干'] = angular.element(tgSlt).val();
+          tiMuData['题目内容']['题干'] = angular.element(tgSlt).val();
           if($scope.newTiXingId == 1 || $scope.newTiXingId == 2){ //整理单选和多选题答案
             var tzArr = [];
             var daArr = [];
