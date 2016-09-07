@@ -15,6 +15,33 @@
       </div>
     </div>
     <div class="form-group">
+      <label class="col-sm-2 control-label" style="margin-top: 12px;">试卷组<i>*</i></label>
+      <div class="col-sm-6">
+        <div class="radio">
+          <span class="co676767" ng-hide="kaoShiZuData['试卷组ID']">请点击“选择试卷组”选择试卷</span>
+          <span ng-show="kaoShiZuData['试卷组ID']" ng-bind="sltSjz['试卷组名称']"></span>
+        </div>
+        <div class="radio">
+          <a href="javascript:void(0)" ng-click="showSjzList()">选择试卷组</a>
+          <a href="javascript:void(0)" class="ml15" ng-click="clearSjzId()">清除试卷组</a>
+        </div>
+      </div>
+      <div class="col-sm-4" ng-show="kaoShiZuData['试卷组ID']">
+        <div class="radio">
+          <label>
+            <input type="radio" value="0" ng-model="kwParams.sjType" ng-click="changeSjType(0)">
+            使用固定试卷：<b class="clRed" ng-bind="sltSjz['试卷数量']"></b> 套
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" value="1" ng-model="kwParams.sjType" ng-click="changeSjType(1)">
+            根据试卷规则为每位考生生成不同试卷
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
       <label class="col-sm-2 control-label">考试时长(分钟)<i>*</i></label>
       <div class="col-sm-2">
         <input type="text" name="ksTime" class="form-control" placeholder="时长" required maxlength="3"
@@ -39,27 +66,28 @@
     <div class="form-group">
       <label class="col-sm-2 control-label">考试设置</label>
       <div class="col-sm-10">
-        <label class="checkbox-inline">
-          <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['随机试卷']"> 现场抽题
-        </label>
-        <label class="checkbox-inline">
-          <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['选项乱序']"> 选项乱序
-        </label>
-        <label class="checkbox-inline">
-          <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['题目乱序']"> 题目乱序
-        </label>
-        <label class="checkbox-inline">
-          <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['填空题笔答']"> 填空题笔答
-        </label>
-        <label class="checkbox-inline">
-          <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['允许计算器']"> 允许计算器
-        </label>
-        <label class="checkbox-inline">
-          每页题目数
-          <select ng-options="nm for nm in tiMuNumPerPage" ng-model="kaoShiZuData['考试组设置']['每页题目数']">
-            <option value="">请选择</option>
-          </select>
-        </label>
+        <p class="m0">
+          <label class="checkbox-inline w110">
+            <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['选项乱序']"> 选项乱序
+          </label>
+          <label class="checkbox-inline w110">
+            <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['题目乱序']"> 题目乱序
+          </label>
+          <label class="checkbox-inline">
+            每页题目数
+            <select ng-options="nm for nm in tiMuNumPerPage" ng-model="kaoShiZuData['考试组设置']['每页题目数']">
+              <option value="">请选择</option>
+            </select>
+          </label>
+        </p>
+        <p class="m0">
+          <label class="checkbox-inline w110">
+            <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['填空题笔答']"> 填空题笔答
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['允许计算器']"> 允许计算器
+          </label>
+        </p>
       </div>
     </div>
     <!--在线报名时显示报名的开始和结束时间-->
@@ -107,10 +135,8 @@
               <span>考点</span>
               <span class="pull-right">考位（共:{{kwParams.kwNum || 0}}）</span>
             </th>
-            <th class="positionRe">
-              试卷组（已选试卷组:{{selectChangCi['试卷组'].length || 0}}）
-              <button class="btn btn-success addChangCiBtn" ng-click="getMoreShiJuan()"
-                ng-hide="paperList.length > 10">显示更多</button>
+            <th class="positionRe" ng-hide="kwParams.sjType==1">
+              试卷
             </th>
           </tr>
           <tr>
@@ -137,12 +163,12 @@
                 </div>
               </div>
             </td>
-            <td>
+            <td ng-hide="kwParams.sjType==1">
               <div class="h300">
-                <div class="checkbox" ng-repeat="sjz in paperList">
+                <div class="checkbox" ng-repeat="sj in sltSjz['试卷']">
                   <label>
-                    <input type="checkbox" value="sjz['试卷组ID']"  ng-click="addShiJuanToCc(sjz)" ng-checked="sjz.ckd">
-                    {{sjz['试卷组名称']}}
+                    <input type="checkbox" value="sj['试卷组ID']"  ng-click="addShiJuanToCc(sj)" ng-checked="sj.ckd">
+                    {{'试卷' + ($index + 1)}}
                   </label>
                 </div>
               </div>
@@ -163,9 +189,8 @@
             <span>考点</span>
             <span class="pull-right">考位数（共:{{kwParams.kwNum || 0}}）</span>
           </th>
-          <th class="positionRe">
-            试卷（已选试卷:{{selectChangCi['试卷组'].length || 0}}）
-            <button class="btn btn-success addChangCiBtn" ng-click="getMoreShiJuan()" ng-hide="paperList.length > 10">显示更多</button>
+          <th class="positionRe" ng-hide="kwParams.sjType==1">
+            试卷
           </th>
           <th>考生人数（{{studentsOrgData.length}} 人）</th>
         </tr>
@@ -193,12 +218,12 @@
               </div>
             </div>
           </td>
-          <td>
+          <td ng-hide="kwParams.sjType==1">
             <div class="h300">
-              <div class="checkbox" ng-repeat="sjz in paperList">
+              <div class="checkbox" ng-repeat="sj in sltSjz['试卷']">
                 <label>
-                  <input type="checkbox" value="sjz['试卷组ID']"  ng-click="addShiJuanToCc(sjz)" ng-checked="sjz.ckd">
-                  {{sjz['试卷组名称']}}
+                  <input type="checkbox" value="sj['试卷组ID']"  ng-click="addShiJuanToCc(sj)" ng-checked="sj.ckd">
+                  {{'试卷' + ($index + 1)}}
                 </label>
               </div>
             </div>
@@ -236,15 +261,15 @@
           <span class="title">由课序号添加考生</span>
           <span class="ml15">
             年度: <select class="fz16" ng-model="kwParams.year" ng-change="qryKxh(kwParams.year)"
-                      ng-options="dt for dt in kxhData['年份']">
-              <option value="">全部年份</option>
-            </select>
+                        ng-options="dt for dt in kxhData['年份']">
+            <option value="">全部年份</option>
+          </select>
           </span>
           <span class="ml15">
             学期: <select class="fz16" ng-model="kwParams.term" ng-change="qryKxh(kwParams.term)"
-                    ng-options="dt.val as dt.name for dt in kxhData['学期']">
-              <option value="">全部学期</option>
-            </select>
+                        ng-options="dt.val as dt.name for dt in kxhData['学期']">
+            <option value="">全部学期</option>
+          </select>
           </span>
           <button type="button" class="btn btn-primary pull-right mt5 ml15" ng-click="chaXunKxhYongHu()">确定</button>
           <button type="button" class="btn btn-danger pull-right mt5" ng-click="closeAddStuBox()">关闭</button>
@@ -328,7 +353,7 @@
     </div>
   </div>
   <!--考生名单弹出框-->
-  <div class="popup-percent" ng-if="showImportStuds==true">
+  <div class="popup-percent" ng-if="showImportStuds">
     <div class="popup-percent-inner">
       <div class="row">
         <button type="button" class="btn btn-danger mt10 mr10 pull-right" ng-click="hideImportList()">关闭</button>
@@ -350,6 +375,57 @@
             </td>
           </tr>
         </table>
+      </div>
+    </div>
+  </div>
+  <!--试卷组弹出-->
+  <div class="popup-wrap" ng-if="showSjzs==true">
+    <div class="popup-wrap-inner">
+      <div class="pwi-header plr10">
+        <button type="button" class="btn btn-danger mt5 pull-right" ng-click="hideImportList()">关闭</button>
+      </div>
+      <div class="pwi-body plr10">
+        <table class="table table-striped mt15 newTable">
+          <tr>
+            <th>试卷名称</th>
+            <th>试卷数量</th>
+          </tr>
+          <tr ng-repeat="sjz in paperList">
+            <td>
+              <label>
+                <input type="radio" value="{{sjz['试卷组ID']}}" ng-model="kaoShiZuData['试卷组ID']" ng-click="selectSjz(sjz)"> {{sjz['试卷组名称']}}
+              </label>
+            </td>
+            <td ng-bind="sjz['试卷数量']"></td>
+          </tr>
+        </table>
+      </div>
+      <div class="pwi-footer plr10 text-center">
+        <div class="paging text-right">
+          <ul class="pagination pagination-sm">
+            <li ng-class="{disabled: pageParam.activePage == 1}">
+              <a href ng-click="sjzDist(1)">首页</a>
+            </li>
+            <li ng-class="{disabled: pageParam.activePage == 1}">
+              <a href
+                 ng-click="sjzDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
+                上一页
+              </a>
+            </li>
+            <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
+              <a href ng-click="sjzDist(pg)">{{pg}}</a>
+            </li>
+            <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
+              <a href
+                 ng-click="sjzDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
+                下一页
+              </a>
+            </li>
+            <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+              <a href ng-click="sjzDist(pageParam.lastPage)">尾页</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

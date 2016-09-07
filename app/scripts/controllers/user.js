@@ -2470,7 +2470,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   method: 'GET',
                   url: tiKuUrl,
                   params: {
-                    '学校ID': 1,
+                    //'学校ID': 1,
+                    '学校ID': 1033,
                     '领域ID': ly.data[0]['领域ID'],
                     '类型': 1
                   }

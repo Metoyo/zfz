@@ -18,13 +18,13 @@
           <label class="col-sm-1 control-label">出题人</label>
           <div class="col-sm-3">
             <select ng-model="timu['出题人UID']" class="form-control" ng-options="ctr.UID as ctr['姓名'] for ctr in keMuJiaoShi">
-              <option value="">请选择出题人</option>
+              <option value=""></option>
             </select>
           </div>
           <label class="col-sm-1 control-label">题库</label>
           <div class="col-sm-4">
             <select ng-model="timu['题库ID']" class="form-control" ng-options="tk['题库ID'] as tk['题库名称'] for tk in tiKuList">
-              <option value="">请选择题库</option>
+              <option value=""></option>
             </select>
           </div>
         </div>

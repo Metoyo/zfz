@@ -4,7 +4,6 @@
       <table class="table table-title">
         <tr>
           <th>试卷组名称</th>
-          <th width="100px">试卷类型</th>
           <th width="100px">试卷数量</th>
           <th width="120px">创建时间</th>
           <th width="80px">操作</th>
@@ -17,8 +16,7 @@
           <td>
             <a href="javascript:void(0)" ng-click="showPaperDetail(pld)" ng-bind="pld['试卷组名称']"></a>
           </td>
-          <td width="100px" class="text-center" ng-bind="pld['试卷组设置']['组卷方式']"></td>
-          <td width="100px" class="text-center" ng-bind="pld['试卷'].length"></td>
+          <td width="100px" class="text-center" ng-bind="pld['试卷数量']"></td>
           <td width="120px" class="text-center" ng-bind="pld['创建时间'] | localDate | date : 'yyyy-MM-dd'"></td>
           <td width="80px" class="text-center">
             <button type="button" class="btn btn-default" ng-click="deleteSjzPop(pld['试卷组ID'], $index)">删除</button>

@@ -17,19 +17,19 @@
       <div class="pull-left">
         <select ng-model="mingTiParam.tiKuId" class="form-control pull-right h30 mr5" ng-change="qryTiMuByTiKu()"
                 ng-options="tk['题库ID'] as tk['题库名称'] for tk in tiKuList">
-          <option value="">请选择题库</option>
+          <option value="">所有题库</option>
         </select>
       </div>
       <div class="pull-left ml10" ng-if="chuTiRens && chuTiRens.length > 0">
         <select ng-model="mingTiParam.ctr" class="form-control pull-right h30 mr5" ng-change="qryTiMuByChuTiRenId()"
                 ng-options="ctr.UID as ctr['姓名'] for ctr in chuTiRens">
-          <option value="">请选择出题人</option>
+          <option value="">全部出题人</option>
         </select>
       </div>
       <div class="pull-left ml10" ng-if="luTiRens && luTiRens.length > 0">
         <select ng-model="mingTiParam.ltr" class="form-control pull-right h30 mr5" ng-change="qryTiMuByLuTiRenId()"
                 ng-options="ltr.UID as ltr['姓名'] for ltr in luTiRens">
-          <option value="">请选择录题人</option>
+          <option value="">全部录题人</option>
         </select>
       </div>
       <div class="pull-left ml10">

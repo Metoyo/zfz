@@ -732,7 +732,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
             qryTmPar = { //查询题目参数对象
               zsd: [], //知识点
               nd: '', //难度id
-              tk: '', //题库id
+              tk: angular.copy($scope.mingTiParam.allTkIds), //题库id
               tx: '', //题型id
               tmly: '', //题目来源ID
               ctr: '', //出题人UID
@@ -820,7 +820,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
             },
             '难度': '',
             '题目来源ID': '',
-            '出题人UID': '',
+            '出题人UID': logUid,
             '知识点': '',
             '备注': ''
           };

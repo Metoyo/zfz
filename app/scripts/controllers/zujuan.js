@@ -221,8 +221,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             params: {
               '学校ID': jgID,
               '科目ID': keMuId,
-              '返回试卷': true,
-              '返回题目内容': true
+              '返回试卷': false,
+              '返回题目内容': false
             }
           };
           if(!kmfzrQx && rkjsQx){
@@ -1704,96 +1704,114 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         /**
          * 由是试卷列表点击展示试卷详情
          */
-        $scope.showPaperDetail = function(sjz){
-          var tp = sjz['试卷组设置']['组卷方式'];
-          $scope.sjzSet = sjz['试卷组设置'];
-          $scope.selectSjz = sjz || '';
-          $scope.zuJuanParam.sjzName = sjz['试卷组名称'];
-          var tmArr = '';
-          if(tp == '规则'){
-            $scope.zuJuanParam.saveSjBtn = true;
-            Lazy($scope.sjzSet['组卷规则']).each(function(dt){
-              var sjrArr = dt['随机题目'];
-              var gdtmArr = dt['固定题目'];
-              if(sjrArr && sjrArr.length > 0){
-                Lazy(sjrArr).each(function(sjr){
-                  var tkName = [];
-                  var ndName = [];
-                  var zsdName = [];
-                  Lazy(sjr['限定题库']).each(function(tkId){
-                    Lazy($scope.tiKuList).each(function(tk){
-                      if(tk['题库ID'] == tkId){
-                        tkName.push(tk['题库名称']);
+        $scope.showPaperDetail = function(sjzDt){
+          var obj = {
+            method: 'GET',
+            url: shiJuanZuUrl,
+            params: {
+              '试卷组ID': sjzDt['试卷组ID'],
+              '学校ID': jgID,
+              '科目ID': keMuId,
+              '返回试卷': true,
+              '返回题目内容': true
+            }
+          };
+          $scope.loadingImgShow = true;
+          $http(obj).success(function(data){
+            if(data.result && data.data){
+              var sjz = data.data[0];
+              $scope.sjzSet = sjz['试卷组设置'];
+              $scope.selectSjz = sjz || '';
+              $scope.zuJuanParam.sjzName = sjz['试卷组名称'];
+              var tmArr = '';
+              $scope.zuJuanParam.saveSjBtn = true;
+              Lazy($scope.sjzSet['组卷规则']).each(function(dt){
+                var sjrArr = dt['随机题目'];
+                var gdtmArr = dt['固定题目'];
+                if(sjrArr && sjrArr.length > 0){
+                  Lazy(sjrArr).each(function(sjr){
+                    var tkName = [];
+                    var ndName = [];
+                    var zsdName = [];
+                    Lazy(sjr['限定题库']).each(function(tkId){
+                      Lazy($scope.tiKuList).each(function(tk){
+                        if(tk['题库ID'] == tkId){
+                          tkName.push(tk['题库名称']);
+                        }
+                      });
+                    });
+                    Lazy(sjr['难度']).each(function(ndId){
+                      Lazy($scope.nanDuList).each(function(nd){
+                        if(nd['难度ID'] == ndId){
+                          ndName.push(nd['难度名称']);
+                        }
+                      });
+                    });
+                    function _do(item) {
+                      var inZsdArr = Lazy(sjr['知识点']).contains(item['知识点ID']);
+                      if(inZsdArr){
+                        zsdName.push(item['知识点名称']);
                       }
-                    });
-                  });
-                  Lazy(sjr['难度']).each(function(ndId){
-                    Lazy($scope.nanDuList).each(function(nd){
-                      if(nd['难度ID'] == ndId){
-                        ndName.push(nd['难度名称']);
+                      if(item['子节点'] && item['子节点'].length > 0){
+                        Lazy(item['子节点']).each(_do);
                       }
-                    });
+                    }
+                    if($scope.kowledgeList && $scope.kowledgeList['节点']){
+                      Lazy($scope.kowledgeList['节点']).each(_do);
+                    }
+                    sjr['限定题库名称'] = tkName;
+                    sjr['难度名称'] = ndName;
+                    sjr['知识点名称'] = zsdName;
                   });
-                  function _do(item) {
-                    var inZsdArr = Lazy(sjr['知识点']).contains(item['知识点ID']);
-                    if(inZsdArr){
-                      zsdName.push(item['知识点名称']);
+                }
+                if(gdtmArr && gdtmArr.length > 0){
+                  tmArr = '';
+                  var oneSj = sjz['试卷'][0]['试卷题目'];
+                  var fdTar = Lazy(oneSj).find(function(dt1){
+                    return dt1['大题名称'] == dt['大题名称'];
+                  });
+                  tmArr = fdTar['题目'];
+                  Lazy(gdtmArr).each(function(gdtm){
+                    if(tmArr && tmArr.length > 0){
+                      var fdTm = Lazy(tmArr).find(function(tm){
+                        return tm['题目ID'] == gdtm['题目ID'];
+                      });
+                      if(fdTm){
+                        gdtm['题目内容'] = fdTm['题目内容'];
+                      }
+                      else{
+                        gdtm['题目内容'] = [];
+                      }
                     }
-                    if(item['子节点'] && item['子节点'].length > 0){
-                      Lazy(item['子节点']).each(_do);
-                    }
-                  }
-                  if($scope.kowledgeList && $scope.kowledgeList['节点']){
-                    Lazy($scope.kowledgeList['节点']).each(_do);
-                  }
-                  sjr['限定题库名称'] = tkName;
-                  sjr['难度名称'] = ndName;
-                  sjr['知识点名称'] = zsdName;
-                });
-              }
-              if(gdtmArr && gdtmArr.length > 0){
-                tmArr = '';
-                var oneSj = sjz['试卷'][0]['试卷题目'];
-                var fdTar = Lazy(oneSj).find(function(dt1){
-                  return dt1['大题名称'] == dt['大题名称'];
-                });
-                tmArr = fdTar['题目'];
-                Lazy(gdtmArr).each(function(gdtm){
-                  if(tmArr && tmArr.length > 0){
-                    var fdTm = Lazy(tmArr).find(function(tm){
-                      return tm['题目ID'] == gdtm['题目ID'];
-                    });
-                    if(fdTm){
-                      gdtm['题目内容'] = fdTm['题目内容'];
-                    }
-                    else{
-                      gdtm['题目内容'] = [];
-                    }
-                  }
-                });
-              }
-            });
-            Lazy(sjz['试卷']).each(function(sj, idx, lst){
-              Lazy(sj['试卷题目']).each(function(dt){
-                Lazy(dt['题目']).each(function(tm){
-                  tm = DataService.formatDaAn(tm);
+                  });
+                }
+              });
+              Lazy(sjz['试卷']).each(function(sj, idx, lst){
+                Lazy(sj['试卷题目']).each(function(dt){
+                  Lazy(dt['题目']).each(function(tm){
+                    tm = DataService.formatDaAn(tm);
+                  });
                 });
               });
-            });
-            $scope.sjList = sjz['试卷'];
-            $scope.showCrumbs = true;
-            $scope.stepNum = {
-              one: true,
-              two: false
-            };
-            $scope.zjTpl = 'views/zujuan/zj_editPvw.html';
-            if($scope.sjList[0]){
-              $scope.showShiJuanDtl($scope.sjList[0], 0);
+              $scope.sjList = sjz['试卷'];
+              $scope.showCrumbs = true;
+              $scope.stepNum = {
+                one: true,
+                two: false
+              };
+              $scope.zjTpl = 'views/zujuan/zj_editPvw.html';
+              if($scope.sjList[0]){
+                $scope.showShiJuanDtl($scope.sjList[0], 0);
+              }
+              else{
+                DataService.alertInfFun('pmt', '没有符合条件的试卷！');
+              }
             }
             else{
-              DataService.alertInfFun('pmt', '没有符合条件的试卷！');
+              DataService.alertInfFun('err', data.error || '没有符合的数据！');
             }
-          }
+            $scope.loadingImgShow = false;
+          });
         };
 
         /**
