@@ -2446,50 +2446,60 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          * 给目标科目赋值
          */
         $scope.assignKeMuVal = function(){
-          $scope.tiMuCopy['目标科目ID'] = $scope.tiMuCopy['原科目ID'];
+          //$scope.tiMuCopy['目标科目ID'] = $scope.tiMuCopy['原科目ID'];
           $scope.qryTiKuByKm($scope.tiMuCopy['目标科目ID']);
         };
 
         /**
          * 通过领域查询题库
          */
-        $scope.qryTiKuByKm = function(kmId){
-          var lyObj = {
+        $scope.qryTiKuByKm = function(kmid){
+          var fdTar = Lazy($scope.kemu_list).find(function(km){
+            return km['科目ID'] == parseInt(kmid);
+          });
+          var kmObj = {
             method: 'GET',
-            url: lingYuUrl,
+            url: keMuUrl,
             params: {
               '学校ID': 1,
-              '科目ID': kmId
+              '领域ID': ''
             }
           };
-          $scope.tarTiKuList = '';
-          if(kmId){
-            $http(lyObj).success(function(ly){
-              if(ly.result && ly.data){
-                var tkObj = {
-                  method: 'GET',
-                  url: tiKuUrl,
-                  params: {
-                    //'学校ID': 1,
-                    '学校ID': 1033,
-                    '领域ID': ly.data[0]['领域ID'],
-                    '类型': 1
-                  }
-                };
-                $http(tkObj).success(function(tk){
-                  if(tk.result && tk.data){
-                    $scope.tarTiKuList = tk.data;
-                  }
-                  else{
-                    DataService.alertInfFun('err', tk.error);
-                  }
-                });
-              }
-              else{
-                DataService.alertInfFun('err', ly.error);
-              }
-            });
+          var tkObj = {
+            method: 'GET',
+            url: tiKuUrl,
+            params: {
+              '学校ID': 1,
+              '领域ID': ''
+            }
+          };
+          if(fdTar){
+            kmObj.params['领域ID'] = fdTar['领域ID'];
+            tkObj.params['领域ID'] = fdTar['领域ID'];
           }
+          else{
+            DataService.alertInfFun('err', '请选择原科目ID！');
+            return ;
+          }
+          $scope.tarTiKuList = '';
+          $scope.tarKeMuList = '';
+          $http(kmObj).success(function(kmlist){
+            if(kmlist.result && kmlist.data){
+              $scope.tarKeMuList = kmlist.data;
+              //查询题库
+              $http(tkObj).success(function(tk){
+                if(tk.result && tk.data){
+                  $scope.tarTiKuList = tk.data;
+                }
+                else{
+                  DataService.alertInfFun('err', tk.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('err', ly.error);
+            }
+          });
         };
 
         /**

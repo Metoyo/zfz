@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>练习</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="./css/jquery.mobile-1.4.3.css"/>
+    <link rel="stylesheet" href="css/weui.css"/>
+    <link rel="stylesheet" href="css/weui.min.css"/>
+    <link rel="stylesheet" href="css/example.css"/>
+    <script src="js/jquery-1.8.0.js"></script>
+    <script src="./js/jquery.mobile-1.4.3.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/jquery.cookie.js"></script>
+
+    <script type="text/html" id="keMus" class="home">
+        <div class="weui_actionsheet_menu">
+            {{each keMus}}
+            <div class="weui_actionsheet_cell" id="{{$value['科目ID']}}" onclick="keMusOnClick(this.id)">
+                {{$value['科目名称']}}
+            </div>
+            {{/each}}
+        </div>
+        <div class="weui_actionsheet_action">
+            <div class="weui_actionsheet_cell" onclick="keMusOnClick(this.id)" id="cancel">取消</div>
+        </div>
+    </script>
+
+    <script type="text/html" id="xuanZes">
+        <div class="weui_actionsheet_menu">
+            <div class="weui_actionsheet_cell" id="10" onclick="xuanZesOnClick(this.id)">10</div>
+            <div class="weui_actionsheet_cell" id="20" onclick="xuanZesOnClick(this.id)">20</div>
+            <div class="weui_actionsheet_cell" id="50" onclick="xuanZesOnClick(this.id)">50</div>
+        </div>
+        <div class="weui_actionsheet_action">
+            <div class="weui_actionsheet_cell" onclick="xuanZesOnClick(this.id)" id="cancel">取消</div>
+        </div>
+    </script>
+    <script type="text/html" id="panDuans">
+        <div class="weui_actionsheet_menu">
+            <div class="weui_actionsheet_cell" id="10" onclick="panDuansOnClick(this.id)">10</div>
+            <div class="weui_actionsheet_cell" id="20" onclick="panDuansOnClick(this.id)">20</div>
+            <div class="weui_actionsheet_cell" id="50" onclick="panDuansOnClick(this.id)">50</div>
+        </div>
+        <div class="weui_actionsheet_action">
+            <div class="weui_actionsheet_cell" onclick="panDuansOnClick(this.id)" id="cancel">取消</div>
+        </div>
+    </script>
+    <script type="text/html" id="nanDus">
+        <div class="weui_actionsheet_menu">
+            <div class="weui_actionsheet_cell " id="1" onclick="nanDusOnClick(this.id)">容易</div>
+            <div class="weui_actionsheet_cell " id="2" onclick="nanDusOnClick(this.id)">较易</div>
+            <div class="weui_actionsheet_cell " id="3" onclick="nanDusOnClick(this.id)">一般</div>
+            <div class="weui_actionsheet_cell " id="4" onclick="nanDusOnClick(this.id)">较难</div>
+            <div class="weui_actionsheet_cell " id="5" onclick="nanDusOnClick(this.id)">困难</div>
+        </div>
+        <div class="weui_actionsheet_action">
+            <div class="weui_actionsheet_cell" onclick="nanDusOnClick(this.id)" id="cancel">取消</div>
+        </div>
+    </script>
+    <script type="text/html" id="zhiShiDaGang">
+
+    </script>
+</head>
+<body>
+<div data-role="page" id="lianxi_one">
+    <div id="DIVList" style="display: none;">
+        <div class="weui_mask_transition weui_fade_toggle" style="display: block;"></div>
+        <div class="weui_actionsheet weui_actionsheet_toggle" id="DIVShow">
+
+        </div>
+    </div>
+    <div class="weui_cells weui_cells_access">
+        <a class="weui_cell" href="javascript:;" id="keMu" onclick="keMuOnClick()">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>请选择科目</p>
+            </div>
+            <div class="weui_cell_ft" id="xuanZeKeMu">
+
+            </div>
+        </a>
+    </div>
+    <div class="weui_cells weui_cells_access" id="ZSDG" onclick="ZSDGOnClick()" style="display: none;">
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p id="ZSDG_p"></p>
+            </div>
+            <div class="weui_cell_ft" id="ZSDGMsg">
+                未选择
+            </div>
+        </a>
+    </div>
+
+    <div class="weui_cells weui_cells_access"  id="DIVXuanZe" style="display: none;" onclick="xuanZeOnClick()">
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>选择题</p>
+            </div>
+            <div class="weui_cell_ft" id="xuanZe">
+
+            </div>
+        </a>
+    </div>
+    <div class="weui_cells weui_cells_access" id="DIVPanDuan" style="display: none;" onclick="panDuanOnClick()">
+        <a class="weui_cell" href="javascript:;" >
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>判断题</p>
+            </div>
+            <div class="weui_cell_ft" id="panDuan">
+
+            </div>
+        </a>
+    </div>
+    <div class="weui_cells weui_cells_access" id="DIVNanDu" onclick="nanDuOnClick()">
+        <a class="weui_cell" href="javascript:;" >
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>难度</p>
+            </div>
+            <div class="weui_cell_ft" id="nanDu">
+
+            </div>
+        </a>
+    </div>
+    <br/><br/><br/><br/><br/>
+
+    <div class="ui-field-contail">
+        <button id="submit" onclick="submitOnClick()">开始练习</button>
+    </div>
+    <br/>
+    <br/>
+</div>
+<div data-role="page" id="lianxi_two">
+    <div class="weui_cells weui_cells_access">
+        <a class="weui_cell" href="javascript:;" id="DG" onclick="DGOnClick()">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>一级1未实现</p>
+            </div>
+            <div class="weui_cell_ft" id="DGMsg">
+
+            </div>
+        </a>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    //  var localUrl = 'http://www.zhifz.com';
+    var localUrl = 'http://127.0.0.1:3000';
+    var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目
+    var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
+    var zhiShiDianUrl = '/zhishidian';//学校科目知识点
+    var zhiShiDaGangUrl = '/zhishidagang';//科目知识大纲
+    var xueXiaoKeMu;
+
+    function keMuOnClick() {
+        var keMus = {keMus: xueXiaoKeMu};
+        var html = template('keMus', keMus);
+        document.getElementById('DIVShow').innerHTML = html;
+        $('#DIVList').show();
+    }
+    function xuanZeOnClick() {
+        var xuanZes = {};
+        var html = template('xuanZes', xuanZes);
+        document.getElementById('DIVShow').innerHTML = html;
+        $('#DIVList').show();
+    }
+    function panDuanOnClick() {
+        var panDuans = {};
+        var html = template('panDuans', panDuans);
+        document.getElementById('DIVShow').innerHTML = html;
+        $('#DIVList').show();
+    }
+    function nanDuOnClick() {
+        var nanDus = {};
+        var html = template('nanDus', nanDus);
+        document.getElementById('DIVShow').innerHTML = html;
+        $('#DIVList').show();
+    }
+    function ZSDGOnClick() {
+        self.location = ('#lianxi_two');
+    }
+    function DGOnClick(){
+
+    }
+    function keMusOnClick(keMuID) {
+        if (keMuID != 'cancel') {
+            /**
+             * 为‘请选择科目’赋值
+             */
+            var km = $.grep(xueXiaoKeMu, function (km, i) {
+                return km['科目ID'] == keMuID;
+            })[0];
+            $('#xuanZeKeMu').html(km['科目名称']);
+            $('#DIVList').hide();
+            /**
+             * 为知识大纲选框添加文字
+             */
+            $('#ZSDG_p').html(km['科目名称']);
+            $('#ZSDG').show();
+            /**
+             * 学校科目题型
+             */
+            $.ajax({
+                method: "GET",
+                url: localUrl + xueXiaoKeMuTiXingUrl,
+                data: {
+                    '学校ID': $.cookie('学校ID'),
+                    '科目ID': keMuID
+                },
+                success: function (tiXings) {
+                    tiXings = $.parseJSON(tiXings).data;
+                    console.log(tiXings);
+                    $.each(tiXings, function (i, tx) {
+                        if (tx['题型ID'] == 1) {
+                            $('#DIVXuanZe').show();
+                        } else if (tx['题型ID'] == 3) {
+                            $('#DIVPanDuan').show();
+                        }
+                    });
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+            /**
+             * 学校科目大纲
+             */
+            $.ajax({
+                method: "GET",
+                url: localUrl + zhiShiDaGangUrl,
+                data: {
+                    '学校ID': $.cookie('学校ID'),
+                    '科目ID': keMuID
+                },
+                success: function (data) {
+                    data = $.parseJSON(data).data;
+                    console.log(data);
+//                    var zhiShiDians = {zhiShiDians: data};
+//                    var html = template('zhiShiDaGang', zhiShiDians);
+//                    document.getElementById('DIVZSDG').innerHTML = html;
+//                    $('#DIVZSDG').show();
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+        } else {
+            $('#DIVList').hide();
+        }
+    }
+
+    function xuanZesOnClick(xzID) {
+        if (xzID != 'cancel') {
+            console.log(xzID);
+            $('#xuanZe').html(xzID);
+        } else {
+            $('#DIVList').hide();
+        }
+        $('#DIVList').hide();
+    }
+
+    function panDuansOnClick(pdID) {
+        if (pdID != 'cancel') {
+            console.log(pdID);
+            $('#panDuan').html(pdID);
+        } else {
+            $('#DIVList').hide();
+        }
+        $('#DIVList').hide();
+    }
+    function nanDusOnClick(ndID) {
+        if (ndID != 'cancel') {
+            console.log(ndID);
+            $('#nanDu').html($('#' + ndID).html());
+        } else {
+            $('#DIVList').hide();
+        }
+        $('#DIVList').hide();
+    }
+    /**
+     * 提交数据开始练习
+     */
+    function submitOnClick() {
+        console.log("submit");
+    }
+
+    $(document).ready(function () {
+        /**
+         * 学校科目
+         */
+        $.ajax({
+            method: "GET",
+            url: localUrl + xueXiaoKeMuUrl,
+            data: {'学校ID': $.cookie('学校ID')},
+            success: function (data) {
+                data = $.parseJSON(data).data;
+                xueXiaoKeMu = data;
+                var keMus = {keMus: data};
+                var html = template('keMus', keMus);
+                document.getElementById('DIVShow').innerHTML = html;
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    });
+</script>

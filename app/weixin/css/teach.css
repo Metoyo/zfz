@@ -1,0 +1,84 @@
+body,html {
+    height: 100%;
+    -webkit-tap-highlight-color: transparent
+}
+body {
+    overflow-x: hidden;
+    background-color: #fbf9fe
+}
+.container {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch
+}
+.container>div {
+    background-color: #fbf9fe
+}
+.dpBlk{
+    display: block;
+}
+.mt20{
+    margin-top: 20px;
+}
+.ml5{
+    margin-left: 5px;
+}
+.ml15{
+    margin-left: 15px;
+}
+.mr10{
+    margin-right: 10px;
+}
+.plr0{
+    padding-left: 0;
+    padding-right: 0;
+}
+.weui_tabbar{
+    position: fixed;
+    bottom: 0;
+}
+.weui_tab_bd{
+    position: fixed;
+    bottom: 55px;
+    top: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    width: 100%;
+    height: initial;
+}
+.bgd0{
+    background: none;
+}
+.center{
+    text-align: center;
+}
+.square1{
+    width: 49%;
+    background: #122b40;
+    color: #ffffff;
+    text-align: center;
+    height: 100px;
+}
+.square1 h3{
+    font-size: 20px;
+}
+.pullLeft{
+    float: left;
+}
+.pullRight{
+    float: right;
+}
+.weui_cell:before{
+    left: 0;
+}
+.weui_cell{
+    padding: 10px 5px;
+}
+.addNewTest .weui_label{
+    width: 90px;
+}
+.seniorSetBox{
+    display: none;
+    border-top: 1px solid #d9d9d9;
+}

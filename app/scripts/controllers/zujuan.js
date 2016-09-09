@@ -24,6 +24,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var paginationLength = 11; //分页部分，页码的长度，目前设定为11
         var originSjzData = ''; //存放试卷组原始数据的变量
         var keMuJiaoShiUrl = '/kemu_jiaoshi'; //学校教师
+        var chuTiRenUrl = '/chutiren';
         var tiMuIdArr = []; //获得查询题目ID的数组
         var pageArr = []; //根据得到的数据定义一个分页数组
         var qryTmPar = { //查询题目参数对象
@@ -286,7 +287,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          */
         var qryChuTiRen = function(){
           if(!($scope.chuTiRens && $scope.chuTiRens.length > 0)){
-            var obj = {method: 'GET', url: keMuJiaoShiUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
+            var obj = {method: 'GET', url: chuTiRenUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
             $http(obj).success(function(data){
               if(data.result && data.data){
                 $scope.chuTiRens = data.data;
@@ -1948,6 +1949,12 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             };
             $scope.singleSj.push(dtObj);
           });
+          if(!($scope.tiKuList && $scope.tiKuList.length > 0)){
+            qryTiKu();
+          }
+          if(!($scope.chuTiRens && $scope.chuTiRens.length > 0)){
+            qryChuTiRen();
+          }
           $scope.zjTpl = 'views/zujuan/zj_addSj.html';
         };
 

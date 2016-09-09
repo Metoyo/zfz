@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title class="title"></title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+        <link rel="stylesheet" href="../css/weui.min.css"/>
+        <link rel="stylesheet" href="../css/teach.css"/>
+    </head>
+    <body ontouchstart>
+        <script id="tplAddNewTest" type="text/html">
+            <div class="weui_cells weui_cells_form bgd0 addNewTest">
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">测试类别</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <label>
+                            <input type="radio" name="csType" value="shuxue"> 数学类
+                        </label>
+                        <label>
+                            <input type="radio" name="csType" value="yingyu"> 英文类
+                        </label>
+                        <label>
+                            <input type="radio" name="csType" value="lengzhishi"> 冷知识
+                        </label>
+                    </div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_hd"><label class="weui_label">题目数量</label></div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <label class="mr10">
+                            <input type="radio" name="csTmNum" value="10"> 10题
+                        </label>
+                        <label class="mr10">
+                            <input type="radio" name="csTmNum" value="20"> 20题
+                        </label>
+                        <label class="mr10">
+                            <input type="radio" name="csTmNum" value="30"> 30题
+                        </label>
+                    </div>
+                </div>
+                <a class="weui_cell seniorSetBtn" href="javascript:;">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>高级设置<i class="weui_icon_download"></i></p>
+                    </div>
+                </a>
+                <div class="seniorSetBox">
+                    <div class="weui_cell">
+                        <div class="weui_cell_hd"><label class="weui_label">考查内容</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <label class="dpBlk">
+                                <input type="checkbox" name="zsd"> 行列式
+                            </label>
+                            <label class="dpBlk">
+                                <input type="checkbox" name="zsd"> 矩阵
+                            </label>
+                            <label class="dpBlk">
+                                <input type="checkbox" name="zsd"> 向量
+                            </label>
+                        </div>
+                    </div>
+                    <div class="weui_cell">
+                        <div class="weui_cell_hd"><label class="weui_label">抽题方式</label></div>
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <label class="dpBlk">
+                                <input type="radio" name="csCtfs" value="0"> 为不同测试者随机抽取题目
+                            </label>
+                            <label class="dpBlk">
+                                <input type="radio" name="csCtfs" value="1"> 使用同一套题目发布测试
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt20">
+                <a href="javascript:;" class="weui_btn weui_btn_primary">生成二维码</a>
+            </div>
+        </script>
+        <script id="tplResultList" type="text/html">
+            <div class="weui_cells weui_cells_access bgd0">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <span>8月31日测试</span>
+                        <span class="ml15">已有23人参与</span>
+                    </div>
+                    <div class="weui_cell_ft">
+                        <a href="javascript:;">详细</a>
+                    </div>
+                </div>
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <span>8月30日测试</span>
+                        <span class="ml15">已有47人参与</span>
+                    </div>
+                    <div class="weui_cell_ft">
+                        <a href="javascript:;">详细</a>
+                    </div>
+                </div>
+            </div>
+        </script>
+        <script id="tplResult" type="text/html">
+            <article class="weui_article plr0">
+                <h1 class="center">月31日测试</h1>
+                <section>
+                    <div class="square1 pullLeft">
+                        <h3 class="mt20">参与人数</h3>
+                        <h3>24</h3>
+                    </div>
+                    <div class="square1 pullRight">
+                        <h3 class="mt20">平均分数</h3>
+                        <h3>80</h3>
+                    </div>
+                </section>
+            </article>
+        </script>
+        <script id="tplVideos" type="text/html">
+            <article class="weui_article plr0">
+                <h1 class="center">智夫子，高校公共课考试的利器</h1>
+                <section>
+                    <!--<iframe width="100%" height="250" src="http://player.youku.com/embed/XMTcwOTk5Mzc4OA==" frameborder=0 allowfullscreen></iframe>-->
+                    <iframe frameborder="0" width="100%" height="250" src="http://v.qq.com/iframe/player.html?vid=h03249cyo6d&tiny=0&auto=0" allowfullscreen></iframe>
+                </section>
+            </article>
+        </script>
+        <script id="tplFree" type="text/html">
+            <article class="weui_article plr0">
+                <h1 class="center">正在设计中……</h1>
+                <section>
+                </section>
+            </article>
+        </script>
+        <div class="container" id="container">
+            <div class="weui_tab">
+                <div class="weui_tab_bd" id="htmlShowBox">
+                    <!--内容-->
+                </div>
+                <div class="weui_tabbar">
+                    <a href="javascript:;" id="tabBtnAddNew" class="weui_tabbar_item weui_bar_item_on">
+                        <div class="weui_tabbar_icon">
+                            <img src="../images/icon_nav_button.png" alt="">
+                        </div>
+                        <p class="weui_tabbar_label">发起测试</p>
+                    </a>
+                    <a href="javascript:;" id="tabBtnResult" class="weui_tabbar_item">
+                        <div class="weui_tabbar_icon">
+                            <img src="../images/icon_nav_msg.png" alt="">
+                        </div>
+                        <p class="weui_tabbar_label">测试结果</p>
+                    </a>
+                    <a href="javascript:;" id="tabBtnVideo" class="weui_tabbar_item">
+                        <div class="weui_tabbar_icon">
+                            <img src="../images/icon_nav_article.png" alt="">
+                        </div>
+                        <p class="weui_tabbar_label">宣传视频</p>
+                    </a>
+                    <a href="javascript:;" id="tabBtnFree" class="weui_tabbar_item">
+                        <div class="weui_tabbar_icon">
+                            <img src="../images/icon_nav_cell.png" alt="">
+                        </div>
+                        <p class="weui_tabbar_label">免费试用</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <script src="../js/jquery-3.1.0.min.js"></script>
+        <script src="../js/template.js"></script>
+        <script src="../js/teach.js"></script>
+    </body>
+</html>
