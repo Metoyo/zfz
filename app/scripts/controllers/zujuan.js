@@ -811,6 +811,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $scope.zuJuanParam.rlTxId = '';
           $scope.zuJuanParam.rlNd = '';
           $scope.addSjz.sltTp = '';
+          Lazy($scope.kowledgeList['节点']).each(_zsdDo);
         };
 
         /**

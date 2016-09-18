@@ -2,9 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ce20f8f-acb5-423a-8a6b-34832c0ace08" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/renzheng/rz_copyTiMu.html" afterPath="$PROJECT_DIR$/app/views/renzheng/rz_copyTiMu.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/user.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/user.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/danxuan.html" afterPath="$PROJECT_DIR$/app/views/mingti/danxuan.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/duoxuan.html" afterPath="$PROJECT_DIR$/app/views/mingti/duoxuan.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/guanli.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/guanli.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/jieda.html" afterPath="$PROJECT_DIR$/app/views/mingti/jieda.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/jisuan.html" afterPath="$PROJECT_DIR$/app/views/mingti/jisuan.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/mingti.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/panduan.html" afterPath="$PROJECT_DIR$/app/views/mingti/panduan.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/tiankong.html" afterPath="$PROJECT_DIR$/app/views/mingti/tiankong.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/views/mingti/zhengming.html" afterPath="$PROJECT_DIR$/app/views/mingti/zhengming.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" afterPath="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
     </list>
     <ignored path="zhifz.iws" />
@@ -32,8 +39,8 @@
       <file leaf-file-name="zujuan.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.18730651" vertical-offset="30743" max-vertical-offset="34288">
-              <caret line="1929" column="42" selection-start-line="1929" selection-start-column="42" selection-end-line="1929" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.68266255" vertical-offset="12567" max-vertical-offset="34304">
+              <caret line="813" column="55" selection-start-line="813" selection-start-column="55" selection-end-line="813" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -49,7 +56,6 @@
       <list>
         <option value="$PROJECT_DIR$/../KaoshiWeb/app.bak/index.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/dagang.js" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/guanli.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/student.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/index.html" />
         <option value="$PROJECT_DIR$/bower_components/requirejs/require.min.js" />
@@ -72,16 +78,8 @@
         <option value="$PROJECT_DIR$/app/views/zujuan/zj_rule.html" />
         <option value="$PROJECT_DIR$/app/views/mingti/testList.html" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zj_tiMu.html" />
-        <option value="$PROJECT_DIR$/app/views/mingti/danxuan.html" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/views/mingti/danxuan.html" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/mingti.js" />
-        <option value="$PROJECT_DIR$/app/views/mingti/duoxuan.html" />
-        <option value="$PROJECT_DIR$/app/views/mingti/jieda.html" />
-        <option value="$PROJECT_DIR$/app/views/mingti/jisuan.html" />
-        <option value="$PROJECT_DIR$/app/views/mingti/panduan.html" />
-        <option value="$PROJECT_DIR$/app/views/mingti/tiankong.html" />
-        <option value="$PROJECT_DIR$/app/views/mingti/zhengming.html" />
-        <option value="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/scripts/controllers/zujuan.js" />
         <option value="$PROJECT_DIR$/../KaoshiWeb/app/styles/main.0788a371.css" />
         <option value="$PROJECT_DIR$/app/views/kaowu/editKaoShiZu.html" />
@@ -97,6 +95,15 @@
         <option value="$PROJECT_DIR$/app/views/renzheng/rz_copyTiMu.html" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/user.js" />
         <option value="$PROJECT_DIR$/app/views/zujuan/zj_tiMuSgl.html" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/mingti.js" />
+        <option value="$PROJECT_DIR$/app/views/mingti/danxuan.html" />
+        <option value="$PROJECT_DIR$/app/views/mingti/duoxuan.html" />
+        <option value="$PROJECT_DIR$/app/views/mingti/jieda.html" />
+        <option value="$PROJECT_DIR$/app/views/mingti/jisuan.html" />
+        <option value="$PROJECT_DIR$/app/views/mingti/panduan.html" />
+        <option value="$PROJECT_DIR$/app/views/mingti/tiankong.html" />
+        <option value="$PROJECT_DIR$/app/views/mingti/zhengming.html" />
+        <option value="$PROJECT_DIR$/app/scripts/controllers/guanli.js" />
         <option value="$PROJECT_DIR$/app/scripts/controllers/zujuan.js" />
       </list>
     </option>
@@ -278,7 +285,6 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="33" />
     <option name="y" value="23" />
     <option name="width" value="1249" />
     <option name="height" value="777" />
@@ -306,7 +312,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -353,7 +358,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="scripts" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -367,7 +372,21 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="dist" />
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -375,8 +394,31 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="zhifz" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controllers" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -504,30 +546,30 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="33" y="23" width="1249" height="777" extended-state="0" />
+    <frame x="0" y="23" width="1249" height="777" extended-state="0" />
     <editor active="true" />
     <layout>
+      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34934497" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41630277" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22286661" sideWeight="0.37807608" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896653" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Grunt" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329927" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1822701" sideWeight="0.49748743" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22286661" sideWeight="0.6219239" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32751092" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920793" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23612262" sideWeight="0.62154293" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22949462" sideWeight="0.37845707" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32896653" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.41630277" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="REST Client" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.50218976" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32751092" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -570,20 +612,31 @@
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/app/scripts/controllers/user.js</url>
-          <line>2507</line>
-          <option name="timeStamp" value="605" />
+          <url>file://$PROJECT_DIR$/app/scripts/controllers/mingti.js</url>
+          <line>161</line>
+          <option name="timeStamp" value="606" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/app/scripts/controllers/mingti.js</url>
+          <line>854</line>
+          <option name="timeStamp" value="607" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/app/scripts/controllers/mingti.js</url>
+          <line>155</line>
+          <option name="timeStamp" value="608" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="606" />
+      <option name="time" value="609" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/views/dagang/daGangPublic.html">
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/guanli.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0446281" vertical-offset="27" max-vertical-offset="1104">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="16720">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -720,59 +773,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/danxuan.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.15508886" vertical-offset="144" max-vertical-offset="2624">
-          <caret line="15" column="14" selection-start-line="0" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/mingti/testList.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6203554" vertical-offset="112" max-vertical-offset="2112">
           <caret line="31" column="29" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/zhengming.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6978998" vertical-offset="0" max-vertical-offset="2208">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/tiankong.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6978998" vertical-offset="0" max-vertical-offset="2480">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/panduan.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6978998" vertical-offset="0" max-vertical-offset="2128">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/jisuan.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6978998" vertical-offset="0" max-vertical-offset="2176">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/jieda.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6978998" vertical-offset="0" max-vertical-offset="2176">
-          <caret line="27" column="21" selection-start-line="27" selection-start-column="21" selection-end-line="27" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/views/mingti/duoxuan.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5945073" vertical-offset="32" max-vertical-offset="2512">
-          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -787,13 +791,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7964459" vertical-offset="1011" max-vertical-offset="1760">
           <caret line="94" column="110" selection-start-line="94" selection-start-column="110" selection-end-line="94" selection-end-column="110" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/mingti.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.95341617" vertical-offset="24634" max-vertical-offset="25360">
-          <caret line="1578" column="3" selection-start-line="1578" selection-start-column="3" selection-end-line="1578" selection-end-column="3" />
         </state>
       </provider>
     </entry>
@@ -836,10 +833,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="56.32" vertical-offset="1888" max-vertical-offset="6256">
           <caret line="30" column="17" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
-          <folding>
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#!!top" expanded="false" />
-            <element signature="n#div#0;n#div#2;n#div#0;n#div#2;n#div#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -847,10 +840,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0" vertical-offset="0" max-vertical-offset="7008">
           <caret line="0" column="21" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="42" />
-          <folding>
-            <element signature="n#style#0;n#em#0;n#h4#0;n#!!top" expanded="false" />
-            <element signature="n#style#0;n#label#0;n#div#1;n#form#0;n#div#0;n#!!top" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -872,7 +861,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="5.606811" vertical-offset="18202" max-vertical-offset="21936">
           <caret line="1364" column="2" selection-start-line="1364" selection-start-column="2" selection-end-line="1364" selection-end-column="2" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -887,7 +875,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.94847023" vertical-offset="579" max-vertical-offset="1280">
           <caret line="73" column="6" selection-start-line="73" selection-start-column="6" selection-end-line="73" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -895,7 +882,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.063467495" vertical-offset="1495" max-vertical-offset="21936">
           <caret line="96" column="13" selection-start-line="96" selection-start-column="13" selection-end-line="96" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -903,15 +889,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.1153846" vertical-offset="150" max-vertical-offset="1024">
           <caret line="26" column="26" selection-start-line="0" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26251897" vertical-offset="39187" max-vertical-offset="40832">
-          <caret line="2460" column="26" selection-start-line="2460" selection-start-column="26" selection-end-line="2460" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -919,7 +896,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.46376812" vertical-offset="496" max-vertical-offset="2448">
           <caret line="49" column="71" selection-start-line="49" selection-start-column="62" selection-end-line="49" selection-end-column="71" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -927,15 +903,62 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.30917874" vertical-offset="384" max-vertical-offset="2128">
           <caret line="36" column="71" selection-start-line="36" selection-start-column="71" selection-end-line="36" selection-end-column="71" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dist/views/renzheng/rz_copyTiMu.html">
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/zhengming.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="621">
-          <caret line="0" column="11" selection-start-line="0" selection-start-column="11" selection-end-line="0" selection-end-column="11" />
-          <folding />
+        <state vertical-scroll-proportion="0.6698873" vertical-offset="0" max-vertical-offset="2208">
+          <caret line="26" column="123" selection-start-line="26" selection-start-column="123" selection-end-line="26" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/tiankong.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6698873" vertical-offset="0" max-vertical-offset="2480">
+          <caret line="26" column="123" selection-start-line="26" selection-start-column="123" selection-end-line="26" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/panduan.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6698873" vertical-offset="0" max-vertical-offset="2128">
+          <caret line="26" column="123" selection-start-line="26" selection-start-column="123" selection-end-line="26" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/jisuan.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="218" max-vertical-offset="2176">
+          <caret line="26" column="123" selection-start-line="26" selection-start-column="123" selection-end-line="26" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/jieda.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="218" max-vertical-offset="2176">
+          <caret line="26" column="123" selection-start-line="26" selection-start-column="123" selection-end-line="26" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/duoxuan.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="186" max-vertical-offset="2512">
+          <caret line="24" column="123" selection-start-line="24" selection-start-column="123" selection-end-line="24" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/views/mingti/danxuan.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="202" max-vertical-offset="2624">
+          <caret line="25" column="123" selection-start-line="25" selection-start-column="123" selection-end-line="25" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/user.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33281735" vertical-offset="39897" max-vertical-offset="40832">
+          <caret line="2507" column="0" selection-start-line="2507" selection-start-column="0" selection-end-line="2507" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -943,14 +966,29 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="646">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="34" selection-end-column="9268" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/guanli.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="15994" max-vertical-offset="16720">
+          <caret line="1019" column="32" selection-start-line="1019" selection-start-column="32" selection-end-line="1019" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/scripts/controllers/mingti.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7894737" vertical-offset="2498" max-vertical-offset="25584">
+          <caret line="188" column="17" selection-start-line="188" selection-start-column="17" selection-end-line="188" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/scripts/controllers/zujuan.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.18730651" vertical-offset="30743" max-vertical-offset="34288">
-          <caret line="1929" column="42" selection-start-line="1929" selection-start-column="42" selection-end-line="1929" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.68266255" vertical-offset="12567" max-vertical-offset="34304">
+          <caret line="813" column="55" selection-start-line="813" selection-start-column="55" selection-end-line="813" selection-end-column="55" />
           <folding />
         </state>
       </provider>

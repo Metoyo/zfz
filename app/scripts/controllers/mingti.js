@@ -157,9 +157,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
           var objZj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID, '领域ID': lingYuId, '类型': 2}};
           var zjTk = [];
           var ggTk = [];
+          $scope.tiKuList = [];
+          $scope.tiKuPriList = [];
           $http(objZj).success(function(data){
             if(data.result){
               zjTk = data.data ? data.data : [];
+              $scope.tiKuPriList = data.data || [];
               var objGg = {method: 'GET', url: tiKuUrl, params: {'领域ID': lingYuId, '类型': 1}};
               $http(objGg).success(function(ggData){
                 if(ggData.result){
@@ -167,7 +170,18 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
                   $scope.tiKuList = Lazy(zjTk).union(ggTk).toArray();
                   var allTkId = Lazy($scope.tiKuList).map(function(tk){ return tk['题库ID'];}).toArray();
                   $scope.mingTiParam.allTkIds = angular.copy(allTkId);
-                  qryTmPar.tk = allTkId;
+                  if(data.data && data.data.length > 0){
+                    qryTmPar.tk.push(data.data[0]['题库ID']);
+                    $scope.mingTiParam.tiKuId = data.data[0]['题库ID'];
+                  }
+                  else if(ggData.data && ggData.data.length > 0){
+                    qryTmPar.tk.push(ggData.data[0]['题库ID']);
+                    $scope.mingTiParam.tiKuId = ggData.data[0]['题库ID'];
+                  }
+                  else{
+                    qryTmPar.tk = [];
+                    $scope.mingTiParam.tiKuId = '';
+                  }
                   $scope.qryTestFun();
                 }
                 else{
@@ -841,7 +855,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
         $scope.addTiMuTpl = function(txId){
           $scope.newTiXingId = txId;
           $scope.timu['题型ID'] = txId;
-          $scope.timu['题库ID'] = $scope.tiKuList[0]['题库ID'];
+          $scope.timu['题库ID'] = $scope.tiKuPriList[0]['题库ID'];
           $scope.loopArr = '';
           $scope.loadingImgShow = true;
           $('#prevDoc').html('');

@@ -320,6 +320,7 @@ define(['angular', 'config', 'jquery', 'lazy', ], function (angular, config, $, 
             $scope.kxhData['年份'] = [];
             var mydateNew = new Date();
             var year = mydateNew.getFullYear();
+            $scope.kxhData['年份'].push(year - 1);
             $scope.kxhData['年份'].push(year);
             $scope.kxhData['年份'].push(year + 1);
             $scope.queryKeXuHao();
