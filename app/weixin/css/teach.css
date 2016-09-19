@@ -8,14 +8,27 @@ body {
 }
 .container {
     height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch
 }
 .container>div {
     background-color: #fbf9fe
 }
 .dpBlk{
     display: block;
+}
+.dpIlb{
+    display: inline-block;
+}
+.wp100{
+    width: 100%;
+}
+.wp50{
+    width: 50%;
+}
+.wp70{
+    width: 70%;
+}
+.mt0{
+    margin-top: 0;
 }
 .mt20{
     margin-top: 20px;
@@ -28,6 +41,9 @@ body {
 }
 .mr10{
     margin-right: 10px;
+}
+.mtb5{
+    margin: 5px 0;
 }
 .plr0{
     padding-left: 0;
@@ -46,16 +62,55 @@ body {
     padding: 10px;
     width: 100%;
     height: initial;
+    -webkit-overflow-scrolling: none;
 }
 .bgd0{
     background: none;
 }
+.bdb1{
+    border-bottom: 1px solid #cfcfcf;
+}
+.fz24,
+.weui_article .fz24{
+    font-size: 24px;
+}
+.fz20,
+.weui_article .fz20{
+    font-size: 20px;
+}
+.fz16,
+.weui_article .fz16{
+    font-size: 16px;
+}
+.fz12,
+.weui_article .fz16{
+    font-size: 12px;
+}
 .center{
     text-align: center;
 }
+.cl000{
+    color: #000;
+}
+.clBlue{
+    color: #3daad6;
+}
+.clYellow{
+    color: #ff6537;
+}
+.iptSty{
+    background-color: #e6e6e6;
+    padding: 3px 15px;
+    border-radius: 3px;
+}
+.iptStyOn{
+    padding-left: 25px;
+    background: #fff url('../images/checked.png') no-repeat 5px center;
+    border: 1px solid #e64340;
+}
 .square1{
     width: 49%;
-    background: #122b40;
+    background-color: #1E90FF;
     color: #ffffff;
     text-align: center;
     height: 100px;
@@ -63,11 +118,19 @@ body {
 .square1 h3{
     font-size: 20px;
 }
+.graph{
+    width: 100%;
+    height: 260px;
+    background-color: #e2e2e2;
+}
 .pullLeft{
     float: left;
 }
 .pullRight{
     float: right;
+}
+.vtlAlg{
+    align-items: baseline;
 }
 .weui_cell:before{
     left: 0;
@@ -78,7 +141,37 @@ body {
 .addNewTest .weui_label{
     width: 90px;
 }
-.seniorSetBox{
-    display: none;
-    border-top: 1px solid #d9d9d9;
+.weui_article section{
+    margin-bottom: 10px;
+}
+.weui_btn_yellow{
+    background-color: #ff6537;
+}
+.nameWrap{
+    width: 70%;
+    border: 1px solid #bbbbbb;
+    border-radius: 3px;
+    padding: 5px 10px;
+    font-size: 16px;
+    height: 26px;
+    line-height: 26px;
+    margin-top: 15px;
+}
+.weui_label{
+    width: 90px;
+}
+.weui_article{
+    padding: 0;
+}
+.weui_dialog{
+    width: 94%;
+}
+.weui_dialog_bd{
+    padding: 0 10px;
+}
+.closeBtn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 5px;
 }
