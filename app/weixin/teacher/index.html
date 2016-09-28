@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
         <link rel="stylesheet" href="../css/weui.min.css"/>
         <link rel="stylesheet" href="../css/teach.css"/>
+        <link rel="stylesheet" href="../css/font-awesome.min.css"/>
     </head>
     <body ontouchstart>
         <!--发起测试模板-->
@@ -14,6 +15,7 @@
                 <div class="weui_cell">
                     <div class="weui_cell_hd"><label class="weui_label">测试类别</label></div>
                     <div class="radioSty iptSty mr10 iptStyOn">
+                        <i class="fa fa-check" aria-hidden="true"></i>
                         <input type="radio" name="csType" class="weui_check" value="1001" checked="true"> 数学类
                     </div>
                     <!--<div class="radioSty iptSty">-->
@@ -24,9 +26,11 @@
                     <div class="weui_cell_hd"><label class="weui_label">题目数量</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <div class="radioSty dpIlb iptSty mr10 iptStyOn">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             <input type="radio" name="csTmNum" class="weui_check" value="10" checked="true"> 10题
                         </div>
                         <div class="radioSty dpIlb iptSty">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             <input type="radio" name="csTmNum" class="weui_check" value="20"> 20题
                         </div>
                     </div>
@@ -36,6 +40,7 @@
                     <div class="weui_cell_bd weui_cell_primary">
                         {{each daGang}}
                         <div class="dpBlk checkboxSty mtb5 iptSty iptStyOn">
+                            <i class="fa fa-check" aria-hidden="true"></i>
                             <input type="checkbox" name="zsd" class="weui_check" value="{{$value['知识点ID']}}" checked="true"> {{$value['知识点名称']}}
                         </div>
                         {{/each}}
@@ -45,16 +50,22 @@
                     <div class="weui_cell_hd"><label class="weui_label">抽题方式</label></div>
                     <div class="weui_cell_bd weui_cell_primary">
                         <div class="dpBlk mtb5 radioSty iptSty mr10 iptStyOn">
-                            <input type="radio" name="csCtfs" class="weui_check" value="0" checked="true"> 为不同测试者随机抽取题目
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <input type="radio" name="csCtfs" class="weui_check" value="0" checked="true"> 随机，每人试题不同
                         </div>
                         <div class="dpBlk mtb5 radioSty iptSty">
-                            <input type="radio" name="csCtfs" class="weui_check" value="1"> 使用同一套题目发布测试
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <input type="radio" name="csCtfs" class="weui_check" value="1"> 固定，每人试题相同
+                        </div>
+                        <div class="dpBlk mtb5 iptSty selfTest">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            <input type="radio" name="csCtfs" class="weui_check" value="2"> 自己出题
                         </div>
                     </div>
                 </div>
             </div>
             <div class="mt20">
-                <a href="javascript:;" id="renderQRBtn" class="weui_btn weui_btn_primary">生成二维码</a>
+                <a href="javascript:;" id="renderQRBtn" class="weui_btn weui_btn_primary">开始考试</a>
             </div>
             <div class="weui_dialog_alert erWeiMa" style="display: none;">
                 <div class="weui_mask"></div>
@@ -67,6 +78,50 @@
                     </div>
                     <div class="weui_dialog_ft">
                         <a href="javascript:;" class="weui_btn_dialog primary">关闭</a>
+                    </div>
+                </div>
+            </div>
+            <div class="weui_dialog_alert" id="teacherInfo2" style="display: none;">
+                <div class="weui_mask"></div>
+                <div class="weui_dialog">
+                    <div class="closeBtn"><i class="weui_icon_cancel"></i></div>
+                    <div class="weui_dialog_hd">
+                        <h2 class="bdb1 clBlue fz20">如果您需要自己出题</h2>
+                        <p>我们可以免费为您制作题库</p>
+                        <p>
+                            <strong class="weui_dialog_title">请留下您的联系方式</strong>
+                        </p>
+                    </div>
+                    <div class="weui_dialog_bd">
+                        <div class="weui_cells weui_cells_form">
+                            <div class="weui_cell">
+                                <div class="weui_cell_hd"><label class="weui_label">贵校名称</label></div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <input class="weui_input" type="text" name="yourSchool" placeholder="学校名称"/>
+                                </div>
+                            </div>
+                            <div class="weui_cell">
+                                <div class="weui_cell_hd"><label class="weui_label">尊姓大名</label></div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <input class="weui_input" type="text" name="yourName" placeholder="您的姓名"/>
+                                </div>
+                            </div>
+                            <div class="weui_cell">
+                                <div class="weui_cell_hd"><label class="weui_label">电话号码</label></div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <input class="weui_input" type="number" name="yourPhone" placeholder="电话号码"/>
+                                </div>
+                            </div>
+                            <div class="weui_cell">
+                                <div class="weui_cell_hd"><label class="weui_label">电子信箱</label></div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <input class="weui_input" type="text" name="yourEmail" placeholder="Email"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weui_dialog_ft">
+                        <a href="javascript:;" id="submitTechInfo2" class="weui_btn_dialog primary">确定</a>
                     </div>
                 </div>
             </div>
@@ -156,7 +211,12 @@
                 <div class="weui_dialog">
                     <div class="closeBtn"><i class="weui_icon_cancel"></i></div>
                     <div class="weui_dialog_hd">
-                        <strong class="weui_dialog_title">请留下您的联系方式，以便我们联系您</strong>
+                        <p>
+                            <strong class="weui_dialog_title">请留下您的联系方式</strong>
+                        </p>
+                        <p>
+                            <strong class="weui_dialog_title">我们将在一个工作日内回复您</strong>
+                        </p>
                     </div>
                     <div class="weui_dialog_bd">
                         <div class="weui_cells weui_cells_form">
@@ -166,16 +226,22 @@
                                     <input class="weui_input" type="text" name="yourSchool" placeholder="学校名称"/>
                                 </div>
                             </div>
-                            <div class="weui_cell weui_vcode">
+                            <div class="weui_cell">
                                 <div class="weui_cell_hd"><label class="weui_label">尊姓大名</label></div>
                                 <div class="weui_cell_bd weui_cell_primary">
                                     <input class="weui_input" type="text" name="yourName" placeholder="您的姓名"/>
                                 </div>
                             </div>
                             <div class="weui_cell">
-                                <div class="weui_cell_hd"><label class="weui_label">联系方式</label></div>
+                                <div class="weui_cell_hd"><label class="weui_label">电话号码</label></div>
                                 <div class="weui_cell_bd weui_cell_primary">
-                                    <input class="weui_input" type="number" name="yourPhone" pattern="[0-9]*" placeholder="联系方式"/>
+                                    <input class="weui_input" type="number" name="yourPhone" placeholder="电话号码"/>
+                                </div>
+                            </div>
+                            <div class="weui_cell">
+                                <div class="weui_cell_hd"><label class="weui_label">电子信箱</label></div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <input class="weui_input" type="text" name="yourEmail" placeholder="Email"/>
                                 </div>
                             </div>
                         </div>
@@ -242,33 +308,33 @@
                 <div class="weui_tab_bd" id="htmlShowBox">
                     <!--内容-->
                 </div>
+                <div class="weui_tabbar">
+                    <a href="javascript:;" id="tabBtnAddNew" class="weui_tabbar_item weui_bar_item_on">
+                        <div class="weui_tabbar_icon">
+                            <img src="../images/icon_nav_button.png" alt="">
+                        </div>
+                        <p class="weui_tabbar_label">发起考试</p>
+                    </a>
+                    <a href="javascript:;" id="tabBtnResult" class="weui_tabbar_item">
+                        <div class="weui_tabbar_icon">
+                            <img src="../images/icon_nav_msg.png" alt="">
+                        </div>
+                        <p class="weui_tabbar_label">测试结果</p>
+                    </a>
+                    <a href="javascript:;" id="tabBtnVideo" class="weui_tabbar_item">
+                        <div class="weui_tabbar_icon">
+                            <img src="../images/icon_nav_article.png" alt="">
+                        </div>
+                        <p class="weui_tabbar_label">宣传视频(正式版)</p>
+                    </a>
+                    <!--<a href="javascript:;" id="tabBtnFree" class="weui_tabbar_item">-->
+                        <!--<div class="weui_tabbar_icon">-->
+                            <!--<img src="../images/icon_nav_cell.png" alt="">-->
+                        <!--</div>-->
+                        <!--<p class="weui_tabbar_label">免费试用</p>-->
+                    <!--</a>-->
+                </div>
             </div>
-        </div>
-        <div class="weui_tabbar">
-            <a href="javascript:;" id="tabBtnAddNew" class="weui_tabbar_item weui_bar_item_on">
-                <div class="weui_tabbar_icon">
-                    <img src="../images/icon_nav_button.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">发起测试</p>
-            </a>
-            <a href="javascript:;" id="tabBtnResult" class="weui_tabbar_item">
-                <div class="weui_tabbar_icon">
-                    <img src="../images/icon_nav_msg.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">测试结果</p>
-            </a>
-            <a href="javascript:;" id="tabBtnVideo" class="weui_tabbar_item">
-                <div class="weui_tabbar_icon">
-                    <img src="../images/icon_nav_article.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">宣传视频</p>
-            </a>
-            <a href="javascript:;" id="tabBtnFree" class="weui_tabbar_item">
-                <div class="weui_tabbar_icon">
-                    <img src="../images/icon_nav_cell.png" alt="">
-                </div>
-                <p class="weui_tabbar_label">免费试用</p>
-            </a>
         </div>
         <!--用到的ji文件-->
         <script src="../js/jquery-3.1.0.min.js"></script>

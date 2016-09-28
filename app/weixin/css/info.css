@@ -1,0 +1,17 @@
+.card{
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #cfcfcf;
+}
+.card:nth-child(odd){
+    background-color: #d9edf7;
+}
+.card:nth-child(even){
+    background-color: #dff0d8;
+}
+@media only screen and (min-width: 480px){
+    .container{
+        width: 960px;
+        margin: 0 auto;
+    }
+}

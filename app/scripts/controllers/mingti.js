@@ -882,6 +882,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
             case 4:
               tkLoopArr = [];
               $scope.mingTiParam.tianKongDaAn = '';
+              $('.formulaEditTiGan').markItUp('remove');
               var addTianKongFun = function() {
                 $('.formulaEditTiGan').markItUp(mySettings);
               };

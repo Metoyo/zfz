@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title class="title"></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <link rel="stylesheet" href="../css/paper.css"/>
+    <link rel="stylesheet" href="/weixin/css/paper.css"/>
 </head>
 <body ontouchstart>
 <!--试卷作答模板-->
@@ -19,9 +19,6 @@
             </div>
         {{/each}}
     </div>
-    <!--<div class="center submitTestWrap">-->
-        <!--<a href="javascript:;" id="submitTest" class="btn mt15 submitTest">结束测试</a>-->
-    <!--</div>-->
 </script>
 <script id="tplScore" type="text/html">
     <h1 class="center fz18" style="margin-top: 100px">答题总数: {{allTm}}，答对题数: {{rightTm}}</h1>
@@ -48,19 +45,19 @@
             <p class="center"><a href="javascript:;" class="btn" id="submitBtn">确定</a></p>
         </div>
     </div>
-    <!--https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxabcb783dbd59b065&redirect_uri=https%3a%2f%2fwww.zhifz.com%2fweixin%2fteacher%2findex.html&response_type=code&scope=snsapi_base&state=1234#wechat_redirect-->
 </div>
 <!--用到的ji文件-->
-<script src="../js/jquery-3.1.0.min.js"></script>
-<script src="../js/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
-<script src="../js/template.js"></script>
+<script src="/weixin/js/jquery-3.1.0.min.js"></script>
+<script src="/weixin/js/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+<script src="/weixin/js/template.js"></script>
 <script>
     $(function(){
         var yongHuCeYan = '/yonghu_ceyan'; //用户测试
         var yongHuDaTi = '/yonghu_dati'; //用户答题
-        var par = location.search; //获得测试ID
-        var parArr = par.split('?');
-        var testID = parseInt(parArr[1]);
+//        var par = location.search; //获得测试ID
+//        var parArr = par.split('?');
+//        var testID = parseInt(parArr[1]);
+        var testID = +$('.testId').val();
         var tiMuArr = []; //题目数组
         var zhuCeId = ''; //注册ID
         var daTiArr = []; //已答题目数组
@@ -134,6 +131,7 @@
                     else{
                         alert(data.error || '没有题目！');
                     }
+                    $('.testId').remove();
                 },
                 error: function (error) {
                     alert(error);

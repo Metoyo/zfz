@@ -1,395 +1,305 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-    <title>考试成绩</title>
-    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css"/>
-    <link rel="stylesheet" href="css/weui.css"/>
-    <link rel="stylesheet" href="css/weui.min.css"/>
-    <script src="js/jquery-1.8.0.js"></script>
-    <script src="js/jquery.mobile-1.4.5.js"></script>
-    <script src="js/template.js"></script>
-    <script src="js/jquery.cookie.js"></script>
-    <script src="js/echarts.min.js"></script>
-    <script src="js/pdfobject.js"></script>
-    <!-- 成绩 -->
-    <script type="text/html" id="KSCJList">
-        {{each KSCJArr}}
-        <a class="weui_cell" id="{{$value['考试ID']}}" onclick="KSCJOnClick(this.id)">
-            <div class="weui_cell_bd weui_cell_primary">
-                <h5>考试名称:</h5>
-                <p><strong>{{$value['考试组名称']}}</strong></p>
-            </div>
-            <div class="weui_cell_ft">
-                {{if $value['实际评分'] == null }}
-                <p class="ui-li-aside">缺考</p>
-                {{else }}
-                <p class="ui-li-aside">{{$value['实际评分']}}分</p>
-                {{/if}}
-            </div>
-        </a>
-        {{/each}}
-    </script>
-    <script type="text/html" id="dialogId">
-        {{each KS}}
-        <div class="weui_mask"></div>
-        <div class="weui_dialog">
-            <div class="weui_dialog_hd"><strong class="weui_dialog_title">{{$value['考试组名称']}}</strong></div>
-            <div class="weui_dialog_bd">
-
-                {{if $value['实际评分'] == null }}
-                <p>成绩:<strong style="color: red">缺考</strong></p>
-                {{else }}
-                <p>成绩:<strong>{{$value['实际评分']}}</strong></p>
-                {{/if}}
-            </div>
-            <div class="weui_dialog_ft">
-                <a href="javascript:;" class="weui_btn_dialog default"
-                   onclick="dialogOnClick(0,{{$value['课序号ID']}},{{$value['考试组ID']}})">取消</a>
-                {{if $value['实际评分'] != null }}
-                <a href="javascript:;" class="weui_btn_dialog primary"
-                   onclick="dialogOnClick(1,{{$value['课序号ID']}},{{$value['考试组ID']}})">作答重现</a>
-                {{/if}}
-                <a href="javascript:;" class="weui_btn_dialog primary"
-                   onclick="dialogOnClick(2,{{$value['课序号ID']}},{{$value['考试组ID']}})">知识点分析</a>
-            </div>
-        </div>
-        {{/each}}
-    </script>
-    <script type="text/html" id="kaoShengZuoDa">
-        {{each KSZD}}
-        {{if $value['大题名称'] == '单选题' }}
-        <h3>{{$value['大题名称']}}</h3>
-        {{each $value['题目']}}
-        <section>
-            <h5>{{$value['题目内容']['题干']}}</h5>
-            <p></p>
-            <img src="pdf/D21260729881.pdf" style="width: 300px; height: auto">
-            <p>
-                <!--<img src="./images/pic_article.png" alt="">-->
-                <!--<img src="./images/pic_article.png" alt="">-->
-            </p>
-        </section>
-        {{/each}}
-        {{else if $value['大题名称'] == '判断题'}}
-        2
-        {{else if $value['大题名称'] == '填空题'}}
-        3
-        {{else if $value['大题名称'] == '计算题'}}
-        4
-        {{/if}}
-        {{/each}}
-    </script>
-    <script type="text/html" id="ZSDG">
-        <li><a href="#">主体</a></li>
-        {{each ZSDG}}
-        <li><a href="#">{{$value['知识点名称']}}</a></li>
-        {{/each}}
-    </script>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title class="title">成绩</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="../css/weui.min.css"/>
+    <link rel="stylesheet" href="../css/chengji.css"/>
+    <link rel="stylesheet" href="../css/font-awesome.min.css"/>
 </head>
-<body>
-<div data-role="page" id="chengjishow">
-    <div class="weui_dialog_confirm" role="main" id="DIVDialog" style="display: none;">
+<body ontouchstart>
+<!--内容容器-->
+<div class="container" id="container">
 
-    </div>
-    <div class="weui_dialog_confirm" role="main" id="DIVKaoShengZuoDa" style="display: none;">
-
-    </div>
-    <div class=" weui_cells_access" id="KSCJListShowId">
-
+</div>
+<!--BEGIN dialog2-->
+<div class="weui_dialog_alert" id="dialog2" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title msgTitle"></strong></div>
+        <div class="weui_dialog_bd msgBox"></div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+        </div>
     </div>
 </div>
-<div data-role="page" id="leiDaTu">
-    <div data-role="header" data-theme="a" data-nobackbtn="true" data-position="fixed" data-tap-toggle="false"><a
-            href="javascript:" onclick="fanHuiOnClick()">返回</a></div>
-    <div role="main" class="ui-content">
-        <div id="zSDFX" style="width:350px;height:600px;margin:8% auto; ">
+<!--END dialog2-->
+<!--模板 学生登录-->
+<script id="tplLogin" type="text/html">
+    <div class="weui_cells weui_cells_form tplLogin">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">学校</label></div>
+            <div id="showActionSheet" class="weui_cell_bd weui_cell_primary xueXiaoWrap clA8" data-id="">
+                选择学校
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">学号</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" name="yourNum" placeholder="您的学号"/>
+            </div>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">姓名</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" name="yourName" placeholder="您的姓名"/>
+            </div>
         </div>
     </div>
-    <div data-role="footer" data-theme="a" style="max-height: 25%;overflow-y:auto" data-nobackbtn="true"
-         data-position="fixed" data-tap-toggle="false">
-        <div data-role="navbar">
-            <ul id="DIVZSDG">
+    <div class="tplLogin">
+        <div class="weui_mask_transition" id="mask"></div>
+        <div class="weui_actionsheet" id="weui_actionsheet">
+            <div class="weui_actionsheet_menu">
+                {{each xueXiao}}
+                <div class="weui_actionsheet_cell optXueXiao">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    <span>{{$value['学校名称']}}</span>
+                </div>
+                {{/each}}
+            </div>
+            <div class="weui_actionsheet_action">
+                <div class="weui_actionsheet_cell dplf">
+                    <a href="javascript:;" id="actionsheet_confirm" class="weui_btn_dialog primary wp50 pullLeft bdr">确定</a>
+                    <a href="javascript:;" id="actionsheet_cancel" class="weui_btn_dialog default wp50 pullRight">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui_btn_area">
+        <a class="weui_btn weui_btn_primary" href="javascript:" id="nextStep1">下一步</a>
+    </div>
+</script>
+<!--模板 考试组-->
+<script id="tplKaoShiZu" type="text/html">
+    {{each kszList}}
+        <div class="card cardKsz">
+            <p class="cell">
+                <span class="cell-title">考试名称：</span>
+                <span class="cell-content">{{$value['考试组名称']}}</span>
+            </p>
+            <p class="cell">
+                <span class="cell-title">成绩：</span>
+                {{if $value.score == 'on'}}
+                    {{if $value['实际评分'] >= 0}}
+                        <span class="cell-content">{{$value['实际评分']}}</span>
+                    {{/if}}
+                    {{if $value['实际评分'] == null}}
+                        <span class="cell-content">缺考</span>
+                    {{/if}}
+                {{/if}}
+            </p>
+            <div class="button_sp_area center">
+                <a href="javascript:;" id="zhiShiDianFenXi" class="weui_btn weui_btn_mini weui_btn_default"
+                   data-id="{{$value['考试组ID']}}">知识点分析</a>
+                {{if $value.zuoda == 'on'}}
+                    <a href="javascript:;" id="zuoDaChongXian" class="weui_btn weui_btn_mini weui_btn_default ml20"
+                       data-id="{{$value['考试组ID']}}">作答重现</a>
+                {{/if}}
+            </div>
+        </div>
+    {{/each}}
+</script>
+<!--模板 错误信息-->
+<script id="tplErrMsg" type="text/html">
+    <div class="weui_msg">
+        <div class="weui_icon_area"><i class="weui_icon_msg weui_icon_warn"></i></div>
+        <div class="weui_text_area">
+            <h2 class="weui_msg_title">操作失败</h2>
+            <p class="weui_msg_desc">没有你的信息，请老师导入你的信息！</p>
+        </div>
+    </div>
+</script>
+<!--模板 作答重现-->
+<script id="tplZuoDaChongXian" type="text/html">
+    <h2 class="text-center">
+        <span>{{sj_name}}</span>
+    </h2>
+    <div id="answerReappearShiJuan">
+        {{each sj_tm as dati i}}
+        <div>
+            <h4>
+                <span>{{cnNumArr[i]}}、</span>
+                <span>{{dati['大题名称']}}</span>
+            </h4>
+            <ul class="list-unstyled">
+                {{each dati['题目'] as xtm j}}
+                <li class="ptb5">
+                    {{if xtm['考生作答'] != null}}
+                        <h4 class="ar-tiGan">
+                            <span>{{(j + 1) + '、' + xtm['题目内容']['题干']}}</span>
+                            (本小题  <b>{{xtm['分值']}}</b>  分)
+                            (最后得分：<b class="clRed">{{xtm['考生作答']['得分']}}</b> 分)
+                        </h4>
+                        <!-- 单选题 -->
+                        {{if xtm['题型ID'] == 1}}
+                        <div class="ar-tzs">
+                            {{each xtm['题目内容']['选项'] as tznr k}}
+                            <div class="ar-tz">
+                                {{if xtm['考生作答']['考生答案'] == k}}
+                                <p class="positionAb">
+                                    <input type="radio" name="{{'radio' + xtm['题目ID']}}" value="{{k}}"
+                                           checked="true" disabled/> {{'(' + letterArr[k] + ')'}}
+                                </p>
+                                <p class="pl40 clRed">
+                                    {{tznr}}
+                                </p>
+                                {{/if}}
+                                {{if xtm['考生作答']['考生答案'] != k}}
+                                <p class="positionAb">
+                                    <input type="radio" name="{{'radio' + xtm['题目ID']}}" value="{{k}}"
+                                           disabled/> {{'(' + letterArr[k] + ')'}}
+                                </p>
+                                <p class="pl40">
+                                    {{tznr}}
+                                </p>
+                                {{/if}}
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{/if}}
+                        <!-- 多选题 -->
+                        {{if xtm['题型ID'] == 2}}
+                        <div class="ar-tzs">
+                            {{each xtm['题目内容']['选项'] as tznr k}}
+                            <div class="ar-tz">
+                                {{if xtm['考生作答']['考生答案'].indexOf(k) > -1}}
+                                <p class="positionAb">
+                                    <input type="checkbox" name="{{'checkbox' + xtm['题目ID']}}" value="{{k}}"
+                                           checked="true" disabled/> {{'(' + letterArr[k] + ')'}}
+                                </p>
+                                <p class="pl40 clRed">
+                                    {{tznr}}
+                                </p>
+                                {{/if}}
+                                {{if xtm['考生作答']['考生答案'].indexOf(k) == -1}}
+                                <p class="positionAb">
+                                    <input type="checkbox" name="{{'checkbox' + xtm['题目ID']}}" value="{{k}}"
+                                           disabled/> {{'(' + letterArr[k] + ')'}}
+                                </p>
+                                <p class="pl40">
+                                    {{tznr}}
+                                </p>
+                                {{/if}}
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{/if}}
+                        {{if xtm['题型ID'] == 3}}
+                        <div class="ar-tzs">
+                            {{if xtm['考生作答']['考生答案'] == 1}}
+                            <span class="clRed">
+                            {{/if}}
+                            {{if xtm['考生作答']['考生答案'] != 1}}
+                            <span>
+                            {{/if}}
+                                <input type="radio" name="{{'pdRadio' + xtm['题目ID']}}" value="1" checked="{{xtm['考生作答']['考生答案'] == 1}}"/>  对
+                            </span>
+                            {{if xtm['考生作答']['考生答案'] == 0}}
+                            <span class="clRed">
+                            {{/if}}
+                            {{if xtm['考生作答']['考生答案'] != 0}}
+                            <span>
+                            {{/if}}
+                                <input type="radio" name="{{'pdRadio' + xtm['题目ID']}}" value="0" checked="{{xtm['考生作答']['考生答案'] == 0}}" style="margin: 0 0 0 20px"/>  错
+                            </span>
+                        </div>
+                        {{/if}}
+                        {{if xtm['题型ID'] >= 5}}
+                        <div class="ar-tzs itemHasImg">
+                            {{xtm['考生作答']['考生答案']}}
+                        </div>
+                        {{/if}}
+                        <h4 class="itemHasImg">标准答案:{{xtm['题目内容']['答案']}}</h4>
+                    {{/if}}
+                    {{if xtm['考生作答'] == null}}
+                        <h4 class="ar-tiGan">
+                            <span>{{(j + 1) + '、' + xtm['题目内容']['题干']}}</span>
+                            (本小题  <b>{{xtm['分值']}}</b>  分)
+                            (最后得分：<b class="clRed">未作答</b> 分)
+                        </h4>
+                        <!-- 单选题 -->
+                        {{if xtm['题型ID'] == 1}}
+                        <div class="ar-tzs">
+                            {{each xtm['题目内容']['选项'] as tznr k}}
+                            <div class="ar-tz">
+                                <p class="positionAb">
+                                    <input type="radio" name="{{'radio' + xtm['题目ID']}}" value="{{k}}"
+                                           disabled/> {{'(' + letterArr[k] + ')'}}
+                                </p>
+                                <p class="pl40">
+                                    {{tznr}}
+                                </p>
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{/if}}
+                        <!-- 多选题 -->
+                        {{if xtm['题型ID'] == 2}}
+                        <div class="ar-tzs">
+                            {{each xtm['题目内容']['选项'] as tznr k}}
+                            <div class="ar-tz">
+                                <p class="positionAb">
+                                    <input type="checkbox" name="{{'checkbox' + xtm['题目ID']}}" value="{{k}}"
+                                           disabled/> {{'(' + letterArr[k] + ')'}}
+                                </p>
+                                <p class="pl40">
+                                    {{tznr}}
+                                </p>
+                            </div>
+                            {{/each}}
+                        </div>
+                        {{/if}}
+                        {{if xtm['题型ID'] == 3}}
+                        <div class="ar-tzs">
+                            <span>
+                                <input type="radio" name="{{'pdRadio' + xtm['题目ID']}}" value="1"/>  对
+                            </span>
+                            <span>
+                                <input type="radio" name="{{'pdRadio' + xtm['题目ID']}}" value="0" style="margin: 0 0 0 20px"/>  错
+                            </span>
+                        </div>
+                        {{/if}}
+                        {{if xtm['题型ID'] >= 5}}
+                        <div class="ar-tzs itemHasImg">
+                            <span class="clRed">未作答</span>
+                        </div>
+                        {{/if}}
+                        <h4 class="itemHasImg">标准答案:{{xtm['题目内容']['答案']}}</h4>
+                    {{/if}}
+                </li>
+                {{/each}}
             </ul>
         </div>
+        {{/each}}
     </div>
-</div>
+    <div class="fixSty">
+        <a class="weui_btn weui_btn_primary backToKszList" href="javascript:">返回</a>
+    </div>
+</script>
+<!--模板 知识点分析-->
+<script id="tplZsd" type="text/html">
+    <h4 class="center zsdFenXi">知识点分析</h4>
+    <div class="graph mt20">
+        <div id="radarBox" style="width: 100%;height: 100%;"></div>
+    </div>
+    <div id="zsdList" class="mt20">
+        <ul>
+            {{each zsd}}
+                <li class="bdb"><span>{{$value.zm}}</span>: <span>{{$value.zsdMc}}</span></li>
+            {{/each}}
+        </ul>
+    </div>
+    <div class="fixSty">
+        <a class="weui_btn weui_btn_primary backToKszList" href="javascript:">返回</a>
+    </div>
+</script>
+<!--用到的ji文件-->
+<script src="../js/jquery-3.1.0.min.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/echarts.min.js"></script>
+<script src="../js/lazy.min.js"></script>
+<script src="../js/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+<script src="../js/chengji.js"></script>
 </body>
 </html>
-<script>
-    //  var localUrl = 'http://www.zhifz.com';
-    var localUrl = 'http://127.0.0.1:3000';
-    var kaoShengChengJiUrl = '/kaosheng_chengji'; //查询考生成绩
-    var xueXiaoUrl = '/xuexiao'; //机构的增删改查
-    var kaoShengZuoDaUrl = '/kaosheng_zuoda'; //考生作答
-    var kaoShengZhiShiDianDeFenLvUrl = '/kaosheng_zhishidian_defenlv'; //查询考生知识点得分率
-    var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
-    var kaoShiZuZhiShiDianUrl = '/kaoshizu_zhishidian';//查询考试组知识点
-    var zhiShiDianUrl = '/zhishidian';//学校科目知识点
-    var keMuConfUrl = '/kemu_conf'; //科目设置
-    var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
-    var kaoShiZuUrl = '/kaoshizu'; //考试组
-    var KSCJArr;//获取的所有考试成绩
-    var KS;//考试的基本信息
-
-
-    /**
-     * 处理dialog上的信息
-     */
-    function KSCJOnClick(KSID) {
-        KS = $.grep(KSCJArr, function (kSCJ, i) {
-            return kSCJ['考试ID'] == KSID;
-        });
-        var test = {
-            KS: KS
-        };
-        var html = template('dialogId', test);
-        document.getElementById('DIVDialog').innerHTML = html;
-        $("#DIVDialog").show();
-    }
-
-    /**
-     * 处理fanHuiOnClick()雷达图返回列表的事件
-     */
-    function fanHuiOnClick() {
-        self.location = ('#chengjishow');
-    }
-    /**
-     * 标记知识点
-     *
-     *  此功能未实现
-     */
-    function screenZSDDFL(jd, KSZSDDEL) {
-        console.log(jd);
-        $.each(jd, function (i, item) {
-            if (item['子节点'] && item['子节点'].length > 0) {
-                screenZSDDFL(item['子节点']);
-//                console.log(item['知识点名称']);
-
-            } else {
-                console.log(item['知识点名称']);
-            }
-        });
-    }
-    /**
-     * 获取X科目的知识大纲
-     */
-    function getZhiShiDian(KSZSDDEL) {
-        $.ajax({
-            method: "GET",
-            url: localUrl + keMuConfUrl,
-            data: {
-                '学校ID': $.cookie("学校ID"),
-                '科目ID': KS[0]['科目ID']
-            },
-            success: function (data) {
-                data = $.parseJSON(data).data;
-                $.ajax({
-                    method: "GET",
-                    url: localUrl + zhiShiDaGangUrl,
-                    data: {
-                        '知识大纲ID': data['默认大纲']['知识大纲ID']
-                    },
-                    success: function (data) {
-                        var dg = $.parseJSON(data).data[0]['节点'];
-                        screenZSDDFL(dg, KSZSDDEL);
-                    },
-                    error: function (error) {
-                        alert(error);
-                    }
-                });
-
-            },
-            error: function (error) {
-                alert(error);
-            }
-        });
-    }
-    /**
-     * 处理dialog上的事件
-     * 0 取消
-     * 1 作答重现
-     * 2 知识点分析
-     * KXHID 课序号ID
-     * KSZID 考试组ID
-     */
-    function dialogOnClick(i, KXHID, KSZID) {
-        if (i == 0) {
-
-        } else if (i == 1) {//作答重现
-            $.ajax({
-                method: "GET",
-                url: localUrl + kaoShengZuoDaUrl,
-                data: {
-                    'UID': $.cookie("UID"),
-                    '考试组ID': KSZID
-                },
-                success: function (KSZD) {
-                    var myPDF = new PDFObject({url: "./pdf/D21260729881.pdf"}).embed();
-                    $('#KSCJListShowId').hide();
-                    $('#DIVKaoShengZuoDa').show();
-                },
-                error: function (error) {
-                    alert(error);
-                }
-            });
-        } else if (i == 2) {
-
-            /**
-             *
-             * 知识点分析
-             *
-             * 此功能未实现
-             */
-            $.ajax({
-                method: "GET",
-                url: localUrl + kaoShengZhiShiDianDeFenLvUrl,
-                data: {
-                    '考试组ID': KSZID,
-                    '课序号ID': KXHID,
-                    'UID': $.cookie('UID')
-                },
-                success: function (data) {
-                    data = $.parseJSON(data).data;
-                    console.log(data);
-/*                    getZhiShiDian(data);
-                    var maxArr = [{}];
-                    var shiJiArr = [{}];
-                    $.each(data, function (i, dt) {
-                        maxArr.push({name: dt['知识点名称'], max: dt['总分值']});
-                        shiJiArr.push(dt['总得分']);
-                    });
-                    console.log(maxArr);
-                    console.log(shiJiArr);
-                    var zhiShiDG = {
-                        ZSDG: data
-                    };
-                    var html = template('ZSDG', zhiShiDG);
-                    document.getElementById('DIVZSDG').innerHTML = html;
-                    maxArr.shift();
-                    shiJiArr.shift();
-                    zhiShiDianFenXi(maxArr, shiJiArr);
-                    self.location = ('#leiDaTu');*/
-                },
-                error: function (error) {
-                    alert(error);
-                }
-            });
-        }
-        $("#DIVDialog").hide();
-    }
-    /**
-     *  知识点分析 雷达图显示
-     *
-     *      未实现该功能
-     */
-    /*
-     function zhiShiDianFenXi(maxArr, shiJiArr) {
-     // 基于准备好的dom，初始化echarts实例
-     var myChart = echarts.init(document.getElementById('zSDFX'));
-
-     // 指定图表的配置项和数据
-     var option = {
-     //        title: {
-     //            text: '知识点分析'
-     //        },
-     tooltip: {},
-     legend: {
-     data: ['全体', '个人']
-     },
-     radar: {
-     indicator: maxArr
-     //                        [
-     //                    {name: '销售', max: 6500},
-     //                    {name: '管理', max: 16000},
-     //                    {name: '信息技术', max: 30000},
-     //                    {name: '客服', max: 38000},
-     //                    {name: '研发', max: 52000},
-     //                    {name: '市场', max: 25000}
-     //                ]
-     },
-     series: [{
-     name: '全体 vs 个人',
-     type: 'radar',
-     // areaStyle: {normal: {}},
-     data: [
-     {
-     //                        value: [4300, 10000, 28000, 35000, 50000, 19000],
-     value: shiJiArr,
-     name: '全体'
-     },
-     {
-     value: shiJiArr,
-     //                        value: [5000, 14000, 28000, 31000, 42000, 21000],
-     name: '个人'
-     }
-     ]
-     }]
-     };
-
-
-     // 使用刚指定的配置项和数据显示图表。
-     myChart.setOption(option);
-     window.onresize = myChart.resize;
-     }
-
-     */
-
-
-    $(document).ready(function () {
-        /**
-         * 获取考生考试信息
-         */
-        $.ajax({
-            method: "GET",
-            url: localUrl + kaoShengChengJiUrl,
-            data: {'UID': $.cookie("UID")},
-            async: false,
-            success: function (data) {
-                KSCJArr = $.parseJSON(data).data;
-                /**
-                 * 分为两部分进行排序
-                 * 1。实际评分不为null
-                 * 2.实际评分为null
-                 * 排序例子：
-                 *      90分
-                 *      80分
-                 *      20分
-                 *      缺考
-                 */
-                var heaKSCJArr = $.grep(KSCJArr, function (kSCJ, i) {
-                    return kSCJ['实际评分'] != null;
-                });
-                var fooKSCJArr = $.grep(KSCJArr, function (kSCJ, i) {
-                    return kSCJ['实际评分'] == null;
-                });
-                heaKSCJArr = heaKSCJArr.sort(function (a, b) {
-                            if (a['实际评分'] < b['实际评分']) return 1;
-                            if (a['实际评分'] > b['实际评分']) return -1;
-                            return 0;
-                        }
-                );
-                fooKSCJArr = fooKSCJArr.sort(function (a, b) {
-                            if (a['考试ID'] < b['考试ID']) return 1;
-                            if (a['考试ID'] > b['考试ID']) return -1;
-                            return 0;
-                        }
-                );
-                KSCJArr = heaKSCJArr.concat(fooKSCJArr);
-                console.log(KSCJArr);
-                var test = {
-                    KSCJArr: KSCJArr
-                };
-                var html = template('KSCJList', test);
-                document.getElementById('KSCJListShowId').innerHTML = html;
-            },
-            error: function (error) {
-                alert(error);
-            }
-        });
-    });
-
-</script>
-

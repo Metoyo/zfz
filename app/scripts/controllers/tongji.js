@@ -749,11 +749,12 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
             }
             Lazy(exportStu).each(function(ks){
               var ksObj = {};
-              ksObj['序号'] = ks['序号'];
+              ksObj['序号'] = ks['序号'] + 1;
               ksObj['学号'] = ks['学号'];
               ksObj['姓名'] = ks['姓名'];
               ksObj['成绩'] = ks['实际评分'];
               ksObj['课序号'] = ks['课序号名称'];
+              ksObj['班级'] = ks['班级名称'];
               ksArr.push(ksObj);
             });
             ksData[sheetName] = ksArr;
@@ -761,8 +762,8 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
           };
 
           /**
-          * 作答重现
-          */
+           * 作答重现
+           */
           $scope.zuoDaReappear = function(ks){
             var obj = {
               method: 'GET',
@@ -801,8 +802,8 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
           };
 
           /**
-          * 关闭作答重新内容
-          */
+           * 关闭作答重新内容
+           */
           $scope.closeZuoDaReappear = function(){
             $scope.showKaoShengList = true;
             $scope.showTiMuDetailWrap = true;

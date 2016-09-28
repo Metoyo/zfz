@@ -1,0 +1,91 @@
+.container{
+    padding: 10px;
+}
+.weui_cell:before{
+    left: 0;
+}
+.clA8{
+    color: #a8a8a8;
+}
+.clRed{
+    color: #ff0000;
+}
+.clGren{
+    color: green;
+}
+.pullLeft{
+    float: left;
+}
+.pullRight{
+    float: right;
+}
+.wp50{
+    width: 50%;
+}
+.dplf{
+    display: flex;
+}
+.bdr{
+    border-right: 1px solid #cfcfcf;
+}
+.ml50{
+    margin-left: 50px;
+}
+.tplLogin .weui_label{
+    width: 50px;
+}
+.tplLogin .weui_actionsheet_menu{
+    height: 192px;
+    overflow: auto;
+}
+.weui_actionsheet_cell .fa-check{
+    display: none;
+}
+.tabOn .fa-check{
+    display: inline-block;
+    color: #09BB07;
+}
+.center{
+    text-align: center;
+}
+.card,
+.cardFix,
+.cardChangCi{
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #cfcfcf;
+    border-radius: 3px;
+}
+.card:nth-child(odd){
+    background-color: #d9edf7;
+}
+.card:nth-child(even){
+    background-color: #dff0d8;
+}
+.cardFix{
+    background-color: #d9edf7;
+}
+.cardChangCi{
+    border: 1px solid #f3f3f3;
+    background-color: #f3f3f3;
+    border-radius: 6px;
+}
+.cardChangCiOn{
+    border: 1px solid #478246;
+    background-color: #dff0d8;
+}
+.weui_btn.weui_btn_mini{
+    padding: 5px 1.75em;
+    font-size: 16px;
+}
+.weui_btn+.weui_btn{
+    margin-top: 10px;
+}
+.fixSty{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: #E8E8E8;
+}

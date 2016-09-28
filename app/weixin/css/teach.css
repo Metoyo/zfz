@@ -102,11 +102,19 @@ body {
     background-color: #e6e6e6;
     padding: 3px 15px;
     border-radius: 3px;
+    border: 1px solid #e6e6e6;
+}
+.iptSty .fa-check{
+    display: none;
 }
 .iptStyOn{
-    padding-left: 25px;
-    background: #fff url('../images/checked.png') no-repeat 5px center;
-    border: 1px solid #e64340;
+    padding-left: 10px;
+    background-color: #fff;
+    border: 1px solid #09BB07;
+}
+.iptStyOn .fa-check{
+    display: inline-block;
+    color: #09BB07;
 }
 .square1{
     width: 49%;

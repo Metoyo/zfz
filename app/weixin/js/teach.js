@@ -4,13 +4,14 @@
 $(function(){
   //用到变量
   var sltShowBox = $('#htmlShowBox');
-  var container = $('#container');
+  //var container = $('#container');
   var ceYanUrl = '/ceyan'; //测验的url
   var loginUrl = '/login'; //登录的URL
   var ceYanChengJiUrl = '/ceyan_chengji'; //测验成绩
   var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
   var cyZsdDfl = '/ceyan_zhishidian_defenlv'; //测验得分率
-  var keyValueUrl = '/key_value';
+  var keyValueUrl = '/key_value'; //键值保存
+  var qrcodeUrl = '/make_qrcode'; //生成二维码地址的url
   var testInfo = { //选中测验
     id: '',
     name: '',
@@ -22,8 +23,9 @@ $(function(){
 
   //var localUrl = 'http://192.168.1.156';
   //var localUrl = 'https://www.zhifz.com';
-  var localUrl = 'http://127.0.0.1:3000';
-  var testUrl = localUrl + '/weixin/teacher/paper.html?';
+  //var localUrl = 'http://127.0.0.1:3000';
+  var localUrl = 'http://192.168.1.156:3000';
+  var testUrl = localUrl + '/pub_test/';
   var pubPars = {
     '学校ID': 1033,
     '科目ID': 1001,
@@ -45,25 +47,6 @@ $(function(){
     var html = template(tplId, data);
     $('#htmlShowBox').html(html);
   };
-
-  //radio选择样式
-  container.on('click', '.radioSty', function(){
-    $(this).addClass('iptStyOn').siblings('.iptStyOn').removeClass('iptStyOn');
-    $(this).siblings('.radioSty').find('input').prop('checked', false);
-    $(this).find('input').prop('checked', true);
-  });
-
-  //checkbox选择样式
-  container.on('click', '.checkboxSty', function(){
-    $(this).toggleClass('iptStyOn');
-    var chkIn = $(this).hasClass('iptStyOn');
-    if(chkIn){
-      $(this).find('input').prop('checked', true);
-    }
-    else{
-      $(this).find('input').prop('checked', false);
-    }
-  });
 
   //初始化函数
   var initFun = function(dt){
@@ -127,11 +110,6 @@ $(function(){
 
   //初始化函数执行
   loginFun();
-
-  //tabbar的激活函数
-  container.on('click', '.weui_tabbar_item', function () {
-    $(this).addClass('weui_bar_item_on').siblings('.weui_bar_item_on').removeClass('weui_bar_item_on');
-  });
 
   //显示考试详情函数
   var showTestResult = function(id){
@@ -259,6 +237,26 @@ $(function(){
     });
   };
 
+  //事件处理
+  $('#container').on('click', '.weui_tabbar_item', function () { //tabbar的激活函数
+    $(this).addClass('weui_bar_item_on').siblings('.weui_bar_item_on').removeClass('weui_bar_item_on');
+  })
+    .on('click', '.radioSty', function(){ //radio选择样式
+      $(this).addClass('iptStyOn').siblings('.iptStyOn').removeClass('iptStyOn');
+      $(this).siblings('.radioSty').find('input').prop('checked', false);
+      $(this).find('input').prop('checked', true);
+    })
+    .on('click', '.checkboxSty', function(){ //checkbox选择样式
+      $(this).toggleClass('iptStyOn');
+      var chkIn = $(this).hasClass('iptStyOn');
+      if(chkIn){
+        $(this).find('input').prop('checked', true);
+      }
+      else{
+        $(this).find('input').prop('checked', false);
+      }
+    });
+
   /**
    * <------ 发起测试模块 ------>
    */
@@ -344,6 +342,55 @@ $(function(){
       error: function (error) {
         alert(error);
       }
+    });
+  });
+
+  //自己测验
+  sltShowBox.on('click', '.selfTest', function(){
+    $('#teacherInfo2').show().on('click', '#submitTechInfo2', function () {
+      var school = $('input[name="yourSchool"]').val();
+      var name = $('input[name="yourName"]').val();
+      var phone = $('input[name="yourPhone"]').val();
+      var email = $('input[name="yourEmail"]').val();
+      var mis = [];
+      if(!school){
+        mis.push('学校名称');
+      }
+      if(!name){
+        mis.push('您的姓名');
+      }
+      if(!phone){
+        mis.push('联系方式');
+      }
+      if(mis.length > 0){
+        alert('缺少：' + mis.join('，'));
+        return ;
+      }
+      var obj = {
+        '学校名称': school,
+        '姓名': name,
+        '联系方式': phone,
+        '电子信箱': email
+      };
+      $.ajax({
+        method: 'PUT',
+        url: keyValueUrl,
+        data: {
+          '键值内容': JSON.stringify(obj)
+        },
+        success: function (data) {
+          data = dataMake(data);
+          if(data.result){
+            $('#teacherInfo2').off('click').hide();
+          }
+          else{
+            alert(data.error);
+          }
+        },
+        error: function (error) {
+          alert(error);
+        }
+      });
     });
   });
 
@@ -436,6 +483,7 @@ $(function(){
       var school = $('input[name="yourSchool"]').val();
       var name = $('input[name="yourName"]').val();
       var phone = $('input[name="yourPhone"]').val();
+      var email = $('input[name="yourEmail"]').val();
       var mis = [];
       if(!school){
         mis.push('学校名称');
@@ -453,7 +501,8 @@ $(function(){
       var obj = {
         '学校名称': school,
         '姓名': name,
-        '联系方式': phone
+        '联系方式': phone,
+        '电子信箱': email
       };
       $.ajax({
         method: 'PUT',
@@ -479,13 +528,32 @@ $(function(){
 
   //点击测试标题生成二维码
   sltShowBox.on('click', '.testName', function(){
-    var textStr = testUrl + testInfo.id;
-    makeErWeiMa(textStr);
-  });
+    $.ajax({
+      method: 'GET',
+      url: qrcodeUrl,
+      data: {
+        '测验ID': testInfo.id
+      },
+      success: function (data) {
+        data = dataMake(data);
+        if(data.result && data.data){
+          var textStr = testUrl + data.data['测验ID'];
+          makeErWeiMa(textStr);
+        }
+        else{
+          alert(data.error);
+        }
+      },
+      error: function (error) {
+        alert(error);
+      }
+    });
+  })
 
   //关闭按钮
   sltShowBox.on('click', '.closeBtn', function(){
     $('#teacherInfo1').off('click').hide();
+    $('#teacherInfo2').off('click').hide();
   });
 
   /**
@@ -493,8 +561,9 @@ $(function(){
    */
   //宣传视频按钮
   $('#tabBtnVideo').on('click', function(){
-    $('.title').text('宣传视频');
-    renderFun({}, 'tplVideos');
+    window.location.href = 'http://mp.weixin.qq.com/s?__biz=MzIzNDUyMDA5Nw==&mid=100000003&idx=1&sn=5c43809e2caf508f7064526ab48663e2&scene=18#wechat_redirect';
+    //$('.title').text('宣传视频');
+    //renderFun({}, 'tplVideos');
   });
 
   /**

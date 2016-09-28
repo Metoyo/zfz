@@ -1,382 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+<head lang="en">
     <meta charset="UTF-8">
-    <title>报名</title>
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-    <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css"/>
-    <link rel="stylesheet" href="css/weui.css"/>
-    <link rel="stylesheet" href="css/weui.min.css"/>
-    <link rel="stylesheet" href="css/example.css"/>
-    <script src="js/jquery-1.8.0.js"></script>
-    <script src="js/jquery.mobile-1.4.5.js"></script>
-    <script src="js/template.js"></script>
-    <script src="js/jquery.cookie.js"></script>
-    <!--报名列表-->
-    <script id="baoMingArr" type="text/html">
-        {{each bmArr}}
-        <a class="weui_cell" name="{{$value['考试组名称']}}" id="{{$value['考试组ID']}}"
-           onclick="kSBMOnClick(this.id,this.name)">
-            <div class="weui_cell_bd weui_cell_primary">
-                <h5>考试名称:</h5>
-                <p><strong>{{$value['考试组名称']}}</strong></p>
-                <!--<p>考试须知:{{$value['考试须知']}} </p>-->
-            </div>
-            <div class="weui_cell_ft">
-                <img src="image/{{$value['状态']}}.png" class="ui-li-aside">
-            </div>
-        </a>
-        {{/each}}
-    </script>
-    <!--没有报名提示-->
-    <script id="bmNullMsg" type="text/html">
-        <h3 align="center">{{msg}}</h3>
-    </script>
-    <!--通过场次选择模板-->
-    <script id="kSBMList" type="text/html">
-        {{each kaoShi}}
-        <div class="weui_actionsheet_cell" id="{{$value['考试ID']}}"
-             onclick="kaoShiChangCiOnClick(this.id)">
-            {{$value['考试名称']}}
-        </div>
-        {{/each}}
-        <div class="weui_actionsheet_action">
-            <div class="weui_actionsheet_cell" onclick="kaoShiChangCiOnClick(this.id)" id="cancel">取消</div>
-        </div>
-    </script>
-    <!--通过时间选择模板-->
-    <script id="KSBMListTime" type="text/html">
-        {{each kaoShi}}
-        <div class="weui_actionsheet_cell" id="{{$value['考试名称']}}" onclick="kaoShiTimeOnClick(this.id)">
-            {{$value['开始时间']}}
-        </div>
-        {{/each}}
-        <div class="weui_actionsheet_action">
-            <div class="weui_actionsheet_cell" onclick="kaoShiTimeOnClick(this.id)" id="cancel">取消</div>
-        </div>
-    </script>
+    <title class="title">报名</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <link rel="stylesheet" href="../css/weui.min.css"/>
+    <link rel="stylesheet" href="../css/baoming.css"/>
+    <link rel="stylesheet" href="../css/font-awesome.min.css"/>
 </head>
-<body>
+<body ontouchstart>
+<!--内容容器-->
+<div class="container" id="container">
 
-<div data-role="page" class="home" id="baoMing_one">
-    <div class=" weui_cells_access" id="kaoShiShowId">
-
+</div>
+<!--BEGIN dialog2-->
+<div class="weui_dialog_alert" id="dialog2" style="display: none;">
+    <div class="weui_mask"></div>
+    <div class="weui_dialog">
+        <div class="weui_dialog_hd"><strong class="weui_dialog_title msgTitle"></strong></div>
+        <div class="weui_dialog_bd msgBox"></div>
+        <div class="weui_dialog_ft">
+            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+        </div>
     </div>
 </div>
-<div data-role="page" class="home" id="baoMing_two">
-    <div id="DIVListCC" style="display: none;">
-        <div class="weui_mask_transition weui_fade_toggle" style="display: block;"></div>
-        <div class="weui_actionsheet weui_actionsheet_toggle" id="DIVShowCC">
-
+<!--END dialog2-->
+<!--模板 学生登录-->
+<script id="tplLogin" type="text/html">
+    <div class="weui_cells weui_cells_form tplLogin">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">学校</label></div>
+            <div id="showActionSheet" class="weui_cell_bd weui_cell_primary xueXiaoWrap clA8" data-id="">
+                选择学校
+            </div>
         </div>
-    </div>
-    <div id="DIVListSJ" style="display: none;">
-        <div class="weui_mask_transition weui_fade_toggle" style="display: block;"></div>
-        <div class="weui_actionsheet weui_actionsheet_toggle" id="DIVShowSJ">
-
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">学号</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" name="yourNum" placeholder="您的学号"/>
+            </div>
         </div>
-    </div>
-    <div class="toast">
-        <div id="toast" style="display: none;">
-            <div class="weui_mask_transparent"></div>
-            <div class="weui_toast">
-                <i class="weui_icon_toast" id="toast_I"></i>
-                <p class="weui_toast_content" id="toast_P"></p>
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">姓名</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" name="yourName" placeholder="您的姓名"/>
             </div>
         </div>
     </div>
-    <div data-role="header" data-theme="a" data-nobackbtn="true" data-position="fixed" data-tap-toggle="false"
-         onclick="headerOnClick()"><a
-            href="javascript:" onclick="fanHuiOnClick()">返回</a><h4 align="center" id="titleKaoShi"></h4></div>
-    <div role="main" class="ui-content">
-        <div class="weui_cells weui_cells_access" id="kaoShiID" onclick="kaoShiOnClick(0)">
-            <a class="weui_cell" href="javascript:;">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p>按场次选择</p>
+    <div class="tplLogin">
+        <div class="weui_mask_transition" id="mask"></div>
+        <div class="weui_actionsheet" id="weui_actionsheet">
+            <div class="weui_actionsheet_menu">
+                {{each xueXiao}}
+                    <div class="weui_actionsheet_cell optXueXiao">
+                        <i class="fa fa-check" aria-hidden="true"></i>
+                        <span>{{$value['学校名称']}}</span>
+                    </div>
+                {{/each}}
+            </div>
+            <div class="weui_actionsheet_action">
+                <div class="weui_actionsheet_cell dplf">
+                    <a href="javascript:;" id="actionsheet_confirm" class="weui_btn_dialog primary wp50 pullLeft bdr">确定</a>
+                    <a href="javascript:;" id="actionsheet_cancel" class="weui_btn_dialog default wp50 pullRight">取消</a>
                 </div>
-                <div class="weui_cell_ft" id="kaoShiMsg">
-
-                </div>
-            </a>
-        </div>
-        <div class="weui_cells weui_cells_access" id="kaoShiTimeID" onclick="kaoShiOnClick(1)">
-            <a class="weui_cell" href="javascript:;">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p>按时间选择</p>
-                </div>
-                <div class="weui_cell_ft" id="kaoShiTimeMsg">
-
-                </div>
-            </a>
+            </div>
         </div>
     </div>
-    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-    <div class="ui-field-contail">
-        <p id="ksID" style="display: none"></p>
-        <p id="kdID" style="display: none"></p>
-        <button id="submit" onclick="submitOnClick()" class=" ui-btn ui-shadow ui-corner-all">点击报名</button>
+    <div class="weui_btn_area">
+        <a class="weui_btn weui_btn_primary" href="javascript:" id="nextStep1">下一步</a>
     </div>
-    <br/><br/>
-</div>
+</script>
+<!--模板 可以报名的考试组-->
+<script id="tplKaoShiZu" type="text/html">
+    <h4 class="center">可以报名的考试组</h4>
+    {{each kszArr}}
+        <div class="cardFix cardKaoShiZu" data-id="{{$value['考试组ID']}}">
+            <p>
+                <span class="cell-content">{{$value['考试组名称']}}</span>
+                {{if $value['状态'] == 1}}
+                    <span class="clGren pullRight">已报名</span>
+                {{/if}}
+                {{if $value['状态'] == 0}}
+                    <span class="clRed pullRight">未报名</span>
+                {{/if}}
+            </p>
+        </div>
+    {{/each}}
+</script>
+<!--模板 可以报名的考试-->
+<script id="tplKaoShi" type="text/html">
+    <h4 class="center">点击选择场次</h4>
+    {{each ksArr['考试']}}
+        {{if $value.ckd == true}}
+            <div class="cardChangCi cardChangCiOn" data-id="{{$value['考试ID']}}" data-kc="{{$value['考点ID']}}">
+        {{/if}}
+        {{if $value.ckd == false}}
+             <div class="cardChangCi" data-id="{{$value['考试ID']}}" data-kc="{{$value['考点ID']}}">
+        {{/if}}
+            <p class="cell">
+                <span class="cell-title">考试场次：</span>
+                <span class="cell-content">{{$value['考试名称']}}</span>
+            </p>
+            <p class="cell">
+                <span class="cell-title">考试时间：</span>
+                <span class="cell-content">{{$value['开考时间']}}</span>
+            </p>
+            <p class="cell">
+                <span class="cell-title">考点名称：</span>
+                <span class="cell-content">{{$value['考点名称']}}</span>
+            </p>
+        </div>
+    {{/each}}
+    <div class="fixSty center">
+        <a href="javascript:;" id="saveKaoShi" class="weui_btn weui_btn_mini weui_btn_primary">确定</a>
+        <a href="javascript:;" id="backToKsz" class="weui_btn weui_btn_mini weui_btn_default ml50">取消</a>
+    </div>
+</script>
+<!--模板 错误信息-->
+<script id="tplErrMsg" type="text/html">
+    <div class="weui_msg">
+        <div class="weui_icon_area"><i class="weui_icon_msg weui_icon_warn"></i></div>
+        <div class="weui_text_area">
+            <h2 class="weui_msg_title">操作失败</h2>
+            <p class="weui_msg_desc">没有你的信息，请老师导入你的信息！</p>
+        </div>
+    </div>
+</script>
+<!--用到的ji文件-->
+<script src="../js/jquery-3.1.0.min.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/lazy.min.js"></script>
+<script src="../js/baoming.js"></script>
 </body>
 </html>
-<script>
-    var baoMingOne = "#baoMing_one";
-    var baoMingTwo = "#baoMing_two";
-    //  var localUrl = 'http://www.zhifz.com';
-    var localUrl = 'http://127.0.0.1:3000';
-    var kaoShengKaoShiUrl = "/kaosheng_kaoshi";//考生考试
-    var zaiXianBaoMingUrl = '/zaixian_baoming'; //在线报名
-    var kaoShiZuUrl = '/kaoshizu'; //考试组
-    var bmNullMsg = "目前没有需要报名的考试!";
-    var baoMingArr = [{ID: 1}];//未过时的考试组
-    var bmArr = [{ID: 1}];//报名的考试
-    var kaoShiZuArr = [{ID: 1}];//全部考试组
-    var kaoShi; //当前有N场考试
-    var ksID; //考试ID
-    var kdID;   //考点ID
-    var submit = 0; //计数 是否提交报名
-
-    function kSBMOnClick(KSZID, KSZMC) {
-        /**
-         * 获取当前考试组有N场考试
-         */
-        kaoShi = $.grep(kaoShiZuArr, function (kSZ, i) {
-            return kSZ['考试组ID'] == KSZID;
-        })[0]['考试'];
-        $('#titleKaoShi').html(KSZMC);
-        $('#kaoShiTimeMsg').html("");
-        $('#kaoShiMsg').html("");
-        $('#kaoShiID').show();
-        $('#kaoShiTimeID').show();
-        self.location = ('#baoMing_two');
-    }
-
-    function kaoShiOnClick(i) {
-        /**
-         * 报名方式分：场次 和 时间
-         * 0 场次 显示 DIVListCC
-         * 1 时间 显示 DIVListSJ
-         */
-        if (i == 0) {
-            var test = {
-                kaoShi: kaoShi
-            };
-            var html = template('kSBMList', test);
-            document.getElementById('DIVShowCC').innerHTML = html;
-            $('#DIVListCC').show();
-        } else if (i == 1) {
-            var test = {
-                kaoShi: kaoShi
-            };
-            var html = template('KSBMListTime', test);
-            document.getElementById('DIVShowSJ').innerHTML = html;
-            $('#DIVListSJ').show();
-        }
-
-    }
-    /**
-     * 处理场次事件
-     * KSID 考试ID
-     */
-    function kaoShiChangCiOnClick(KSID) {
-        if (KSID != 'cancel') {
-            getKSIDandKDID(KSID);
-            $('#kaoShiMsg').html($('#' + KSID).html());
-            $('#kaoShiTimeID').hide();
-        } else {
-            $('#DIVListCC').hide();
-        }
-        $('#DIVListCC').hide();
-    }
-    /**
-     * 处理时间事件
-     * KSMC 考试名称
-     */
-    function kaoShiTimeOnClick(KSMC) {
-        if (KSMC != 'cancel') {
-            console.log(KSMC);
-            getKSIDandKDID(KSMC);
-            $('#kaoShiTimeMsg').html($('#' + KSMC).html());
-            $('#kaoShiID').hide();
-        } else {
-            $('#DIVListSJ').hide();
-        }
-        $('#DIVListSJ').hide();
-    }
-    /**
-     *  value 有两种可能
-     *      即：考试ID 和 考试名称
-     *  通过value 获取考试ID 和 考点ID
-     */
-    function getKSIDandKDID(value) {
-        $.each(kaoShi, function (i, ks) {
-            if (ks['考试ID'] == value || ks['考试名称'] == value) {
-                kdID = ks['考点ID'];
-                ksID = ks['考试ID'];
-            }
-        });
-        console.log(kdID);
-        console.log(ksID);
-    }
-    /**
-     * 页面header层的返回按钮事件
-     * 当submit = 1时 刷新页面
-     *  否则 直接返回不进行刷新处理
-     */
-    function fanHuiOnClick() {
-        if (submit == 1) {
-            self.location = ('./baoming.html');
-        } else {
-            self.location = (baoMingOne);
-        }
-
-        console.log(baoMingArr);
-        console.log(bmArr);
-        console.log(kaoShi);
-        console.log(kaoShiZuArr);
-    }
-    /**
-     * 提交修改数据
-     */
-    function submitOnClick() {
-        if (ksID != null && kdID != null) {
-            $.ajax({
-                method: "GET",
-                url: localUrl + zaiXianBaoMingUrl,
-                data: {
-                    'UID': $.cookie("UID"),
-                    '考试ID': ksID,
-                    '考点ID': kdID
-                },
-                success: function (data) {
-                    data = $.parseJSON(data);
-                    /**
-                     * 若 result 为true 则submit +1
-                     */
-                    if (data.result) {
-                        submit = 1;
-                        $('#toast_P').html('成功报名');
-                        $('#toast').show();
-                        setTimeout(function () {
-                            $('#toast').hide();
-                        }, 1000);
-                    } else {
-                        $('#toast_P').html('已报名');
-                        $('#toast').show();
-                        setTimeout(function () {
-                            $('#toast').hide();
-                        }, 1000);
-                    }
-                },
-                error: function (error) {
-                    alert(error);
-                }
-            });
-        } else {
-            /**
-             *  如果未选择场次或时间则提示
-             */
-            $('#toast_P').html('未选择场次');
-            $('#toast').show();
-            setTimeout(function () {
-                $('#toast').hide();
-            }, 1000);
-        }
-    }
-    /**
-     *  header层，点击事件处理
-     */
-    function headerOnClick() {
-        $('#DIVListSJ').hide();
-        $('#DIVListCC').hide();
-    }
-    $(document).ready(function () {
-        if ($('#titleKaoShi').html() == null || $('#titleKaoShi').html() == "") {
-            self.location = (baoMingOne);
-        }
-        /**
-         * 获取考生考试信息
-         */
-        $.ajax({
-            method: "GET",
-            url: localUrl + kaoShengKaoShiUrl,
-            data: {'UID': $.cookie("UID")},
-            async: false,
-            success: function (kaoShis) {
-                var now;
-                var bmStrTime;
-                var bmEndTime;
-                kaoShis = $.parseJSON(kaoShis).data;
-                $.each(kaoShis, function (i, kaoShi) {
-                    /**
-                     * 判断考生信息是否过期
-                     */
-                    $.ajax({
-                        method: "GET",
-                        url: localUrl + kaoShiZuUrl,
-                        data: {'考试组ID': kaoShi['考试组ID'], '返回考试': true},
-                        async: false,
-                        success: function (data) {
-                            var kaoShiZu = $.parseJSON(data).data[0];
-                            var bmStr = kaoShiZu['报名开始时间'];
-                            var bmEnd = kaoShiZu['报名截止时间'];
-                            if (bmStr != null && bmEnd != null) {
-                                now = new Date().getTime();
-                                bmStrTime = new Date(bmStr).getTime();
-                                bmEndTime = new Date(bmEnd).getTime();
-                                if (now < bmEndTime) {
-                                    if (baoMingArr[0].ID == 1 || kaoShiZuArr[0].ID == 1) {
-                                        kaoShiZuArr.pop();
-                                        baoMingArr.pop();
-                                        kaoShiZuArr.unshift(kaoShiZu);
-                                        baoMingArr.unshift(kaoShiZu);
-                                    } else {
-                                        kaoShiZuArr.unshift(kaoShiZu);
-                                        baoMingArr.unshift(kaoShiZu);
-
-                                    }
-                                }
-                            }
-                        },
-                        error: function (error) {
-                            alert(error);
-                        }
-                    });
-                });
-                /**
-                 * 筛选报名列表上信息
-                 */
-                $.each(baoMingArr, function (i, baoming) {
-                    var bm = $.grep(kaoShis, function (kaoShi, i) {
-                        return kaoShi['考试组ID'] == baoming['考试组ID'];
-                    })[0];
-                    if (bmArr[0].ID == 1) {
-                        bmArr.pop();
-                    }
-                    bmArr.push(bm);
-                });
-                /**
-                 * 判断是否有需要报名的考试
-                 */
-                if (kaoShiZuArr.length >= 1) {
-                    var test = {
-                        bmArr: bmArr
-                    };
-                    var html = template('baoMingArr', test);
-                    document.getElementById('kaoShiShowId').innerHTML = html;
-                } else {
-                    var msg = {
-                        msg: bmNullMsg
-                    };
-                    var html = template('bmNullMsg', msg);
-                    document.getElementById('kaoShiShowId').innerHTML = html;
-                }
-            },
-            error: function (error) {
-                alert(error);
-            }
-        });
-    });
-</script>

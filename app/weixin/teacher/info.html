@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>申请免费试用的教师</title>
+    <link rel="stylesheet" href="../css/info.css"/>
+</head>
+<body ontouchstart>
+<script id="teacherInfo" type="text/html">
+    {{each teacher}}
+    <div class="card">
+        <p class="cell">
+            <span class="cell-title">学校名称：</span>
+            <span class="cell-content">{{$value['学校名称']}}</span>
+        </p>
+        <p class="cell">
+            <span class="cell-title">教师姓名：</span>
+            <span class="cell-content">{{$value['姓名']}}</span>
+        </p>
+        <p class="cell">
+            <span class="cell-title">联系方式：</span>
+            <span class="cell-content">{{$value['联系方式']}}</span>
+        </p>
+        <p class="cell">
+            <span class="cell-title">申请日期：</span>
+            <span class="cell-content">{{$value['创建时间']}}</span>
+        </p>
+    </div>
+    {{/each}}
+</script>
+<div id="container" class="container">
+
+</div>
+<!--用到的ji文件-->
+<script src="../js/jquery-3.1.0.min.js"></script>
+<script src="../js/template.js"></script>
+<script src="../js/lazy.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var keyValueUrl = '/key_value';
+        var initFun = function(){
+            $.ajax({
+                method: 'GET',
+                url: keyValueUrl,
+                success: function (data) {
+                    if(typeof(data) == 'string'){
+                        data = JSON.parse(data);
+                    }
+                    if(data.result && data.data){
+                        var newData = [];
+                        Lazy(data.data).each(function(tech){
+                            var obj = JSON.parse(tech['键值内容']);
+                            var dt = new Date();
+                            var ye = dt.getFullYear();
+                            var mt = dt.getMonth() + 1;
+                            var dy = dt.getDate();
+                            obj['创建时间'] = ye + '-' + mt + '-' + dy;
+                            newData.push(obj);
+                        });
+
+                        var nwDt = {
+                            teacher: ''
+                        };
+                        nwDt.teacher = newData.reverse();
+                        var html = template('teacherInfo', nwDt);
+                        $('#container').html(html);
+                    }
+                    else{
+                        alert(data.error || '没有数据！');
+                    }
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+        };
+        initFun();
+    });
+</script>
+</body>
+</html>
