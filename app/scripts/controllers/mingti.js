@@ -853,6 +853,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
          * 题型模板加载
          */
         $scope.addTiMuTpl = function(txId){
+          if(!($scope.tiKuPriList && $scope.tiKuPriList.length > 0)){
+            DataService.alertInfFun('err', '没有图库！');
+            return ;
+          }
           $scope.newTiXingId = txId;
           $scope.timu['题型ID'] = txId;
           $scope.timu['题库ID'] = $scope.tiKuPriList[0]['题库ID'];
