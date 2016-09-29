@@ -15,20 +15,20 @@ define([
   'controllers/tongji',
   'controllers/student',
   'controllers/guanli',
+  'controllers/kejian',
   'filters/localdate',
   'filters/examstatus',
   'filters/outtigan',
   'directives/nandustar',
   'directives/passwordverify',
   'directives/bnslideshow',
-  'directives/hoverslide',
   'directives/fileupload',
   'directives/repeatdone',
   'services/dataservice'
 ], function (angular, config, lazy, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, RegisterCtrl,
-             ZujuanCtrl, KaowuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, LocaldateFilter,
+             ZujuanCtrl, KaowuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, KejianCtrl, LocaldateFilter,
              ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
-             HoverslideDirective, FileuploadDirective, RepeatdoneDirective, DataServiceService) {
+             FileuploadDirective, RepeatdoneDirective, DataServiceService) {
   'use strict';
   return angular.module('zhifzApp', [
     'zhifzApp.controllers.RenzhengCtrl',
@@ -43,10 +43,10 @@ define([
     'zhifzApp.controllers.TongjiCtrl',
     'zhifzApp.controllers.StudentCtrl',
     'zhifzApp.controllers.GuanLiCtrl',
+    'zhifzApp.controllers.KejianCtrl',
     'zhifzApp.filters.Localdate',
     'zhifzApp.filters.Examstatus',
     'zhifzApp.filters.Outtigan',
-    'zhifzApp.directives.Hoverslide',
     'zhifzApp.directives.Repeatdone',
     'zhifzApp.directives.Fileupload',
     'zhifzApp.directives.Bnslideshow',

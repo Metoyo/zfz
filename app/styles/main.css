@@ -644,6 +644,9 @@ a.add-btn:hover span {
 .lianxi .nav-icon {
   background-position: left -360px; }
 
+.kejian .nav-icon {
+  background-position: left -120px; }
+
 .dropdownToggle:hover {
   text-decoration: none; }
   .dropdownToggle:hover .nav-icon {

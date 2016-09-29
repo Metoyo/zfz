@@ -12,7 +12,8 @@ require.config({
     markitup: '../../bower_components/markitup/jquery.markitup-1.1.14.min',
     setJs: '../../bower_components/markitup/set.min',
     datepicker: '../../bower_components/intimidatetime/intimidatetime',
-    lazy: '../../bower_components/lazy.js/lazy'
+    lazy: '../../bower_components/lazy.js/lazy',
+    qrcode: '../../bower_components/qrcode/qrcode.min'
   },
   shim: {
     angular: {
@@ -56,6 +57,9 @@ require.config({
     },
     lazy: {
       exports: 'lazy'
+    },
+    qrcode: {
+      exports: 'qrcode'
     }
   },
   priority: [

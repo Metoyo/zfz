@@ -69,7 +69,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         };
 
         /**
-         * 登录程序;在module数组中的索引：D0, M1, Z2, K3, T4, G5, B6, C7, W8  --
+         * 登录程序;在module数组中的索引：D0, M1, Z2, K3, T4, G5, B6, C7, W8, J9  --
          */
         $scope.signIn = function() {
           var obj = {
@@ -117,10 +117,10 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               }
               $cookieStore.put('ckUsr', JSON.stringify(usrInfo));
               if(data.data['用户类别'] == 2){ //判断是否是学生
-                urlArr.push(module[6]);
                 urlArr.push(module[7]);
-                //urlArr.push(module[8]);
-                urlArr.push(module[9]);
+                urlArr.push(module[8]);
+                //urlArr.push(module[9]);
+                urlArr.push(module[10]);
                 config.loginUsr = data.data;
                 $rootScope.urlArrs = urlArr;
                 $cookieStore.put('ckUrl', JSON.stringify(urlArr));
@@ -200,7 +200,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           var kmfzrQx = Lazy(jsArr).contains(2); //判断科目负责人
           var rkjsQx = Lazy(jsArr).contains(3); //判断任课教师
           if(kmfzrQx){ //科目负责人有全部模块
-            for(var i = 0; i < 6; i++){
+            for(var i = 0; i < 7; i++){
               urlArr.push(module[i]);
             }
             urlRedirect.goTo(currentPath, '/mingti');

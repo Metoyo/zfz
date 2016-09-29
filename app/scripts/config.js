@@ -86,6 +86,11 @@ define( "config", [], function () {
         templateUrl: '../views/student/lianxi.html',
         controller: 'StudentCtrl',
         requireLogin: true
+      },
+      '/kejian': {
+        templateUrl: '../views/kejian/kejian.html',
+        controller: 'KejianCtrl',
+        requireLogin: true
       }
     },
     moduleObj: [ //得到角色是数组
@@ -112,6 +117,10 @@ define( "config", [], function () {
       {
         myUrl : 'guanli',
         urlName: '管理'
+      },
+      {
+        myUrl : 'kejian',
+        urlName: '课件'
       },
       {
         myUrl : 'baoming',

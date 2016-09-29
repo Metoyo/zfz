@@ -548,7 +548,7 @@ $(function(){
         alert(error);
       }
     });
-  })
+  });
 
   //关闭按钮
   sltShowBox.on('click', '.closeBtn', function(){
