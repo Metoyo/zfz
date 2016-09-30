@@ -1,0 +1,22 @@
+<div id="paperWrap" class="panel-body paperWrap">
+  <h3 class="text-center m0" ng-bind="keJianDtl['测验名称']"></h3>
+  <div class="pull-left wp100" ng-repeat="tx in keJianDtl['测验题目']" repeat-done>
+    <h4 ng-bind="cnNumArr[$index] + '、' + tx['大题名称']"></h4>
+    <ul class="list-unstyled testList">
+      <li ng-repeat="tm in tx['题目']">
+        <div class="item-cont positionRe daTiName">
+          <h3 class="item-tigan" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干']"></h3>
+          <div class="item-tizhi-wrap">
+            <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+              <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
+              <span class="tiZhiSpan" ng-bind-html="tz"></span>
+              <span>
+                  （<strong class="clRed" ng-bind="((tm['选项分析'][$index]['人数']/keJianDtl['参与人数'])*100).toFixed(1) + '%'"></strong>）
+              </span>
+            </p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
