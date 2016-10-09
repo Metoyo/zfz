@@ -645,7 +645,7 @@ a.add-btn:hover span {
   background-position: left -360px; }
 
 .kejian .nav-icon {
-  background-position: left -120px; }
+  background-position: left -400px; }
 
 .dropdownToggle:hover {
   text-decoration: none; }
@@ -3499,3 +3499,6 @@ label.checkbox {
   width: 76px;
   height: 420px;
   border-left: 1px solid #cfcfcf; }
+
+.keJianDaGang .pointTree {
+  top: 85px; }

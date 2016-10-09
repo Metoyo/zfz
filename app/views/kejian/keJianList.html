@@ -1,63 +1,87 @@
-<table class="table table-striped">
-  <tr class="active">
-    <th>课件名称</th>
-    <th width="220px" class="text-center">创建时间</th>
-    <th width="220px" class="text-center">时限</th>
-    <th width="100px" class="text-center">测试结果</th>
-    <th width="80px" class="text-center">二维码</th>
-    <th width="80px" class="text-center">操作</th>
-  </tr>
-  <tr ng-repeat="kj in keJianList">
-    <td ng-bind="kj['测验名称'] + '(参与人数:' + (kj['参与人数'] || 0) + ')'"></td>
-    <td class="text-center" ng-bind="kj['创建时间'] | localDate:'ww'"></td>
-    <td class="text-center" ng-bind="kj['测验设置']['时限'] | localDate:'ww'"></td>
-    <td class="text-center"><a href="javascript:void(0)" ng-click="keJianDetail(kj['测验ID'])">查看</a></td>
-    <td class="text-center"><a href="javascript:void(0)" ng-click="makeErWeiMa(kj['测验ID'])">生成</a></td>
-    <td class="text-center">
-      <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKeJian(kj['测验ID'])" title="删除"></span>
-    </td>
-  </tr>
-</table>
-<div class="paging text-right">
-  <ul class="pagination pagination-sm">
-    <li ng-class="{disabled: pageParam.activePage == 1}">
-      <a href ng-click="keJianDist(1)">首页</a>
-    </li>
-    <li ng-class="{disabled: pageParam.activePage == 1}">
-      <a href
-         ng-click="keJianDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
-        上一页
+<!--导航-->
+<div class="sub-nav fixed-top" ng-init="tabActive = 'kjgl'">
+  <ul class="nav nav-tabs">
+    <li ng-class="{active: tabActive == 'kjgl'}">
+      <a href="javascript:void(0)" ng-click="getKeJianList()">
+        课件管理
       </a>
     </li>
-    <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
-      <a href ng-click="keJianDist(pg)">{{pg}}</a>
-    </li>
-    <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
-      <a href
-         ng-click="keJianDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
-        下一页
+    <li ng-class="{active: tabActive == 'xjkj'}">
+      <a href="javascript:void(0)" ng-click="addNewKeJian()">
+        新建课件
       </a>
     </li>
-    <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
-      <a href ng-click="keJianDist(pageParam.lastPage)">尾页</a>
+    <li class="pull-right" ng-show="keJianDtl">
+      <button class="btn btn-danger mt5 mr10" ng-click="backToList()">返回列表</button>
     </li>
   </ul>
 </div>
-<!--弹出层-->
-<div class="popup-wrap" ng-show="kjParams.showErWeiMa">
-  <div class="popup-wrap-inner">
-    <div class="pwi-header plr10 text-center">
-      <span class="title">课序号管理</span>
-    </div>
-    <div class="pwi-body plr10">
-      <div id="QRCodeBox" class="text-center" style="margin-top: 60px">
+<!-- 考务的容器 开始-->
+<div class="tab-content wp90 mlp5">
+  <table class="table table-striped">
+    <tr class="active">
+      <th>课件名称</th>
+      <th width="220px" class="text-center">创建时间</th>
+      <th width="220px" class="text-center">时限</th>
+      <th width="100px" class="text-center">测试结果</th>
+      <th width="80px" class="text-center">二维码</th>
+      <th width="80px" class="text-center">操作</th>
+    </tr>
+    <tr ng-repeat="kj in keJianList">
+      <td ng-bind="kj['测验名称'] + '(参与人数:' + (kj['参与人数'] || 0) + ')'"></td>
+      <td class="text-center" ng-bind="kj['创建时间'] | localDate:'ww'"></td>
+      <td class="text-center" ng-bind="kj['测验设置']['时限'] | localDate:'ww'"></td>
+      <td class="text-center"><a href="javascript:void(0)" ng-click="keJianDetail(kj['测验ID'])">查看</a></td>
+      <td class="text-center"><a href="javascript:void(0)" ng-click="makeErWeiMa(kj['测验ID'])">生成</a></td>
+      <td class="text-center">
+        <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKeJian(kj['测验ID'])" title="删除"></span>
+      </td>
+    </tr>
+  </table>
+  <div class="paging text-right" ng-if="keJianList.length">
+    <ul class="pagination pagination-sm">
+      <li ng-class="{disabled: pageParam.activePage == 1}">
+        <a href ng-click="keJianDist(1)">首页</a>
+      </li>
+      <li ng-class="{disabled: pageParam.activePage == 1}">
+        <a href
+           ng-click="keJianDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
+          上一页
+        </a>
+      </li>
+      <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
+        <a href ng-click="keJianDist(pg)">{{pg}}</a>
+      </li>
+      <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
+        <a href
+           ng-click="keJianDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
+          下一页
+        </a>
+      </li>
+      <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+        <a href ng-click="keJianDist(pageParam.lastPage)">尾页</a>
+      </li>
+    </ul>
+  </div>
+  <!--弹出层-->
+  <div class="popup-wrap" ng-show="kjParams.showErWeiMa">
+    <div class="popup-wrap-inner">
+      <div class="pwi-header plr10 text-center">
+        <span class="title">课序号管理</span>
       </div>
-    </div>
-    <div class="pwi-footer plr10 text-center">
-      <a id="downloadEwm" class="btn btn-success mt5" href="" download="课件二维码.png">
-        保存图片
-      </a>
-      <button type="button" class="btn btn-danger mt5 ml15" ng-click="closePopup()">关闭</button>
+      <div class="pwi-body plr10">
+        <div id="QRCodeBox" class="text-center" style="margin-top: 60px">
+        </div>
+      </div>
+      <div class="pwi-footer plr10 text-center">
+        <a id="downloadEwm" class="btn btn-success mt5" href="" download="课件二维码.png">
+          保存图片
+        </a>
+        <button type="button" class="btn btn-danger mt5 ml15" ng-click="closePopup()">关闭</button>
+      </div>
     </div>
   </div>
 </div>
+
+
+

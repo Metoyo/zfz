@@ -1,0 +1,82 @@
+<!--导航-->
+<div class="sub-nav fixed-top" ng-init="tabActive = 'xjkj'">
+  <ul class="nav nav-tabs">
+    <li ng-class="{active: tabActive == 'kjgl'}">
+      <a href="javascript:void(0)" ng-click="getKeJianList()">
+        课件管理
+      </a>
+    </li>
+    <li ng-class="{active: tabActive == 'xjkj'}">
+      <a href="javascript:void(0)" ng-click="addNewKeJian()">
+        新建课件
+      </a>
+    </li>
+    <li class="pull-right" ng-show="keJianDtl">
+      <button class="btn btn-danger mt5 mr10" ng-click="backToList()">返回列表</button>
+    </li>
+  </ul>
+</div>
+<!-- 考务的容器 开始-->
+<div class="tab-content wp90 mlp5">
+  <h4 class="pb10 bdb">
+    <span>新建课件</span>
+    <em style="font-size:12px" class="ml15">带 <i>*</i>为必填项</em>
+  </h4>
+  <div class="row editKaoShi">
+    <form class="form-horizontal" name="kaoshiForm">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">课件名称<i>*</i></label>
+        <div class="col-sm-6">
+          <input type="text" name="ksName" class="form-control" placeholder="课件名称" required autofocus="true"
+                 ng-model="newKeJian['测验名称']"/>
+        </div>
+        <div class="col-sm-4">
+          <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">课件名称不能为空！</p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">时限</label>
+        <div class="col-sm-6">
+          <input type="text" name="ksTime" class="form-control start-date limitDate" placeholder="限定时间"
+                 ng-model="newKeJian['测验设置']['时限']"/>
+        </div>
+        <!--<div class="col-sm-4">-->
+          <!--<p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">时限不能为空！</p>-->
+        <!--</div>-->
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">选择题目</label>
+        <div class="col-sm-6">
+          <a href="javascript:;" class="mt7 dpb" ng-click="showTiMuList()">添加题目</a>
+        </div>
+      </div>
+      <div class="save-box">
+        <!--ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || loadingImgShow">保存课件-->
+        <button type="button" class="btn btn-primary" ng-click="saveKeJian()"
+                ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">保存课件
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<!--课件预览-->
+<div class="wp90 mlp5" ng-if="keJianPaper.length">
+  <div id="paperWrap" class="panel-body paperWrap">
+    <div class="pull-left wp100" ng-repeat="tx in keJianPaper" repeat-done>
+      <h4 class="plr10" ng-bind="cnNumArr[$index] + '、' + tx['大题名称']"></h4>
+      <ul class="list-unstyled testList">
+        <li ng-repeat="tm in tx['题目']">
+          <div class="item-cont positionRe daTiName">
+            <h3 class="item-tigan" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干']"></h3>
+            <div class="item-tizhi-wrap">
+              <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+                <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
+                <span class="tiZhiSpan" ng-bind-html="tz"></span>
+              </p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
