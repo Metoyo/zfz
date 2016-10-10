@@ -111,7 +111,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             if(!(paperListOriginData && paperListOriginData.length > 0)){
               $http(obj).success(function(data){
                 if(data.result && data.data){
-                  paperListOriginData = data.data;
+                  paperListOriginData = Lazy(data.data).reverse().toArray();
                   pageMake(data.data);
                 }
                 else{
@@ -688,6 +688,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             $http(obj).success(function(data){
               if(data.result && data.data){
                 var dataLength = data.data.length; //课序号的长度
+                data.data = Lazy(data.data).reverse().toArray();
                 Lazy(data.data).each(function(kxh){
                   if(kxh['学期']){
                     kxh['中文学期'] = kxh['学期'] == 1 ? '秋' : '春';
