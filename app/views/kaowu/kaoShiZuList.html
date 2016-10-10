@@ -67,11 +67,11 @@
     <div class="pwi-header plr10">
       <span class="title" ng-bind="kaoShiZuDtl['考试组名称']"></span>
       <div class="pull-right">
-        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showPaperInfo()">查看试卷</a>
-        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-click="showChangCiToggle()">查看场次</a>
-        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiZuDtl['报名方式']==2"
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kwParams.showSj" ng-click="showPaperInfo()">查看试卷</a>
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kwParams.showCc" ng-click="showChangCiToggle()">查看场次</a>
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiZuDtl['报名方式']==2 && !kwParams.showStu"
            ng-click="showBaoMingStu('no')">未报名考生</a>
-        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiZuDtl['状态']==1" ng-click="showKszNotice()">考试须知</a>
+        <a href="javascript:void(0)" class="pull-left mt10 mr10" ng-show="kaoShiZuDtl['状态']==1 && !kwParams.notice" ng-click="showKszNotice()">考试须知</a>
         <button type="button" class="btn btn-danger mt5" ng-click="closePaperDtl()">关闭</button>
       </div>
     </div>
@@ -101,23 +101,23 @@
             <td colspan="6">
               <p>
                 <!--<label class="checkbox-inline mr15">-->
-                  <!--<input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['随机试卷']" ng-disabled="kaoShiZuDtl['状态']!=1"> 现场抽题-->
+                <!--<input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['随机试卷']" ng-disabled="kaoShiZuDtl['状态']!=1"> 现场抽题-->
                 <!--</label>-->
-                <label class="checkbox-inline mr15">
+                <label class="checkbox-inline wp30">
                   <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['选项乱序']" ng-disabled="kaoShiZuDtl['状态']!=1"> 选项乱序
                 </label>
-                <label class="checkbox-inline mr15">
+                <label class="checkbox-inline wp30">
                   <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['题目乱序']" ng-disabled="kaoShiZuDtl['状态']!=1"> 题目乱序
                 </label>
-                <label class="checkbox-inline">
+                <label class="checkbox-inline wp30">
                   <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['填空题笔答']" ng-disabled="kaoShiZuDtl['状态']!=1"> 填空题笔答
                 </label>
               </p>
               <p>
-                <label class="checkbox-inline">
+                <label class="checkbox-inline wp30">
                   <input type="checkbox" ng-model="kaoShiZuDtl['考试组设置']['允许计算器']" ng-disabled="kaoShiZuDtl['状态']!=1"> 允许计算器
                 </label>
-                <label class="checkbox-inline">
+                <label class="checkbox-inline wp30">
                   每页题目数
                   <select ng-options="nm for nm in tiMuNumPerPage" ng-model="kaoShiZuDtl['考试组设置']['每页题目数']" ng-disabled="kaoShiZuDtl['状态']!=1">
                     <option value="">请选择</option>
@@ -130,6 +130,7 @@
         </table>
         <!--学生的table-->
         <div ng-if="kwParams.showStu">
+          <a href="javascript:void(0)" class="pull-right p10" ng-click="showChangCiToggle()">返回</a>
           <a href="javascript:void(0)" class="pull-right p10" ng-click="exportKsInfo('mdOn', '')">导出考生</a>
           <table class="table table-striped mt15">
             <tr>
@@ -173,10 +174,13 @@
         <div ng-if="kwParams.notice">
           <p class="text-right mt10" ng-if="kaoShiZuDtl['状态'] == 1">
             <a href="javascript:void(0)" ng-click="saveKszNotice()">保存</a>
+            <a href="javascript:void(0)" class="ml15" ng-hide="kwParams.showNtPre" ng-click="previewNotice()">预览</a>
+            <a href="javascript:void(0)" class="ml15" ng-show="kwParams.showNtPre" ng-click="previewNotice()">关闭预览</a>
           </p>
           <div>
             <textarea class="form-control" rows="5" ng-model="kaoShiZuDtl['考试须知']"></textarea>
           </div>
+          <div class="previewWrap p10" ng-bind-html="kaoShiZuDtl['考试须知']" ng-show="kwParams.showNtPre"></div>
         </div>
       </div>
     </div>

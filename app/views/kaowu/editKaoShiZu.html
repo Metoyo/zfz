@@ -243,6 +243,15 @@
       <div class="col-sm-6">
         <textarea class="form-control" name="ksXuZhi" rows="5" placeholder="考试须知" ng-model="kaoShiZuData['考试须知']"></textarea>
       </div>
+      <div class="col-sm-4">
+        <a href="javascript:void(0)" class="ml15" ng-hide="kwParams.showNtPre" ng-click="previewNotice()">预览</a>
+        <a href="javascript:void(0)" class="ml15" ng-show="kwParams.showNtPre" ng-click="previewNotice()">关闭预览</a>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-6 col-sm-offset-2">
+        <div class="previewWrap p10" ng-bind-html="kaoShiZuData['考试须知']" ng-show="kwParams.showNtPre"></div>
+      </div>
     </div>
     <!-- 考生错误信息展示结束 -->
     <div class="save-box">
