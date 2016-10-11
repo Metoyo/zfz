@@ -1,7 +1,7 @@
 <div class="col-md-12 infoBox">
   <h3 class="text-center shTitle"> 教师管理
     <!--<a href="javascript:void(0)" ng-click="closeShenheBox()" class="closeShenBox pull-right" title="关闭窗口">-->
-      <!--<span class="glyphicon glyphicon-remove"></span>-->
+    <!--<span class="glyphicon glyphicon-remove"></span>-->
     <!--</a>-->
     <button type="button" class="btn btn-danger pull-right" ng-click="closeShenheBox()">返回</button>
   </h3>
@@ -19,7 +19,9 @@
       </thead>
       <tbody class="shenheList">
       <tr ng-repeat="tech in teacherData">
-        <td ng-bind="tech['姓名']"></td>
+        <td>
+          <span ng-bind="tech['姓名']" ng-class="{clRed: tech['审核状态'] == true, clGreen: tech['审核状态'] == false}"></span>
+        </td>
         <td ng-bind="tech['用户名']"></td>
         <td ng-bind="tech['邮箱']"></td>
         <td ng-bind="tech['手机']"></td>

@@ -1619,6 +1619,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           var objUsr = {method: 'GET', url: yongHuUrl, params: {'学校ID': jgID, '用户类别': 1}};
           $http(objUsr).success(function(user){ //机构教师
             if(user.result && user.data){
+              user.data = Lazy(user.data).reverse().toArray();
               var objTec = {method: 'GET', url: yongHuJueSeUrl, params: {'学校ID': jgID, '状态': JSON.stringify([0,1])}};
               $scope.shenHeList = [];
               $http(objTec).success(function(teacher) { //查询机构教师角色
@@ -1704,8 +1705,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                     else{
                       jsjs['科目角色'] = angular.copy($scope.xxkmList);
                     }
+                    Lazy(jsjs['科目角色']).each(function(km){
+                      var fdTar = Lazy(km['角色']).find(function(js){
+                        return js['状态'] == 0;
+                      });
+                      jsjs['审核状态'] = fdTar ? true : false;
+                    });
                   });
-                  $scope.teacherData = DataService.cnSort(user.data, '姓名');
+                  $scope.teacherData = user.data;
                   $scope.isShenHeBox = true; //判断是不是审核页面
                   $scope.adminParams.navHide = true;
                   $scope.adminSubWebTpl = 'views/renzheng/rz_setTeacher.html';

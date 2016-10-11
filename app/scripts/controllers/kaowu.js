@@ -44,7 +44,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             selectedCc: '', //选中的场次
             year: '', //课序号的筛选年份
             term: '', //课序号的筛选学期
-            sjType: 0 //试卷类型
+            sjType: 0, //试卷类型
+            showCc: false, //显示场次
+            showSj: true, //显示试卷
+            showNtPre: false //显示考试须知预览
           };
           $scope.sltSjz = ''; //选中的试卷组
           $scope.pageParam = { //分页参数
@@ -1097,6 +1100,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 '返回试卷': true
               }
             };
+            $scope.kwParams.showCc = false; //显示场次
+            $scope.kwParams.showSj = true; //显示试卷
             $http(obj).success(function(data){
               if(data.result && data.data){
                 $scope.kaoShiZuDtl = data.data[0];
@@ -1130,6 +1135,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
               }
             };
             $scope.alertPaperCc = [];
+            $scope.kwParams.showCc = true; //显示场次
+            $scope.kwParams.showSj = false; //显示试卷
             if($scope.kaoShiZuDtl['考试组ID']){
               obj.params['考试组ID'].push($scope.kaoShiZuDtl['考试组ID']);
               obj.params['考试组ID'] = JSON.stringify(obj.params['考试组ID']);
@@ -1169,6 +1176,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             $scope.kwParams.showStu = false;
             $scope.kwParams.showCcSjz = false;
             $scope.kwParams.selectedCc = '';
+            $scope.kwParams.showCc = false; //显示场次
+            $scope.kwParams.showSj = true; //显示试卷
+            $scope.kwParams.notice = false;
           };
 
           /**
@@ -1202,7 +1212,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
            */
           $scope.showKszNotice = function(){
             $scope.kwParams.showCcSjz = true;
+            $scope.kwParams.showStu = false;
             $scope.kwParams.notice = true;
+            $scope.kwParams.showCc = true; //显示场次
+            $scope.kwParams.showSj = true; //显示试卷
+          };
+
+          /**
+           * 预览考试须知
+           */
+          $scope.previewNotice = function(){
+            $scope.kwParams.showNtPre = !$scope.kwParams.showNtPre;
           };
 
           /**
