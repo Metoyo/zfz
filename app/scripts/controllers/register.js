@@ -364,7 +364,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             }
             else{
               $scope.studentInfo = '';
-              DataService.alertInfFun('err', data.error || '用户信息不存在！请先通过Excel文件导入个人信息！');
+              DataService.alertInfFun('err', data.error || '用户信息不存在！请核查所选学校、学号、姓名、是否有误！');
             }
           });
         };

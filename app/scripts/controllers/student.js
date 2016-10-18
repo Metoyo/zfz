@@ -76,8 +76,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           }
         ];
         /**
-        * 查询考生有几场考试
-        */
+         * 查询考生有几场考试
+         */
         var chaXunBaoMingChangCi = function(){
           var obj = {
             method: 'GET',
@@ -97,6 +97,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                 url: kaoShiZuUrl,
                 params: {
                   '考试组ID': '',
+                  '状态': 1,
                   '返回考试': true
                 }
               };
@@ -150,12 +151,19 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             method: 'GET',
             url: kaoShengChengJiUrl,
             params: {
-              'UID': logUid
+              'UID': logUid,
+              '学校ID': jgID
             }
           };
           var power = '';
           $http(stuObj).success(function(students) {
             if (students.result && students.data) {
+              //演示用到了上财的数据，特屏蔽演示数据
+              if(jgID == 1024){
+                students.data = Lazy(students.data).reject(function(ks){
+                  return ks['考试组ID'] == 1532;
+                });
+              }
               var xxObj = {
                 method: 'GET',
                 url: xueXiaoUrl,
@@ -374,8 +382,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         }
 
         /**
-        * 查看考试组详情
-        */
+         * 查看考试组详情
+         */
         $scope.queryKaoShiZuDetail = function(ks){
           $scope.selectKsz = Lazy($scope.stuParams.bmKszArr).find(function(ksz){ return ksz['考试组ID'] == ks['考试组ID']}) || '';
           if($scope.selectKsz){
@@ -391,15 +399,15 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-        * 返回报名考试列表
-        */
+         * 返回报名考试列表
+         */
         $scope.backToKszList = function(){
           $scope.selectKsz = '';
         };
 
         /**
-        * 选择考点
-        */
+         * 选择考点
+         */
         $scope.bmKaoDianSelect = function(ks){
           Lazy($scope.selectKsz['考试']).each(function(cc){
             cc.ckd = cc['考试ID'] == ks['考试ID'];
@@ -407,8 +415,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-        * 保存考生选择信息，考生报名
-        */
+         * 保存考生选择信息，考生报名
+         */
         $scope.saveStudentSelcet = function () {
           var bmObj = {
             method: 'GET',
@@ -443,8 +451,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-        * 作答重现
-        */
+         * 作答重现
+         */
         $scope.zuoDaReappear = function (ks) {
           var obj = {
             method: 'GET',
@@ -479,8 +487,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-        * 考生知识点分析
-        */
+         * 考生知识点分析
+         */
         $scope.studentZsdFenXi = function(ksz){
           var kszObj = {
             method: 'GET',
@@ -506,9 +514,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $scope.stuParams.zsdTjShow = false;
           tjParaObj.radarBoxZsd = echarts.init(document.getElementById('studentZsd'));
           var optRadarZsd = {
-            tooltip : {
-              trigger: 'axis'
-            },
+            //tooltip : {
+            //  trigger: 'axis'
+            //},
             legend: {
               orient : 'vertical',
               x : 'right',
@@ -638,8 +646,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         /**
-        * 关闭作答重新内容
-        */
+         * 关闭作答重新内容
+         */
         $scope.closeZuoDaReappear = function(){
           $scope.showKaoShengList = true;
         };

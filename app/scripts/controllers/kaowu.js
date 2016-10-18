@@ -18,7 +18,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
           var shiJuanZuUrl = '/shijuanzu'; //试卷组
           var keXuHaoXueShengUrl = '/kexuhao_xuesheng'; //由课序号查询学生
           var keXuHaoUrl = '/kexuhao'; //查询课序号
-          var kaoShiShiJuanZuUrl = '/kaoshi_shijuanzu'; //查询考试用到的考试组
+          //var kaoShiShiJuanZuUrl = '/kaoshi_shijuanzu'; //查询考试用到的考试组
           var exportStuUrl = '/json2excel'; //导出考生
           var paperListOriginData = ''; //试卷组全部数据
           var newChangCi = ''; //新场次
@@ -47,10 +47,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             sjType: 0, //试卷类型
             showCc: false, //显示场次
             showSj: true, //显示试卷
-            showNtPre: false //显示考试须知预览
+            showNtPre: false, //显示考试须知预览
+            newSltSjzId: '' //修改考试组试卷组用到的新选择的试卷组
           };
           $scope.sltSjz = ''; //选中的试卷组
           $scope.pageParam = { //分页参数
+            activePage: '',
+            lastPage: '',
+            pageArr: [],
+            disPage: []
+          };
+          $scope.pageParamSjz = { //修改考试组试卷用到的分页
             activePage: '',
             lastPage: '',
             pageArr: [],
@@ -100,7 +107,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
           /**
            * 查询试卷组列表
            */
-          var qryShiJuanZuList = function(){
+          var qryShiJuanZuList = function(ty){
             var obj = {
               method: 'GET',
               url: shiJuanZuUrl,
@@ -115,7 +122,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
               $http(obj).success(function(data){
                 if(data.result && data.data){
                   paperListOriginData = Lazy(data.data).reverse().toArray();
-                  pageMake(data.data);
+                  pageMake(data.data, ty);
                 }
                 else{
                   paperListOriginData = '';
@@ -131,38 +138,72 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
           /**
            * 分页处理函数
            */
-          var pageMake = function(data){
-            $scope.pageParam = { //分页参数
-              activePage: '',
-              lastPage: '',
-              pageArr: [],
-              disPage: []
-            };
+          var pageMake = function(data, ty){
             var dataLen = data.length; //数据长度
             var lastPage = Math.ceil(dataLen/itemNumPerPage); //最后一页
-            $scope.pageParam.pageArr = Lazy.generate(function(i) { return i + 1; }, lastPage).toArray();
-            $scope.pageParam.lastPage = lastPage;
-            $scope.pageParam.activePage = 1;
-            cutPageFun(1);
+            if(ty){
+              $scope.pageParamSjz = { //分页参数
+                activePage: '',
+                lastPage: '',
+                pageArr: [],
+                disPage: []
+              };
+              $scope.pageParamSjz.pageArr = Lazy.generate(function(i) { return i + 1; }, lastPage).toArray();
+              $scope.pageParamSjz.lastPage = lastPage;
+              $scope.pageParamSjz.activePage = 1;
+              cutPageFun(1, ty);
+            }
+            else{
+              $scope.pageParam = { //分页参数
+                activePage: '',
+                lastPage: '',
+                pageArr: [],
+                disPage: []
+              };
+              $scope.pageParam.pageArr = Lazy.generate(function(i) { return i + 1; }, lastPage).toArray();
+              $scope.pageParam.lastPage = lastPage;
+              $scope.pageParam.activePage = 1;
+              cutPageFun(1);
+            }
           };
 
           /**
            * 分页数据变动的函数
            */
-          var cutPageFun = function(pg){
-            var activePg = $scope.pageParam.activePage = pg ? pg : 1;
-            if($scope.pageParam.lastPage <= paginationLength){
-              $scope.pageParam.disPage = $scope.pageParam.pageArr;
+          var cutPageFun = function(pg, ty){
+            var activePg = '';
+            if(ty){
+              activePg = $scope.pageParamSjz.activePage = pg ? pg : 1;
+              if($scope.pageParamSjz.lastPage <= paginationLength){
+                $scope.pageParamSjz.disPage = $scope.pageParamSjz.pageArr;
+              }
+              if($scope.pageParamSjz.lastPage > paginationLength){
+                if(activePg > 0 && activePg <= 6 ){
+                  $scope.pageParamSjz.disPage = $scope.pageParamSjz.pageArr.slice(0, paginationLength);
+                }
+                else if(activePg > $scope.pageParamSjz.lastPage - 5 && activePg <= $scope.pageParamSjz.lastPage){
+                  $scope.pageParamSjz.disPage = $scope.pageParamSjz.pageArr.slice($scope.pageParamSjz.lastPage - paginationLength);
+                }
+                else{
+                  $scope.pageParamSjz.disPage = $scope.pageParamSjz.pageArr.slice(activePg - 5, activePg + 5);
+                }
+              }
             }
-            if($scope.pageParam.lastPage > paginationLength){
-              if(activePg > 0 && activePg <= 6 ){
-                $scope.pageParam.disPage = $scope.pageParam.pageArr.slice(0, paginationLength);
+            else{
+              activePg = $scope.pageParam.activePage = pg ? pg : 1;
+              if($scope.pageParam.lastPage <= paginationLength){
+                $scope.pageParam.disPage = $scope.pageParam.pageArr;
               }
-              else if(activePg > $scope.pageParam.lastPage - 5 && activePg <= $scope.pageParam.lastPage){
-                $scope.pageParam.disPage = $scope.pageParam.pageArr.slice($scope.pageParam.lastPage - paginationLength);
-              }
-              else{
-                $scope.pageParam.disPage = $scope.pageParam.pageArr.slice(activePg - 5, activePg + 5);
+              if($scope.pageParam.lastPage > paginationLength){
+                if(activePg > 0 && activePg <= 6 ){
+                  $scope.pageParam.disPage = $scope.pageParam.pageArr.slice(0, paginationLength);
+                }
+                else if(activePg > $scope.pageParam.lastPage - 5 && activePg <= $scope.pageParam.lastPage){
+                  $scope.pageParam.disPage = $scope.pageParam.pageArr.slice($scope.pageParam.lastPage - paginationLength);
+                }
+                else{
+                  $scope.pageParam.disPage = $scope.pageParam.pageArr.slice(activePg - 5, activePg + 5);
+                }
               }
             }
           };
@@ -381,15 +422,19 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
           /**
            * 显示试卷组列表 clearSjzId
            */
-          $scope.showSjzList = function(){
+          $scope.showSjzList = function(ty){
             $scope.showSjzs = true;
             $scope.sjzDist(1);
+            if(ty){
+              $scope.kwParams.newSltSjzId = angular.copy($scope.kaoShiZuDtl['试卷组ID']);
+            }
           };
 
           /**
            * 选中试卷组
            */
           $scope.selectSjz = function(sjz){
+            sjz['试卷'] = Lazy(sjz['试卷']).sortBy('试卷ID').toArray();
             var hasSj = sjz['试卷'] && sjz['试卷'].length > 0;
             var hasKs = $scope.kaoShiZuData['考试'] && $scope.kaoShiZuData['考试'].length > 0;
             $scope.sltSjz = sjz;
@@ -927,11 +972,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 if(typeof(data) == 'string'){
                   newData = JSON.parse(data);
                 }
-                if(newData.result && newData.data){
+                if(newData.result){
                   var node = document.getElementById('flowControlForm');
                   node.parentNode.removeChild(node);
+                  $scope.closePaperDtl();
                   $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
-                  DataService.alertInfFun('suc', '新建成功！');
+                  DataService.alertInfFun('suc', '数据保存成功！');
                 }
                 else{
                   DataService.alertInfFun('err', newData.error);
@@ -1108,6 +1154,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 $scope.kwParams.showStu = false;
                 $scope.kwParams.showCcSjz = false;
                 $scope.changCiKaoSheng = '';
+                qryShiJuanZuList(true);
               }
               else{
                 $scope.kaoShiZuDtl = '';
@@ -1129,33 +1176,55 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
           $scope.showPaperInfo = function(){
             var obj = {
               method: 'GET',
-              url: kaoShiShiJuanZuUrl,
+              url: shiJuanZuUrl,
               params: {
-                '考试组ID': []
+                '试卷组ID': [],
+                '返回试卷': true,
+                '返回题目内容': false
               }
             };
-            $scope.alertPaperCc = [];
+            var shiJuanId = [];
+            $scope.kszSjz = '';
+            $scope.sltKaoShi = '';
             $scope.kwParams.showCc = true; //显示场次
             $scope.kwParams.showSj = false; //显示试卷
-            if($scope.kaoShiZuDtl['考试组ID']){
-              obj.params['考试组ID'].push($scope.kaoShiZuDtl['考试组ID']);
-              obj.params['考试组ID'] = JSON.stringify(obj.params['考试组ID']);
+            if($scope.kaoShiZuDtl['试卷组ID']){
+              obj.params['试卷组ID'].push($scope.kaoShiZuDtl['试卷组ID']);
+              obj.params['试卷组ID'] = JSON.stringify(obj.params['试卷组ID']);
               $http(obj).success(function(data){
                 if(data.result && data.data){
-                  var disDt = Lazy(data.data).groupBy('考试ID').toObject();
-                  Lazy(disDt).each(function(v, k, l){
-                    var ccObj = {
-                      '考试ID': k,
-                      '考试名称': v[0]['考试名称'],
-                      '试卷组信息': ''
-                    };
-                    var strArr = [];
-                    Lazy(v).each(function(ks){
-                      strArr.push(ks['试卷组名称'] + '(' + ks['试卷组ID'] + ')');
+                  data.data[0]['试卷'] = Lazy(data.data[0]['试卷']).sortBy('试卷ID').toArray();
+                  $scope.kszSjz = data.data[0];
+                  if(!$scope.kaoShiZuDtl['考试组设置']['随机试卷']){
+                    shiJuanId = Lazy(data.data[0]['试卷']).map('试卷ID').toArray();
+                    Lazy($scope.kaoShiZuDtl['考试']).each(function(ks){
+                      var sjIdArr = '';
+                      if(typeof(ks['考试设置']) == 'string'){
+                        sjIdArr = JSON.parse(ks['考试设置'])['试卷ID'];
+                      }
+                      else{
+                        sjIdArr = ks['考试设置']['试卷ID'];
+                      }
+                      if(sjIdArr && sjIdArr.length > 0){
+                        ks['试卷'] = [];
+                        Lazy(sjIdArr).each(function(sjId){
+                          var sjObj = {
+                            '试卷ID': sjId,
+                            '试卷名称': '',
+                            '试卷组ID': $scope.kaoShiZuDtl['试卷组ID']
+                          };
+                          var idx = Lazy(shiJuanId).indexOf(sjId);
+                          if(idx > -1){
+                            sjObj['试卷名称'] = '试卷' + (idx + 1);
+                          }
+                          else{
+                            sjObj['试卷名称'] = '未找到试卷';
+                          }
+                          ks['试卷'].push(sjObj);
+                        });
+                      }
                     });
-                    ccObj['试卷组信息'] = strArr.join(';');
-                    $scope.alertPaperCc.push(ccObj);
-                  });
+                  }
                 }
                 else{
                   DataService.alertInfFun('err', data.error);
@@ -1361,10 +1430,186 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
           };
 
           /**
+           * 修改试卷组
+           */
+          $scope.alterPaperZu = function(){
+
+          };
+
+          /**
            * 修改试卷
            */
-          $scope.alertPaperWrapShow = function(){
+          $scope.alterPaper = function(ks){
+            Lazy($scope.kszSjz['试卷']).each(function(sj){ //重置所有的试卷
+              sj.ckd = false;
+            });
+            Lazy(ks['试卷']).each(function(ccsj){ //试卷的反选
+              Lazy($scope.kszSjz['试卷']).each(function(sj){
+                if(sj['试卷ID'] == ccsj['试卷ID']){
+                  sj.ckd = true;
+                }
+              });
+            });
+            $scope.sltKaoShi = ks;
+          };
 
+          /**
+           * 保存修改试卷
+           */
+          $scope.savePaperAlter = function(){
+            if($scope.kaoShiZuDtl['考试组设置']['随机试卷']){
+              var objSj = {
+                method: 'POST',
+                url: kaoShiZuUrl,
+                data: {
+                  '考试组ID': $scope.kaoShiZuDtl['考试组ID'],
+                  '试卷组ID': $scope.kaoShiZuDtl['试卷组ID']
+                }
+              };
+              if($scope.kaoShiZuDtl['试卷组ID']){
+                $http(objSj).success(function(data){
+                  if(data.result){
+                    $scope.closePaperDtl();
+                    $scope.showKaoShiZuList(); //新建成功以后返回到开始列表
+                    DataService.alertInfFun('suc', '修改成功！');
+                  }
+                  else{
+                    DataService.alertInfFun('err', data.error);
+                  }
+                });
+              }
+            }
+            else{
+              var obj = {
+                '考试组ID': $scope.kaoShiZuDtl['考试组ID'],
+                '试卷组ID': $scope.kaoShiZuDtl['试卷组ID'],
+                '报名方式': $scope.kaoShiZuDtl['报名方式'],
+                '考试': []
+              };
+              if($scope.kaoShiZuDtl['报名方式'] == 2){
+                obj['考生'] = [];
+                Lazy($scope.kaoShiZuDtl['考生']).each(function(stu){
+                  var stuObj = {
+                    'UID': stu['UID'],
+                    '课序号ID': stu['课序号ID']
+                  };
+                  obj['考生'].push(stuObj);
+                });
+              }
+              Lazy($scope.kaoShiZuDtl['考试']).each(function(ks){
+                var ksObj = {
+                  '考试名称': ks['考试名称'],
+                  '考点ID': ks['考点ID'],
+                  '开始时间': ks['开始时间'],
+                  '结束时间': ks['结束时间'],
+                  '考试时长': ks['考试时长'],
+                  '考试设置': JSON.parse(ks['考试设置'])
+                  //'考生': ''
+                };
+                if(ks['考生'] && ks['考生'].length > 0){
+                  ksObj['考生'] = [];
+                  Lazy(ks['考生']).each(function(stu){
+                    var stuObj = {
+                      'UID': stu['UID'],
+                      '课序号ID': stu['课序号ID']
+                    };
+                    ksObj['考生'].push(stuObj);
+                  });
+                }
+                obj['考试'].push(ksObj);
+              });
+              obj['考试'] = JSON.stringify(obj['考试']);
+              obj['考生'] = JSON.stringify(obj['考生']);
+              submitFORMPost(kaoShiZuUrl, obj, 'POST');
+            }
+
+          };
+
+          /**
+           * 将试卷添加到场次
+           */
+          $scope.changeSjState = function(sj) {
+            sj.ckd = !sj.ckd;
+          };
+
+          /**
+           * 将新选的试卷加入场次
+           */
+          $scope.addNewPaperToCc = function(){
+            var sltSjIdArr = [];
+            var sltSjArr = [];
+            Lazy($scope.kszSjz['试卷']).each(function(sj, idx, lst){
+              if(sj.ckd){
+                var sjObj = {
+                  '试卷ID': sj['试卷ID'],
+                  '试卷名称': '试卷' + (idx + 1),
+                  '试卷组ID': sj['试卷组ID']
+                };
+                sltSjIdArr.push(sj['试卷ID']);
+                sltSjArr.push(sjObj);
+              }
+            });
+            if(sltSjIdArr.length > 0 && sltSjArr.length > 0){
+              Lazy($scope.kaoShiZuDtl['考试']).each(function(ks){
+                if(ks['考试ID'] == $scope.sltKaoShi['考试ID']){
+                  var kssz = {
+                    '试卷ID': sltSjIdArr
+                  };
+                  ks['考试设置'] = JSON.stringify(kssz);
+                  ks['试卷'] = sltSjArr;
+                }
+              });
+              $scope.sltKaoShi = '';
+            }
+            else{
+              DataService.alertInfFun('err', '请至少选择一张试卷！');
+            }
+          };
+
+          /**
+           * 确定试卷组选择
+           */
+          $scope.confirmSjzSlt = function(){
+            if($scope.kwParams.newSltSjzId != $scope.kaoShiZuDtl['试卷组ID']){
+              var fdTar = Lazy($scope.paperList).find(function(sjz){
+                return sjz['试卷组ID'] == $scope.kwParams.newSltSjzId;
+              });
+              if(fdTar){
+                $scope.kszSjz = fdTar;
+              }
+              $scope.kaoShiZuDtl['试卷组ID'] = angular.copy($scope.kwParams.newSltSjzId);
+              if(!$scope.kaoShiZuDtl['考试组设置']['随机试卷']){ //非随机试卷
+                var sltSjzSjLen = $scope.kszSjz['试卷数量'] || 1;
+                Lazy($scope.kaoShiZuDtl['考试']).each(function(ks, idx, lst){
+                  var nIdx = idx % sltSjzSjLen;
+                  var sjData = $scope.kszSjz['试卷'][nIdx];
+                  var sjObj = {
+                    '试卷ID': sjData['试卷ID'],
+                    '试卷名称': '试卷' + (nIdx + 1),
+                    '试卷组ID': sjData['试卷组ID']
+                  };
+                  var kssz = {
+                    '试卷ID': []
+                  };
+                  ks['试卷'] = [];
+                  kssz['试卷ID'].push(sjData['试卷ID']);
+                  ks['考试设置'] = JSON.stringify(kssz);
+                  ks['试卷'].push(sjObj);
+                });
+              }
+              $scope.showImportStuds = false;
+              $scope.showSjzs = false;
+            }
+            else{
+              DataService.alertInfFun('pmt', '你选择的试卷组和原试卷一样，请重新选择试卷组！');
+            }
+          };
+
+          /**
+           * 返回考试组的场次列表
+           */
+          $scope.backToCcList = function(){
+            $scope.sltKaoShi = '';
           };
 
           /**

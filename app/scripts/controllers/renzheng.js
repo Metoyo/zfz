@@ -120,7 +120,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 urlArr.push(module[7]);
                 urlArr.push(module[8]);
                 //urlArr.push(module[9]);
-                urlArr.push(module[10]);
+                //urlArr.push(module[10]);
                 config.loginUsr = data.data;
                 $rootScope.urlArrs = urlArr;
                 $cookieStore.put('ckUrl', JSON.stringify(urlArr));

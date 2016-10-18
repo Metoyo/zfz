@@ -153,21 +153,48 @@
       <div ng-if="kwParams.showCcSjz">
         <!--修改试卷table-->
         <div ng-if="!kwParams.notice">
-          <p class="text-right mt10" ng-if="kaoShiZuDtl['状态'] < 4">
-            <a href="javascript:void(0)" ng-click="alertPaperWrapShow()">修改试卷</a>
-            <a href="javascript:void(0)" class="ml15" ng-click="daBaoShiJuan()">重新打包试卷</a>
-          </p>
-          <div>
+          <div ng-if="!sltKaoShi">
+            <p class="text-right mt10">
+              <span class="pull-left" ng-bind="kszSjz['试卷组名称']"></span>
+              <a href="javascript:;" class="pull-left plr10" ng-if="kaoShiZuDtl['状态'] < 3" ng-click="showSjzList(true)" title="修改试卷组">
+                <span class="glyphicon glyphicon-pencil"></span>
+              </a>
+              <span class="clRed pull-left" ng-if="kaoShiZuDtl['考试组设置']['随机试卷'] && kaoShiZuDtl['状态'] < 3">(此考试为随机试卷,只能修改试卷组)</span>
+              <span class="clRed pull-left" ng-if="kaoShiZuDtl['考试组设置']['随机试卷'] && kaoShiZuDtl['状态'] >= 3">(此考试为随机试卷)</span>
+              <a href="javascript:void(0)" ng-if="kaoShiZuDtl['状态'] < 3" ng-click="savePaperAlter()">保存修改</a>
+              <a href="javascript:void(0)" class="ml15" ng-if="kaoShiZuDtl['状态'] < 5" ng-click="daBaoShiJuan()">重新下发试卷</a>
+            </p>
             <table class="table table-striped">
               <tr class="active">
                 <th>场次</th>
-                <th class="text-center">试卷组</th>
+                <th>试卷</th>
+                <th class="text-center" width="60px" ng-if="kaoShiZuDtl['状态'] < 3 && !kaoShiZuDtl['考试组设置']['随机试卷']">操作</th>
               </tr>
-              <tr ng-repeat="cc in alertPaperCc">
-                <td ng-bind="cc['考试名称']"></td>
-                <td ng-bind="cc['试卷组信息']"></td>
+              <tr ng-repeat="ks in kaoShiZuDtl['考试']">
+                <td ng-bind="ks['考试名称']"></td>
+                <td>
+                  <span class="mr10" ng-repeat="sj in ks['试卷']" ng-bind="sj['试卷名称']"></span>
+                </td>
+                <td class="text-center" ng-if="kaoShiZuDtl['状态'] < 3 && !kaoShiZuDtl['考试组设置']['随机试卷']">
+                  <a href="javascript:;" ng-click="alterPaper(ks)">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                </td>
               </tr>
             </table>
+          </div>
+          <div ng-if="sltKaoShi">
+            <p class="text-right mt10">
+              <span class="pull-left" ng-bind="sltKaoShi['考试名称']"></span>
+              <a href="javascript:void(0)" ng-click="addNewPaperToCc()">确定</a>
+              <a href="javascript:void(0)" class="ml15" ng-click="backToCcList()">取消</a>
+            </p>
+            <div class="bd1 p10">
+              <label class="checkbox-inline wp20" style="margin-left: 0" ng-repeat="sj in kszSjz['试卷']">
+                <input type="checkbox" value="sj['试卷组ID']"  ng-click="changeSjState(sj)" ng-checked="sj.ckd">
+                {{'试卷' + ($index + 1)}}
+              </label>
+            </div>
           </div>
         </div>
         <!--修改考试须知-->
@@ -182,6 +209,58 @@
           </div>
           <div class="previewWrap p10" ng-bind-html="kaoShiZuDtl['考试须知']" ng-show="kwParams.showNtPre"></div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--试卷组弹出-->
+<div class="popup-wrap" ng-if="showSjzs==true">
+  <div class="popup-wrap-inner">
+    <div class="pwi-header plr10">
+      <button type="button" class="btn btn-danger mt5 ml15 pull-right" ng-click="hideImportList()">取消</button>
+      <button type="button" class="btn btn-primary mt5 pull-right" ng-click="confirmSjzSlt()">确定</button>
+    </div>
+    <div class="pwi-body plr10">
+      <table class="table table-striped mt15 newTable">
+        <tr>
+          <th>试卷名称</th>
+          <th>试卷数量</th>
+        </tr>
+        <tr ng-repeat="sjz in paperList">
+          <td>
+            <label>
+              <input type="radio" value="{{sjz['试卷组ID']}}" ng-model="kwParams.newSltSjzId"> {{sjz['试卷组名称']}}
+            </label>
+          </td>
+          <td ng-bind="sjz['试卷数量']"></td>
+        </tr>
+      </table>
+    </div>
+    <div class="pwi-footer plr10 text-center">
+      <div class="paging text-right">
+        <ul class="pagination pagination-sm">
+          <li ng-class="{disabled: pageParamSjz.activePage == 1}">
+            <a href ng-click="sjzDist(1)">首页</a>
+          </li>
+          <li ng-class="{disabled: pageParamSjz.activePage == 1}">
+            <a href
+               ng-click="sjzDist(prevPg = pageParamSjz.activePage > 1 ? pageParamSjz.activePage - 1 : 1)">
+              上一页
+            </a>
+          </li>
+          <li ng-repeat="pg in pageParamSjz.disPage" ng-class="{active: pageParamSjz.activePage == pg}">
+            <a href ng-click="sjzDist(pg)">{{pg}}</a>
+          </li>
+          <li ng-class="{disabled: pageParamSjz.activePage ==  pageParamSjz.lastPage}">
+            <a href
+               ng-click="sjzDist(nextPg = pageParamSjz.activePage < pageParamSjz.lastPage ? pageParamSjz.activePage + 1 : pageParamSjz.lastPage)">
+              下一页
+            </a>
+          </li>
+          <li ng-class="{disabled: pageParamSjz.activePage == pageParamSjz.lastPage}">
+            <a href ng-click="sjzDist(pageParamSjz.lastPage)">尾页</a>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
