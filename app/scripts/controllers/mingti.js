@@ -68,7 +68,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
           xuanZheTiZhi: '', //选择题题支内容
           tianKongDaAn: '', //填空题答案
           allTkIds: [], //所有题库ID
-          tiXingId: '' //题型转换
+          tiXingId: '', //题型转换
+          uploadType: '' //上传文件的类型
         };
         $scope.tiXingIdArr = [ //题型转换数组
           {txId: 5, txName: '计算题'},
@@ -1300,11 +1301,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
           $scope.$apply(function () {
             $scope.uploadFiles.push(args.file);
           });
-          console.log($scope.uploadFiles);
         });
 
         //添加文件
-        $scope.addMyFile = function(){
+        $scope.addMyFile = function(tp){
+          $scope.mingTiParam.uploadType = tp;
           $('input.addFileBtn').click();
         };
 
@@ -1316,6 +1317,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
         //关闭上传文件弹出层
         $scope.closeMediaPlugin = function(){
           $('#mediaPlugin').hide();
+          $scope.mingTiParam.uploadType = '';
         };
 
         //保存上传文件
@@ -1336,44 +1338,63 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
             }
             $scope.loadingImgShow = true;
             $http.post(uploadUrl, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}}).success(function(data){
-              if(data.result && data.data){
-                $scope.loadingImgShow = false;
+              if(data.result){
                 var i, mediaLength;
                 $scope.uploadFileUrl = data.data;
-                $scope.uploadFiles = [];
+                $scope.loadingImgShow = false;
                 if(data.data && data.data.length > 0){
                   mediaLength = data.data.length;
                   for(i = 0; i < mediaLength; i++){
-                    var findFileType = data.data[i].match(fileTypeReg)[0]; //得到文件格式
-                    var isImg = Lazy(config.imgType).contains(findFileType);
-                    var isVideo = Lazy(config.videoType).contains(findFileType);
-                    var isAudio = Lazy(config.audioType).contains(findFileType);
                     var src = showFileUrl + data.data[i]; //媒体文件路径
-                    if(isImg){
+                    if($scope.mingTiParam.uploadType == 'img'){
                       $.markItUp(
                         { replaceWith:'<img src="'+src+'" alt=""(!( class="[![Class]!]")!) />' }
                       );
                     }
-                    if(isAudio){
+                    if($scope.mingTiParam.uploadType == 'mp3'){
                       $.markItUp(
                         { replaceWith:'<audio src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></audio>' }
                       );
                     }
-                    if(isVideo){
+                    if($scope.mingTiParam.uploadType == 'video'){
                       $.markItUp(
                         { replaceWith:'<video src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></video>' }
                       );
                     }
+                    //var findFileType = data.data[i].match(fileTypeReg)[0]; //得到文件格式
+                    //var isImg = Lazy(config.imgType).contains(findFileType);
+                    //var isVideo = Lazy(config.videoType).contains(findFileType);
+                    //var isAudio = Lazy(config.audioType).contains(findFileType);
+                    //var src = showFileUrl + data.data[i]; //媒体文件路径
+                    //if(isImg){
+                    //  $.markItUp(
+                    //    { replaceWith:'<img src="'+src+'" alt=""(!( class="[![Class]!]")!) />' }
+                    //  );
+                    //}
+                    //if(isAudio){
+                    //  $.markItUp(
+                    //    { replaceWith:'<audio src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></audio>' }
+                    //  );
+                    //}
+                    //if(isVideo){
+                    //  $.markItUp(
+                    //    { replaceWith:'<video src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></video>' }
+                    //  );
+                    //}
                   }
                   $('#mediaPlugin').hide();
                   $('.formulaEditTiGan').keyup();
                   return false;
+                }
+                else{
+                  DataService.alertInfFun('err', '没有文件！');
                 }
               }
               else{
                 DataService.alertInfFun('err', data.error);
               }
               $scope.uploadFiles = [];
+              $scope.mingTiParam.uploadType = '';
               $scope.loadingImgShow = false;
             });
           }

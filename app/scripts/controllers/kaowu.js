@@ -1500,8 +1500,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 var ksObj = {
                   '考试名称': ks['考试名称'],
                   '考点ID': ks['考点ID'],
-                  '开始时间': ks['开始时间'],
-                  '结束时间': ks['结束时间'],
+                  '开始时间': DataService.formatDateZh(ks['开始时间']),
+                  '结束时间': DataService.formatDateZh(ks['结束时间']),
                   '考试时长': ks['考试时长'],
                   '考试设置': JSON.parse(ks['考试设置'])
                   //'考生': ''
@@ -1518,6 +1518,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 }
                 obj['考试'].push(ksObj);
               });
+              console.log(obj);
               obj['考试'] = JSON.stringify(obj['考试']);
               obj['考生'] = JSON.stringify(obj['考生']);
               submitFORMPost(kaoShiZuUrl, obj, 'POST');

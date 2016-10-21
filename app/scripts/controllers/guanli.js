@@ -1,4 +1,4 @@
-define(['angular', 'config', 'jquery', 'lazy', ], function (angular, config, $, lazy) {
+define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, lazy) {
   'use strict';
   angular.module('zhifzApp.controllers.GuanLiCtrl', [])
     .controller('GuanLiCtrl', ['$rootScope', '$scope', 'DataService', '$http', '$cookieStore',
@@ -44,7 +44,8 @@ define(['angular', 'config', 'jquery', 'lazy', ], function (angular, config, $, 
           year: '', //课序号年份(新建课序号)
           term: '', //课序号学期(新建课序号)
           yearQry: '', //课序号年份(查询课序号)
-          termQry: '' //课序号学期(查询课序号)
+          termQry: '', //课序号学期(查询课序号)
+          uid: logUid
         };
         $scope.glEditBoxShow = ''; //弹出层显示那一部分内容
         $scope.jgKmTeachers = ''; //本机构科目下的老师
@@ -1033,6 +1034,115 @@ define(['angular', 'config', 'jquery', 'lazy', ], function (angular, config, $, 
           else{
             DataService.alertInfFun('pmt', '请选择考试组！');
           }
+        };
+
+        /**
+         * 查询科目题型
+         */
+        var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
+        $scope.cxKmTx = function(keMuId){
+          var obj = {method: 'GET', url: xueXiaoKeMuTiXingUrl, params: {'学校ID': jgID, '科目ID': keMuId}};
+          $http(obj).success(function(data){
+            if(data.result && data.data){
+              $scope.kmtxList = data.data;
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
+
+        /**
+         * 生成题库的PDF
+         */
+        $scope.kmArr = [
+          {
+            '科目ID': 1001,
+            '科目名称': "高等数学"
+          },
+          {
+            '科目ID': 1002,
+            '科目名称': "线性代数"
+          },
+          {
+            '科目ID': 1003,
+            '科目名称': "概率论与数理统计"
+          },
+          {
+            '科目ID': 1028,
+            '科目名称': "数学分析"
+          }
+        ];
+        $scope.tkPar = {
+          kmid: '',
+          txid: ''
+        };
+        var tiMuUrl = '/timu'; //题目的URL
+        $scope.exportTiKu = function(){
+          //var obj = {
+          //  method: 'GET',
+          //  url: tiMuUrl,
+          //  params: {
+          //    '学校ID': jgID,
+          //    '科目ID': $scope.tkPar.kmid,
+          //    '题型ID': $scope.tkPar.txid,
+          //    '返回题目内容': true
+          //  }
+          //};
+          //$http(obj).success(function(data){ //查询题目详情
+          //  if(data.result && data.data){
+          //    Lazy(data.data).each(function(tm, idx, lst){
+          //      tm = DataService.formatDaAn(tm);
+          //    });
+          //    var tmArrSort = Lazy(data.data).sortBy('题目ID').reverse().toArray();
+          //    var timu = {
+          //      tixing: '我是题型',
+          //      txArr: config.tiXingArr,
+          //      letterArr: config.letterArr,
+          //      tmArr: tmArrSort
+          //    };
+          //    template.config('escape', false);
+          //    var html = template('tplTestList', timu);
+          //    $('#tiMuWrap').html(html);
+          //    MathJax.Hub.Config({
+          //      tex2jax: {inlineMath: [["#$", "$#"]], displayMath: [['#$$','$$#']]},
+          //      messageStyle: "none",
+          //      showMathMenu: false,
+          //      processEscapes: true
+          //    });
+          //    MathJax.Hub.Queue(["Typeset", MathJax.Hub, "testList"]);
+          //  }
+          //  else{
+          //    DataService.alertInfFun('err', data.error);
+          //  }
+          //});
+          var obj = {
+            method: 'GET',
+            url: '/tiku_pdf',
+            params: {
+              '学校ID': jgID,
+              '科目ID': $scope.tkPar.kmid,
+              '科目名称': '',
+              '题型ID': $scope.tkPar.txid,
+              '题型名称': ''
+            }
+          };
+          var fdKm = Lazy($scope.kmArr).find(function(km){
+            return km['科目ID'] == $scope.tkPar.kmid;
+          });
+          var fdTx = Lazy($scope.kmtxList).find(function(tx){
+            return tx['题型ID'] == $scope.tkPar.txid;
+          });
+          obj.params['科目名称'] = fdKm['科目名称'];
+          obj.params['题型名称'] = fdTx['题型名称'];
+          $http(obj).success(function(data){
+            if(data.result){
+              DataService.alertInfFun('suc', '正在生成中……');
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
         };
 
       }]);

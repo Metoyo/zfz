@@ -143,7 +143,7 @@ define( "config", [], function () {
     imgType: ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
     videoType: ['.ogv', '.mp4', '.avi', '.mkv', '.wmv'],
     audioType: ['.ogg', '.mp3', '.wav'],
-    uploadFileSizeLimit: 2097152, //上传文件的大小限制2MB
+    uploadFileSizeLimit: 209715200, //上传文件的大小限制2MB
     loginUsr: '' //登录用户
   };
 });

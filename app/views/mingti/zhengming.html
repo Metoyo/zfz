@@ -53,28 +53,52 @@
             </div>
           </div>
         </div>
-        <div class="form-group fileUploadBox">
-          <div id="mediaPlugin">
-            <div class="mediaPluginInner">
-              <div class="row">
-                <p class="uploadBtnBox">
-                  <input type="file" file-upload multiple class="pull-left hide addFileBtn"/>
-                  <button ng-click="addMyFile()" class="btn btn-default pull-left">添加文件</button>
-                  <span ng-show="uploadFiles.length">{{uploadFiles.length}}个文件</span>
-                  <button ng-click="uploadMyFiles()" class="btn btn-default pull-right">添加到编辑器</button>
-                </p>
-                <p ng-repeat="fl in uploadFiles track by $index">
-                  <span ng-bind="fl.name"></span>
-                  <span ng-bind="(fl.size/1024).toFixed(2) + 'KB'"></span>
-                  <span class="glyphicon glyphicon-remove" ng-click="deleteSelectFile($index)"></span>
-                </p>
-              </div>
-              <div class="closeBtn">
-                <a href="javascript:void(0)" ng-click="closeMediaPlugin()">关闭</a>
-              </div>
+        <div id="mediaPlugin" class="popup-wrap">
+          <div class="popup-wrap-inner">
+            <div class="pwi-header plr10 text-center">
+              <input type="file" file-upload multiple class="pull-left hide addFileBtn"/>
+              <button ng-click="addMyFile('img')" class="btn btn-success mt7">添加图片</button>
+              <button ng-click="addMyFile('mp3')" class="btn btn-success ml15 mt7">添加音频</button>
+              <button ng-click="addMyFile('video')" class="btn btn-success ml15 mt7">添加视频</button>
+            </div>
+            <div class="pwi-body plr10">
+              <p class="mt15" ng-show="uploadFiles.length">
+                <span>共 {{uploadFiles.length}} 个文件</span>
+              </p>
+              <p class="mt15" ng-repeat="fl in uploadFiles track by $index">
+                <span ng-bind="fl.name"></span>
+                <span ng-bind="(fl.size/1024).toFixed(2) + 'KB'"></span>
+                <span class="glyphicon glyphicon-remove" ng-click="deleteSelectFile($index)"></span>
+              </p>
+            </div>
+            <div class="pwi-footer plr10 text-center">
+              <button type="button" class="btn btn-primary mt7" ng-click="uploadMyFiles()">添加到编辑器</button>
+              <button type="button" class="btn btn-danger ml15 mt7" ng-click="closeMediaPlugin()">关闭</button>
             </div>
           </div>
         </div>
+        <!--<div class="form-group fileUploadBox">-->
+          <!--<div id="mediaPlugin">-->
+            <!--<div class="mediaPluginInner">-->
+              <!--<div class="row">-->
+                <!--<p class="uploadBtnBox">-->
+                  <!--<input type="file" file-upload multiple class="pull-left hide addFileBtn"/>-->
+                  <!--<button ng-click="addMyFile()" class="btn btn-default pull-left">添加文件</button>-->
+                  <!--<span ng-show="uploadFiles.length">{{uploadFiles.length}}个文件</span>-->
+                  <!--<button ng-click="uploadMyFiles()" class="btn btn-default pull-right">添加到编辑器</button>-->
+                <!--</p>-->
+                <!--<p ng-repeat="fl in uploadFiles track by $index">-->
+                  <!--<span ng-bind="fl.name"></span>-->
+                  <!--<span ng-bind="(fl.size/1024).toFixed(2) + 'KB'"></span>-->
+                  <!--<span class="glyphicon glyphicon-remove" ng-click="deleteSelectFile($index)"></span>-->
+                <!--</p>-->
+              <!--</div>-->
+              <!--<div class="closeBtn">-->
+                <!--<a href="javascript:void(0)" ng-click="closeMediaPlugin()">关闭</a>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
       </div>
       <div class="form-body">
         <div class="form-group answerBox" ng-hide="hideJiSuanDaAnEdt" ng-init="hideJiSuanDaAnEdt=false">

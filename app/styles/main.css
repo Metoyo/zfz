@@ -36,6 +36,9 @@ h1, h2, h3, h4, h5, h6,
 .form-control {
   font-size: 15px; }
 
+.wp20 {
+  width: 20%; }
+
 .wp22 {
   width: 22%; }
 
@@ -1924,6 +1927,8 @@ label.checkbox {
     padding: 10px;
     background-color: #f5f5f5;
     float: left;
+    width: 100%; }
+  .previewBox #prevDoc video {
     width: 100%; }
 
 .mktEditor .markItUpButton a {

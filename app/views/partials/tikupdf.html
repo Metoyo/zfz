@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>题库导出</title>
+    <style type="text/css">
+        html{font-family:sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+        body{font-family:Helvetica,Tahoma,Arial,"Microsoft YaHei","微软雅黑",SimSun,"宋体",STXihei,"华文细黑",Heiti,"黑体",sans-serif;color:#000;font-size:14px;overflow-x:hidden;margin:0;}
+        h1,h2,h3,h4,h5,h6{
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .center{
+            text-align: center;
+        }
+        .testList{
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            float: left;
+            width: 98%;
+        }
+        .testList li {
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #d8d8d8;
+            position: relative;
+            float: left;
+            width: 100%;
+        }
+        .testList .item-sub-title {
+            font-size: 14px;
+            width: 100%;
+            line-height: 30px;
+            float: left;
+        }
+        .testList .item-sub-title p {
+            display: inline;
+            float: left;
+            margin: 0 10px 0 0;
+        }
+        .testList .item-sub-title .knowledge-point span {
+            margin-right: 10px;
+        }
+        .testList .item-sub-title .knowledge-point-zsd>span {
+            margin-right: 0;
+            margin-left: -10px;
+        }
+        .testList .item-sub-title .level-num span {
+            width: 42px;
+            height: 10px;
+            margin-top: 10px;
+            display: inline-block;
+            background: url('https://www.zhifz.com/images/levelstar.1e8453db.png') no-repeat 0 0;
+        }
+        .testList .item-sub-title .level-num .level-star-2{
+            background-position:0 -10px
+        }
+        .testList .item-sub-title .level-num .level-star-3{
+            background-position:0 -20px
+        }
+        .testList .item-sub-title .level-num .level-star-4{
+            background-position:0 -30px
+        }
+        .testList .item-sub-title .level-num .level-star-5{
+            background-position:0 -40px
+        }
+        .testList .item-cont {
+            width: 100%;
+            float: left;
+        }
+        .testList .item-tigan {
+            margin: 0 0 10px 0;
+            line-height: 24px;
+            font-size: 14px;
+            font-weight: 400;
+        }
+        .testList .item-cont img {
+            max-width: 100%;
+        }
+        .testList .item-cont .item-tizhi-wrap {
+            margin-bottom: 5px;
+        }
+        .testList .item-cont .item-tizhi-wrap .item-tizhi {
+            margin: 0 0 5px 0;
+            line-height: 20px;
+        }
+        .testList .answer-cont {
+            float: left;
+            width: 100%;
+            position: relative;
+            font-size: 14px;
+            line-height: 24px;
+        }
+        .positionRe {
+            position: relative;
+        }
+        .testList .answer-cont .daAnLabel {
+            position: absolute;
+        }
+        .testList .answer-cont .daAnBox {
+            margin-left: 45px;
+        }
+    </style>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          displayAlign: "left",
+          displayIndent: "3em",
+          extensions: ["tex2jax.js"],
+          jax: ["input/TeX", "output/SVG"],
+          imageFont: null,
+          tex2jax: {inlineMath: [["#$", "$#"], ["\\[", "\\]"]], displayMath: [['#$$','$$#']]},
+          messageStyle: "none",
+          showProcessingMessages: false,
+          showMathMenu: false,
+          processEscapes: true,
+          TeX: {
+            extensions: ["AMSmath.js","AMSsymbols.js", "color.js"],
+            TagSide: "left",
+            TagIndent: "0em",
+            MultLineWidth: "85%",
+            equationNumbers: {
+              autoNumber: "AMS"
+            },
+            unicode: {
+              fonts: "STIXGeneral,'Arial Unicode MS'"
+            }
+          },
+          SVG: {
+            font: "TeX",
+            //scale: 90,
+            minScaleAdjust: 50,
+            linebreaks: {
+              automatic: true
+            },
+            styles: {
+              // Avoid rectangles with a black surrounding stroke in PrinceXML
+              ".mjx-svg-href" : {
+                fill: "none",
+                stroke: "none"
+              },
+              // Links to other formulas in black
+              ".MathJax_ref" : {
+                fill: "#000000",
+                stroke: "none"
+              },
+              ".MathJax_SVG": {
+                //"vertical-align": "baseline"
+                //"vertical-align": "-1px"
+              }
+            },
+            matchFontHeight: true,
+            mtextFontInherit: true,
+            addMMLclasses: false
+          }
+        });
+
+        var MathJaxFinished = false;
+        MathJax.Hub.Queue(function () {
+          document.getElementById("hide_page").style.visibility = "";
+          MathJaxFinished = true;
+        });
+    </script>
+    <script type="text/javascript" src="../../bower_components/markitup/MathJax.js"></script>
+</head>
+<body>
+<div id="hide_page" style="visibility:hidden;-moz-user-select:none;-webkit-user-select:none">
+    <h3 class="center">{{kmName}} - {{txName}}</h3>
+    <h4 class="center">共 {{tmLen}} 题</h4>
+    <ul class="list-unstyled testList" id="testList">
+        {{each tmArr as tm i}}
+        <li>
+            <div class="item-sub-title pull-left">
+                <p class="knowledge-point">
+                    {{i + 1}}、
+                </p>
+                <p class="knowledge-point">
+                    题型：<span>{{txArr[tm['题型ID']-1]}}</span>
+                </p>
+                <p class="knowledge-point-zsd">
+                    知识点：
+                    {{each tm['知识点'] as zsd j}}
+                    <span>【{{zsd['知识点名称']}}】</span>
+                    {{/each}}
+                </p>
+                <p class="level-num">
+                    难易度：<span class="pull-right level-star-{{tm['难度']}}"></span>
+                </p>
+                <p class="knowledge-point">
+                    ID：<span class="pull-right">{{tm['题目ID']}}</span>
+                </p>
+                <p>
+                    创建时间：{{tm['创建时间']}}
+                </p>
+            </div>
+            <div class="item-cont">
+                <h3 class="item-tigan">{{tm['题目内容']['题干']}}</h3>
+                <div class="item-tizhi-wrap">
+                    {{each tm['题目内容']['选项'] as tz k}}
+                    <p class="item-tizhi">
+                        <span>{{'(' + letterArr[k] + ')'}}</span>
+                        <span class="tiZhiSpan">{{tz}}</span>
+                    </p>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="answer-cont">
+                <div class="positionRe">
+                    <span class="daAnLabel">答案：</span>
+                    <div class="daAnBox">{{tm['题目内容']['答案']}}</div>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+</body>
+</html>
