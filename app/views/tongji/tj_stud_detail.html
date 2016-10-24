@@ -58,7 +58,7 @@
         <ul class="list-unstyled">
           <li class="ptb5" ng-repeat="xtm in dati.tm" ng-hide="checkboxModel && xtm.ZUIHOU_PINGFEN == xtm.XIAOTI_FENZHI">
             <h4 class="ar-tiGan itemHasImg">
-              <span ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan"></span>
+              <span ng-bind-html="($index + 1) + '、' + xtm.TIGAN.tiGan | outTiGan"></span>
               (本小题  <b ng-bind="xtm.XIAOTI_FENZHI"></b>  分)
               (最后得分：<b class="clRed" ng-bind="xtm.ZUIHOU_PINGFEN"></b>  分)
               (本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)

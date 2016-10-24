@@ -376,7 +376,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           /**
            * 查询课件列表
            */
-          $scope.getKeJianList = function(){
+          $scope.getClassTest = function(){
             var obj = {
               method: 'GET',
               url: ceYanUrl,
@@ -397,9 +397,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               }
             });
             $scope.tabActive = 'kjgl';
-            $scope.txTpl = 'views/kejian/keJianList.html';
+            $scope.txTpl = 'views/kejian/classTestList.html';
           };
-          $scope.getKeJianList();
+          $scope.getClassTest();
 
           /**
            * 课件的分页数据查询函数
@@ -495,7 +495,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                     });
                     timu.data[0]['参与人数'] = timu.data[0]['参与人数'] || 1;
                     $scope.keJianDtl = timu.data[0];
-                    $scope.txTpl = 'views/kejian/kjDetail.html';
+                    $scope.txTpl = 'views/kejian/classTestDetail.html';
                   }
                   else{
                     $scope.keJianDtl = '';
@@ -576,7 +576,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
            */
           $scope.backToList = function(){
             $scope.keJianDtl = '';
-            $scope.getKeJianList();
+            $scope.getClassTest();
           };
 
           /**
@@ -589,7 +589,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           /**
            * 新增课件
            */
-          $scope.addNewKeJian = function(){
+          $scope.addClassTest = function(){
             $scope.newKeJian = {
               '测验名称': '',
               '学校ID': jgID,
@@ -621,7 +621,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             //显示时间选择器
             datePickerFun();
             $scope.tabActive = 'xjkj';
-            $scope.txTpl = 'views/kejian/addNewKeJian.html';
+            $scope.txTpl = 'views/kejian/addClassTest.html';
           };
 
           /**
@@ -891,7 +891,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                 $scope.keJianPaper.push(kj);
               }
             });
-            $scope.txTpl = 'views/kejian/addNewKeJian.html';
+            $scope.txTpl = 'views/kejian/addClassTest.html';
             //显示时间选择器
             datePickerFun();
             $scope.kjParams.wrapTran = true;
@@ -928,7 +928,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               $http(obj).success(function(pData){
                 if(pData.result){
                   $scope.kjParams.wrapTran = true;
-                  $scope.getKeJianList();
+                  $scope.getClassTest();
                   DataService.alertInfFun('suc', '保存成功！');
                 }
                 else{

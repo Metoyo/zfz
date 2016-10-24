@@ -133,7 +133,7 @@
         <ul class="list-unstyled testList">
           <li ng-repeat="tm in tx['固定题目']">
             <div class="item-cont positionRe daTiName">
-              <h3 class="item-tigan" style="padding-right:100px" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干']"></h3>
+              <h3 class="item-tigan" style="padding-right:100px" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干'] | outTiGan"></h3>
               <div class="fenZhi">
                 <span class="datiMoveBtns mr15">
                   <button type="button" class="btn btn-default" ng-click="moveTM($index, -1, tx, tm)" ng-hide="$first">上移</button>

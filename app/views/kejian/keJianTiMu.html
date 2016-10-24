@@ -127,7 +127,7 @@
             </div>
           </div>
           <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
-            <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干']"></h3>
+            <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干'] | outTiGan"></h3>
             <div class="item-tizhi-wrap">
               <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
                 <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>

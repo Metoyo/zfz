@@ -62,7 +62,7 @@
               <ul class="list-unstyled">
                 <li class="ptb5" ng-repeat="xtm in dati['题目']" ng-hide="checkboxModel && xtm['考生作答']['得分'] == xtm['分值']">
                   <h4 class="ar-tiGan itemHasImg">
-                    <span ng-bind-html="($index + 1) + '、' + xtm['题目内容']['题干']"></span>
+                    <span ng-bind-html="($index + 1) + '、' + xtm['题目内容']['题干'] | outTiGan"></span>
                     (本小题 <b ng-bind="xtm['分值']"></b> 分)
                     (最后得分：<b class="clRed" ng-bind="xtm['考生作答']['得分']"></b> 分)
                     <!--(本题得分率：<b ng-bind="xtm.itemDeFenLv + '%'"></b>)-->
