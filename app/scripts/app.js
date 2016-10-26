@@ -19,7 +19,6 @@ define([
   'filters/localdate',
   'filters/examstatus',
   'filters/outtigan',
-  'directives/nandustar',
   'directives/passwordverify',
   'directives/bnslideshow',
   'directives/fileupload',
@@ -27,7 +26,7 @@ define([
   'services/dataservice'
 ], function (angular, config, lazy, UrlredirectService, RenzhengCtrl, NavCtrl, MingtiCtrl, DagangCtrl, UserCtrl, RegisterCtrl,
              ZujuanCtrl, KaowuCtrl, TongjiCtrl, StudentCtrl, GuanLiCtrl, KejianCtrl, LocaldateFilter,
-             ExamstatusFilter, OuttiganFilter, NandustarDirective, PasswordverifyDirective, BnslideshowDirective,
+             ExamstatusFilter, OuttiganFilter, PasswordverifyDirective, BnslideshowDirective,
              FileuploadDirective, RepeatdoneDirective, DataServiceService) {
   'use strict';
   return angular.module('zhifzApp', [
@@ -50,7 +49,6 @@ define([
     'zhifzApp.directives.Repeatdone',
     'zhifzApp.directives.Fileupload',
     'zhifzApp.directives.Bnslideshow',
-    'zhifzApp.directives.Nandustar',
     'zhifzApp.directives.Passwordverify',
     'zhifzApp.services.DataService',
 /*angJSDeps*/

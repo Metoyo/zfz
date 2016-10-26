@@ -1293,15 +1293,32 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
         /**
          * 文件上传
          */
-          //存放上传文件的数组
+        var clearInput = function(){
+          var file = document.getElementById('fileUpload');
+          if (file.outerHTML) {
+            file.outerHTML = file.outerHTML;
+          } else { // FF(包括3.5)
+            file.value = "";
+          }
+        };
+        //存放上传文件的数组
         $scope.uploadFiles = [];
 
-        //将选择的文件加入到数组
+        //将选择的文件加入到数组, 方法一
         $scope.$on("fileSelected", function (event, args) {
           $scope.$apply(function () {
+            $scope.uploadFiles = [];
             $scope.uploadFiles.push(args.file);
           });
         });
+        //将选择的文件加入到数组, 方法二
+        $scope.fileNameChanged = function(element) {
+          $scope.$apply(function($scope) {
+            for (var i = 0; i < element.files.length; i++) {
+              $scope.uploadFiles.push(element.files[i])
+            }
+          });
+        };
 
         //添加文件
         $scope.addMyFile = function(tp){
@@ -1312,12 +1329,15 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
         //删除选择的文件
         $scope.deleteSelectFile = function(idx){
           $scope.uploadFiles.splice(idx, 1);
+          clearInput();
         };
 
         //关闭上传文件弹出层
         $scope.closeMediaPlugin = function(){
           $('#mediaPlugin').hide();
           $scope.mingTiParam.uploadType = '';
+          $scope.uploadFiles = [];
+          clearInput();
         };
 
         //保存上传文件
@@ -1342,6 +1362,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
                 var i, mediaLength;
                 $scope.uploadFileUrl = data.data;
                 $scope.loadingImgShow = false;
+                $scope.uploadFiles = [];
                 if(data.data && data.data.length > 0){
                   mediaLength = data.data.length;
                   for(i = 0; i < mediaLength; i++){

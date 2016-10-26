@@ -396,7 +396,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                 DataService.alertInfFun('err', data.error);
               }
             });
-            $scope.tabActive = 'kjgl';
+            $scope.tabActive = 'stcy';
             $scope.txTpl = 'views/kejian/classTestList.html';
           };
           $scope.getClassTest();
@@ -620,7 +620,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $scope.keJianPaper = [];
             //显示时间选择器
             datePickerFun();
-            $scope.tabActive = 'xjkj';
+            $scope.tabActive = 'xjcy';
             $scope.txTpl = 'views/kejian/addClassTest.html';
           };
 

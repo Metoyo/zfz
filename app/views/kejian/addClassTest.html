@@ -1,18 +1,20 @@
 <!--导航-->
-<div class="sub-nav fixed-top" ng-init="tabActive = 'xjkj'">
+<div class="sub-nav fixed-top" ng-init="tabActive = 'xjcy'">
   <ul class="nav nav-tabs">
-    <li ng-class="{active: tabActive == 'kjgl'}">
+    <li ng-class="{active: tabActive == 'stcy'}">
       <a href="javascript:void(0)" ng-click="getClassTest()">
+        随堂测验
+      </a>
+    </li>
+    <li ng-class="{active: tabActive == 'xjcy'}">
+      <a href="javascript:void(0)" ng-click="addClassTest()">
+        新建测验
+      </a>
+    </li>
+    <li ng-class="{active: tabActive == 'kjgl'}">
+      <a href="javascript:void(0)" ng-click="getKeJianList()">
         课件管理
       </a>
-    </li>
-    <li ng-class="{active: tabActive == 'xjkj'}">
-      <a href="javascript:void(0)" ng-click="addClassTest()">
-        新建课件
-      </a>
-    </li>
-    <li class="pull-right" ng-show="keJianDtl">
-      <button class="btn btn-danger mt5 mr10" ng-click="backToList()">返回列表</button>
     </li>
   </ul>
 </div>
@@ -41,7 +43,7 @@
                  ng-model="newKeJian['测验设置']['时限']"/>
         </div>
         <!--<div class="col-sm-4">-->
-          <!--<p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">时限不能为空！</p>-->
+        <!--<p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">时限不能为空！</p>-->
         <!--</div>-->
       </div>
       <div class="form-group">

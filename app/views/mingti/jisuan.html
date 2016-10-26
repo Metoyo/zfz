@@ -54,7 +54,7 @@
         <div id="mediaPlugin" class="popup-wrap">
           <div class="popup-wrap-inner">
             <div class="pwi-header plr10 text-center">
-              <input type="file" file-upload multiple class="pull-left hide addFileBtn"/>
+              <input id="fileUpload" type="file" class="pull-left hide addFileBtn" multiple onchange="angular.element(this).scope().fileNameChanged(this)"/>
               <button ng-click="addMyFile('img')" class="btn btn-success mt7">添加图片</button>
               <button ng-click="addMyFile('mp3')" class="btn btn-success ml15 mt7">添加音频</button>
               <button ng-click="addMyFile('video')" class="btn btn-success ml15 mt7">添加视频</button>
