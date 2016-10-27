@@ -308,7 +308,8 @@
                 <em>
                   请选择上传人员信息的文件，格式为Excel格式
                 </em>
-                <input type="file" file-upload="" multiple="" class="pull-left mt15 addFileBtn">
+                <!--<input type="file" file-upload multiple class="pull-left mt15 addFileBtn">-->
+                <input id="fileUpload" type="file" class="pull-left" multiple onchange="angular.element(this).scope().fileNameChanged(this)"/>
               </form>
             </div>
           </div>

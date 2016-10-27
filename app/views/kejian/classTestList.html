@@ -22,46 +22,46 @@
 <div class="tab-content wp90 mlp5">
   <table class="table table-striped">
     <tr class="active">
-      <th>课件名称</th>
+      <th>测验名称</th>
       <th width="220px" class="text-center">创建时间</th>
       <th width="220px" class="text-center">时限</th>
       <th width="100px" class="text-center">测试结果</th>
       <th width="80px" class="text-center">二维码</th>
       <th width="80px" class="text-center">操作</th>
     </tr>
-    <tr ng-repeat="kj in keJianList">
-      <td ng-bind="kj['测验名称'] + '(参与人数:' + (kj['参与人数'] || 0) + ')'"></td>
-      <td class="text-center" ng-bind="kj['创建时间'] | localDate:'ww'"></td>
-      <td class="text-center" ng-bind="kj['测验设置']['时限'] | localDate:'ww'"></td>
-      <td class="text-center"><a href="javascript:void(0)" ng-click="keJianDetail(kj['测验ID'])">查看</a></td>
-      <td class="text-center"><a href="javascript:void(0)" ng-click="makeErWeiMa(kj['测验ID'])">生成</a></td>
+    <tr ng-repeat="ct in classTestList">
+      <td ng-bind="ct['测验名称'] + '(参与人数:' + (ct['参与人数'] || 0) + ')'"></td>
+      <td class="text-center" ng-bind="ct['创建时间'] | localDate:'ww'"></td>
+      <td class="text-center" ng-bind="ct['测验设置']['时限'] | localDate:'ww'"></td>
+      <td class="text-center"><a href="javascript:void(0)" ng-click="classTestDetail(ct['测验ID'])">查看</a></td>
+      <td class="text-center"><a href="javascript:void(0)" ng-click="makeErWeiMa(ct['测验ID'])">生成</a></td>
       <td class="text-center">
-        <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKeJian(kj['测验ID'])" title="删除"></span>
+        <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteClassTest(ct['测验ID'])" title="删除"></span>
       </td>
     </tr>
   </table>
-  <div class="paging text-right" ng-if="keJianList.length">
+  <div class="paging text-right" ng-if="classTestList.length">
     <ul class="pagination pagination-sm">
       <li ng-class="{disabled: pageParam.activePage == 1}">
-        <a href ng-click="keJianDist(1)">首页</a>
+        <a href ng-click="classTestDist(1)">首页</a>
       </li>
       <li ng-class="{disabled: pageParam.activePage == 1}">
         <a href
-           ng-click="keJianDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
+           ng-click="classTestDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
           上一页
         </a>
       </li>
       <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
-        <a href ng-click="keJianDist(pg)">{{pg}}</a>
+        <a href ng-click="classTestDist(pg)">{{pg}}</a>
       </li>
       <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
         <a href
-           ng-click="keJianDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
+           ng-click="classTestDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
           下一页
         </a>
       </li>
       <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
-        <a href ng-click="keJianDist(pageParam.lastPage)">尾页</a>
+        <a href ng-click="classTestDist(pageParam.lastPage)">尾页</a>
       </li>
     </ul>
   </div>

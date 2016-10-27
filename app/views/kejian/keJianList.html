@@ -20,67 +20,68 @@
 </div>
 <!-- 考务的容器 开始-->
 <div class="tab-content wp90 mlp5">
-  <table class="table table-striped">
+  <button type="button" class="btn btn-primary" ng-click="showKeJianAdd()">添加课件</button>
+  <table class="table table-striped mt15">
     <tr class="active">
       <th>课件名称</th>
       <th width="220px" class="text-center">创建时间</th>
-      <th width="220px" class="text-center">时限</th>
-      <th width="100px" class="text-center">测试结果</th>
-      <th width="80px" class="text-center">二维码</th>
       <th width="80px" class="text-center">操作</th>
     </tr>
     <tr ng-repeat="kj in keJianList">
-      <td ng-bind="kj['测验名称'] + '(参与人数:' + (kj['参与人数'] || 0) + ')'"></td>
+      <td>
+        <a ng-href="/show_file/{{kj['文件名称']}}" ng-bind="kj['备注']"></a>
+      </td>
       <td class="text-center" ng-bind="kj['创建时间'] | localDate:'ww'"></td>
-      <td class="text-center" ng-bind="kj['测验设置']['时限'] | localDate:'ww'"></td>
-      <td class="text-center"><a href="javascript:void(0)" ng-click="keJianDetail(kj['测验ID'])">查看</a></td>
-      <td class="text-center"><a href="javascript:void(0)" ng-click="makeErWeiMa(kj['测验ID'])">生成</a></td>
       <td class="text-center">
-        <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKeJian(kj['测验ID'])" title="删除"></span>
+        <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKeJian(kj)" title="删除"></span>
       </td>
     </tr>
   </table>
   <div class="paging text-right" ng-if="keJianList.length">
     <ul class="pagination pagination-sm">
       <li ng-class="{disabled: pageParam.activePage == 1}">
-        <a href ng-click="keJianDist(1)">首页</a>
+        <a href ng-click="classTestDist(1)">首页</a>
       </li>
       <li ng-class="{disabled: pageParam.activePage == 1}">
         <a href
-           ng-click="keJianDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
+           ng-click="classTestDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
           上一页
         </a>
       </li>
       <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
-        <a href ng-click="keJianDist(pg)">{{pg}}</a>
+        <a href ng-click="classTestDist(pg)">{{pg}}</a>
       </li>
       <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
         <a href
-           ng-click="keJianDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
+           ng-click="classTestDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
           下一页
         </a>
       </li>
       <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
-        <a href ng-click="keJianDist(pageParam.lastPage)">尾页</a>
+        <a href ng-click="classTestDist(pageParam.lastPage)">尾页</a>
       </li>
     </ul>
   </div>
-  <!--弹出层-->
-  <div class="popup-wrap" ng-show="kjParams.showErWeiMa">
-    <div class="popup-wrap-inner">
-      <div class="pwi-header plr10 text-center">
-        <span class="title">课序号管理</span>
-      </div>
-      <div class="pwi-body plr10">
-        <div id="QRCodeBox" class="text-center" style="margin-top: 60px">
-        </div>
-      </div>
-      <div class="pwi-footer plr10 text-center">
-        <a id="downloadEwm" class="btn btn-success mt5" href="" download="课件二维码.png">
-          保存图片
-        </a>
-        <button type="button" class="btn btn-danger mt5 ml15" ng-click="closePopup()">关闭</button>
-      </div>
+</div>
+<div class="popup-wrap" ng-if="upLoadWrap">
+  <div class="popup-wrap-inner">
+    <div class="pwi-header plr10 text-center">
+      <input id="fileUpload" type="file" class="pull-left hide addFileBtn" multiple onchange="angular.element(this).scope().fileNameChanged(this)"/>
+      <button ng-click="addMyFile()" class="btn btn-success mt7">添加文件</button>
+    </div>
+    <div class="pwi-body plr10">
+      <p class="mt15" ng-show="uploadFiles.length">
+        <span>共 {{uploadFiles.length}} 个文件</span>
+      </p>
+      <p class="mt15" ng-repeat="fl in uploadFiles track by $index">
+        <span ng-bind="fl.name"></span>
+        <span ng-bind="(fl.size/1024).toFixed(2) + 'KB'"></span>
+        <span class="glyphicon glyphicon-remove" ng-click="deleteSelectFile($index)"></span>
+      </p>
+    </div>
+    <div class="pwi-footer plr10 text-center">
+      <button type="button" class="btn btn-primary mt7" ng-click="uploadMyFiles()">上传</button>
+      <button type="button" class="btn btn-danger ml15 mt7" ng-click="closeKeJianAdd()">关闭</button>
     </div>
   </div>
 </div>

@@ -346,11 +346,13 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          * 文件上传
          */
         $scope.uploadFiles = []; //存放上传文件的数组
-        $scope.$on("fileSelected", function (event, args) { //将选择的文件加入到数组
-          $scope.$apply(function () {
-            $scope.uploadFiles.push(args.file);
+        $scope.fileNameChanged = function(element) {
+          $scope.$apply(function($scope) {
+            for (var i = 0; i < element.files.length; i++) {
+              $scope.uploadFiles.push(element.files[i])
+            }
           });
-        });
+        };
 
         /**
          * 显示弹出层

@@ -30,7 +30,7 @@
         <label class="col-sm-2 control-label">课件名称<i>*</i></label>
         <div class="col-sm-6">
           <input type="text" name="ksName" class="form-control" placeholder="课件名称" required autofocus="true"
-                 ng-model="newKeJian['测验名称']"/>
+                 ng-model="newClassTest['测验名称']"/>
         </div>
         <div class="col-sm-4">
           <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">课件名称不能为空！</p>
@@ -40,7 +40,7 @@
         <label class="col-sm-2 control-label">时限</label>
         <div class="col-sm-6">
           <input type="text" name="ksTime" class="form-control start-date limitDate" placeholder="限定时间"
-                 ng-model="newKeJian['测验设置']['时限']"/>
+                 ng-model="newClassTest['测验设置']['时限']"/>
         </div>
         <!--<div class="col-sm-4">-->
         <!--<p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">时限不能为空！</p>-->
@@ -54,7 +54,7 @@
       </div>
       <div class="save-box">
         <!--ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || loadingImgShow">保存课件-->
-        <button type="button" class="btn btn-primary" ng-click="saveKeJian()"
+        <button type="button" class="btn btn-primary" ng-click="saveClassTest()"
                 ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">保存课件
         </button>
       </div>
@@ -62,9 +62,9 @@
   </div>
 </div>
 <!--课件预览-->
-<div class="wp90 mlp5" ng-if="keJianPaper.length">
+<div class="wp90 mlp5" ng-if="classTestPaper.length">
   <div id="paperWrap" class="panel-body paperWrap">
-    <div class="pull-left wp100" ng-repeat="tx in keJianPaper" repeat-done>
+    <div class="pull-left wp100" ng-repeat="tx in classTestPaper" repeat-done>
       <h4 class="plr10" ng-bind="cnNumArr[$index] + '、' + tx['大题名称']"></h4>
       <ul class="list-unstyled testList">
         <li ng-repeat="tm in tx['题目']">

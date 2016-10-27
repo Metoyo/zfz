@@ -21,9 +21,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           var tiMuUrl = '/timu'; //题目的URL
           var yongHuUrl = '/yonghu'; //用户的增删改查
           var tiKuUrl = '/tiku'; //题库
+          var uploadUrl = '/upload'; //命题的文件上传
+          var yongHuWenJianUrl = '/yonghu_wenjian';
           var itemNumPerPage = 10; //每页多少条数据
           var paginationLength = 11; //分页显示多少也
-          var keJianDataStore = ''; //存放课件数据
+          var classTestDataStore = ''; //存放课件数据
           var testUrl = 'https://www.zhifz.com/pub_test/'; //二维码的地址
           var tiMuIdArr = []; //获得查询题目ID的数组
           var pageArr = []; //根据得到的数据定义一个分页数组
@@ -56,8 +58,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             pageArr: [],
             disPage: []
           };
-          $scope.keJianDtl = ''; //课件详情
-          $scope.newKeJian = {}; //新建课件
+          $scope.classTestDtl = ''; //课件详情
+          $scope.newClassTest = {}; //新建课件
           $scope.nanDuList = [
             {
               '难度ID': 1,
@@ -331,8 +333,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                   Lazy(data.data).each(function(tm, idx, lst){
                     tm = DataService.formatDaAn(tm);
                     tm.ckd = false;
-                    if($scope.keJianPaper.length > 0){
-                      Lazy($scope.keJianPaper).each(function(kjDt){
+                    if($scope.classTestPaper.length > 0){
+                      Lazy($scope.classTestPaper).each(function(kjDt){
                         if(kjDt['题型ID'] == tm['题型ID']){
                           var fdTar = Lazy(kjDt['题目']).find(function(kj){
                             return kj['题目ID'] == tm['题目ID'];
@@ -367,7 +369,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               });
               myPicker.on('intimidatetime:close', function(e, date, inst){
                 var clsSlt = document.querySelector('.start-date');
-                $scope.newKeJian['测验设置']['时限'] = angular.element(clsSlt).val();
+                $scope.newClassTest['测验设置']['时限'] = angular.element(clsSlt).val();
               });
             };
             $timeout(showDatePicker, 500);
@@ -388,11 +390,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $http(obj).success(function(data){
               if(data.result && data.data){
                 pageMake(data.data);
-                keJianDataStore = Lazy(data.data).reverse().toArray();
-                $scope.keJianDist(1);
+                classTestDataStore = Lazy(data.data).reverse().toArray();
+                $scope.classTestDist(1);
               }
               else{
-                keJianDataStore = '';
+                classTestDataStore = '';
                 DataService.alertInfFun('err', data.error);
               }
             });
@@ -404,17 +406,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           /**
            * 课件的分页数据查询函数
            */
-          $scope.keJianDist = function(pg){
+          $scope.classTestDist = function(pg){
             var pgNum = pg - 1;
             var cutPage = pgNum ? pgNum : 0;
             cutPageFun(pg);
-            $scope.keJianList = keJianDataStore.slice(cutPage * itemNumPerPage, (cutPage + 1) * itemNumPerPage);
+            $scope.classTestList = classTestDataStore.slice(cutPage * itemNumPerPage, (cutPage + 1) * itemNumPerPage);
           };
 
           /**
            * 查看测验详细
            */
-          $scope.keJianDetail = function(id){
+          $scope.classTestDetail = function(id){
             var obj = {
               method: 'GET',
               url: wenJuanDiaoChaUrl,
@@ -494,11 +496,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                       item['选项分析'] = daAnArr;
                     });
                     timu.data[0]['参与人数'] = timu.data[0]['参与人数'] || 1;
-                    $scope.keJianDtl = timu.data[0];
+                    $scope.classTestDtl = timu.data[0];
                     $scope.txTpl = 'views/kejian/classTestDetail.html';
                   }
                   else{
-                    $scope.keJianDtl = '';
+                    $scope.classTestDtl = '';
                     DataService.alertInfFun('err', timu.error);
                   }
                 });
@@ -510,9 +512,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           };
 
           /**
-           * 删除课件
+           * 删除测验
            */
-          $scope.deleteKeJian = function(id){
+          $scope.deleteClassTest = function(id){
             if(confirm('确定要删除此测验？')){
               var obj = {
                 method: 'POST',
@@ -524,8 +526,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               };
               $http(obj).success(function(data){
                 if(data.result){
-                  keJianDataStore = Lazy(keJianDataStore).reject(function(kj){ return kj['测验ID'] == id}).toArray();
-                  $scope.keJianList = Lazy($scope.keJianList).reject(function(kj){ return kj['测验ID'] == id}).toArray();
+                  classTestDataStore = Lazy(classTestDataStore).reject(function(kj){ return kj['测验ID'] == id}).toArray();
+                  $scope.classTestList = Lazy($scope.classTestList).reject(function(kj){ return kj['测验ID'] == id}).toArray();
                   DataService.alertInfFun('suc', '删除成功！');
                 }
                 else{
@@ -575,7 +577,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
            * 返回考试组列表
            */
           $scope.backToList = function(){
-            $scope.keJianDtl = '';
+            $scope.classTestDtl = '';
             $scope.getClassTest();
           };
 
@@ -587,10 +589,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           };
 
           /**
-           * 新增课件
+           * 新增测验
            */
           $scope.addClassTest = function(){
-            $scope.newKeJian = {
+            $scope.newClassTest = {
               '测验名称': '',
               '学校ID': jgID,
               '科目ID': keMuId,
@@ -617,7 +619,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                 '题目': []
               }
             ];
-            $scope.keJianPaper = [];
+            $scope.classTestPaper = [];
             //显示时间选择器
             datePickerFun();
             $scope.tabActive = 'xjcy';
@@ -885,10 +887,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
            * 返回新建
            */
           $scope.backToAddPage = function(){
-            $scope.keJianPaper = [];
+            $scope.classTestPaper = [];
             Lazy($scope.tiMuArr).each(function(kj){
               if(kj['题目'].length > 0){
-                $scope.keJianPaper.push(kj);
+                $scope.classTestPaper.push(kj);
               }
             });
             $scope.txTpl = 'views/kejian/addClassTest.html';
@@ -898,10 +900,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           };
 
           /**
-           * 保存课件
+           * 保存测验
            */
-          $scope.saveKeJian = function(){
-            Lazy($scope.keJianPaper).each(function(dt){
+          $scope.saveClassTest = function(){
+            Lazy($scope.classTestPaper).each(function(dt){
               var gzObj = {
                 '大题名称': dt['大题名称'],
                 '固定题目': []
@@ -913,17 +915,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                 };
                 gzObj['固定题目'].push(tmObj);
               });
-              $scope.newKeJian['测验设置']['组卷规则'].push(gzObj);
+              $scope.newClassTest['测验设置']['组卷规则'].push(gzObj);
             });
             //var clsSlt = document.querySelector('.start-date');
-            //$scope.newKeJian['测验设置']['时限'] = angular.element(clsSlt).val();
-            if($scope.newKeJian['测验设置']['组卷规则'].length > 0){
-              $scope.newKeJian['测验设置'] = JSON.stringify($scope.newKeJian['测验设置']);
+            //$scope.newClassTest['测验设置']['时限'] = angular.element(clsSlt).val();
+            if($scope.newClassTest['测验设置']['组卷规则'].length > 0){
+              $scope.newClassTest['测验设置'] = JSON.stringify($scope.newClassTest['测验设置']);
               $scope.loadingImgShow = true;
               var obj = {
                 method: 'PUT',
                 url: ceYanUrl,
-                data: $scope.newKeJian
+                data: $scope.newClassTest
               };
               $http(obj).success(function(pData){
                 if(pData.result){
@@ -939,6 +941,131 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             }
             else{
               DataService.alertInfFun('pmt', '请选择题目！');
+            }
+          };
+
+          /**
+           * 课件列表
+           */
+          $scope.getKeJianList = function(par){
+            var obj = {
+              method: 'GET',
+              url: yongHuWenJianUrl,
+              params: {
+                '上传人': logUid
+              }
+            };
+            $http(obj).success(function(data){
+              if(data.result && data.data.length > 0){
+                $scope.keJianList = data.data;
+              }
+              else{
+                $scope.keJianList = [];
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+            if(!par){
+              $scope.tabActive = 'kjgl';
+              $scope.txTpl = 'views/kejian/keJianList.html';
+            }
+          };
+
+          /**
+           * 显示添加新课件
+           */
+          $scope.showKeJianAdd = function(){
+            $scope.upLoadWrap = true;
+          };
+
+          /**
+           * 文件上传
+           */
+            //存放上传文件的数组
+          $scope.uploadFiles = [];
+
+          //将选择的文件加入到数组
+          $scope.fileNameChanged = function(element) {
+            $scope.$apply(function($scope) {
+              for (var i = 0; i < element.files.length; i++) {
+                $scope.uploadFiles.push(element.files[i])
+              }
+            });
+          };
+
+          //添加文件
+          $scope.addMyFile = function(){
+            $('input.addFileBtn').click();
+          };
+
+          //删除选择的文件
+          $scope.deleteSelectFile = function(idx){
+            $scope.uploadFiles.splice(idx, 1);
+            DataService.clearInput();
+          };
+
+          //关闭上传文件弹出层
+          $scope.closeKeJianAdd = function(){
+            $scope.upLoadWrap = false;
+            $scope.uploadFiles = [];
+            DataService.clearInput();
+          };
+
+          //保存上传文件
+          $scope.uploadMyFiles = function() {
+            var file = $scope.uploadFiles;
+            var fileLen = file.length;
+            var isFileSizeRight = true;
+            var limitedFileSize = config.uploadFileSizeLimit; //文件大小限制，目前大小限制2MB
+            Lazy($scope.uploadFiles).each(function(fl, idx, lst){
+              if(fl.size > limitedFileSize){
+                isFileSizeRight = false;
+              }
+            });
+            if(isFileSizeRight){
+              var fd = new FormData();
+              fd.append('上传人', logUid);
+              for(var i = 1; i <= fileLen; i++){
+                fd.append(file[i - 1].name, file[i - 1]);
+              }
+              $scope.loadingImgShow = true;
+              $http.post(uploadUrl, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}}).success(function(data){
+                if(data.result && data.data.length > 0){
+                  $scope.uploadFiles = [];
+                  $scope.getKeJianList('qry');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+                $scope.loadingImgShow = false;
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
+            }
+          };
+
+          /**
+           * 删除课件
+           */
+          $scope.deleteKeJian = function(kj){
+            if(confirm('确定要删除此课件？')){
+              var obj = {
+                method: 'DELETE',
+                url: yongHuWenJianUrl,
+                params: {
+                  '上传人': logUid,
+                  '文件名称': kj['文件名称']
+                }
+              };
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.getKeJianList('qry');
+                  DataService.alertInfFun('suc', '删除成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
             }
           };
 

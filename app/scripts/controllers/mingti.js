@@ -1293,25 +1293,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
         /**
          * 文件上传
          */
-        var clearInput = function(){
-          var file = document.getElementById('fileUpload');
-          if (file.outerHTML) {
-            file.outerHTML = file.outerHTML;
-          } else { // FF(包括3.5)
-            file.value = "";
-          }
-        };
         //存放上传文件的数组
         $scope.uploadFiles = [];
 
-        //将选择的文件加入到数组, 方法一
-        $scope.$on("fileSelected", function (event, args) {
-          $scope.$apply(function () {
-            $scope.uploadFiles = [];
-            $scope.uploadFiles.push(args.file);
-          });
-        });
-        //将选择的文件加入到数组, 方法二
+        //将选择的文件加入到数组
         $scope.fileNameChanged = function(element) {
           $scope.$apply(function($scope) {
             for (var i = 0; i < element.files.length; i++) {
@@ -1329,7 +1314,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
         //删除选择的文件
         $scope.deleteSelectFile = function(idx){
           $scope.uploadFiles.splice(idx, 1);
-          clearInput();
+          DataService.clearInput();
         };
 
         //关闭上传文件弹出层
@@ -1337,7 +1322,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
           $('#mediaPlugin').hide();
           $scope.mingTiParam.uploadType = '';
           $scope.uploadFiles = [];
-          clearInput();
+          DataService.clearInput();
         };
 
         //保存上传文件
@@ -1353,6 +1338,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
           });
           if(isFileSizeRight){
             var fd = new FormData();
+            if($scope.timu['出题人UID']){
+              fd.append('上传人', $scope.timu['出题人UID']);
+            }
+            else{
+              fd.append('上传人', logUid);
+            }
             for(var i = 1; i <= fileLen; i++){
               fd.append('file' + 1, file[i - 1]);
             }
@@ -1361,8 +1352,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
               if(data.result){
                 var i, mediaLength;
                 $scope.uploadFileUrl = data.data;
-                $scope.loadingImgShow = false;
-                $scope.uploadFiles = [];
+                //$scope.loadingImgShow = false;
+                //$scope.uploadFiles = [];
                 if(data.data && data.data.length > 0){
                   mediaLength = data.data.length;
                   for(i = 0; i < mediaLength; i++){
@@ -1382,30 +1373,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
                         { replaceWith:'<video src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></video>' }
                       );
                     }
-                    //var findFileType = data.data[i].match(fileTypeReg)[0]; //得到文件格式
-                    //var isImg = Lazy(config.imgType).contains(findFileType);
-                    //var isVideo = Lazy(config.videoType).contains(findFileType);
-                    //var isAudio = Lazy(config.audioType).contains(findFileType);
-                    //var src = showFileUrl + data.data[i]; //媒体文件路径
-                    //if(isImg){
-                    //  $.markItUp(
-                    //    { replaceWith:'<img src="'+src+'" alt=""(!( class="[![Class]!]")!) />' }
-                    //  );
-                    //}
-                    //if(isAudio){
-                    //  $.markItUp(
-                    //    { replaceWith:'<audio src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></audio>' }
-                    //  );
-                    //}
-                    //if(isVideo){
-                    //  $.markItUp(
-                    //    { replaceWith:'<video src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></video>' }
-                    //  );
-                    //}
                   }
                   $('#mediaPlugin').hide();
                   $('.formulaEditTiGan').keyup();
-                  return false;
+                  //return false;
                 }
                 else{
                   DataService.alertInfFun('err', '没有文件！');

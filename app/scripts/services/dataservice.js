@@ -220,5 +220,16 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           return joinDate;
         };
 
+        //清除上传控件里面的文件
+        this.clearInput = function(){
+          var file = document.getElementById('fileUpload');
+          if (file.outerHTML) {
+            file.outerHTML = file.outerHTML;
+          }
+          else { // FF(包括3.5)
+            file.value = "";
+          }
+        };
+
       }]);
 });

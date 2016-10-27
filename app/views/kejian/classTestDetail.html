@@ -16,7 +16,7 @@
         课件管理
       </a>
     </li>
-    <li class="pull-right" ng-show="keJianDtl">
+    <li class="pull-right" ng-show="classTestDtl">
       <button class="btn btn-danger mt5 mr10" ng-click="backToList()">返回列表</button>
     </li>
   </ul>
@@ -24,8 +24,8 @@
 <!-- 考务的容器 开始-->
 <div class="tab-content wp90 mlp5">
   <div id="paperWrap" class="panel-body paperWrap">
-    <h3 class="text-center m0" ng-bind="keJianDtl['测验名称']"></h3>
-    <div class="pull-left wp100" ng-repeat="tx in keJianDtl['测验题目']" repeat-done>
+    <h3 class="text-center m0" ng-bind="classTestDtl['测验名称']"></h3>
+    <div class="pull-left wp100" ng-repeat="tx in classTestDtl['测验题目']" repeat-done>
       <h4 ng-bind="cnNumArr[$index] + '、' + tx['大题名称']"></h4>
       <ul class="list-unstyled testList">
         <li ng-repeat="tm in tx['题目']">
@@ -36,7 +36,7 @@
                 <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
                 <span class="tiZhiSpan" ng-bind-html="tz"></span>
               <span>
-                  （<strong class="clRed" ng-bind="((tm['选项分析'][$index]['人数']/keJianDtl['参与人数'])*100).toFixed(1) + '%'"></strong>）
+                  （<strong class="clRed" ng-bind="((tm['选项分析'][$index]['人数']/classTestDtl['参与人数'])*100).toFixed(1) + '%'"></strong>）
               </span>
               </p>
             </div>
