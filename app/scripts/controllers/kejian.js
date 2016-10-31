@@ -25,7 +25,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           var yongHuWenJianUrl = '/yonghu_wenjian';
           var itemNumPerPage = 10; //每页多少条数据
           var paginationLength = 11; //分页显示多少也
-          var classTestDataStore = ''; //存放课件数据
+          var classTestDataStore = ''; //存放随堂测验数据
+          var keJianDataStore = ''; //存放课件数据
           var testUrl = 'https://www.zhifz.com/pub_test/'; //二维码的地址
           var tiMuIdArr = []; //获得查询题目ID的数组
           var pageArr = []; //根据得到的数据定义一个分页数组
@@ -404,7 +405,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           $scope.getClassTest();
 
           /**
-           * 课件的分页数据查询函数
+           * 测验的分页数据查询函数
            */
           $scope.classTestDist = function(pg){
             var pgNum = pg - 1;
@@ -945,6 +946,16 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           };
 
           /**
+           * 测验的分页数据查询函数
+           */
+          $scope.keJianDist = function(pg){
+            var pgNum = pg - 1;
+            var cutPage = pgNum ? pgNum : 0;
+            cutPageFun(pg);
+            $scope.keJianList = keJianDataStore.slice(cutPage * itemNumPerPage, (cutPage + 1) * itemNumPerPage);
+          };
+
+          /**
            * 课件列表
            */
           $scope.getKeJianList = function(par){
@@ -958,8 +969,12 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $http(obj).success(function(data){
               if(data.result && data.data.length > 0){
                 $scope.keJianList = data.data;
+                pageMake(data.data);
+                keJianDataStore = data.data;
+                $scope.keJianDist(1);
               }
               else{
+                keJianDataStore = '';
                 $scope.keJianList = [];
                 DataService.alertInfFun('err', data.error);
               }

@@ -193,6 +193,17 @@
                      onafterpaste="this.value=this.value.replace(/\D/g,'')" ng-model="zuJuanParam.rlTmFz"/>
             </div>
           </div>
+          <div class="form-group" ng-show="zuJuanParam.rlTmc">
+            <label class="col-sm-2 control-label">题目来源</label>
+            <div class="col-sm-4">
+              <label class="radio-inline">
+                <input type="radio" ng-model="zuJuanParam.tiMuLaiYuan" value="tk"> 只使用题库
+              </label>
+              <label class="radio-inline">
+                <input type="radio" ng-model="zuJuanParam.tiMuLaiYuan" value="tmc"> 只使用题目池
+              </label>
+            </div>
+          </div>
           <div class="form-group">
             <label class="col-sm-2 control-label">难度</label>
             <div class="col-sm-5">
@@ -226,7 +237,9 @@
             <td ng-bind="sjtm['题目分值']"></td>
             <td ng-bind="sjtm['难度名称'].join(',')"></td>
             <td>
-              <span ng-if="sjtm['使用题目池']">题目池,</span><span ng-bind="sjtm['限定题库名称'].join(',')"></span>
+              <span ng-if="sjtm['使用题目池']">题目池</span>
+              <span ng-if="sjtm['限定题库名称'].length>0">,</span>
+              <span ng-bind="sjtm['限定题库名称'].join(',')"></span>
             </td>
             <td>
               <span class="glyphicon glyphicon-trash" ng-click="deleteRule(addSjz.sltDati, $index)"></span>

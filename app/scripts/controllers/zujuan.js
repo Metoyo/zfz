@@ -450,7 +450,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             timuNum: '', //符合条件的题目数量
             sjScore: '', //试卷总分
             showDaTi: false, //大题弹出
-            showSjzSj: false //显示试卷组试卷
+            showSjzSj: false, //显示试卷组试卷
+            tiMuLaiYuan: 'tk' //题目来源
           };
           Lazy($scope.tiKuList).each(function(tkl){
             tkl.ckd = false;
@@ -525,8 +526,13 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           var sltDg = Lazy($scope.allZsdgData).find(function(dg){
             return dg['知识大纲ID'] == dgId;
           });
-          Lazy(sltDg['节点']).each(_do);
-          $scope.kowledgeList = sltDg;
+          if(sltDg){
+            Lazy(sltDg['节点']).each(_do);
+            $scope.kowledgeList = sltDg;
+          }
+          else{
+            $scope.kowledgeList = '';
+          }
         };
 
         /**
@@ -757,6 +763,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             $scope.zjDaGangListShow = true;
             $scope.onlyShowAddRuleBox = false;
             $scope.zuJuanParam.tmlTp = 'addSjToSjz';
+            qryTmPar.tk = Lazy($scope.tiKuList).map(function(tk){
+              return tk['题库ID'];
+            }).toArray();
             Lazy($scope.tmNanDuList).each(function(nd){
               nd.ckd = false;
             });
@@ -788,6 +797,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             if(tp == 'random'){
               $scope.zuJuanParam.rlTmNum = '';
               $scope.zuJuanParam.rlTmFz = '';
+              $scope.zuJuanParam.tiMuLaiYuan = 'tk';
               Lazy($scope.nanDuList).each(function(nd){
                 nd.ckd = false;
               });
@@ -858,6 +868,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           });
           $scope.zuJuanParam.rlTk = tkArr;
           $scope.zuJuanParam.rlTkNm = tkArrNm;
+          //qryTmPar.tk = tkArr;
           if($scope.onlyShowAddRuleBox){
             qryTestNum();
           }
@@ -1287,15 +1298,38 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             var singleRl = {
               '题目分值': parseInt($scope.zuJuanParam.rlTmFz),
               '题目数量': parseInt($scope.zuJuanParam.rlTmNum),
-              '使用题目池': $scope.zuJuanParam.rlTmc,
-              '限定题库': $scope.zuJuanParam.rlTk,
-              '限定题库名称': $scope.zuJuanParam.rlTkNm,
+              //'使用题目池': $scope.zuJuanParam.rlTmc,
+              //'限定题库': $scope.zuJuanParam.rlTk,
+              //'限定题库名称': $scope.zuJuanParam.rlTkNm,
               '题型': $scope.zuJuanParam.rlTxId,
               '难度': $scope.zuJuanParam.rlNd,
               '难度名称': $scope.zuJuanParam.rlNdNm,
               '知识点': $scope.zuJuanParam.rlZsd,
               '知识点名称': $scope.zuJuanParam.rlZsdName
             };
+            if($scope.zuJuanParam.rlTmc){
+              if($scope.zuJuanParam.tiMuLaiYuan == 'tk'){
+                if($scope.zuJuanParam.rlTk.length){
+                  singleRl['限定题库'] = $scope.zuJuanParam.rlTk;
+                  singleRl['限定题库名称'] = $scope.zuJuanParam.rlTkNm;
+                }
+                else{
+                  mis.push('题库');
+                }
+              }
+              else{
+                singleRl['使用题目池'] = $scope.zuJuanParam.rlTmc;
+              }
+            }
+            else{
+              if($scope.zuJuanParam.rlTk.length){
+                singleRl['限定题库'] = $scope.zuJuanParam.rlTk;
+                singleRl['限定题库名称'] = $scope.zuJuanParam.rlTkNm;
+              }
+              else{
+                mis.push('题库');
+              }
+            }
             if(!$scope.zuJuanParam.rlTxId){
               mis.push('题型');
             }
@@ -1308,9 +1342,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             if(!$scope.zuJuanParam.rlNd.length){
               mis.push('难度');
             }
-            if(!$scope.zuJuanParam.rlTk.length){
-              mis.push('题库');
-            }
+            //if(!$scope.zuJuanParam.rlTk.length){
+            //  mis.push('题库');
+            //}
             if(!$scope.zuJuanParam.rlZsd.length){
               mis.push('知识点');
             }
@@ -1722,6 +1756,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $http(obj).success(function(data){
             if(data.result && data.data){
               var sjz = data.data[0];
+              qryTiKu();
               $scope.sjzSet = sjz['试卷组设置'];
               $scope.selectSjz = sjz || '';
               $scope.zuJuanParam.sjzName = sjz['试卷组名称'];
@@ -1831,6 +1866,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               '题型名称': txName[txId - 1]
             }
           };
+          qryTmPar.tk = Lazy($scope.tiKuList).map(function(tk){
+            return tk['题库ID'];
+          }).toArray();
           $scope.zjDaGangListShow = true;
           $scope.onlyShowAddRuleBox = false;
           $scope.subDsShow = false;

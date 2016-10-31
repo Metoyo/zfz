@@ -48,7 +48,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             showCc: false, //显示场次
             showSj: true, //显示试卷
             showNtPre: false, //显示考试须知预览
-            newSltSjzId: '' //修改考试组试卷组用到的新选择的试卷组
+            newSltSjzId: '', //修改考试组试卷组用到的新选择的试卷组
+            sltAllPaper: false //新建考试的时候试卷的全选
           };
           $scope.sltSjz = ''; //选中的试卷组
           $scope.pageParam = { //分页参数
@@ -526,6 +527,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
            */
           $scope.addNewChangCiPop = function(){
             var kssc = parseInt($scope.kwParams.ksLen);
+            if(!$scope.sltSjz){
+              DataService.alertInfFun('pmt', '请先选择试卷组！');
+              return ;
+            }
             if(kssc){
               newChangCi = { //场次的数据
                 '考试名称': '',
@@ -608,6 +613,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             $scope.showAddStuBox = false;
             $scope.kwParams.addChangCi = false;
             $scope.kwParams.addXsBuKxh = false;
+            $scope.kwParams.sltAllPaper = false;
           };
 
           /**
@@ -691,12 +697,25 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
            */
           $scope.addShiJuanToCc = function(sj){
             var sjIds = [];
-            sj.ckd = !sj.ckd;
-            Lazy($scope.sltSjz['试卷']).each(function(asj){
-              if(asj.ckd){
-                sjIds.push(asj['试卷ID']);
-              }
-            });
+            if(sj == 'all'){
+              Lazy($scope.sltSjz['试卷']).each(function(asj){
+                if($scope.kwParams.sltAllPaper){
+                  asj.ckd = true;
+                  sjIds.push(asj['试卷ID']);
+                }
+                else{
+                  asj.ckd = false;
+                }
+              });
+            }
+            else{
+              sj.ckd = !sj.ckd;
+              Lazy($scope.sltSjz['试卷']).each(function(asj){
+                if(asj.ckd){
+                  sjIds.push(asj['试卷ID']);
+                }
+              });
+            }
             if(sjIds.length > 0){
               sjzIdTemp = sjIds;
               Lazy($scope.kaoShiZuData['考试']).each(function(cc){
@@ -707,7 +726,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             }
             else{
               sjzIdTemp = '';
-              DataService.alertInfFun('pmt', '请选择试卷组！');
+              DataService.alertInfFun('pmt', '请选择试卷！');
             }
           };
 

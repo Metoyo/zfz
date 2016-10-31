@@ -40,25 +40,25 @@
   <div class="paging text-right" ng-if="keJianList.length">
     <ul class="pagination pagination-sm">
       <li ng-class="{disabled: pageParam.activePage == 1}">
-        <a href ng-click="classTestDist(1)">首页</a>
+        <a href ng-click="keJianDist(1)">首页</a>
       </li>
       <li ng-class="{disabled: pageParam.activePage == 1}">
         <a href
-           ng-click="classTestDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
+           ng-click="keJianDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
           上一页
         </a>
       </li>
       <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
-        <a href ng-click="classTestDist(pg)">{{pg}}</a>
+        <a href ng-click="keJianDist(pg)">{{pg}}</a>
       </li>
       <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
         <a href
-           ng-click="classTestDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
+           ng-click="keJianDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
           下一页
         </a>
       </li>
       <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
-        <a href ng-click="classTestDist(pageParam.lastPage)">尾页</a>
+        <a href ng-click="keJianDist(pageParam.lastPage)">尾页</a>
       </li>
     </ul>
   </div>

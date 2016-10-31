@@ -136,7 +136,10 @@
               <span class="pull-right">考位（共:{{kwParams.kwNum || 0}}）</span>
             </th>
             <th class="positionRe" ng-hide="kwParams.sjType==1">
-              试卷
+              <span>试卷</span>
+              <span class="pull-right">
+                <input type="checkbox" ng-model="kwParams.sltAllPaper" ng-click="addShiJuanToCc('all')"/>全选
+              </span>
             </th>
           </tr>
           <tr>
