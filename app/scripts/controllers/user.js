@@ -44,7 +44,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           sltJg: '', //选中的学校
           editKcTp: '', //编辑考点的类型
           kaoDianFrom: '',
-          navHide: false //隐藏二级导航
+          navHide: false, //隐藏二级导航
+          studentTest: false //学生自测
         };
         $scope.pageParam = {
           currentPage: '',
@@ -69,20 +70,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.usrInfo = loginUsr;
         $scope.kaochangData = '';
         $scope.tiKuType = ['公共', '私有'];
-
-        /**
-         * 检查对象是否为空
-         */
-        var objHasProp = function(obj){
-          if (typeof obj === "object" && !(obj instanceof Array)){
-            var hasProp = false;
-            for (var prop in obj){
-              hasProp = true;
-              break;
-            }
-            return hasProp;
-          }
-        };
 
         /**
          * 查询学校科目
@@ -2364,7 +2351,13 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             var xxSet = xueXiao['学校设置'];
             var hasCjZd = false;
             if(xxSet && xxSet['成绩和作答']){
-              hasCjZd = objHasProp(xxSet['成绩和作答']);
+              hasCjZd = DataService.objHasProp(xxSet['成绩和作答']);
+            }
+            if(xxSet && xxSet['学生自测']){
+              $scope.adminParams.studentTest = xxSet['学生自测'];
+            }
+            else{
+              $scope.adminParams.studentTest = false;
             }
             $http(obj).success(function(data){
               if(data.result && data.data){
@@ -2411,6 +2404,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               cjAndZd[km['科目ID']] = km['设置'];
             });
             obj.data['学校设置']['成绩和作答'] = cjAndZd;
+            obj.data['学校设置']['学生自测'] = $scope.adminParams.studentTest;
             obj.data['学校设置'] = JSON.stringify(obj.data['学校设置']);
             $scope.loadingImgShow = true;
             $http(obj).success(function(data) {

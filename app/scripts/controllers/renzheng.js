@@ -16,6 +16,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         var findPwUrlUrl = '/find_password'; //忘记密码
         var resetPwUrl = '/reset_password'; //重置密码
         var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目URL
+        var xueXiaoUrl = '/xuexiao'; //机构的增删改查
         var module = config.moduleObj;
         var loginUrl = '/login'; //登录的URL
         var regu = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
@@ -120,11 +121,25 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 urlArr.push(module[7]);
                 urlArr.push(module[8]);
                 //urlArr.push(module[9]);
-                //urlArr.push(module[10]);
-                config.loginUsr = data.data;
-                $rootScope.urlArrs = urlArr;
-                $cookieStore.put('ckUrl', JSON.stringify(urlArr));
-                urlRedirect.goTo(currentPath, '/baoming');
+                var jgObj = {
+                  method: 'GET',
+                  url: xueXiaoUrl,
+                  params: {
+                    '学校ID': data.data['学校ID']
+                  }
+                };
+                $http(jgObj).success(function(xuexiao){
+                  if(xuexiao.result && xuexiao.data){
+                    var xxData = xuexiao.data[0];
+                    if(xxData['学校设置'] && xxData['学校设置']['学生自测'] != 'undefined' && xxData['学校设置']['学生自测']){
+                      urlArr.push(module[10]);
+                    }
+                  }
+                  config.loginUsr = data.data;
+                  $rootScope.urlArrs = urlArr;
+                  $cookieStore.put('ckUrl', JSON.stringify(urlArr));
+                  urlRedirect.goTo(currentPath, '/baoming');
+                });
               }
               else{
                 var qxArr = Lazy(data.data['权限']).reject(function(qx){ //去除阅卷负责人4，助教5的权限

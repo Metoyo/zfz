@@ -231,5 +231,17 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           }
         };
 
+        //检查对象里面是否有某一属性
+         this.objHasProp = function(obj){
+          if (typeof obj === "object" && !(obj instanceof Array)){
+            var hasProp = false;
+            for (var prop in obj){
+              hasProp = true;
+              break;
+            }
+            return hasProp;
+          }
+        };
+
       }]);
 });
