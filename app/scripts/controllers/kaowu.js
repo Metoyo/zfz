@@ -1028,6 +1028,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             if(dataPar['报名方式'] == 1){ //非在线报名
               Lazy(dataPar['考试']).each(function(cc){
                 delete cc.tempIdx;
+                delete cc['结束时间'];
                 var kaoWei = 0;
                 if(cc['考生'] && cc['考生'].length > 0){
                   var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
@@ -1081,6 +1082,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 dataPar['考生'] = newKaoShengArr;
                 Lazy(dataPar['考试']).each(function(cc){
                   delete cc.tempIdx;
+                  delete cc['结束时间'];
                   var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
                     return dkd['考点ID'] == cc['考点ID'];
                   });
@@ -1520,7 +1522,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                   '考试名称': ks['考试名称'],
                   '考点ID': ks['考点ID'],
                   '开始时间': DataService.formatDateZh(ks['开始时间']),
-                  '结束时间': DataService.formatDateZh(ks['结束时间']),
+                  //'结束时间': DataService.formatDateZh(ks['结束时间']),
                   '考试时长': ks['考试时长'],
                   '考试设置': JSON.parse(ks['考试设置'])
                   //'考生': ''
@@ -1542,7 +1544,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
               obj['考生'] = JSON.stringify(obj['考生']);
               submitFORMPost(kaoShiZuUrl, obj, 'POST');
             }
-
           };
 
           /**
