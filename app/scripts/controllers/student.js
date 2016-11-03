@@ -83,7 +83,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             method: 'GET',
             url: kaoShengKaoShiUrl,
             params: {
-              'UID': logUid
+              'UID': logUid,
+              '状态': JSON.stringify([0, 1])
             }
           };
           $scope.kaoShiArrs = [];
@@ -97,7 +98,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                 url: kaoShiZuUrl,
                 params: {
                   '考试组ID': '',
-                  '状态': 1,
+                  '状态': JSON.stringify([-3, 0, 1, 2, 3, 4]),
                   '返回考试': true
                 }
               };
@@ -106,7 +107,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                 $http(kzsObj).success(function (kszs) {
                   if(kszs.result && kszs.data) {
                     Lazy(kszs.data).each(function(ksz){
-                      if(ksz['状态'] <= 2){
+                      if(ksz['状态'] < 5){
                         var bmStar = new Date(ksz['报名开始时间']);
                         var bmEnd = new Date(ksz['报名截止时间']);
                         var now = new Date();
@@ -116,14 +117,22 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                         var sDifMS = bmStar.valueOf(); //报名开始与本地相差的毫秒数
                         var eDifMS = bmEnd.valueOf(); //报名结束与本地相差的毫秒数
                         var nMS = now.valueOf(); //本地时间
-                        if(nMS >= sDifMS && nMS <= eDifMS){
+                        ksz.baoMingStart = false;
+                        if(nMS >= sDifMS && nMS <= eDifMS){ //在报名时间范围内的考试组
                           ksz.baoMingStart = (nMS >= sDifMS && nMS <= eDifMS);
-                          $scope.stuParams.bmKszArr.push(ksz);
-                          var fidTar = Lazy(data.data).find(function(ks){ return ks['考试组ID'] == ksz['考试组ID']});
-                          if(fidTar){
-                            $scope.kaoShiArrs.push(fidTar);
-                          }
+                          //$scope.stuParams.bmKszArr.push(ksz);
+                          //var fidTar = Lazy(data.data).find(function(ks){ return ks['考试组ID'] == ksz['考试组ID']});
+                          //if(fidTar){
+                          //  $scope.kaoShiArrs.push(fidTar);
+                          //}
                         }
+                        $scope.stuParams.bmKszArr.push(ksz);
+                        var fidTar = Lazy(data.data).find(function(ks){ return ks['考试组ID'] == ksz['考试组ID']});
+                        if(fidTar){
+                          fidTar.baoMingStart = ksz.baoMingStart;
+                          $scope.kaoShiArrs.push(fidTar);
+                        }
+                        $scope.kaoShiArrs = Lazy($scope.kaoShiArrs).reverse().toArray();
                       }
                     });
                   }

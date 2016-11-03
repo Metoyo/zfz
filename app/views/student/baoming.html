@@ -26,9 +26,12 @@
             <span class="clRed" ng-if="ks['状态']==0">未报名</span>
             <span class="clGreen" ng-if="ks['状态']==1">已报名</span>
           </td>
-          <td class="text-center">
+          <td class="text-center" ng-if="ks.baoMingStart==true">
             <a href="javascript:void(0)" ng-if="ks['状态']==0" ng-click="queryKaoShiZuDetail(ks)">点击报名</a>
             <a href="javascript:void(0)" ng-if="ks['状态']==1" ng-click="queryKaoShiZuDetail(ks)">重新报名</a>
+          </td>
+          <td class="text-center" ng-if="ks.baoMingStart==false">
+            <a href="javascript:void(0)" ng-click="queryKaoShiZuDetail(ks)">报名信息</a>
           </td>
         </tr>
       </table>
@@ -54,6 +57,9 @@
                 <span class="glyphicon glyphicon-ok"></span>
               </div>
               <span ng-bind="cc['考点名称']"></span><span ng-if="cc['已报名人数'] >= cc['考位数']">(<b class="co676767">已满</b>)</span>
+            </div>
+            <div class="form-body mr5" ng-if="selectKsz.baoMingStart==false">
+              <span ng-bind="cc['考点名称']"></span><span ng-if="cc.ckd">(<b class="clRed">已报</b>)</span>
             </div>
           </td>
         </tr>
