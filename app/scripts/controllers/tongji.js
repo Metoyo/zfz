@@ -23,6 +23,8 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
           var kaoShengZuoDaUrl = '/kaosheng_zuoda'; //考生作答的接口
           var exportStuUrl = '/json2excel'; //导出考生
           var jiaoShiKeXuHaoUrl = '/jiaoshi_kexuhao'; //查询教师课序号
+          var kaoShengKaoShiUrl = '/kaosheng_kaoshi'; //查询考生考试
+          var yongHuUrl = '/yonghu'; //查询用户
           var itemNumPerPage = 10; //每页多少条数据
           var paginationLength = 11; //分页部分，页码的长度，目前设定为11
           var kaoShiZuStore = ''; //存放考试组的变量
@@ -58,7 +60,8 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
             sltKxhName: '', //选中的课序号名称
             letterArr: config.letterArr, //题支的序号
             cnNumArr: config.cnNumArr, //汉语的大写数字
-            sltTmId: '' //题目修改选中的题目ID
+            sltTmId: '', //题目修改选中的题目ID
+            studentUid: '' //学生作答时重现时输入的学号
           };
           $scope.tiMuDeFenLv = []; //存放题目得分率
           $scope.jiaoShiKxh = []; //登录到教师课序号
@@ -326,6 +329,7 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
            * 显示考生首页
            */
           $scope.showStuList = function(){
+            $scope.showKaoShengList = true;
             $scope.tj_tabActive = 'kaoshengTj';
             $scope.studentData = '';
             $scope.tjKaoShiData = '';
@@ -792,8 +796,8 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
                   });
                 });
                 finaData.sj_tm = data.data['试卷题目'];
-                $scope.showKaoShengList = false;
                 $scope.kaoShengShiJuan = finaData;
+                $scope.showKaoShengList = false;
               }
               else{
                 DataService.alertInfFun('err', data.error);
@@ -852,142 +856,50 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
 
           };
 
-          ///**
-          // * 查询知识点统计的数据
-          // */
-          ////var tjGetZsdData = function(paramObj){
-          ////  var needParam = {
-          ////    token: token,
-          ////    caozuoyuan: caozuoyuan,
-          ////    kaoshizuid: '',
-          ////    uid: '',
-          ////    banji: '',
-          ////    kexuhao: ''
-          ////  };
-          ////  if($scope.selectKsz.KAOSHIZU_ID){
-          ////    needParam.kaoshizuid = $scope.selectKsz.KAOSHIZU_ID;
-          ////  }
-          ////  else{
-          ////    DataService.alertInfFun('pmt', '缺少考试组ID');
-          ////    return;
-          ////  }
-          ////  if(paramObj.uid){
-          ////    needParam.uid = paramObj.uid;
-          ////  }
-          ////  if(paramObj.banji){
-          ////    needParam.banji = paramObj.banji;
-          ////  }
-          ////  if(paramObj.kexuhao){
-          ////    needParam.kexuhao = paramObj.kexuhao;
-          ////  }
-          ////  $http({method: 'GET', url: getZhiShiDianScoreUrl, params: needParam}).success(function(data){
-          ////    if(data && data.length > 0){
-          ////      //知识点统计
-          ////      Lazy(tjZsdOriginData).each(function(tjzsd){
-          ////        var findTar = Lazy(data).find(function(zsdObj){
-          ////          return zsdObj.zhishidian_id == tjzsd.ZHISHIDIAN_ID;
-          ////        });
-          ////        if(findTar){
-          ////          var zsdDeFenLv = findTar.defenlv ? (findTar.defenlv*100).toFixed(1) : 0;
-          ////          tjParaObj.radarDataZsd.zsdPerKxh.push(zsdDeFenLv);
-          ////        }
-          ////      });
-          ////    }
-          ////    else{
-          ////      DataService.alertInfFun('err', data.error);
-          ////    }
-          ////  });
-          ////};
-          //
-          ///**
-          // * 由UID查询课序号
-          // */
-          //var jiaoShiKeXunHaoData = '';
-          //var getJiaoShiKeXunHao = function(){
-          //  var jsArr = jueSeIds.JUESE;
-          //  var contain4 = Lazy(jsArr).contains('4');
-          //  var contain8 = Lazy(jsArr).contains('8');
-          //  var contain11 =  Lazy(jsArr).contains('11');
-          //  if(jsArr && !(contain4 || contain8) && contain11){
-          //    var jsObj = {
-          //      token: token,
-          //      uid: caozuoyuan
-          //    };
-          //    $http({method: 'GET', url: jiaoShiKeXunHaoUrl, params: jsObj}).success(function(jsKxh){
-          //      if(jsKxh && jsKxh.length > 0){
-          //        jiaoShiKeXunHaoData = jsKxh;
-          //      }
-          //      else{
-          //        jiaoShiKeXunHaoData = '';
-          //        DataService.alertInfFun('err', jsKxh.error);
-          //      }
-          //    });
-          //  }
-          //};
-          //getJiaoShiKeXunHao();
-
-          ///**
-          // * 统计页面试卷多选，将试卷加入到数组
-          // */
-          //$scope.addKaoShiToTj = function(event, ks){
-          //  var isChecked = $(event.target).prop('checked');
-          //  if(isChecked){
-          //    $scope.tjParas.selectedKaoShi.push(ks);
-          //  }
-          //  else{
-          //    if($scope.tjParas.selectedKaoShi.length){
-          //      $scope.tjParas.selectedKaoShi = Lazy($scope.tjParas.selectedKaoShi).reject(function(item){
-          //        return item.KAOSHI_ID == ks.KAOSHI_ID;
-          //      }).toArray();
-          //    }
-          //  }
-          //};
-
-          ///**
-          // * 查询考试通过考生UID
-          // */
-          //$scope.qryKaoShiByXueHao = function(){
-          //  if($scope.tjParas.studentUid){
-          //    var qryKaoShiByXueHaoUrl = qryKaoShiByXueHaoBase + $scope.tjParas.studentUid;
-          //    DataService.getData(qryKaoShiByXueHaoUrl).then(function(data) {
-          //      if(data && data.length > 0){
-          //        $scope.tjKaoShiData = data;
-          //        $scope.studentData = '';
-          //        $scope.showKaoShengList = true;
-          //        $scope.tjSubTpl = 'views/tongji/tj_stud_detail.html';
-          //      }
-          //    });
-          //  }
-          //};
-          //
-          ///**
-          // * 由考试查询考生
-          // */
-          //$scope.qryKaoSheng = function(id){
-          //  if(id){
-          //    var qryKaoShengUrl = queryKaoShengBase + '&kaoshiid=' + id;
-          //    $scope.tjParas.zdcxKaoShiId = id;
-          //    DataService.getData(qryKaoShengUrl).then(function(data) {
-          //      if(data && data.length > 0) {
-          //        $scope.studentData = data;
-          //        $scope.tjKaoShiData = '';
-          //        $scope.showKaoShengList = true;
-          //        qryItemDeFenLv(id);
-          //        $scope.tjSubTpl = 'views/tongji/tj_stud_detail.html';
-          //      }
-          //    });
-          //  }
-          //  else{
-          //    DataService.alertInfFun('pmt', '缺少考试ID');
-          //  }
-          //};
-          //
-          ///**
-          // * 修改本次考试组的优秀率和及格率
-          // */
-          //$scope.changYouXiuJiGeLv = function(){
-          //  $scope.needToXgYxJgLv = false;
-          //};
+          /**
+          * 查询考试通过考生UID
+          */
+          $scope.qryKaoShiByXueHao = function(){
+            var yhObj = {
+              method: 'GET',
+              url: yongHuUrl,
+              params: {
+                '学校ID': jgID,
+                '学号': ''
+              }
+            };
+            if($scope.tjParas.studentUid){
+              yhObj.params['学号'] = $scope.tjParas.studentUid;
+              $http(yhObj).success(function(user){
+                if(user.result && user.data){
+                  var ksObj = {
+                    method: 'GET',
+                    url: kaoShengKaoShiUrl,
+                    params: {
+                      'UID': user.data[0]['UID'],
+                      '状态': 5
+                    }
+                  };
+                  $http(ksObj).success(function(exam){
+                    if(exam.result && exam.data){
+                      $scope.tjKaoShiData = exam.data;
+                    }
+                    else{
+                      $scope.tjKaoShiData = '';
+                      DataService.alertInfFun('err', exam.error);
+                    }
+                  });
+                }
+                else{
+                  $scope.tjKaoShiData = '';
+                  DataService.alertInfFun('err', user.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '缺少学号！');
+            }
+          };
 
           /**
            * 重新加载mathjax

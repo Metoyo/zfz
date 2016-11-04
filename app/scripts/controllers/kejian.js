@@ -51,7 +51,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             wrapTran: true, //class的转换
             tiMuLen: '', //题目数量
             allTkIds: [], //所有题库ID
-            tiKuId: '' //题库ID
+            tiKuId: '', //题库ID
+            sltTest: '' //选中的测验
           }; //课件参数
           $scope.pageParam = { //分页参数
             activePage: '',
@@ -541,15 +542,16 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           /**
            * 生成二维码
            */
-          $scope.makeErWeiMa = function(id){
+          $scope.makeErWeiMa = function(ct){
             var obj = {
               method: 'GET',
               url: qrcodeUrl,
               params: {
-                '测验ID': id
+                '测验ID': ct['测验ID']
               }
             };
             var idSlt = $('#QRCodeBox');
+            $scope.kjParams.sltTest = ct;
             $http(obj).success(function(data){
               if(data.result && data.data){
                 var textStr = testUrl + data.data['测验ID'];

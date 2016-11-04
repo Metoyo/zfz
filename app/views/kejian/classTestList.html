@@ -34,7 +34,7 @@
       <td class="text-center" ng-bind="ct['创建时间'] | localDate:'ww'"></td>
       <td class="text-center" ng-bind="ct['测验设置']['时限'] | localDate:'ww'"></td>
       <td class="text-center"><a href="javascript:void(0)" ng-click="classTestDetail(ct['测验ID'])">查看</a></td>
-      <td class="text-center"><a href="javascript:void(0)" ng-click="makeErWeiMa(ct['测验ID'])">生成</a></td>
+      <td class="text-center"><a href="javascript:void(0)" ng-click="makeErWeiMa(ct)">生成</a></td>
       <td class="text-center">
         <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteClassTest(ct['测验ID'])" title="删除"></span>
       </td>
@@ -72,11 +72,12 @@
         <span class="title">课序号管理</span>
       </div>
       <div class="pwi-body plr10">
-        <div id="QRCodeBox" class="text-center" style="margin-top: 60px">
+        <p class="text-center mt15" ng-bind="kjParams.sltTest['测验名称']"></p>
+        <div id="QRCodeBox" class="text-center" style="margin-top: 30px">
         </div>
       </div>
       <div class="pwi-footer plr10 text-center">
-        <a id="downloadEwm" class="btn btn-success mt5" href="" download="课件二维码.png">
+        <a id="downloadEwm" class="btn btn-success mt5" href="" download="{{kjParams.sltTest['测验名称'] + '.png'}}">
           保存图片
         </a>
         <button type="button" class="btn btn-danger mt5 ml15" ng-click="closePopup()">关闭</button>
