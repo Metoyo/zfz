@@ -36,6 +36,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             addChangCi: false, //是否为添加场次
             addXsBuKxh: false, //通过课序号添加学生
             startDate: '', //添加场次是的开始时间
+            endDate: '', //添加场次是的结束时间
             kwNum: '', //选中场次的考位数
             forbidBtn: false, //提交后的禁止按钮
             showCcSjz: false, //显示场次用到的试卷组
@@ -49,7 +50,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             showSj: true, //显示试卷
             showNtPre: false, //显示考试须知预览
             newSltSjzId: '', //修改考试组试卷组用到的新选择的试卷组
-            sltAllPaper: false //新建考试的时候试卷的全选
+            sltAllPaper: false, //新建考试的时候试卷的全选
+            endTimeFixed: true //场次结束时间
           };
           $scope.sltSjz = ''; //选中的试卷组
           $scope.pageParam = { //分页参数
@@ -395,7 +397,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
               var showDatePicker = function() {
                 $('.start-date').intimidatetime({
                   buttons: [
-                    { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+                    { text: '当前时间', classes: 'btn btn-default', action: function(inst){ inst.value( new Date() ); } }
                   ]
                 });
               };
@@ -552,7 +554,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
               var showDatePicker = function() {
                 $('.start-date').intimidatetime({
                   buttons: [
-                    { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+                    { text: '当前时间', classes: 'btn btn-default', action: function(inst){ inst.value( new Date() ); } }
                   ]
                 });
               };
@@ -567,16 +569,18 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
            * 添加场次
            */
           $scope.addNewChangCi = function(cdt){
-            var domElement = document.querySelector('.ccStart');
-            var kssj = $scope.kwParams.startDate ? $scope.kwParams.startDate : angular.element(domElement).val();
-            var kssc = parseInt($scope.kwParams.ksLen);
+            var domElementS = document.querySelector('.ccStart');
+            var domElementE = document.querySelector('.ccEnd');
+            var kssj = $scope.kwParams.startDate ? $scope.kwParams.startDate : angular.element(domElementS).val();
+            var jssj = $scope.kwParams.endDate ? $scope.kwParams.endDate : angular.element(domElementE).val();
+            var kssc = parseInt($scope.kwParams.ksLen); //考试时长
             if(cdt == 'submit'){
               //计算结束时间的代码
               if(kssj && kssc){
                 var begDate = Date.parse(kssj); //开始时间
                 var endDate = begDate + kssc * 60 * 1000; //结束时间
                 newChangCi['开始时间'] = kssj;
-                newChangCi['结束时间'] = DataService.formatDateZh(endDate);
+                newChangCi['结束时间'] = $scope.kwParams.endTimeFixed ? DataService.formatDateZh(endDate) : jssj; //设定场次的结束时间
                 newChangCi['考试时长'] = kssc;
                 if($scope.kwParams.kdId){
                   newChangCi['考点ID'] = $scope.kwParams.kdId;
@@ -1028,7 +1032,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             if(dataPar['报名方式'] == 1){ //非在线报名
               Lazy(dataPar['考试']).each(function(cc){
                 delete cc.tempIdx;
-                delete cc['结束时间'];
+                if($scope.kwParams.endTimeFixed){
+                  delete cc['结束时间'];
+                }
                 var kaoWei = 0;
                 if(cc['考生'] && cc['考生'].length > 0){
                   var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
@@ -1082,7 +1088,9 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 dataPar['考生'] = newKaoShengArr;
                 Lazy(dataPar['考试']).each(function(cc){
                   delete cc.tempIdx;
-                  delete cc['结束时间'];
+                  if($scope.kwParams.endTimeFixed){
+                    delete cc['结束时间'];
+                  }
                   var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
                     return dkd['考点ID'] == cc['考点ID'];
                   });

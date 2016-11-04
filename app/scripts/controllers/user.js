@@ -1355,7 +1355,13 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          * 修改管理员的密码
          */
         $scope.modifyAdminPassWord = function(adm){
-          var obj = {method: 'POST', url: yongHuUrl, data: {UID:'', '密码':''}};
+          var obj = {
+            method: 'POST',
+            url: yongHuUrl,
+            data: {
+              UID:'', '密码':''
+            }
+          };
           if(adm){
             obj.data.UID = adm['UID'];
             obj.data['密码'] = 'tat12345';
@@ -1603,7 +1609,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
          * 本机构下教师管理
          */
         $scope.renderTeacherTpl = function(){
-          var objUsr = {method: 'GET', url: yongHuUrl, params: {'学校ID': jgID, '用户类别': 1}};
+          var objUsr = {
+            method: 'GET',
+            url: yongHuUrl,
+            params: {
+              '学校ID': jgID,
+              '用户类别': 1
+            }
+          };
           $http(objUsr).success(function(user){ //机构教师
             if(user.result && user.data){
               user.data = Lazy(user.data).reverse().toArray();
@@ -2289,39 +2302,39 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         /**
          * 生成pdf
          */
-        $scope.createPdf = function(stat){
-          var obj = {
-            token: token,
-            kaozhizuid: '',
-            xuexiaoname: '',
-            kaoshizuname: '',
-            pfdtype: stat
-          };
-          if($scope.scanner.selectInfo.kszid){
-            obj.kaozhizuid = $scope.scanner.selectInfo.kszid;
-            var findXueXiao = Lazy($scope.jigou_list).find(function(jg){
-              return jg['学校ID'] == $scope.scanner.selectInfo.jgid;
-            });
-            var findKaoShiZu = Lazy($scope.kaoshizu_list).find(function(ksz){
-              return ksz['考试组ID'] == $scope.scanner.selectInfo.kszid;
-            });
-            obj.xuexiaoname = findXueXiao['学校名称'];
-            obj.kaoshizuname = findKaoShiZu['考试组名称'];
-            $scope.loadingImgShow = true;
-            $http({method: 'GET', url: createPdfUrl, params: obj}).success(function(data){
-              if(data.result){
-                DataService.alertInfFun('suc', '生成成功！');
-              }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
-              $scope.loadingImgShow = false;
-            });
-          }
-          else{
-            DataService.alertInfFun('pmt', '请选择考试组!');
-          }
-        };
+        //$scope.createPdf = function(stat){
+        //  var obj = {
+        //    token: token,
+        //    kaozhizuid: '',
+        //    xuexiaoname: '',
+        //    kaoshizuname: '',
+        //    pfdtype: stat
+        //  };
+        //  if($scope.scanner.selectInfo.kszid){
+        //    obj.kaozhizuid = $scope.scanner.selectInfo.kszid;
+        //    var findXueXiao = Lazy($scope.jigou_list).find(function(jg){
+        //      return jg['学校ID'] == $scope.scanner.selectInfo.jgid;
+        //    });
+        //    var findKaoShiZu = Lazy($scope.kaoshizu_list).find(function(ksz){
+        //      return ksz['考试组ID'] == $scope.scanner.selectInfo.kszid;
+        //    });
+        //    obj.xuexiaoname = findXueXiao['学校名称'];
+        //    obj.kaoshizuname = findKaoShiZu['考试组名称'];
+        //    $scope.loadingImgShow = true;
+        //    $http({method: 'GET', url: createPdfUrl, params: obj}).success(function(data){
+        //      if(data.result){
+        //        DataService.alertInfFun('suc', '生成成功！');
+        //      }
+        //      else{
+        //        DataService.alertInfFun('err', data.error);
+        //      }
+        //      $scope.loadingImgShow = false;
+        //    });
+        //  }
+        //  else{
+        //    DataService.alertInfFun('pmt', '请选择考试组!');
+        //  }
+        //};
 
         /**
          * 学校权限设置
@@ -2540,6 +2553,120 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                 DataService.alertInfFun('err', data.error);
               }
             });
+          }
+        };
+
+        /**
+         * 展示修改学生信息
+         */
+        $scope.renderStuInfo = function(){
+          $scope.modStuInfo = {
+            '新姓名': '',
+            '学生学号': '',
+            '学生信息': ''
+          };
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.adminSubWebTpl = 'views/renzheng/rz_modStuInfo.html';
+        };
+
+        /**
+         * 查询学生信息
+         */
+        $scope.qryStuInfo = function(){
+          var obj = {
+            method: 'GET',
+            url: yongHuUrl,
+            params: {
+              '学校ID': jgID,
+              '学号': '',
+              '用户类别': 2
+            }
+          };
+          if($scope.modStuInfo['学生学号']){
+            obj.params['学号'] = $scope.modStuInfo['学生学号'];
+            $http(obj).success(function(data){
+              if(data.result && data.data){
+                $scope.modStuInfo['学生信息'] = data.data[0];
+                $scope.modStuInfo['新姓名'] = angular.copy(data.data[0]['姓名']);
+              }
+              else{
+                $scope.modStuInfo['学生信息'] = '';
+                DataService.alertInfFun('err', data.error);
+              }
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请输入要查询的学生学号！');
+          }
+        };
+
+        /**
+         * 保存学生信息
+         */
+        $scope.saveStuInfo = function(){
+          var obj = {
+            method: 'POST',
+            url: yongHuUrl,
+            data: {
+              '学校ID': jgID,
+              'UID': '',
+              '姓名': ''
+            }
+          };
+          var mis = [];
+          if(!$scope.modStuInfo['学生信息']['UID']){
+            mis.push('学生UID');
+          }
+          if(!$scope.modStuInfo['新姓名']){
+            mis.push('学生姓名');
+          }
+          if(mis && mis.length > 0){
+            DataService.alertInfFun('pmt', '缺少：' + mis.join());
+            return ;
+          }
+          obj.data['UID'] = $scope.modStuInfo['学生信息']['UID'];
+          obj.data['姓名'] = $scope.modStuInfo['新姓名'];
+          $http(obj).success(function(data){
+            if(data.result){
+              $scope.qryStuInfo();
+              DataService.alertInfFun('suc', '修改成功！');
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
+
+        /**
+         * 重置学生的邮箱和密码
+         */
+        $scope.resetEmailAndPsw = function(){
+          var obj = {
+            method: 'POST',
+            url: yongHuUrl,
+            data: {
+              '学校ID': jgID,
+              'UID': '',
+              '邮箱': '',
+              '密码': ''
+            }
+          };
+          if($scope.modStuInfo['学生信息']['UID']){
+            if(confirm('确定要重置此学生的邮箱和密码？')){
+              obj.data['UID'] = $scope.modStuInfo['学生信息']['UID'];
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.qryStuInfo();
+                  DataService.alertInfFun('suc', '重置邮箱和密码成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+          }
+          else{
+            DataService.alertInfFun('pmt', '学生的UID不存在！');
           }
         };
 

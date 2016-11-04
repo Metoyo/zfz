@@ -365,7 +365,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             var showDatePicker = function() {
               var myPicker = $('.start-date').intimidatetime({
                 buttons: [
-                  { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+                  { text: '当前时间', classes: 'btn btn-default', action: function(inst){ inst.value( new Date() ); } }
                 ]
               });
               myPicker.on('intimidatetime:close', function(e, date, inst){

@@ -609,7 +609,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             var showDatePicker = function() {
               $('.start-date').intimidatetime({
                 buttons: [
-                  { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+                  { text: '当前时间', classes: 'btn btn-default', action: function(inst){ inst.value( new Date() ); } }
                 ]
               });
             };
@@ -634,7 +634,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             var showDatePicker = function() {
               $('.start-date').intimidatetime({
                 buttons: [
-                  { text: '当前时间', action: function(inst){ inst.value( new Date() ); } }
+                  { text: '当前时间', classes: 'btn btn-default', action: function(inst){ inst.value( new Date() ); } }
                 ]
               });
             };

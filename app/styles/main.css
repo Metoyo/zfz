@@ -1003,10 +1003,10 @@ label.checkbox {
   position: absolute;
   z-index: 9999;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
-  font-size: 12px;
-  font-size: 0.75rem;
+  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 18px;
-  line-height: 1.125rem;
+  line-height: 1.25rem;
   background-color: #ffffff;
   border: solid 2px #e4e4e4;
   -webkit-border-radius: 4px;

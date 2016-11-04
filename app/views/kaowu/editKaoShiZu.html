@@ -84,8 +84,11 @@
           <label class="checkbox-inline w110">
             <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['填空题笔答']"> 填空题笔答
           </label>
-          <label class="checkbox-inline">
+          <label class="checkbox-inline w110">
             <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['允许计算器']"> 允许计算器
+          </label>
+          <label class="checkbox-inline">
+            <input type="checkbox" ng-model="kwParams.endTimeFixed"> 固定每场考试时长
           </label>
         </p>
       </div>
@@ -323,6 +326,16 @@
             </div>
             <div class="col-sm-4">
               <p ng-show="changCiForm.ccKssj.$error.required" class="help-block">开始时间不能为空！</p>
+            </div>
+          </div>
+          <div class="form-group" ng-show="!kwParams.endTimeFixed">
+            <label class="col-sm-2 control-label">结束时间<i>*</i></label>
+            <div class="col-sm-6">
+              <input type="text" name="ccJssj" class="form-control start-date ccEnd" placeholder="结束时间"
+                     ng-model="kwParams.endDate" required autofocus="true"/>
+            </div>
+            <div class="col-sm-4">
+              <p ng-show="changCiForm.ccJssj.$error.required" class="help-block">结束时间不能为空！</p>
             </div>
           </div>
         </form>
