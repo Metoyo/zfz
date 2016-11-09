@@ -69,7 +69,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
         $scope.cnNumArr = config.cnNumArr; //题支的序号
         $scope.usrInfo = loginUsr;
         $scope.kaochangData = '';
-        $scope.tiKuType = ['公共', '私有'];
 
         /**
          * 查询学校科目
@@ -1811,10 +1810,21 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           $http(objLy).success(function(xxLy){ //查询学校领域
             if(xxLy.result && xxLy.data){
               var obj = {method: 'GET', url: tiKuUrl, params: {'学校ID': jgID}};
-              $http(obj).success(function(tiku){ //得到题目
+              $http(obj).success(function(tiku){ //得到题库
                 if(tiku.result){
                   var distTkByLy = {};
                   if(tiku.data && tiku.data.length > 0){
+                    Lazy(tiku.data).each(function(tk){
+                      if(tk['类型'] == 1){
+                        tk['类型名称'] = '公共';
+                      }
+                      if(tk['类型'] == 2){
+                        tk['类型名称'] = '私有';
+                      }
+                      if(tk['类型'] == 9){
+                        tk['类型名称'] = '个人私有';
+                      }
+                    });
                     distTkByLy = Lazy(tiku.data).groupBy('领域ID').toObject();
                   }
                   Lazy(xxLy.data).each(function(ly){

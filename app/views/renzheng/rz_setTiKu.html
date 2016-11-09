@@ -10,7 +10,7 @@
       <td ng-bind="tk['领域名称']"></td>
       <td>
         <p class="bdb plr10" ng-repeat="tkInfo in tk['题库']">
-          <span ng-bind="tkInfo['题库名称']+'('+tiKuType[tkInfo['类型']-1]+')'"></span>
+          <span ng-bind="tkInfo['题库名称']+'('+tkInfo['类型名称']+')'"></span>
           <a href="javascript:void(0)" title="删除" class="pull-right ml15 co676767" ng-click="deleteTiKu($index, tk, tkInfo)">
             <span class="glyphicon glyphicon-trash"></span>
           </a>
@@ -43,6 +43,9 @@
             </label>
             <label class="radio-inline">
               <input type="radio" ng-model="tiKuSet.type" value="2">私有
+            </label>
+            <label class="radio-inline">
+              <input type="radio" ng-model="tiKuSet.type" value="9">个人私有题库
             </label>
           </div>
         </div>

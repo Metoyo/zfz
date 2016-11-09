@@ -697,20 +697,56 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
           if(qryTmPar.tmly){
             obj.params['题目来源ID'] = qryTmPar.tmly;
           }
-          if(qryTmPar.ctr){
-            obj.params['出题人UID'] = qryTmPar.ctr;
+          if(kmfzrQx){ //科目负责人
+            if(qryTmPar.ctr){
+              obj.params['出题人UID'] = qryTmPar.ctr;
+            }
+            if(qryTmPar.ltr){
+              obj.params['录题人UID'] = qryTmPar.ltr;
+            }
           }
-          if(qryTmPar.ltr){
-            obj.params['录题人UID'] = qryTmPar.ltr;
+          if(!kmfzrQx && rkjsQx){ //任课教师
+            obj.params['出题人UID'] = logUid;
           }
           $scope.fbdBtn = true;
-          $http(obj).success(function(tmlb){ //查询题目列表
-            if(tmlb.result && tmlb.data){
-              var timuliebiao = Lazy(tmlb.data).sortBy('题目ID').reverse().toArray();
-              allTiMuIds = angular.copy(timuliebiao);
-              pageMake(tmlb.data);
+          var isHasError = false;
+          var ctrTiMu = []; //出题人题目数据
+          var ltrTiMu = []; //录题人题目数据
+          var timuliebiao = [];
+          $http(obj).success(function(ctrTm){ //查询题目列表
+            if(ctrTm.result){
+              //var timuliebiao = Lazy(tmlb.data).sortBy('题目ID').reverse().toArray();
+              //allTiMuIds = angular.copy(timuliebiao);
+              //pageMake(tmlb.data);
+              ctrTiMu = ctrTm.data || [];
+              if(!kmfzrQx && rkjsQx){
+                delete obj.params['出题人UID'];
+                obj.params['录题人UID'] = logUid;
+                $http(obj).success(function(ltrTm){
+                  if(ltrTm.result){
+                    ltrTiMu = ltrTm.data || [];
+                  }
+                  else{
+                    isHasError = true;
+                    DataService.alertInfFun('err', ltrTm.error);
+                  }
+                });
+              }
             }
             else{
+              isHasError = true;
+              DataService.alertInfFun('err', ctrTm.error);
+            }
+            timuliebiao = Lazy(ctrTiMu).union(ltrTiMu).uniq('题目ID').sortBy('题目ID').reverse().toArray();
+            if(timuliebiao && timuliebiao.length > 0){
+              allTiMuIds = angular.copy(timuliebiao);
+              pageMake(timuliebiao);
+            }
+            else{
+              isHasError = true;
+              DataService.alertInfFun('err', '没有题目数据！');
+            }
+            if(isHasError){
               //$scope.currentPage = '';
               $scope.pageParam.currentPage = '';
               $scope.pageParam.pageArr = [];
@@ -719,7 +755,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
               $scope.mingTiParam.tiMuLen = '';
               allTiMuIds = '';
               $scope.fbdBtn = false;
-              DataService.alertInfFun('err', tmlb.error || '没有数据！');
             }
             $scope.loadingImgShow = false;
           });

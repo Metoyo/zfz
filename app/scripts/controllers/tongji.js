@@ -305,7 +305,7 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
               '及格率': '',
               '优秀率': ''
             };
-            var ztArr = [5, 6];
+            var ztArr = [6];
             obj.params['状态'] = JSON.stringify(ztArr);
             $scope.loadingImgShow = true;
             $http(obj).success(function(data){

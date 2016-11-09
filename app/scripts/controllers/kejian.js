@@ -622,11 +622,108 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                 '题目': []
               }
             ];
+            $scope.timu = {
+              '题库ID': '',
+              '科目ID': '',
+              '题型ID': '',
+              '题目内容': {
+                '题干': '',
+                '答案': '',
+                '提示': ''
+              },
+              '难度': '',
+              '题目来源ID': '',
+              '出题人UID': '',
+              '知识点': '',
+              '备注': ''
+            };
+            $scope.loopArr = [
+              {itemVal: '', ckd: false},
+              {itemVal: '', ckd: false},
+              {itemVal: '', ckd: false},
+              {itemVal: '', ckd: false}
+            ];
             $scope.classTestPaper = [];
             //显示时间选择器
             datePickerFun();
             $scope.tabActive = 'xjcy';
             $scope.txTpl = 'views/kejian/addClassTest.html';
+          };
+
+          /**
+           * 点击添加按钮添加一项题支输入框
+           */
+          $scope.addOneItem = function(){
+            var vObj = {itemVal: '', ckd: false};
+            $scope.loopArr.push(vObj);
+          };
+
+          /**
+           * 点击删除按钮删除一项题支输入框
+           */
+          $scope.deleteOneItem = function(idx, itm){
+            if(itm.ckd){
+              DataService.alertInfFun('pmt', '此项为正确答案不能删除！');
+            }
+            else{
+              $scope.loopArr.splice(idx, 1);
+            }
+          };
+
+          /**
+           * 显示单选题题干编辑器
+           */
+          $scope.showDanXuanTiGanEditor = function(){
+            $('.formulaEditTiGan').markItUp(mySettings);
+            DataService.tiMuContPreview();
+          };
+
+          /**
+           * 显示单选题题支编辑器
+           */
+          $scope.showDanXuanTiZhiEditor = function(){
+            $('.formulaEditTiZhi').markItUp(mySettings);
+          };
+
+          /**
+           * 移除题干编辑器
+           */
+          $scope.removeTiGanEditor = function(){
+            $('.formulaEditTiGan').markItUp('remove');
+          };
+
+          /**
+           * 显示题干预览
+           */
+          $scope.previewTiGan = function(){
+            var tgCont = $scope.timu['题目内容']['题干'];
+            tgCont = tgCont.replace(/\n/g, '<br/>');
+            $('#prevDoc').html(tgCont);
+            MathJax.Hub.Config({
+              tex2jax: {inlineMath: [['#$', '$#']], displayMath: [['#$$','$$#']]},
+              messageStyle: 'none',
+              showMathMenu: false,processEscapes: true
+            });
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
+          };
+
+          /**
+           * 显示题支预览
+           */
+          $scope.previewTiZhi = function(){
+            var tzCont = '';
+            if($scope.newTiXingId > 4){
+              tzCont = $scope.timu['题目内容']['答案'];
+            }
+            else if($scope.newTiXingId == 4){
+              tzCont = $scope.mingTiParam.tianKongDaAn;
+            }
+            else{
+              tzCont = $scope.mingTiParam.xuanZheTiZhi;
+            }
+            tzCont = tzCont.replace(/\n/g, '<br/>');
+            $('#prevTiZhiDoc').html(tzCont);
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
           };
 
           /**

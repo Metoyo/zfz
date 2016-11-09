@@ -56,10 +56,13 @@
               <div class="radio" ng-class="{'radio-select':cc.ckd}" ng-if="cc['已报名人数'] < cc['考位数']" ng-click="bmKaoDianSelect(cc)">
                 <span class="glyphicon glyphicon-ok"></span>
               </div>
-              <span ng-bind="cc['考点名称']"></span><span ng-if="cc['已报名人数'] >= cc['考位数']">(<b class="co676767">已满</b>)</span>
+              <span ng-bind="cc['考点名称']"></span><span ng-if="cc['已报名人数'] >= cc['考位数']">
+                (<b class="co676767">已满</b>)
+                <b class="clRed" ng-if="cc.ckd">(已报)</b>
+              </span>
             </div>
             <div class="form-body mr5" ng-if="selectKsz.baoMingStart==false">
-              <span ng-bind="cc['考点名称']"></span><span ng-if="cc.ckd">(<b class="clRed">已报</b>)</span>
+              <span ng-bind="cc['考点名称']"></span><span ng-if="cc.ckd"><b class="clRed">(已报)</b></span>
             </div>
           </td>
         </tr>
