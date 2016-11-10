@@ -727,6 +727,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           };
 
           /**
+           * 给题支选项赋值
+           */
+          $scope.fuZhiFun = function(idx){
+            var tzSlt = document.querySelector('.formulaEditTiZhi');
+            $scope.loopArr[idx].itemVal = angular.element(tzSlt).val();
+          };
+
+          /**
            * 查询试题的函数分页
            */
           $scope.qryTestFun = function(parms){

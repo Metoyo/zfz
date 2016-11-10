@@ -1096,6 +1096,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          */
         $scope.qryTiMuByTiKu = function(){
           qryTmPar.tk = [];
+          qryTmPar.tm = '';
+          $scope.zuJuanParam.tiMuId = '';
           if($scope.zuJuanParam.tiKuId){
             qryTmPar.tk.push($scope.zuJuanParam.tiKuId);
           }
@@ -1109,6 +1111,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          * 通过出题人的UID查询试题
          */
         $scope.qryTiMuByChuTiRenId = function(){
+          qryTmPar.tm = '';
+          $scope.zuJuanParam.tiMuId = '';
           qryTmPar.ctr = $scope.zuJuanParam.ctr ? $scope.zuJuanParam.ctr : '';
           qryTestFun();
         };
@@ -1128,7 +1132,49 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           if($scope.zuJuanParam.cjsjKs){
             qryTmPar.cjsjKs = $scope.zuJuanParam.cjsjKs;
             qryTmPar.cjsjJs = new Date();
+            qryTmPar.tm = '';
+            $scope.zuJuanParam.tiMuId = '';
             qryTestFun();
+          }
+        };
+
+        /**
+         * 通过题目ID查询试题
+         */
+        $scope.qryTestByTiMuId = function(){
+          function _do(item) {
+            item.ckd = false;
+            item.fld = true;
+            if(item['子节点'] && item['子节点'].length > 0){
+              Lazy(item['子节点']).each(_do);
+            }
+          }
+          qryTmPar.tm = '';
+          if($scope.zuJuanParam.tiMuId){
+            $scope.zuJuanParam.ctr = ''; //互斥
+            $scope.zuJuanParam.tiKuId = ''; //互斥
+            Lazy($scope.tmNanDuList).each(function(nd){
+              nd.ckd = false;
+            });
+            Lazy($scope.kowledgeList['节点']).each(_do);
+            qryTmPar = { //查询题目参数对象
+              zsd: [], //知识点
+              nd: '', //难度id
+              tm: '', //题目id
+              tk: [], //题库id
+              tx: $scope.zuJuanParam.txId, //题型id
+              tmly: '', //题目来源ID
+              ctr: '', //出题人UID
+              ltr: '',  //录题人ID
+              cjsjKs: '', //创建时间开始
+              cjsjJs: '' //创建时间结束
+            };
+            var tmIdArr = $scope.zuJuanParam.tiMuId.split(',');
+            qryTmPar.tm = JSON.stringify(tmIdArr); //题目id
+            qryTestFun();
+          }
+          else{
+            DataService.alertInfFun('pmt', '请输入要查询的题目ID！');
           }
         };
 
@@ -1953,6 +1999,44 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           }
           else{
             DataService.alertInfFun('pmt', '请选择要保存的试卷！');
+          }
+        };
+
+        /**
+         * 删除本试卷
+         */
+        $scope.deleteShiJuan = function(){
+          var obj = {
+            method: 'DELETE',
+            url: shiJuanZuShiJuanUrl,
+            params: {
+              '试卷组ID': '',
+              '试卷ID': ''
+            }
+          };
+          if($scope.paperDtl && confirm('确定要删除本试卷吗？')){
+            obj.params['试卷组ID'] = $scope.paperDtl['试卷组ID'];
+            obj.params['试卷ID'] = $scope.paperDtl['试卷ID'];
+            $scope.loadingImgShow = true;
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.sjList = Lazy($scope.sjList).reject(function(sj){
+                  return sj['试卷ID'] == $scope.paperDtl['试卷ID'];
+                }).toArray();
+                if($scope.sjList && $scope.sjList.length > 0){
+                  $scope.paperDtl = '';
+                  $scope.showShiJuanDtl($scope.sjList[0], 0);
+                }
+                DataService.alertInfFun('suc', '删除成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择要删除的试卷！');
           }
         };
 
