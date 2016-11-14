@@ -21,19 +21,19 @@
 <!-- 考务的容器 开始-->
 <div class="tab-content wp90 mlp5">
   <h4 class="pb10 bdb">
-    <span>新建课件</span>
+    <span>新建测验</span>
     <em style="font-size:12px" class="ml15">带 <i>*</i>为必填项</em>
   </h4>
   <div class="row editKaoShi">
     <form class="form-horizontal" name="kaoshiForm">
       <div class="form-group">
-        <label class="col-sm-2 control-label">课件名称<i>*</i></label>
+        <label class="col-sm-2 control-label">测验名称<i>*</i></label>
         <div class="col-sm-6">
-          <input type="text" name="ksName" class="form-control" placeholder="课件名称" required autofocus="true"
+          <input type="text" name="ksName" class="form-control" placeholder="测验名称" required autofocus="true"
                  ng-model="newClassTest['测验名称']"/>
         </div>
         <div class="col-sm-4">
-          <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">课件名称不能为空！</p>
+          <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">测验名称不能为空！</p>
         </div>
       </div>
       <!--<div class="form-group">-->
@@ -46,133 +46,220 @@
         <!--&lt;!&ndash;<p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">时限不能为空！</p>&ndash;&gt;-->
         <!--&lt;!&ndash;</div>&ndash;&gt;-->
       <!--</div>-->
-      <div class="form-group">
-        <label class="col-sm-2 control-label">选择题目</label>
-        <div class="col-sm-6">
-          <a href="javascript:;" class="mt7 dpb" ng-click="showTiMuList()">添加新试题</a>
-        </div>
-      </div>
+      <!--<div class="form-group">-->
+        <!--<label class="col-sm-2 control-label">选择题目</label>-->
+        <!--<div class="col-sm-6">-->
+          <!--<a href="javascript:;" class="mt7 dpb" ng-click="showTiMuList()">添加新试题</a>-->
+        <!--</div>-->
+      <!--</div>-->
       <div class="save-box">
-        <!--ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || loadingImgShow">保存课件-->
+        <!--ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || loadingImgShow">保存测验-->
         <button type="button" class="btn btn-primary" ng-click="saveClassTest()"
-                ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">保存课件
+                ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">保存测验
         </button>
       </div>
     </form>
   </div>
+  <!--题目列表-->
+  <div class="row">
+    <div class="total-test clearfix">
+      <div class="pull-left" style="margin-top: 4px;">
+        共<strong ng-bind="kjParams.tiMuLen || 0"></strong>题
+      </div>
+      <div class="pull-right">
+        <button type="button" class="btn btn-primary" ng-click="addNewTiMuPop()">添加新题目</button>
+      </div>
+    </div>
+    <ul class="list-unstyled testList" id="testList">
+      <li ng-repeat="tm in timuDetails" class="delete_{{tm['题目ID']}} pr130" repeat-done>
+        <div class="item-sub-title pull-left">
+          <p class="knowledge-point">
+            题型：<span ng-bind="tiXingArr[tm['题型ID']-1]"></span>
+          </p>
+          <p class="knowledge-point">
+            出题人：<span class="pull-right" ng-bind="tm['出题人姓名']"></span>
+          </p>
+          <p class="knowledge-point">
+            录题人：<span class="pull-right" ng-bind="tm['录题人姓名']"></span>
+          </p>
+          <p class="knowledge-point">
+            ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
+          </p>
+          <p>
+            创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
+          </p>
+          <div class="editWrap">
+            <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入试卷</button>
+            <button type="button" class="btn btn-default" ng-click="removeOut(tm)" ng-show="tm.ckd">移出试卷</button>
+          </div>
+        </div>
+        <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
+          <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干'] | outTiGan"></h3>
+          <div class="item-tizhi-wrap">
+            <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+              <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
+              <span class="tiZhiSpan" ng-bind-html="tz"></span>
+            </p>
+          </div>
+        </div>
+        <div class="answer-cont">
+          <div class="positionRe">
+            <span class="daAnLabel">答案：</span>
+            <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
+          </div>
+          <div class="positionRe" ng-show="tm['备注']">
+            <span class="daAnLabel">备注：</span>
+            <div class="daAnBox" ng-bind-html="tm['备注']"></div>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="paging text-right" ng-if="pageParam.pageArr.length">
+      <ul class="pagination pagination-sm">
+        <li ng-class="{disabled: pageParam.activePage == 1}">
+          <a href ng-click="pageGetData(1)">首页</a>
+        </li>
+        <li ng-class="{disabled: pageParam.activePage == 1}">
+          <a href ng-click="pageGetData(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
+            上一页
+          </a>
+        </li>
+        <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
+          <a href ng-click="pageGetData(pg)">{{pg}}</a>
+        </li>
+        <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+          <a href ng-click="pageGetData(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
+            下一页
+          </a>
+        </li>
+        <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+          <a href ng-click="pageGetData(pageParam.lastPage)">尾页</a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
 <!--命题-->
-<div class="form-horizontal">
-  <div class="form-header">
-    <div class="form-group answerBox" ng-hide="hideDanXuanEdt" ng-init="hideDanXuanEdt=false">
-      <div class="col-sm-8 col-sm-offset-1 text-right">
-        <a href="javascript:void(0)" ng-click="showDanXuanTiGanEditor();hideDanXuanEdt=true">题干编辑器</a>
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-1 control-label">题干</label>
-      <div class="col-sm-8">
-        <textarea class="form-control formulaEditTiGan" rows="5" ng-model="timu['题目内容']['题干']" placeholder="请输入题干" ng-change="previewTiGan()"></textarea>
-        <div class="previewBox" ng-show="hideDanXuanEdt">
-          <h4 class="title">
-                <span class="pull-left">
-                    内容预览：
-                </span>
-                <span class="pull-right" ng-click="removeTiGanEditor();hideDanXuanEdt=false">
-                    关闭题干编辑器
-                </span>
-          </h4>
-          <div id="prevDoc">
+<div class="popup-percent" ng-if="kjParams.addTiMuWrap">
+  <div class="popup-percent-inner">
+    <div class="inner-box">
+      <div class="form-horizontal mt15">
+        <div class="form-header">
+          <div class="form-group answerBox" ng-hide="hideDanXuanEdt" ng-init="hideDanXuanEdt=false">
+            <div class="col-sm-8 col-sm-offset-1 text-right">
+              <a href="javascript:void(0)" ng-click="showDanXuanTiGanEditor();hideDanXuanEdt=true">题干编辑器</a>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-1 control-label">题干</label>
+            <div class="col-sm-8">
+              <textarea class="form-control formulaEditTiGan" rows="5" ng-model="timu['题目内容']['题干']" placeholder="请输入题干" ng-change="previewTiGan()"></textarea>
+              <div class="previewBox" ng-show="hideDanXuanEdt">
+                <h4 class="title">
+            <span class="pull-left">
+                内容预览：
+            </span>
+            <span class="pull-right" ng-click="removeTiGanEditor();hideDanXuanEdt=false">
+                关闭题干编辑器
+            </span>
+                </h4>
+                <div id="prevDoc">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--弹出层-->
+          <div id="mediaPlugin" class="popup-wrap">
+            <div class="popup-wrap-inner">
+              <div class="pwi-header plr10 text-center">
+                <input id="fileUpload" type="file" class="pull-left hide addFileBtn" multiple onchange="angular.element(this).scope().fileNameChanged(this)"/>
+                <button ng-click="addMyFile('img')" class="btn btn-success mt7">添加图片</button>
+                <button ng-click="addMyFile('mp3')" class="btn btn-success ml15 mt7">添加音频</button>
+                <button ng-click="addMyFile('video')" class="btn btn-success ml15 mt7">添加视频</button>
+              </div>
+              <div class="pwi-body plr10">
+                <p class="mt15" ng-show="uploadFiles.length">
+                  <span>共 {{uploadFiles.length}} 个文件</span>
+                </p>
+                <p class="mt15" ng-repeat="fl in uploadFiles track by $index">
+                  <span ng-bind="fl.name"></span>
+                  <span ng-bind="(fl.size/1024).toFixed(2) + 'KB'"></span>
+                  <span class="glyphicon glyphicon-remove" ng-click="deleteSelectFile($index)"></span>
+                </p>
+              </div>
+              <div class="pwi-footer plr10 text-center">
+                <button type="button" class="btn btn-primary mt7" ng-click="uploadMyFiles()">添加到编辑器</button>
+                <button type="button" class="btn btn-danger ml15 mt7" ng-click="closeMediaPlugin()">关闭</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-body">
+          <div class="form-group" ng-show='showTiZhiEdt' ng-init="showTiZhiEdt=false">
+            <div class="col-sm-8 col-sm-offset-1">
+              <textarea class="form-control formulaEditTiZhi" rows="5" ng-model="kjParams.xuanZheTiZhi" ng-change="previewTiZhi()"></textarea>
+              <div class="previewBox">
+                <h4 class="title">
+            <span class="pull-left">
+                内容预览：
+            </span>
+                </h4>
+                <div id="prevTiZhiDoc">
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-8 col-sm-offset-1 assignment-box">
+              <span>将题支编辑器的内容赋值给选项：</span>
+              <label class="radio-inline" ng-repeat="num in loopArr track by $index">
+                <input type="radio" name="fuzhi" value="$index" ng-click='fuZhiFun($index)'> {{letterArr[$index]}}
+              </label>
+            </div>
+          </div>
+          <div class="form-group answerBox">
+            <div class="col-sm-8 col-sm-offset-1 text-right">
+              <a href="javascript:void(0)" ng-click="showDanXuanTiZhiEditor();showTiZhiEdt=true" ng-hide="showTiZhiEdt">题支编辑器</a>
+              <a href="javascript:void(0)" ng-click="removeTiZhiEditor();showTiZhiEdt=false" ng-show="showTiZhiEdt">关闭题支编辑器</a>
+            </div>
+            <div class="col-sm-3">
+              正确答案
+            </div>
+          </div>
+          <div class="form-group tizhiWrap" ng-repeat="num in loopArr">
+            <label class="col-sm-1 control-label">{{letterArr[$index]}}.</label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control tiZhi" placeholder="请输入选项" ng-model="num.itemVal">
+            </div>
+            <div class="col-sm-2">
+              <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem($index,num)" ng-hide="loopArr.length < 3"></span>
+              <div class="radio {{'answer' + $index}}" ng-class="{'radio-select':num.ckd}" ng-click="chooseDaAn(num,'dan')">
+                <span class="glyphicon glyphicon-ok"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-footer">
+          <div class="form-group">
+            <a href="javascript:void(0)" id="add-one-item" title="增加一项" ng-click="addOneItem()"
+               class="col-sm-1 control-label text-right add-btn" ng-hide="loopArr.length > 25">
+              <span class="glyphicon glyphicon-plus-sign"></span>
+            </a>
+            <span class="col-sm-2 col-sm-offset-8" ng-init="showRemarkInput=false">
+              <a href="javascript:void(0)" ng-hide="showRemarkInput" ng-click="showRemarkInput=true">备注</a>
+              <a href="javascript:void(0)" ng-show="showRemarkInput" ng-click="showRemarkInput=false">关闭备注</a>
+            </span>
+          </div>
+          <div class="form-group" ng-show="showRemarkInput">
+            <label class="col-sm-1 control-label">备注</label>
+            <div class="col-sm-8 remark">
+              <textarea class="form-control" rows="5" ng-model="timu['备注']" placeholder="备注"></textarea>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!--弹出层-->
-    <div id="mediaPlugin" class="popup-wrap">
-      <div class="popup-wrap-inner">
-        <div class="pwi-header plr10 text-center">
-          <input id="fileUpload" type="file" class="pull-left hide addFileBtn" multiple onchange="angular.element(this).scope().fileNameChanged(this)"/>
-          <button ng-click="addMyFile('img')" class="btn btn-success mt7">添加图片</button>
-          <button ng-click="addMyFile('mp3')" class="btn btn-success ml15 mt7">添加音频</button>
-          <button ng-click="addMyFile('video')" class="btn btn-success ml15 mt7">添加视频</button>
-        </div>
-        <div class="pwi-body plr10">
-          <p class="mt15" ng-show="uploadFiles.length">
-            <span>共 {{uploadFiles.length}} 个文件</span>
-          </p>
-          <p class="mt15" ng-repeat="fl in uploadFiles track by $index">
-            <span ng-bind="fl.name"></span>
-            <span ng-bind="(fl.size/1024).toFixed(2) + 'KB'"></span>
-            <span class="glyphicon glyphicon-remove" ng-click="deleteSelectFile($index)"></span>
-          </p>
-        </div>
-        <div class="pwi-footer plr10 text-center">
-          <button type="button" class="btn btn-primary mt7" ng-click="uploadMyFiles()">添加到编辑器</button>
-          <button type="button" class="btn btn-danger ml15 mt7" ng-click="closeMediaPlugin()">关闭</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="form-body">
-    <div class="form-group" ng-show='showTiZhiEdt' ng-init="showTiZhiEdt=false">
-      <div class="col-sm-8 col-sm-offset-1">
-        <textarea class="form-control formulaEditTiZhi" rows="5" ng-model="mingTiParam.xuanZheTiZhi" ng-change="previewTiZhi()"></textarea>
-        <div class="previewBox">
-          <h4 class="title">
-                <span class="pull-left">
-                    内容预览：
-                </span>
-          </h4>
-          <div id="prevTiZhiDoc">
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-8 col-sm-offset-1 assignment-box">
-        <span>将题支编辑器的内容赋值给选项：</span>
-        <label class="radio-inline" ng-repeat="num in loopArr track by $index">
-          <input type="radio" name="fuzhi" value="$index" ng-click='fuZhiFun($index)'> {{letterArr[$index]}}
-        </label>
-      </div>
-    </div>
-    <div class="form-group answerBox">
-      <div class="col-sm-8 col-sm-offset-1 text-right">
-        <a href="javascript:void(0)" ng-click="showDanXuanTiZhiEditor();showTiZhiEdt=true" ng-hide="showTiZhiEdt">题支编辑器</a>
-        <a href="javascript:void(0)" ng-click="removeTiZhiEditor();showTiZhiEdt=false" ng-show="showTiZhiEdt">关闭题支编辑器</a>
-      </div>
-      <div class="col-sm-3">
-        正确答案
-      </div>
-    </div>
-    <div class="form-group tizhiWrap" ng-repeat="num in loopArr">
-      <label class="col-sm-1 control-label">{{letterArr[$index]}}.</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control tiZhi" placeholder="请输入选项" ng-model="num.itemVal">
-      </div>
-      <div class="col-sm-2">
-        <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem($index,num)" ng-hide="loopArr.length < 3"></span>
-        <div class="radio {{'answer' + $index}}" ng-class="{'radio-select':num.ckd}" ng-click="chooseDaAn(num,'dan')">
-          <span class="glyphicon glyphicon-ok"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="form-footer">
-    <div class="form-group">
-      <a href="javascript:void(0)" id="add-one-item" title="增加一项" ng-click="addOneItem()"
-         class="col-sm-1 control-label text-right add-btn" ng-hide="loopArr.length > 25">
-        <span class="glyphicon glyphicon-plus-sign"></span>
-      </a>
-    </div>
-    <div class="form-group">
-      <label class="col-sm-1 control-label">备注</label>
-      <div class="col-sm-8 remark">
-        <textarea class="form-control" rows="5" ng-model="timu['备注']" placeholder="备注"></textarea>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-sm-offset-1 col-sm-8 text-right">
-        <button type="button" class="btn btn-primary" ng-click="saveTiMu()" ng-disabled="fbdBtn">保存</button>
-      </div>
+    <div class="fix-to-bottom-right">
+      <button type="button" class="btn btn-primary" ng-click="saveTiMu()" ng-disabled="loadingImgShow">保存</button>
+      <button type="button" class="btn btn-danger ml15" ng-click="closeAddTiMuPop()">关闭</button>
     </div>
   </div>
 </div>

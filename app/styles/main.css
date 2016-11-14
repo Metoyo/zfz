@@ -506,6 +506,11 @@ a.add-btn:hover span {
       z-index: 1015; }
     .popup-percent .popup-percent-inner label.closePaperDetailBtn {
       top: 50px; }
+    .popup-percent .popup-percent-inner .fix-to-bottom-right {
+      position: fixed;
+      bottom: 7%;
+      right: 10%;
+      width: 150px; }
 
 /* dashboard styles begin*/
 .pointTree {

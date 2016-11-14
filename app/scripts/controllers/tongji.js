@@ -262,7 +262,9 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
               optBar.dataZoom.end = (5 / tjBarData.length) * 100;
             }
             tjParaObj.radarBoxZsd.setOption(optRadarZsd);
-            tjParaObj.barBox.setOption(optBar);
+            if(optBar.series[0].data.length > 0){
+              tjParaObj.barBox.setOption(optBar);
+            }
             $scope.loadingImgShow = false;
             $timeout(function (){
               window.onresize = function () {

@@ -1192,7 +1192,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
          */
         $scope.deleteItem = function(tmid, idx){
           if (confirm('确定要删除此题吗？')) {
-            var obj = {method: 'DELETE', url: tiMuUrl, params: {'题目ID': tmid}};
+            var obj = {
+              method: 'POST',
+              url: tiMuUrl,
+              data: {
+                '题目ID': tmid,
+                '状态': -1
+              }
+            };
             $http(obj).success(function(data){
               if(data.result){
                 $scope.timuDetails.splice(idx, 1);

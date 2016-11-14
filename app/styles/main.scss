@@ -575,6 +575,12 @@ a.add-btn:hover span {
     label.closePaperDetailBtn{
       top: 50px;
     }
+    .fix-to-bottom-right{
+      position: fixed;
+      bottom: 7%;
+      right: 10%;
+      width: 150px;
+    }
   }
 }
 /* dashboard styles begin*/

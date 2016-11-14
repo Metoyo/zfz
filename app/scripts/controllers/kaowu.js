@@ -1431,6 +1431,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 ksObj['学号'] = ks['学号'];
                 ksObj['姓名'] = ks['姓名'];
                 ksObj['座位号'] = ks['座位号'];
+                ksObj['班级名称'] = ks['班级名称'];
                 ksArr.push(ksObj);
               });
               ksData[sheetName] = ksArr;

@@ -48,11 +48,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           $scope.tiXingArr = config.tiXingArr; //题型名称数组
           $scope.kjParams = {
             showErWeiMa: false, //显示二维码
-            wrapTran: true, //class的转换
+            //wrapTran: true, //class的转换
             tiMuLen: '', //题目数量
             allTkIds: [], //所有题库ID
             tiKuId: '', //题库ID
-            sltTest: '' //选中的测验
+            sltTest: '', //选中的测验
+            xuanZheTiZhi: '', //选择题题支内容
+            addTiMuWrap: false, //添加随堂测验题目
+            isAddTiMu: true //是否为添加新题
           }; //课件参数
           $scope.pageParam = { //分页参数
             activePage: '',
@@ -297,9 +300,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $scope.pageParam.lastPage = lastPage;
             $scope.pageParam.activePage = 1;
             cutPageFun(1);
-            if(!$scope.kjParams.wrapTran){
-              $scope.pageGetData(1);
-            }
+            $scope.pageGetData(1);
+            //if(!$scope.kjParams.wrapTran){
+            //  $scope.pageGetData(1);
+            //}
           };
 
           /**
@@ -403,7 +407,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $scope.tabActive = 'stcy';
             $scope.txTpl = 'views/kejian/classTestList.html';
           };
-          $scope.getClassTest();
+          //$scope.getClassTest();
 
           /**
            * 测验的分页数据查询函数
@@ -624,17 +628,16 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             ];
             $scope.timu = {
               '题库ID': '',
-              '科目ID': '',
-              '题型ID': '',
+              '科目ID': keMuId,
+              '题型ID': 1,
               '题目内容': {
                 '题干': '',
                 '答案': '',
                 '提示': ''
               },
-              '难度': '',
-              '题目来源ID': '',
-              '出题人UID': '',
-              '知识点': '',
+              '难度': 3,
+              '出题人UID': logUid,
+              //'知识点': '',
               '备注': ''
             };
             $scope.loopArr = [
@@ -646,8 +649,66 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $scope.classTestPaper = [];
             //显示时间选择器
             datePickerFun();
+            var qryTiMuFun = function(){
+              qryTmPar.tk.push($scope.timu['题库ID']);
+              qryTmPar.ctr = logUid;
+              $scope.qryTestFun();
+            };
+            //查询题库
+            var objGr = {
+              method: 'GET',
+              url: tiKuUrl,
+              params: {
+                '学校ID': jgID,
+                '领域ID': lingYuId,
+                '类型': 9
+              }
+            };
+            $http(objGr).success(function(tiku){
+              if(tiku.result && tiku.data){
+                $scope.timu['题库ID'] = tiku.data[0]['题库ID'];
+                qryTiMuFun();
+              }
+              else{
+                var objNtk = {
+                  method: 'PUT',
+                  url: tiKuUrl,
+                  data: {
+                    '题库名称': '个人私有题库',
+                    '学校ID': jgID,
+                    '领域ID': lingYuId,
+                    '类型': 9
+                  }
+                };
+                $http(objNtk).success(function(data){
+                  if(data.result && data.data){
+                    $scope.timu['题库ID'] = data.data['题库ID'];
+                    qryTiMuFun();
+                  }
+                  else{
+                    DataService.alertInfFun('err', data.error);
+                  }
+                });
+              }
+            });
             $scope.tabActive = 'xjcy';
             $scope.txTpl = 'views/kejian/addClassTest.html';
+          };
+          $scope.addClassTest();
+
+          /**
+           * 添加题目弹出
+           */
+          $scope.addNewTiMuPop = function(){
+            $scope.kjParams.addTiMuWrap = true;
+            $scope.kjParams.isAddTiMu = true;
+          };
+
+          /**
+           * 关闭添加题目弹出
+           */
+          $scope.closeAddTiMuPop = function(){
+            $scope.kjParams.addTiMuWrap = false;
           };
 
           /**
@@ -711,16 +772,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
            * 显示题支预览
            */
           $scope.previewTiZhi = function(){
-            var tzCont = '';
-            if($scope.newTiXingId > 4){
-              tzCont = $scope.timu['题目内容']['答案'];
-            }
-            else if($scope.newTiXingId == 4){
-              tzCont = $scope.mingTiParam.tianKongDaAn;
-            }
-            else{
-              tzCont = $scope.mingTiParam.xuanZheTiZhi;
-            }
+            var tzCont = $scope.kjParams.xuanZheTiZhi;
             tzCont = tzCont.replace(/\n/g, '<br/>');
             $('#prevTiZhiDoc').html(tzCont);
             MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
@@ -732,6 +784,100 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           $scope.fuZhiFun = function(idx){
             var tzSlt = document.querySelector('.formulaEditTiZhi');
             $scope.loopArr[idx].itemVal = angular.element(tzSlt).val();
+          };
+
+          /**
+           * 多选题选择答案的效果的代码
+           */
+          $scope.chooseDaAn = function(da, stat){
+            if(stat == 'dan'){
+              Lazy($scope.loopArr).each(function(tizhi, idx, lst){
+                tizhi.ckd = false;
+              });
+            }
+            da.ckd = !da.ckd;
+          };
+
+          /**
+           * 保存题目
+           */
+          $scope.saveTiMu = function(){
+            var mis = [];
+            var tiMuData = angular.copy($scope.timu);
+            var tgSlt = document.querySelector('.formulaEditTiGan');
+            tiMuData['题目内容']['题干'] = angular.element(tgSlt).val();
+            var tzArr = [];
+            var daArr = [];
+            Lazy($scope.loopArr).each(function(tz, idx, lst){
+              tz.itemVal ? tzArr.push(tz.itemVal) : mis.push('题支' + (idx + 1));
+              if(tz.ckd){
+                daArr.push(idx);
+              }
+            });
+            tiMuData['题目内容']['选项'] = tzArr.length ? tzArr : [];
+            if(daArr && daArr.length > 0){
+              tiMuData['题目内容']['答案'] = $scope.newTiXingId == 1 ? daArr[0] : daArr;
+            }
+            else{
+              mis.push('答案');
+            }
+            Lazy(tiMuData).each(function(v, k, l){ //判断必要字段
+              if(k == '题库ID' || k == '科目ID' || k == '题型ID'){
+                if(!v){
+                  mis.push(k);
+                }
+              }
+              else if(k == '题目内容'){
+                if(!v['题干']){
+                  mis.push('题干');
+                }
+              }
+              else{
+                if(!v){
+                  delete tiMuData[k];
+                }
+              }
+            });
+            if(mis && mis.length > 0){ //判读是否有空字段
+              DataService.alertInfFun('pmt', '缺少' + mis.join(',') + '。');
+            }
+            else{
+              tiMuData['题目内容'] = JSON.stringify(tiMuData['题目内容']);
+              var obj = {method: '', url: tiMuUrl, data: tiMuData};
+              if($scope.kjParams.isAddTiMu){
+                obj.method = 'PUT';
+              }
+              else{
+                obj.method = 'POST';
+              }
+              $scope.loadingImgShow = true;
+              $http(obj).success(function(data){
+                if(data.result){
+                  $scope.timu['题目内容'] = {
+                    '题干': '',
+                    '答案': '',
+                    '提示': ''
+                  };
+                  $scope.timu['备注'] = '';
+                  $scope.kjParams.xuanZheTiZhi = '';
+                  var tzSlt = document.querySelector('.formulaEditTiZhi');
+                  angular.element(tzSlt).val('');
+                  $scope.loopArr = [{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false},{itemVal: '', ckd: false}];
+                  $('#prevDoc').html('');
+                  $('#prevTiZhiDoc').html('');
+                  if($scope.timu['题库ID']){
+                    qryTmPar.tk.push($scope.timu['题库ID']);
+                    qryTmPar.ctr = logUid;
+                    $scope.qryTestFun();
+                  }
+                  DataService.alertInfFun('suc', '保存成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+                $scope.loadingImgShow = false;
+              });
+            }
           };
 
           /**
@@ -751,11 +897,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             if(parms == 'qryByTiMuId'){
               qryTmPar.zsd = [];
             }
-            else{
-              if(!(qryTmPar.zsd && qryTmPar.zsd.length > 0)){
-                Lazy($scope.kowledgeList['节点']).each(_do);
-              }
-            }
+            //else{
+            //  if(!(qryTmPar.zsd && qryTmPar.zsd.length > 0)){
+            //    Lazy($scope.kowledgeList['节点']).each(_do);
+            //  }
+            //}
             if(qryTmPar.zsd && qryTmPar.zsd.length > 0){
               obj.params['知识点'] = JSON.stringify(qryTmPar.zsd);
             }
@@ -784,9 +930,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               if(tmlb.result && tmlb.data){
                 var timuliebiao = Lazy(tmlb.data).sortBy('题目ID').reverse().toArray();
                 allTiMuIds = angular.copy(timuliebiao);
-                $scope.kjParams.wrapTran = false;
+                //$scope.kjParams.wrapTran = false;
                 pageMake(tmlb.data);
-                $scope.txTpl = 'views/kejian/keJianTiMu.html';
               }
               else{
                 $scope.pageParam = { //分页参数
@@ -1004,7 +1149,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $scope.txTpl = 'views/kejian/addClassTest.html';
             //显示时间选择器
             datePickerFun();
-            $scope.kjParams.wrapTran = true;
+            //$scope.kjParams.wrapTran = true;
           };
 
           /**
@@ -1037,7 +1182,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               };
               $http(obj).success(function(pData){
                 if(pData.result){
-                  $scope.kjParams.wrapTran = true;
+                  //$scope.kjParams.wrapTran = true;
                   $scope.getClassTest();
                   DataService.alertInfFun('suc', '保存成功！');
                 }
