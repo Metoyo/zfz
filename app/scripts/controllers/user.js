@@ -1691,7 +1691,6 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                         }
                       });
                       kmTemp['角色'] = jsArr;
-
                     });
                     temp['待审'] = xuXiaoKeMu;
                     $scope.shenHeList.push(temp);
@@ -1704,11 +1703,14 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                     else{
                       jsjs['科目角色'] = angular.copy($scope.xxkmList);
                     }
+                    jsjs['审核状态'] = false;
                     Lazy(jsjs['科目角色']).each(function(km){
                       var fdTar = Lazy(km['角色']).find(function(js){
                         return js['状态'] == 0;
                       });
-                      jsjs['审核状态'] = fdTar ? true : false;
+                      if(fdTar){
+                        jsjs['审核状态'] = true;
+                      }
                     });
                   });
                   $scope.teacherData = user.data;

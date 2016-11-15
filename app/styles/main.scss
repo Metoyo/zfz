@@ -1037,7 +1037,7 @@ a.add-btn:hover span {
     position: relative;
     font-size: 14px;
     line-height: 24px;
-//    display: none;
+    display: none;
     .daAnLabel{
       position: absolute;
     }
@@ -1724,9 +1724,9 @@ label.checkbox{
   .contentWraps{
     padding-top: 55px;
   }
-  .answer-cont{
-    display: none;
-  }
+//  .answer-cont{
+//    display: none;
+//  }
 }
 .tiKong{
   .tizhiWrap{
@@ -1936,11 +1936,11 @@ label.checkbox{
     right: 0;
     left: 300px;
   }
-  .zuanJuanTiMu{
-    .answer-cont{
-      display: none;
-    }
-  }
+//  .zuanJuanTiMu{
+//    .answer-cont{
+//      display: none;
+//    }
+//  }
 }
 .subDsShow{
   .subDashboard{

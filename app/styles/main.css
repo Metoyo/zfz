@@ -872,7 +872,8 @@ a.add-btn:hover span {
     width: 100%;
     position: relative;
     font-size: 14px;
-    line-height: 24px; }
+    line-height: 24px;
+    display: none; }
     .testList .answer-cont .daAnLabel {
       position: absolute; }
     .testList .answer-cont .daAnBox {
@@ -1404,8 +1405,6 @@ label.checkbox {
         height: 15px; }
   .mingtiWrapper .contentWraps {
     padding-top: 55px; }
-  .mingtiWrapper .answer-cont {
-    display: none; }
 
 .tiKong .tizhiWrap .addMoreBtn {
   display: block;
@@ -1546,8 +1545,6 @@ label.checkbox {
   z-index: 3;
   right: 0;
   left: 300px; }
-.zujuanWrapper .zuanJuanTiMu .answer-cont {
-  display: none; }
 
 .subDsShow .subDashboard {
   display: none; }

@@ -20,10 +20,6 @@
 </div>
 <!-- 考务的容器 开始-->
 <div class="tab-content wp90 mlp5">
-  <h4 class="pb10 bdb">
-    <span>新建测验</span>
-    <em style="font-size:12px" class="ml15">带 <i>*</i>为必填项</em>
-  </h4>
   <div class="row editKaoShi">
     <form class="form-horizontal" name="kaoshiForm">
       <div class="form-group">
@@ -33,7 +29,10 @@
                  ng-model="newClassTest['测验名称']"/>
         </div>
         <div class="col-sm-4">
-          <p ng-show="kaoshiForm.ksName.$error.required" class="help-block">测验名称不能为空！</p>
+          <button type="button" class="btn btn-primary" ng-click="saveClassTest()" style="margin-top: 2px"
+                  ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">
+            保存测验
+          </button>
         </div>
       </div>
       <!--<div class="form-group">-->
@@ -52,12 +51,12 @@
           <!--<a href="javascript:;" class="mt7 dpb" ng-click="showTiMuList()">添加新试题</a>-->
         <!--</div>-->
       <!--</div>-->
-      <div class="save-box">
-        <!--ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || loadingImgShow">保存测验-->
-        <button type="button" class="btn btn-primary" ng-click="saveClassTest()"
-                ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">保存测验
-        </button>
-      </div>
+      <!--<div class="save-box">-->
+        <!--&lt;!&ndash;ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || loadingImgShow">保存测验&ndash;&gt;-->
+        <!--<button type="button" class="btn btn-primary" ng-click="saveClassTest()"-->
+                <!--ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">保存测验-->
+        <!--</button>-->
+      <!--</div>-->
     </form>
   </div>
   <!--题目列表-->
@@ -67,7 +66,7 @@
         共<strong ng-bind="kjParams.tiMuLen || 0"></strong>题
       </div>
       <div class="pull-right">
-        <button type="button" class="btn btn-primary" ng-click="addNewTiMuPop()">添加新题目</button>
+        <button type="button" class="btn btn-success" ng-click="addNewTiMuPop()">添加新题目</button>
       </div>
     </div>
     <ul class="list-unstyled testList" id="testList">
@@ -80,17 +79,16 @@
             出题人：<span class="pull-right" ng-bind="tm['出题人姓名']"></span>
           </p>
           <p class="knowledge-point">
-            录题人：<span class="pull-right" ng-bind="tm['录题人姓名']"></span>
-          </p>
-          <p class="knowledge-point">
             ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
           </p>
           <p>
             创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
           </p>
           <div class="editWrap">
-            <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入试卷</button>
-            <button type="button" class="btn btn-default" ng-click="removeOut(tm)" ng-show="tm.ckd">移出试卷</button>
+            <button type="button" class="btn btn-default" ng-click="deleteItem(tm['题目ID'], $index)">删除</button>
+            <button type="button" class="btn btn-default" ng-click="editItem(tm)">修改</button>
+            <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入测验</button>
+            <button type="button" class="btn btn-default" ng-click="removeOut(tm)" ng-show="tm.ckd">移出测验</button>
           </div>
         </div>
         <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">

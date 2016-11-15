@@ -890,7 +890,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
          */
         $scope.addTiMuTpl = function(txId){
           if(!($scope.tiKuPriList && $scope.tiKuPriList.length > 0)){
-            DataService.alertInfFun('err', '没有图库！');
+            DataService.alertInfFun('err', '没有题库！');
             return ;
           }
           $scope.newTiXingId = txId;
