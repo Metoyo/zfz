@@ -390,7 +390,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               url: ceYanUrl,
               params: {
                 '学校ID': jgID,
-                '创建人UID': logUid
+                '创建人UID': logUid,
+                '状态': JSON.stringify([0,1])
               }
             };
             $http(obj).success(function(data){
@@ -407,7 +408,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $scope.tabActive = 'stcy';
             $scope.txTpl = 'views/kejian/classTestList.html';
           };
-          //$scope.getClassTest();
+          $scope.getClassTest();
 
           /**
            * 测验的分页数据查询函数
@@ -581,6 +582,31 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           };
 
           /**
+           * 开始和关闭测验
+           */
+          $scope.classTestSwitch = function(ct){
+            ct['状态'] = + ct['状态'];
+            if(confirm('你确定要修改测验的状态吗？')){
+              var obj = {
+                method: 'POST',
+                url: ceYanUrl,
+                data: {
+                  '测验ID': ct['测验ID'],
+                  '状态': ct['状态']
+                }
+              };
+              $http(obj).success(function(data){
+                if(data.result){
+                  DataService.alertInfFun('pmt', '测验状态修改成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+              });
+            }
+          };
+
+          /**
            * 返回考试组列表
            */
           $scope.backToList = function(){
@@ -605,9 +631,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               '科目ID': keMuId,
               '测验设置': {
                 '固定题目': true,
-                '时限': '',
+                //'时限': '',
                 '组卷规则': []
-              }
+              },
+              '状态': 1
             };
             $scope.tiMuArr = [
               {
@@ -682,7 +709,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $scope.tabActive = 'xjcy';
             $scope.txTpl = 'views/kejian/addClassTest.html';
           };
-          $scope.addClassTest();
 
           /**
            * 添加题目弹出
@@ -1213,46 +1239,51 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           /**
            * 返回新建
            */
-          $scope.backToAddPage = function(){
-            $scope.classTestPaper = [];
-            Lazy($scope.tiMuArr).each(function(kj){
-              if(kj['题目'].length > 0){
-                $scope.classTestPaper.push(kj);
-              }
-            });
-            $scope.txTpl = 'views/kejian/addClassTest.html';
-            //显示时间选择器
-            datePickerFun();
-            //$scope.kjParams.wrapTran = true;
-          };
+          //$scope.backToAddPage = function(){
+          //  $scope.classTestPaper = [];
+          //  Lazy($scope.tiMuArr).each(function(kj){
+          //    if(kj['题目'].length > 0){
+          //      $scope.classTestPaper.push(kj);
+          //    }
+          //  });
+          //  $scope.txTpl = 'views/kejian/addClassTest.html';
+          //  //显示时间选择器
+          //  datePickerFun();
+          //  //$scope.kjParams.wrapTran = true;
+          //};
 
           /**
            * 保存测验
            */
           $scope.saveClassTest = function(){
-            Lazy($scope.classTestPaper).each(function(dt){
-              var gzObj = {
-                '大题名称': dt['大题名称'],
-                '固定题目': []
-              };
-              Lazy(dt['题目']).each(function(tm){
-                var tmObj = {
-                  '题目ID': tm['题目ID'],
-                  '分值': 1
+            $scope.newClassTest['测验设置']['组卷规则'] = [];
+            Lazy($scope.tiMuArr).each(function(dt){
+              if(dt['题目'].length > 0){
+                var gzObj = {
+                  '大题名称': dt['大题名称'],
+                  '固定题目': []
                 };
-                gzObj['固定题目'].push(tmObj);
-              });
-              $scope.newClassTest['测验设置']['组卷规则'].push(gzObj);
+                Lazy(dt['题目']).each(function(tm){
+                  var tmObj = {
+                    '题目ID': tm['题目ID'],
+                    '分值': 1
+                  };
+                  gzObj['固定题目'].push(tmObj);
+                });
+                $scope.newClassTest['测验设置']['组卷规则'].push(gzObj);
+              }
             });
+            var newTestData = angular.copy($scope.newClassTest);
             //var clsSlt = document.querySelector('.start-date');
             //$scope.newClassTest['测验设置']['时限'] = angular.element(clsSlt).val();
-            if($scope.newClassTest['测验设置']['组卷规则'].length > 0){
-              $scope.newClassTest['测验设置'] = JSON.stringify($scope.newClassTest['测验设置']);
+            if(newTestData['测验设置']['组卷规则'].length > 0){
+              newTestData['状态'] = + newTestData['状态'];
+              newTestData['测验设置'] = JSON.stringify(newTestData['测验设置']);
               $scope.loadingImgShow = true;
               var obj = {
                 method: 'PUT',
                 url: ceYanUrl,
-                data: $scope.newClassTest
+                data: newTestData
               };
               $http(obj).success(function(pData){
                 if(pData.result){

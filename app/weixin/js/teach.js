@@ -22,9 +22,9 @@ $(function(){
   };
 
   //var localUrl = 'http://192.168.1.156';
-  //var localUrl = 'https://www.zhifz.com';
+  var localUrl = 'https://www.zhifz.com';
   //var localUrl = 'http://127.0.0.1:3000';
-  var localUrl = 'http://192.168.1.156:3000';
+  //var localUrl = 'http://192.168.1.156:3000';
   var testUrl = localUrl + '/pub_test/';
   var pubPars = {
     '学校ID': 1033,
@@ -260,7 +260,7 @@ $(function(){
   /**
    * <------ 发起测试模块 ------>
    */
-  //发起测试按钮
+    //发起测试按钮
   $('#tabBtnAddNew').on('click', function(){
     var dgDt = {
       daGang: testInfo.daZsd
@@ -319,7 +319,8 @@ $(function(){
           ]
         }], // 与组卷接口定义一致
         '固定题目': true // true 表示所有参与测验的用户使用同一套题目
-      }
+      },
+      '状态': 1 //注意状态
     };
     if(ctfs == 0){
       obj['测验设置']['固定题目'] = false;
@@ -403,7 +404,8 @@ $(function(){
       method: 'GET',
       url: ceYanUrl,
       data: {
-        '学校ID': 1033
+        '学校ID': 1033,
+        '状态': JSON.stringify([0,1])
       },
       success: function (data) {
         data = dataMake(data);
@@ -528,6 +530,7 @@ $(function(){
 
   //点击测试标题生成二维码
   sltShowBox.on('click', '.testName', function(){
+    //makeErWeiMa('https://www.zhifz.com/images/download.pdf');
     $.ajax({
       method: 'GET',
       url: qrcodeUrl,
@@ -559,7 +562,7 @@ $(function(){
   /**
    * <------ 宣传视频模块 ------>
    */
-  //宣传视频按钮
+    //宣传视频按钮
   $('#tabBtnVideo').on('click', function(){
     window.location.href = 'http://mp.weixin.qq.com/s?__biz=MzIzNDUyMDA5Nw==&mid=100000003&idx=1&sn=5c43809e2caf508f7064526ab48663e2&scene=18#wechat_redirect';
     //$('.title').text('宣传视频');
@@ -569,7 +572,7 @@ $(function(){
   /**
    * <------ 免费试用模块 ------>
    */
-  //免费试用按钮
+    //免费试用按钮
   $('#tabBtnFree').on('click', function(){
     $('.title').text('免费试用');
     renderFun({}, 'tplFree');

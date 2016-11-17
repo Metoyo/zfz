@@ -28,23 +28,29 @@
           <input type="text" name="ksName" class="form-control" placeholder="测验名称" required autofocus="true"
                  ng-model="newClassTest['测验名称']"/>
         </div>
-        <div class="col-sm-4">
-          <button type="button" class="btn btn-primary" ng-click="saveClassTest()" style="margin-top: 2px"
-                  ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">
+        <!--<div class="col-sm-4">-->
+          <!--<button type="button" class="btn btn-primary" ng-click="saveClassTest()" style="margin-top: 2px"-->
+                  <!--ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">-->
+            <!--保存测验-->
+          <!--</button>-->
+        <!--</div>-->
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">默认测验状态</label>
+        <div class="col-sm-3">
+          <label class="radio-inline">
+            <input type="radio" ng-model="newClassTest['状态']" value=1> 开启
+          </label>
+          <label class="radio-inline">
+            <input type="radio" ng-model="newClassTest['状态']" value=0> 关闭
+          </label>
+        </div>
+        <div class="col-sm-2">
+          <button type="button" class="btn btn-primary" ng-click="saveClassTest()" ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">
             保存测验
           </button>
         </div>
       </div>
-      <!--<div class="form-group">-->
-        <!--<label class="col-sm-2 control-label">时限</label>-->
-        <!--<div class="col-sm-6">-->
-          <!--<input type="text" name="ksTime" class="form-control start-date limitDate" placeholder="限定时间"-->
-                 <!--ng-model="newClassTest['测验设置']['时限']"/>-->
-        <!--</div>-->
-        <!--&lt;!&ndash;<div class="col-sm-4">&ndash;&gt;-->
-        <!--&lt;!&ndash;<p ng-show="kaoshiForm.ksTime.$error.required" class="help-block">时限不能为空！</p>&ndash;&gt;-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-      <!--</div>-->
       <!--<div class="form-group">-->
         <!--<label class="col-sm-2 control-label">选择题目</label>-->
         <!--<div class="col-sm-6">-->

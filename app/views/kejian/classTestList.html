@@ -24,7 +24,7 @@
     <tr class="active">
       <th>测验名称</th>
       <th width="220px" class="text-center">创建时间</th>
-      <th width="220px" class="text-center">时限</th>
+      <th width="220px" class="text-center">测验状态</th>
       <th width="100px" class="text-center">测试结果</th>
       <th width="80px" class="text-center">二维码</th>
       <th width="80px" class="text-center">操作</th>
@@ -32,7 +32,14 @@
     <tr ng-repeat="ct in classTestList">
       <td ng-bind="ct['测验名称'] + '(参与人数:' + (ct['参与人数'] || 0) + ')'"></td>
       <td class="text-center" ng-bind="ct['创建时间'] | localDate:'ww'"></td>
-      <td class="text-center" ng-bind="ct['测验设置']['时限'] | localDate:'ww'"></td>
+      <td class="text-center">
+        <label class="radio-inline">
+          <input type="radio" ng-model="ct['状态']" value="1" ng-click="classTestSwitch(ct)"> 开启
+        </label>
+        <label class="radio-inline">
+          <input type="radio" ng-model="ct['状态']" value="0" ng-click="classTestSwitch(ct)"> 关闭
+        </label>
+      </td>
       <td class="text-center"><a href="javascript:void(0)" ng-click="classTestDetail(ct['测验ID'])">查看</a></td>
       <td class="text-center"><a href="javascript:void(0)" ng-click="makeErWeiMa(ct)">生成</a></td>
       <td class="text-center">
@@ -72,9 +79,12 @@
         <span class="title">课序号管理</span>
       </div>
       <div class="pwi-body plr10">
-        <p class="text-center mt15" ng-bind="kjParams.sltTest['测验名称']"></p>
+        <p class="text-center mt10" ng-bind="kjParams.sltTest['测验名称']"></p>
         <div id="QRCodeBox" class="text-center" style="margin-top: 30px">
         </div>
+        <p class="text-center mt15">
+          测验编号：<span ng-bind="kjParams.sltTest['标签']"></span>
+        </p>
       </div>
       <div class="pwi-footer plr10 text-center">
         <a id="downloadEwm" class="btn btn-success mt5" href="" download="{{kjParams.sltTest['测验名称'] + '.png'}}">

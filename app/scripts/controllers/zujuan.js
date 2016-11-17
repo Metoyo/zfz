@@ -16,6 +16,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var keMuId = dftKm['科目ID']; //默认的科目ID
         var lingYuId = dftKm['领域ID']; //默认的科目ID
         var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
+        var zhiShiDianUrl = '/zhishidian'; //知识点
         var shiJuanZuUrl = '/shijuanzu'; //试卷组
         var zuJuanUrl = '/zujuan'; //组卷，用在规则组卷
         var xueXiaoKeMuTiXingUrl = '/xuexiao_kemu_tixing'; //学校科目题型
@@ -1802,12 +1803,14 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           $http(obj).success(function(data){
             if(data.result && data.data){
               var sjz = data.data[0];
+              var sjzZsdArr = []; //存放试卷组用到的所有知识点ID
               qryTiKu();
               $scope.sjzSet = sjz['试卷组设置'];
               $scope.selectSjz = sjz || '';
               $scope.zuJuanParam.sjzName = sjz['试卷组名称'];
               var tmArr = '';
               $scope.zuJuanParam.saveSjBtn = true;
+              //反选赋值
               Lazy($scope.sjzSet['组卷规则']).each(function(dt){
                 var sjrArr = dt['随机题目'];
                 var gdtmArr = dt['固定题目'];
@@ -1815,7 +1818,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                   Lazy(sjrArr).each(function(sjr){
                     var tkName = [];
                     var ndName = [];
-                    var zsdName = [];
+                    //var zsdName = [];
                     Lazy(sjr['限定题库']).each(function(tkId){
                       Lazy($scope.tiKuList).each(function(tk){
                         if(tk['题库ID'] == tkId){
@@ -1830,21 +1833,22 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                         }
                       });
                     });
-                    function _do(item) {
-                      var inZsdArr = Lazy(sjr['知识点']).contains(item['知识点ID']);
-                      if(inZsdArr){
-                        zsdName.push(item['知识点名称']);
-                      }
-                      if(item['子节点'] && item['子节点'].length > 0){
-                        Lazy(item['子节点']).each(_do);
-                      }
-                    }
-                    if($scope.kowledgeList && $scope.kowledgeList['节点']){
-                      Lazy($scope.kowledgeList['节点']).each(_do);
-                    }
+                    //function _do(item) {
+                    //  var inZsdArr = Lazy(sjr['知识点']).contains(item['知识点ID']);
+                    //  if(inZsdArr){
+                    //    zsdName.push(item['知识点名称']);
+                    //  }
+                    //  if(item['子节点'] && item['子节点'].length > 0){
+                    //    Lazy(item['子节点']).each(_do);
+                    //  }
+                    //}
+                    //if($scope.kowledgeList && $scope.kowledgeList['节点']){
+                    //  Lazy($scope.kowledgeList['节点']).each(_do);
+                    //}
                     sjr['限定题库名称'] = tkName;
                     sjr['难度名称'] = ndName;
-                    sjr['知识点名称'] = zsdName;
+                    //sjr['知识点名称'] = zsdName;
+                    sjzZsdArr = Lazy(sjzZsdArr).union(sjr['知识点']).toArray();
                   });
                 }
                 if(gdtmArr && gdtmArr.length > 0){
@@ -1869,6 +1873,33 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                   });
                 }
               });
+              if(sjzZsdArr.length > 0){
+                var zsdObj = {
+                  method: 'GET',
+                  url: zhiShiDianUrl,
+                  params: {
+                    '知识点ID': JSON.stringify(sjzZsdArr)
+                  }
+                };
+                $http(zsdObj).success(function(zsdData){
+                  if(zsdData.result && zsdData.data.length > 0){
+                    Lazy($scope.sjzSet['组卷规则']).each(function(dt){
+                      if(dt['随机题目'] && dt['随机题目'].length > 0){
+                        Lazy(dt['随机题目']).each(function(sjr){
+                          var zsdName = [];
+                          Lazy(sjr['知识点']).each(function(zsdId){
+                            var fidZsd = Lazy(zsdData.data).find(function(zsd){ return zsd['知识点ID'] == zsdId});
+                            if(fidZsd){
+                              zsdName.push(fidZsd['知识点名称']);
+                            }
+                          });
+                          sjr['知识点名称'] = zsdName;
+                        });
+                      }
+                    });
+                  }
+                });
+              }
               Lazy(sjz['试卷']).each(function(sj, idx, lst){
                 Lazy(sj['试卷题目']).each(function(dt){
                   Lazy(dt['题目']).each(function(tm){

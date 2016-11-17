@@ -161,7 +161,8 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             url: kaoShengChengJiUrl,
             params: {
               'UID': logUid,
-              '学校ID': jgID
+              '学校ID': jgID,
+              '状态': 5
             }
           };
           var power = '';
