@@ -761,6 +761,8 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
               ksObj['成绩'] = ks['实际评分'];
               ksObj['课序号'] = ks['课序号名称'];
               ksObj['班级'] = ks['班级名称'];
+              ksObj['考试ID'] = ks['考试ID'];
+              ksObj['试卷ID'] = ks['试卷ID'];
               ksArr.push(ksObj);
             });
             ksData[sheetName] = ksArr;

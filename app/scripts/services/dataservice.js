@@ -75,7 +75,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               urlRedirect.goTo($location.$$path, '/renzheng');
             }
             else{
-              alertFun('err', data.error);
+              urlRedirect.goTo($location.$$path, '/renzheng');
             }
           });
         };
@@ -126,14 +126,19 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                   tkKsDa = JSON.parse(tkKsDa);
                 }
                 var findDaAn = tkKsDa[count - 1];
-                if (typeof(findDaAn) == 'string') {
-                  findDaAn = JSON.parse(findDaAn);
-                }
-                if(findDaAn['答题方式'] == 2){
-                  xhStr = '<span class="ar-tk-da"><img src="' + findDaAn['用户答案'] + '"/></span>';
+                if(findDaAn){
+                  if (typeof(findDaAn) == 'string') {
+                    findDaAn = JSON.parse(findDaAn);
+                  }
+                  if(findDaAn['答题方式'] == 2){
+                    xhStr = '<span class="ar-tk-da"><img src="' + findDaAn['用户答案'] + '"/></span>';
+                  }
+                  else{
+                    xhStr = '<span class="ar-tk-da">' + findDaAn['用户答案'] + '</span>';
+                  }
                 }
                 else{
-                  xhStr = '<span class="ar-tk-da">' + findDaAn['用户答案'] + '</span>';
+                  xhStr = '<span class="ar-tk-da">' + '           ' + '</span>';
                 }
                 count ++;
                 return xhStr;
@@ -232,7 +237,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         };
 
         //检查对象里面是否有某一属性
-         this.objHasProp = function(obj){
+        this.objHasProp = function(obj){
           if (typeof obj === "object" && !(obj instanceof Array)){
             var hasProp = false;
             for (var prop in obj){

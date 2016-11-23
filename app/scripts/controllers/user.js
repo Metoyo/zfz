@@ -1824,7 +1824,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                         tk['类型名称'] = '私有';
                       }
                       if(tk['类型'] == 9){
-                        tk['类型名称'] = '个人私有';
+                        tk['类型名称'] = '随堂测验';
                       }
                     });
                     distTkByLy = Lazy(tiku.data).groupBy('领域ID').toObject();

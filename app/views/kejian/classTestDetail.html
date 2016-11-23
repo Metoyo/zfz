@@ -31,14 +31,21 @@
         <li ng-repeat="tm in tx['题目']">
           <div class="item-cont positionRe daTiName">
             <h3 class="item-tigan" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干'] | outTiGan"></h3>
+            <!-- 单选题 -->
             <div class="item-tizhi-wrap">
-              <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
-                <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
-                <span class="tiZhiSpan" ng-bind-html="tz"></span>
-              <span>
-                  （<strong class="clRed" ng-bind="((tm['选项分析'][$index]['人数']/classTestDtl['参与人数'])*100).toFixed(1) + '%'"></strong>）
-              </span>
-              </p>
+              <div class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+                <p>
+                  <span ng-cloak ng-class="{clRed:tm['题目内容']['答案'][0]==$index}">{{'(' + letterArr[$index] + ')'}}</span>
+                  <span class="tiZhiSpan" ng-bind-html="tz"></span>
+                </p>
+                <p class="percentage">
+                  <span class="percentage-bar" style="width: {{((tm['选项分析'][$index]['人数']/classTestDtl['参与人数'])*100).toFixed(1) + '%'}}"></span>
+                  <span class="percentage-info">
+                    答题人数：{{tm['选项分析'][$index]['人数']}}/{{classTestDtl['参与人数']}}，
+                    占比：{{((tm['选项分析'][$index]['人数']/classTestDtl['参与人数'])*100).toFixed(1) + '%'}}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
         </li>

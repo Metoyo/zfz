@@ -18,7 +18,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
           var shiJuanZuUrl = '/shijuanzu'; //试卷组
           var keXuHaoXueShengUrl = '/kexuhao_xuesheng'; //由课序号查询学生
           var keXuHaoUrl = '/kexuhao'; //查询课序号
-          //var kaoShiShiJuanZuUrl = '/kaoshi_shijuanzu'; //查询考试用到的考试组
+          var kaoShiUrl = '/kaoshi'; //操作场次中的试卷
           var exportStuUrl = '/json2excel'; //导出考生
           var paperListOriginData = ''; //试卷组全部数据
           var newChangCi = ''; //新场次
@@ -51,7 +51,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             showNtPre: false, //显示考试须知预览
             newSltSjzId: '', //修改考试组试卷组用到的新选择的试卷组
             sltAllPaper: false, //新建考试的时候试卷的全选
-            endTimeFixed: true //场次结束时间
+            endTimeFixed: true, //场次结束时间
+            sltAllSj: false //修改试卷组的全选按钮
           };
           $scope.sltSjz = ''; //选中的试卷组
           $scope.pageParam = { //分页参数
@@ -1480,6 +1481,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 }
               });
             });
+            $scope.kwParams.sltAllSj = false;
             $scope.sltKaoShi = ks;
           };
 
@@ -1563,6 +1565,15 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
           };
 
           /**
+           * 修改试卷时全选
+           */
+          $scope.sltAllSj = function(){
+            Lazy($scope.kszSjz['试卷']).each(function(sj, idx, lst){
+              sj.ckd = $scope.kwParams.sltAllSj;
+            });
+          };
+
+          /**
            * 将新选的试卷加入场次
            */
           $scope.addNewPaperToCc = function(){
@@ -1580,6 +1591,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
               }
             });
             if(sltSjIdArr.length > 0 && sltSjArr.length > 0){
+              var obj = {
+                method: 'POST',
+                url: kaoShiUrl,
+                data: {
+                  '考试ID': '',
+                  '考试设置': ''
+                }
+              };
               Lazy($scope.kaoShiZuDtl['考试']).each(function(ks){
                 if(ks['考试ID'] == $scope.sltKaoShi['考试ID']){
                   var kssz = {
@@ -1587,6 +1606,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                   };
                   ks['考试设置'] = JSON.stringify(kssz);
                   ks['试卷'] = sltSjArr;
+                  obj.data['考试ID'] = ks['考试ID'];
+                  obj.data['考试设置'] = JSON.stringify(kssz);
+                }
+              });
+              //保存试卷的修改
+              $http(obj).success(function(data){
+                if(data.result){
+                  DataService.alertInfFun('suc', '修改成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
                 }
               });
               $scope.sltKaoShi = '';

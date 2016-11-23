@@ -17,7 +17,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           var ceYanUrl = '/ceyan'; //测验的url
           var qrcodeUrl = '/make_qrcode'; //生成二维码地址的url
           var wenJuanDiaoChaUrl = '/wenjuan_diaocha'; //问卷调查url
-          var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
+          //var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
           var tiMuUrl = '/timu'; //题目的URL
           var yongHuUrl = '/yonghu'; //用户的增删改查
           var tiKuUrl = '/tiku'; //题库
@@ -27,7 +27,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           var paginationLength = 11; //分页显示多少也
           var classTestDataStore = ''; //存放随堂测验数据
           var keJianDataStore = ''; //存放课件数据
-          var testUrl = 'https://www.zhifz.com/pub_test/'; //二维码的地址
+          //var testUrl = 'https://www.zhifz.com/pub_test/'; //二维码的地址
+          var testUrl = 'http://192.168.1.156:3000/pub_test/'; //二维码的地址
           var tiMuIdArr = []; //获得查询题目ID的数组
           var pageArr = []; //根据得到的数据定义一个分页数组
           var allTiMuIds = ''; //存放所有题目id
@@ -684,26 +685,27 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                 qryTiMuFun();
               }
               else{
-                var objNtk = {
-                  method: 'PUT',
-                  url: tiKuUrl,
-                  data: {
-                    '题库名称': '个人私有题库',
-                    '学校ID': jgID,
-                    '领域ID': lingYuId,
-                    '类型': 9
-                  }
-                };
-                $http(objNtk).success(function(data){
-                  if(data.result && data.data){
-                    //$scope.timu['题库ID'] = data.data['题库ID'];
-                    $scope.kjParams.tiKuId = data.data['题库ID'];
-                    qryTiMuFun();
-                  }
-                  else{
-                    DataService.alertInfFun('err', data.error);
-                  }
-                });
+                DataService.alertInfFun('err', '没有随堂测验题库，请联系学校管理员创建题库！');
+                //var objNtk = {
+                //  method: 'PUT',
+                //  url: tiKuUrl,
+                //  data: {
+                //    '题库名称': '个人私有题库',
+                //    '学校ID': jgID,
+                //    '领域ID': lingYuId,
+                //    '类型': 9
+                //  }
+                //};
+                //$http(objNtk).success(function(data){
+                //  if(data.result && data.data){
+                //    //$scope.timu['题库ID'] = data.data['题库ID'];
+                //    $scope.kjParams.tiKuId = data.data['题库ID'];
+                //    qryTiMuFun();
+                //  }
+                //  else{
+                //    DataService.alertInfFun('err', data.error);
+                //  }
+                //});
               }
             });
             $scope.tabActive = 'xjcy';
@@ -848,7 +850,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             });
             tiMuData['题目内容']['选项'] = tzArr.length ? tzArr : [];
             if(daArr && daArr.length > 0){
-              tiMuData['题目内容']['答案'] = $scope.newTiXingId == 1 ? daArr[0] : daArr;
+              //tiMuData['题目内容']['答案'] = $scope.newTiXingId == 1 ? daArr[0] : daArr;
+              tiMuData['题目内容']['答案'] = daArr[0];
             }
             else{
               mis.push('答案');
