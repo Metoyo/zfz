@@ -1,14 +1,18 @@
+body{
+    background-color: #f5f5f5;
+}
 .card{
     margin-top: 10px;
     padding: 10px;
-    border: 1px solid #cfcfcf;
+    background-color: #fff;
+    /*border: 1px solid #cfcfcf;*/
 }
-.card:nth-child(odd){
-    background-color: #d9edf7;
-}
-.card:nth-child(even){
-    background-color: #dff0d8;
-}
+/*.card:nth-child(odd){*/
+    /*background-color: #d9edf7;*/
+/*}*/
+/*.card:nth-child(even){*/
+    /*background-color: #dff0d8;*/
+/*}*/
 @media only screen and (min-width: 480px){
     .container{
         width: 960px;

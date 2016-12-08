@@ -782,17 +782,20 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
             qryTmPar = { //查询题目参数对象
               zsd: [], //知识点
               nd: '', //难度id
-              tk: angular.copy($scope.mingTiParam.allTkIds), //题库id
+              //tk: angular.copy($scope.mingTiParam.allTkIds), //题库id
+              tk: '', //题库id
               tx: '', //题型id
               tmly: '', //题目来源ID
               ctr: '', //出题人UID
               ltr: ''  //录题人ID
             };
-            if(!kmfzrQx && rkjsQx){
-              qryTmPar.ctr = logUid;
-              qryTmPar.ltr = logUid;
-            }
-            qryTmPar.tm = $scope.mingTiParam.tiMuId; //题目id
+            //if(!kmfzrQx && rkjsQx){
+            //  qryTmPar.ctr = logUid;
+            //  qryTmPar.ltr = logUid;
+            //}
+            //qryTmPar.tm = $scope.mingTiParam.tiMuId; //题目id
+            var tmIdArr = $scope.mingTiParam.tiMuId.split(',');
+            qryTmPar.tm = JSON.stringify(tmIdArr); //题目id
             $scope.qryTestFun('qryByTiMuId');
           }
           else{

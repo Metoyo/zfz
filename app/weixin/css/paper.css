@@ -10,11 +10,38 @@ body {
     font-size: 18px;
     font-weight: 400;
 }
+/*导航样式开始*/
 .container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     height: 100%;
     -webkit-overflow-scrolling: touch;
 }
-.nav:before {
+.content {
+    position: fixed;
+    bottom: 50px;
+    top: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    width: 100%;
+    height: initial;
+    box-sizing: border-box;
+}
+.navBar{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    z-index: 500;
+    width: 100%;
+    background-color: #fafafa;
+}
+.navBar:before {
     content: " ";
     position: absolute;
     left: 0;
@@ -28,44 +55,40 @@ body {
     -webkit-transform: scaleY(.5);
     transform: scaleY(.5);
 }
+.navBar_item{
+    position: relative;
+    display: block;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    flex: 1;
+    padding: 13px 0;
+    text-align: center;
+    font-size: 15px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.navBar_item:after{
+    content: " ";
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 1px;
+    bottom: 0;
+    border-right: 1px solid #CCCCCC;
+    color: #CCCCCC;
+    -webkit-transform-origin: 100% 0;
+    transform-origin: 100% 0;
+    -webkit-transform: scaleX(0.5);
+    transform: scaleX(0.5);
+}
+.navBar_item_on{
+    background-color: #EAEAEA;
+}
+/*导航样式结束*/
 .mt15{
     margin-top: 15px;
 }
 .ptb10{
     padding: 10px 0;
-}
-.nav{
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    z-index: 500;
-    width: 100%;
-    background-color: #f7f7fa;
-}
-.navBtn{
-    width: 50%;
-    line-height: 55px;
-    text-align: center;
-    background: #09bb07;
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-}
-#prvBtn{
-    border-right: 1px solid #979797;
-}
-.content {
-    position: fixed;
-    bottom: 55px;
-    top: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 10px;
-    width: 100%;
-    height: initial;
-    box-sizing: border-box;
 }
 .center{
     text-align: center;

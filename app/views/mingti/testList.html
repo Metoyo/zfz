@@ -34,8 +34,7 @@
       </div>
       <div class="pull-left ml10">
         <form>
-          <input type="text" ng-model="mingTiParam.tiMuId" placeholder="题目ID" class="pull-left w80 mr5 h30"
-                 onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"/>
+          <input type="text" ng-model="mingTiParam.tiMuId" placeholder="题目ID" class="pull-left w80 mr5 h30"/>
           <button type="submit" class="btn btn-primary h30" ng-click="qryTestByTiMuId()" ng-disabled="fbdBtn">查询</button>
         </form>
       </div>

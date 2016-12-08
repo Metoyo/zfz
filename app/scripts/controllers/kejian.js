@@ -28,7 +28,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           var classTestDataStore = ''; //存放随堂测验数据
           var keJianDataStore = ''; //存放课件数据
           //var testUrl = 'https://www.zhifz.com/pub_test/'; //二维码的地址
-          var testUrl = 'http://192.168.1.156:3000/pub_test/'; //二维码的地址
+          //var testUrl = 'http://192.168.1.156:3000/pub_test/'; //二维码的地址
           var tiMuIdArr = []; //获得查询题目ID的数组
           var pageArr = []; //根据得到的数据定义一个分页数组
           var allTiMuIds = ''; //存放所有题目id
@@ -549,37 +549,58 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
            * 生成二维码
            */
           $scope.makeErWeiMa = function(ct){
-            var obj = {
-              method: 'GET',
-              url: qrcodeUrl,
-              params: {
-                '测验ID': ct['测验ID']
-              }
-            };
             var idSlt = $('#QRCodeBox');
             $scope.kjParams.sltTest = ct;
-            $http(obj).success(function(data){
-              if(data.result && data.data){
-                var textStr = testUrl + data.data['测验ID'];
-                $scope.kjParams.showErWeiMa = true;
-                idSlt.html('');
-                new QRCode(document.getElementById('QRCodeBox'), {
-                  text: textStr,
-                  width: 300,
-                  height: 300,
-                  background: '#ccc',
-                  foreground: 'red'
-                });
-                var showDatePicker = function() {
-                  var imgDt = idSlt.find('img').prop('src');
-                  $('#downloadEwm').prop('href', imgDt);
-                };
-                $timeout(showDatePicker, 500);
-              }
-              else{
-                DataService.alertInfFun('err', data.error);
-              }
+            var textStr = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxce8cd001cc56f537&redirect_uri=' +
+              'https://www.zhifz.com/get_code?usrTp=stu_paper_' + ct['标签'] + '_' + ct['学校ID'] + '_' + ct['状态'] +
+              '&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+            $scope.kjParams.showErWeiMa = true;
+            idSlt.html('');
+            new QRCode(document.getElementById('QRCodeBox'), {
+              text: textStr,
+              //typeNumber: 4,
+              correctLevel: QRCode.CorrectLevel.M,
+              width: 300,
+              height: 300,
+              background: '#ccc',
+              foreground: 'red'
             });
+            var showDatePicker = function() {
+              var imgDt = idSlt.find('img').prop('src');
+              $('#downloadEwm').prop('href', imgDt);
+            };
+            $timeout(showDatePicker, 500);
+            //var obj = {
+            //  method: 'GET',
+            //  url: qrcodeUrl,
+            //  params: {
+            //    '测验ID': ct['测验ID']
+            //  }
+            //};
+            //var idSlt = $('#QRCodeBox');
+            //$scope.kjParams.sltTest = ct;
+            //$http(obj).success(function(data){
+            //  if(data.result && data.data){
+            //    var textStr = testUrl + data.data['测验ID'];
+            //    $scope.kjParams.showErWeiMa = true;
+            //    idSlt.html('');
+            //    new QRCode(document.getElementById('QRCodeBox'), {
+            //      text: textStr,
+            //      width: 300,
+            //      height: 300,
+            //      background: '#ccc',
+            //      foreground: 'red'
+            //    });
+            //    var showDatePicker = function() {
+            //      var imgDt = idSlt.find('img').prop('src');
+            //      $('#downloadEwm').prop('href', imgDt);
+            //    };
+            //    $timeout(showDatePicker, 500);
+            //  }
+            //  else{
+            //    DataService.alertInfFun('err', data.error);
+            //  }
+            //});
           };
 
           /**

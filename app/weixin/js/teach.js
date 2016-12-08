@@ -107,6 +107,24 @@ $(function(){
       }
     });
   };
+  //var loginFun = function(){
+  //  var myUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxce8cd001cc56f537&redirect_uri=https%3a%2f%2fwww.zhifz.com%2fweixin%2fteacher%2findex.html&response_type=code&scope=snsapi_base&state=1234#wechat_redirect';
+  //  $.ajax({
+  //    method: 'GET',
+  //    url: myUrl,
+  //    //data:{
+  //    //  '微信ID':'wxabcb783dbd59b065'
+  //    //},
+  //    success: function (data) {
+  //      data = dataMake(data);
+  //      alert(data);
+  //      //alert(data[0] + '---' + data[1]);
+  //    },
+  //    error: function (error) {
+  //      alert(error);
+  //    }
+  //  });
+  //};
 
   //初始化函数执行
   loginFun();
@@ -260,7 +278,7 @@ $(function(){
   /**
    * <------ 发起测试模块 ------>
    */
-    //发起测试按钮
+  //发起测试按钮
   $('#tabBtnAddNew').on('click', function(){
     var dgDt = {
       daGang: testInfo.daZsd
@@ -447,7 +465,7 @@ $(function(){
       success: function (data) {
         data = dataMake(data);
         if(data.result && data.data){
-          testInfo.zsd = data.data[0]['测验设置']['组卷规则'][0]['随机题目'][0]['知识点'];
+          //testInfo.zsd = data.data[0]['测验设置']['组卷规则'][0]['随机题目'][0]['知识点'];
           showTestResult(testId);
         }
         else{
@@ -562,7 +580,7 @@ $(function(){
   /**
    * <------ 宣传视频模块 ------>
    */
-    //宣传视频按钮
+  //宣传视频按钮
   $('#tabBtnVideo').on('click', function(){
     window.location.href = 'http://mp.weixin.qq.com/s?__biz=MzIzNDUyMDA5Nw==&mid=100000003&idx=1&sn=5c43809e2caf508f7064526ab48663e2&scene=18#wechat_redirect';
     //$('.title').text('宣传视频');
@@ -572,7 +590,7 @@ $(function(){
   /**
    * <------ 免费试用模块 ------>
    */
-    //免费试用按钮
+  //免费试用按钮
   $('#tabBtnFree').on('click', function(){
     $('.title').text('免费试用');
     renderFun({}, 'tplFree');

@@ -183,7 +183,9 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                 else{
                   bdDaObj = jstKsDa[key];
                 }
-                jstKsFinalDaAn.push('<img src="' + bdDaObj['用户答案'] + '"/>');
+                if(bdDaObj){
+                  jstKsFinalDaAn.push('<img src="' + bdDaObj['用户答案'] + '"/>');
+                }
               }
               tm['考生作答']['考生答案'] = jstKsFinalDaAn.join(' ');
             }

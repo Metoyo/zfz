@@ -19,10 +19,9 @@ $(function(){
     uid: '', //用户UID
     jgId: '', //学校ID
     allKsz: '', //所有考试组
-    wxid: 'wxabcb783dbd59b067'
+    wxid: ''
+    //wxid: 'wxabcb783dbd59b067'
   };
-  //var openId = 'wxabcb783dbd59b067';
-  //var openId = 'wxabcb783dbd59b070';
 
   /**
    * 返回的数据类型处理
@@ -260,6 +259,8 @@ $(function(){
    * 初始化函数
    */
   var initFun = function(){
+    var opId = $('#myBody').data('id');
+    cjPar.wxid = opId || '';
     $.ajax({
       method: 'GET',
       url: loginUrl,

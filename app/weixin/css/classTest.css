@@ -1,3 +1,28 @@
+body {
+    line-height: 1.6;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+.center{
+    text-align: center;
+}
+.bd1{
+    border: 1px solid #09BB07;
+}
+.mt20{
+    margin-top: 20px;
+}
+.mt50{
+    margin-top: 50px;
+}
+/*题目用到的样式*/
+.fz18{
+    font-size: 18px;
+    font-weight: 400;
+}
 /*导航样式开始*/
 .container {
     position: absolute;
@@ -6,7 +31,6 @@
     bottom: 0;
     left: 0;
     height: 100%;
-    background-color: #f5f5f5;
     -webkit-overflow-scrolling: touch;
 }
 .content {
@@ -73,92 +97,78 @@
     background-color: #EAEAEA;
 }
 /*导航样式结束*/
-.weui_cell:before{
-    left: 0;
+.mt15{
+    margin-top: 15px;
 }
-.clA8{
-    color: #a8a8a8;
+.tiZhi{
+    position: relative;
 }
-.clRed{
-    color: #ff0000;
+.tiZhi label{
+    display: block;
+    padding-left: 20px;
 }
-.clGren{
-    color: green;
+.tiZhiOpt{
+    position: absolute;
+    top: 16px;
 }
-.pullLeft{
-    float: left;
-}
-.pullRight{
-    float: right;
-}
-.wp50{
-    width: 50%;
-}
-.dplf{
-    display: flex;
+.ptb10{
+    padding: 10px;
+    border: 1px solid #cfcfcf;
+    margin-top: 10px;
 }
 .p15{
     padding: 15px;
 }
-.bdr{
-    border-right: 1px solid #cfcfcf;
-}
-.ml50{
-    margin-left: 50px;
-}
-.tplLogin .weui_label{
-    width: 50px;
-}
-.tplLogin .weui_actionsheet_menu{
-    height: 192px;
-    overflow: auto;
-}
-.weui_actionsheet_cell .fa-check{
-    display: none;
-}
-.tabOn .fa-check{
-    display: inline-block;
-    color: #09BB07;
-}
 .center{
     text-align: center;
 }
-.card,
-.cardFix,
-.cardChangCi{
-    margin-top: 10px;
-    padding: 10px;
+.nameInput {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0, 0.5);
+    display: none;
+    z-index: 1000;
 }
-.card:nth-child(odd){
-    background-color: #d9edf7;
-}
-.card:nth-child(even){
-    background-color: #dff0d8;
-}
-.cardFix{
-    background-color: #ffffff;
-}
-.cardChangCi{
-    border: 1px solid #fff;
+.inner {
     background-color: #fff;
+    width: 94%;
+    margin: 100px 0 0 3%;
+    border: 1px solid #5D5D5D;
+    border-radius: 6px;
+    padding: 20px 0;
 }
-.cardChangCiOn{
-    border: 1px solid #478246;
-    background-color: #fff;
-}
-.weui_btn.weui_btn_mini{
-    padding: 5px 1.75em;
+.nameWrap{
+    width: 70%;
+    border: 1px solid #bbbbbb;
+    border-radius: 3px;
+    padding: 5px 10px;
     font-size: 16px;
+    height: 26px;
+    line-height: 26px;
+    margin-top: 15px;
 }
-.weui_btn+.weui_btn{
-    margin-top: 10px;
+.btn{
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    overflow: hidden;
+    line-height: 1.9;
+    font-size: 14px;
+    padding: 2px 1.75em;
+    display: inline-block;
+    background-color: #04be02;
+    margin-top: 15px;
 }
-.noData{
-    position: absolute;
-    top: 50%;
-    margin-top: -15px;
-    width: 90%;
-    margin-left: 5%;
-    font-weight: normal;
-    color: #666;
+.submitTestWrap{
+    display: none;
+}
+.submitTest{
+    display: none;
 }

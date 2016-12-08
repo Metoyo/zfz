@@ -4,43 +4,52 @@
     <meta charset="UTF-8">
     <title class="title">报名</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <link rel="stylesheet" href="../css/weui.min.css"/>
-    <link rel="stylesheet" href="../css/baoming.css"/>
-    <link rel="stylesheet" href="../css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/weixin/css/weui.min.css"/>
+    <link rel="stylesheet" href="/weixin/css/baoming.css"/>
+    <link rel="stylesheet" href="/weixin/css/iconfont.css"/>
 </head>
 <body ontouchstart>
 <!--内容容器-->
 <div class="container" id="container">
-
-</div>
-<!--BEGIN dialog2-->
-<div class="weui_dialog_alert" id="dialog2" style="display: none;">
-    <div class="weui_mask"></div>
-    <div class="weui_dialog">
-        <div class="weui_dialog_hd"><strong class="weui_dialog_title msgTitle"></strong></div>
-        <div class="weui_dialog_bd msgBox"></div>
-        <div class="weui_dialog_ft">
-            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+    <div id="content" class="content">
+    </div>
+    <div id="navBar" class="navBar" style="display: none;">
+        <div id="backToKsz" class="navBar_item">
+            <i class="iconfont icon-quxiao"></i> 返回
+        </div>
+        <div id="saveKaoShi" class="navBar_item">
+            <i class="iconfont icon-baocun"></i> 报名
         </div>
     </div>
+    <!--BEGIN dialog2-->
+    <div class="weui_dialog_alert" id="dialog2" style="display: none;">
+        <div class="weui_mask"></div>
+        <div class="weui_dialog">
+            <div class="weui_dialog_hd"><strong class="weui_dialog_title msgTitle"></strong></div>
+            <div class="weui_dialog_bd msgBox"></div>
+            <div class="weui_dialog_ft">
+                <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+            </div>
+        </div>
+    </div>
+    <!--END dialog2-->
 </div>
-<!--END dialog2-->
 <!--模板 学生登录-->
 <script id="tplLogin" type="text/html">
     <div class="weui_cells weui_cells_form tplLogin">
-        <div class="weui_cell">
+        <div class="weui_cell p15">
             <div class="weui_cell_hd"><label class="weui_label">学校</label></div>
             <div id="showActionSheet" class="weui_cell_bd weui_cell_primary xueXiaoWrap clA8" data-id="">
                 选择学校
             </div>
         </div>
-        <div class="weui_cell">
+        <div class="weui_cell p15">
             <div class="weui_cell_hd"><label class="weui_label">学号</label></div>
             <div class="weui_cell_bd weui_cell_primary">
                 <input class="weui_input" type="text" name="yourNum" placeholder="您的学号"/>
             </div>
         </div>
-        <div class="weui_cell">
+        <div class="weui_cell p15">
             <div class="weui_cell_hd"><label class="weui_label">姓名</label></div>
             <div class="weui_cell_bd weui_cell_primary">
                 <input class="weui_input" type="text" name="yourName" placeholder="您的姓名"/>
@@ -52,10 +61,10 @@
         <div class="weui_actionsheet" id="weui_actionsheet">
             <div class="weui_actionsheet_menu">
                 {{each xueXiao}}
-                    <div class="weui_actionsheet_cell optXueXiao">
-                        <i class="fa fa-check" aria-hidden="true"></i>
-                        <span>{{$value['学校名称']}}</span>
-                    </div>
+                <div class="weui_actionsheet_cell optXueXiao">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    <span>{{$value['学校名称']}}</span>
+                </div>
                 {{/each}}
             </div>
             <div class="weui_actionsheet_action">
@@ -74,29 +83,29 @@
 <script id="tplKaoShiZu" type="text/html">
     <h4 class="center">可以报名的考试组</h4>
     {{each kszArr}}
-        <div class="cardFix cardKaoShiZu" data-id="{{$value['考试组ID']}}">
-            <p>
-                <span class="cell-content">{{$value['考试组名称']}}</span>
-                {{if $value['状态'] == 1}}
-                    <span class="clGren pullRight">已报名</span>
-                {{/if}}
-                {{if $value['状态'] == 0}}
-                    <span class="clRed pullRight">未报名</span>
-                {{/if}}
-            </p>
-        </div>
+    <div class="cardFix cardKaoShiZu" data-id="{{$value['考试组ID']}}">
+        <p>
+            <span class="cell-content">{{$value['考试组名称']}}</span>
+            {{if $value['状态'] == 1}}
+            <span class="clGren pullRight">已报名</span>
+            {{/if}}
+            {{if $value['状态'] == 0}}
+            <span class="clRed pullRight">未报名</span>
+            {{/if}}
+        </p>
+    </div>
     {{/each}}
 </script>
 <!--模板 可以报名的考试-->
 <script id="tplKaoShi" type="text/html">
     <h4 class="center">点击选择场次</h4>
     {{each ksArr['考试']}}
-        {{if $value.ckd == true}}
-            <div class="cardChangCi cardChangCiOn" data-id="{{$value['考试ID']}}" data-kc="{{$value['考点ID']}}">
+    {{if $value.ckd == true}}
+    <div class="cardChangCi cardChangCiOn" data-id="{{$value['考试ID']}}" data-kc="{{$value['考点ID']}}">
         {{/if}}
         {{if $value.ckd == false}}
-             <div class="cardChangCi" data-id="{{$value['考试ID']}}" data-kc="{{$value['考点ID']}}">
-        {{/if}}
+        <div class="cardChangCi" data-id="{{$value['考试ID']}}" data-kc="{{$value['考点ID']}}">
+            {{/if}}
             <p class="cell">
                 <span class="cell-title">考试场次：</span>
                 <span class="cell-content">{{$value['考试名称']}}</span>
@@ -110,11 +119,11 @@
                 <span class="cell-content">{{$value['考点名称']}}</span>
             </p>
         </div>
-    {{/each}}
-    <div class="fixSty center">
-        <a href="javascript:;" id="saveKaoShi" class="weui_btn weui_btn_mini weui_btn_primary">确定</a>
-        <a href="javascript:;" id="backToKsz" class="weui_btn weui_btn_mini weui_btn_default ml50">取消</a>
-    </div>
+        {{/each}}
+</script>
+<!--模板 没有报名数据-->
+<script id="tplNoBaoMing" type="text/html">
+    <h4 class="center noData">暂时没有需要报名的考试</h4>
 </script>
 <!--模板 错误信息-->
 <script id="tplErrMsg" type="text/html">
@@ -127,9 +136,9 @@
     </div>
 </script>
 <!--用到的ji文件-->
-<script src="../js/jquery-3.1.0.min.js"></script>
-<script src="../js/template.js"></script>
-<script src="../js/lazy.min.js"></script>
-<script src="../js/baoming.js"></script>
+<script src="/weixin/js/jquery-3.1.0.min.js"></script>
+<script src="/weixin/js/template.js"></script>
+<script src="/weixin/js/lazy.min.js"></script>
+<script src="/weixin/js/baoming.js"></script>
 </body>
 </html>

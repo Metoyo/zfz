@@ -17,10 +17,9 @@ $(function(){
     sltOrgKsz: '', //选中的考试组
     sltKs: '', //选中的考试ID
     sltKc: '', //选中的考场ID
-    wxid: 'wxabcb783dbd59b067'
+    wxid: ''
+    //wxid: 'wxabcb783dbd59b067'
   };
-  //var openId = 'wxabcb783dbd59b067';
-  //var openId = 'wxabcb783dbd59b070';
 
   /**
    * 返回的数据类型处理
@@ -39,7 +38,7 @@ $(function(){
    */
   var renderFun =  function(data, tplId){
     var html = template(tplId, data);
-    $('#container').html(html);
+    $('#content').html(html);
   };
 
   /**
@@ -134,9 +133,9 @@ $(function(){
       },
       success: function (data) {
         data = dataMake(data);
-        if(data.result && data.data){
-          var kszId = Lazy(data.data).reverse().map('考试组ID').toArray();
-          if(kszId && kszId.length > 0){
+        if(data.result){
+          if(data.data && data.data.length > 0){
+            var kszId = Lazy(data.data).reverse().map('考试组ID').toArray();
             $.ajax({
               method: 'GET',
               url: kaoShiZuUrl,
@@ -146,32 +145,38 @@ $(function(){
               },
               success: function (kszs) {
                 kszs = dataMake(kszs);
-                if(kszs.result && kszs.data){
-                  bmPar.orignKsz = kszs.data;
-                  Lazy(kszs.data).each(function(ksz){
-                    if(ksz['状态'] <= 2){
-                      var bmStar = new Date(ksz['报名开始时间']);
-                      var bmEnd = new Date(ksz['报名截止时间']);
-                      var now = new Date();
-                      //var difMinutes = bmStar.getTimezoneOffset(); //与本地相差的分钟数
-                      //var sDifMS = bmStar.valueOf() - difMinutes * 60 * 1000; //报名开始与本地相差的毫秒数
-                      //var eDifMS = bmEnd.valueOf() - difMinutes * 60 * 1000; //报名结束与本地相差的毫秒数
-                      var sDifMS = bmStar.valueOf(); //报名开始与本地相差的毫秒数
-                      var eDifMS = bmEnd.valueOf(); //报名结束与本地相差的毫秒数
-                      var nMS = now.valueOf(); //本地时间
-                      if(nMS >= sDifMS && nMS <= eDifMS){
-                        ksz.baoMingStart = (nMS >= sDifMS && nMS <= eDifMS);
-                        var fidTar = Lazy(data.data).find(function(ks){ return ks['考试组ID'] == ksz['考试组ID']});
-                        if(fidTar){
-                          bmPar.allKsz.push(fidTar);
+                if(kszs.result){
+                  if(kszs.data && kszs.data.length > 0){
+                    bmPar.orignKsz = kszs.data;
+                    Lazy(kszs.data).each(function(ksz){
+                      if(ksz['状态'] <= 2){
+                        var bmStar = new Date(ksz['报名开始时间']);
+                        var bmEnd = new Date(ksz['报名截止时间']);
+                        var now = new Date();
+                        //var difMinutes = bmStar.getTimezoneOffset(); //与本地相差的分钟数
+                        //var sDifMS = bmStar.valueOf() - difMinutes * 60 * 1000; //报名开始与本地相差的毫秒数
+                        //var eDifMS = bmEnd.valueOf() - difMinutes * 60 * 1000; //报名结束与本地相差的毫秒数
+                        var sDifMS = bmStar.valueOf(); //报名开始与本地相差的毫秒数
+                        var eDifMS = bmEnd.valueOf(); //报名结束与本地相差的毫秒数
+                        var nMS = now.valueOf(); //本地时间
+                        if(nMS >= sDifMS && nMS <= eDifMS){
+                          ksz.baoMingStart = (nMS >= sDifMS && nMS <= eDifMS);
+                          var fidTar = Lazy(data.data).find(function(ks){ return ks['考试组ID'] == ksz['考试组ID']});
+                          if(fidTar){
+                            bmPar.allKsz.push(fidTar);
+                          }
                         }
                       }
-                    }
-                  });
-                  var dt = {
-                    kszArr: bmPar.allKsz
-                  };
-                  renderFun(dt, 'tplKaoShiZu');
+                    });
+                    var dt = {
+                      kszArr: bmPar.allKsz
+                    };
+                    renderFun(dt, 'tplKaoShiZu');
+                  }
+                  else{
+                    renderFun({}, 'tplNoBaoMing');
+                    $('#navBar').hide();
+                  }
                 }
                 else{
                   dialog(kszs.error);
@@ -183,11 +188,11 @@ $(function(){
             });
           }
           else{
-            dialog('目前没有需要报名的考试！');
+            renderFun({}, 'tplNoBaoMing')
           }
         }
         else{
-          dialog(data.error || '近期没有需要报名的考试！');
+          dialog(data.error);
         }
       },
       error: function (error) {
@@ -200,6 +205,8 @@ $(function(){
    * 初始化函数
    */
   var initFun = function(){
+    var opId = $('#myBody').data('id');
+    bmPar.wxid = opId || '';
     $.ajax({
       method: 'GET',
       url: loginUrl,
@@ -316,7 +323,7 @@ $(function(){
                     method: 'POST',
                     url: yongHuUrl,
                     data:{
-                      UID: bmPar.uid,
+                      'UID': bmPar.uid,
                       '微信ID': bmPar.wxid
                     },
                     success: function(data2){
@@ -350,7 +357,7 @@ $(function(){
           dialog(error);
         }
       });
-  })
+    })
     .on('click', '.cardKaoShiZu', function(){ //点击可以报名的考试组
       var sltId = $(this).data('id');
       var sltKsz = Lazy(bmPar.allKsz).find(function(ksz){ return ksz['考试组ID'] == sltId}) || '';
@@ -367,6 +374,7 @@ $(function(){
           }
         });
         renderFun({ksArr: sltOrgKsz}, 'tplKaoShi');
+        $('#navBar').show();
       }
       else{
         dialog('请选择考试组！');
@@ -430,6 +438,7 @@ $(function(){
         kszArr: bmPar.allKsz
       };
       renderFun(dt, 'tplKaoShiZu');
+      $('#navBar').hide();
     });
 
 });

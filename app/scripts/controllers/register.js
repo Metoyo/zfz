@@ -11,9 +11,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var xueXiaoKeMuUrl = '/xuexiao_kemu'; //学校科目
         var yongHuUrl = '/yonghu'; //用户的增删改查
         var chkEmailUrl = '/exists_youxiang'; //检查邮箱url
-        var chkUsrInUrl = '/exists_yonghu'; //检查用户是否存在
         var chkUserNameUrl = '/exists_yonghuming'; //检查用户名url
-        var delBlankReg = /\s/g; //去除空格的正则表达
         var loginUrl = '/login'; //登录url
         $scope.phoneRegexp = /^[1][3458][0-9]{9}$/; //验证手机的正则表达式
         $scope.emailRegexp = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
