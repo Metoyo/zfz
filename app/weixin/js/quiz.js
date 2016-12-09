@@ -28,8 +28,8 @@ $(function(){
     jgId: '',
     uid: '',
     //wxid: 'oIdzKwDONphFuHicTvtJ0tZahlYk',
-    wxid: 'oIdzKwK2JBLPkk8xapl4_evqiuJQ', //蔡路
-    //wxid: '',
+    //wxid: 'oIdzKwK2JBLPkk8xapl4_evqiuJQ', //蔡路
+    wxid: '',
     yx: '',
     xm: '',
     mm: ''

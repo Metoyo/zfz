@@ -1024,6 +1024,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             var errInfo = [];
             var kdkwErr = [];
             var allKaoWei = 0;
+            var mis = [];
             var dataPar = angular.copy($scope.kaoShiZuData);
             if(!dataPar['试卷组ID']){
               DataService.alertInfFun('err', '请选择试卷组！');
@@ -1038,10 +1039,21 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                 }
                 var kaoWei = 0;
                 if(cc['考生'] && cc['考生'].length > 0){
-                  var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
-                    return dkd['考点ID'] == cc['考点ID'];
-                  });
-                  kaoWei += parseInt(kdDetail['考位数']) || 0;
+                  //var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
+                  //  return dkd['考点ID'] == cc['考点ID'];
+                  //});
+                  //kaoWei += parseInt(kdDetail['考位数']) || 0;
+                  if(cc['考点ID']){
+                    var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
+                      return dkd['考点ID'] == cc['考点ID'];
+                    });
+                    kaoWei += parseInt(kdDetail['考位数']) || 0;
+                  }
+                  else{
+                    mis.push(cc['考试名称']);
+                    //DataService.alertInfFun('pmt', cc['考试名称'] + '缺少考场！');
+                    //return;
+                  }
                   if(kaoWei < cc['考生'].length){
                     kdkwErr.push(cc['考试名称']);
                   }
@@ -1092,10 +1104,21 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
                   if($scope.kwParams.endTimeFixed){
                     delete cc['结束时间'];
                   }
-                  var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
-                    return dkd['考点ID'] == cc['考点ID'];
-                  });
-                  allKaoWei += parseInt(kdDetail['考位数']);
+                  //var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
+                  //  return dkd['考点ID'] == cc['考点ID'];
+                  //});
+                  //allKaoWei += parseInt(kdDetail['考位数']);
+                  if(cc['考点ID']){
+                    var kdDetail = Lazy($scope.allKaoChangList).find(function(dkd){
+                      return dkd['考点ID'] == cc['考点ID'];
+                    });
+                    allKaoWei += parseInt(kdDetail['考位数']);
+                  }
+                  else{
+                    mis.push(cc['考试名称']);
+                    //DataService.alertInfFun('pmt', cc['考试名称'] + '缺少考场！');
+                    //return;
+                  }
                 });
                 if(allKaoWei < dataPar['考生'].length){
                   DataService.alertInfFun('pmt', '考位数少于考生人数！');
@@ -1110,9 +1133,15 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
             }
             dataPar['考试'] = JSON.stringify(dataPar['考试']);
             dataPar['考试组设置'] = JSON.stringify(dataPar['考试组设置']);
-            $scope.kwParams.forbidBtn = true;
-            $scope.loadingImgShow = true;
-            submitFORMPost(kaoShiZuUrl, dataPar, 'PUT');
+            if(mis && mis.length > 0){
+              DataService.alertInfFun('pmt', mis.join() + '缺少考点，请选择考点！');
+              return ;
+            }
+            else{
+              $scope.kwParams.forbidBtn = true;
+              $scope.loadingImgShow = true;
+              submitFORMPost(kaoShiZuUrl, dataPar, 'PUT');
+            }
           };
 
           /**

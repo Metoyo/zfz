@@ -225,6 +225,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               urlArr.push(module[1]);
               urlArr.push(module[2]);
               urlArr.push(module[4]);
+              urlArr.push(module[6]);
               urlRedirect.goTo(currentPath, '/mingti');
             }
             else{

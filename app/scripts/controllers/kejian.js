@@ -15,20 +15,17 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           var yongHuSet = loginUsr['用户设置']; //用户设置
           var lingYuId = dftKm['领域ID']; //默认的科目ID
           var ceYanUrl = '/ceyan'; //测验的url
-          var qrcodeUrl = '/make_qrcode'; //生成二维码地址的url
           var wenJuanDiaoChaUrl = '/wenjuan_diaocha'; //问卷调查url
-          //var zhiShiDaGangUrl = '/zhishidagang'; //知识大纲
           var tiMuUrl = '/timu'; //题目的URL
           var yongHuUrl = '/yonghu'; //用户的增删改查
           var tiKuUrl = '/tiku'; //题库
           var uploadUrl = '/upload'; //命题的文件上传
           var yongHuWenJianUrl = '/yonghu_wenjian';
+          var showFileUrl = '/show_file/';//文件显示
           var itemNumPerPage = 10; //每页多少条数据
           var paginationLength = 11; //分页显示多少也
           var classTestDataStore = ''; //存放随堂测验数据
           var keJianDataStore = ''; //存放课件数据
-          //var testUrl = 'https://www.zhifz.com/pub_test/'; //二维码的地址
-          //var testUrl = 'http://192.168.1.156:3000/pub_test/'; //二维码的地址
           var tiMuIdArr = []; //获得查询题目ID的数组
           var pageArr = []; //根据得到的数据定义一个分页数组
           var allTiMuIds = ''; //存放所有题目id
@@ -570,37 +567,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               $('#downloadEwm').prop('href', imgDt);
             };
             $timeout(showDatePicker, 500);
-            //var obj = {
-            //  method: 'GET',
-            //  url: qrcodeUrl,
-            //  params: {
-            //    '测验ID': ct['测验ID']
-            //  }
-            //};
-            //var idSlt = $('#QRCodeBox');
-            //$scope.kjParams.sltTest = ct;
-            //$http(obj).success(function(data){
-            //  if(data.result && data.data){
-            //    var textStr = testUrl + data.data['测验ID'];
-            //    $scope.kjParams.showErWeiMa = true;
-            //    idSlt.html('');
-            //    new QRCode(document.getElementById('QRCodeBox'), {
-            //      text: textStr,
-            //      width: 300,
-            //      height: 300,
-            //      background: '#ccc',
-            //      foreground: 'red'
-            //    });
-            //    var showDatePicker = function() {
-            //      var imgDt = idSlt.find('img').prop('src');
-            //      $('#downloadEwm').prop('href', imgDt);
-            //    };
-            //    $timeout(showDatePicker, 500);
-            //  }
-            //  else{
-            //    DataService.alertInfFun('err', data.error);
-            //  }
-            //});
           };
 
           /**
@@ -1344,7 +1310,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               method: 'GET',
               url: yongHuWenJianUrl,
               params: {
-                '上传人': logUid
+                '上传人': logUid,
+                '状态': 1
               }
             };
             $http(obj).success(function(data){
@@ -1389,7 +1356,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
           };
 
           //添加文件
-          $scope.addMyFile = function(){
+          $scope.addMyFile = function(tp){
+            $scope.kjParams.uploadType = tp;
             $('input.addFileBtn').click();
           };
 
@@ -1406,7 +1374,15 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             DataService.clearInput();
           };
 
-          //保存上传文件
+          //关闭上传文件弹出层
+          $scope.closeMediaPlugin = function(){
+            $('#mediaPlugin').hide();
+            $scope.kjParams.uploadType = '';
+            $scope.uploadFiles = [];
+            DataService.clearInput();
+          };
+
+          //保存上传文件(课件)
           $scope.uploadMyFiles = function() {
             var file = $scope.uploadFiles;
             var fileLen = file.length;
@@ -1432,6 +1408,73 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                 else{
                   DataService.alertInfFun('err', data.error);
                 }
+                $scope.loadingImgShow = false;
+              });
+            }
+            else{
+              DataService.alertInfFun('pmt', '文件大小不能超过：' + limitedFileSize/1024/1024 + 'MB');
+            }
+          };
+
+          //保存上传文件(测验)
+          $scope.uploadMyFilesTest = function() {
+            var file = $scope.uploadFiles;
+            var fileLen = file.length;
+            var isFileSizeRight = true;
+            var limitedFileSize = config.uploadFileSizeLimit; //文件大小限制，目前大小限制2MB
+            Lazy($scope.uploadFiles).each(function(fl, idx, lst){
+              if(fl.size > limitedFileSize){
+                isFileSizeRight = false;
+              }
+            });
+            if(isFileSizeRight){
+              var fd = new FormData();
+              if($scope.timu['出题人UID']){
+                fd.append('上传人', $scope.timu['出题人UID']);
+              }
+              else{
+                fd.append('上传人', logUid);
+              }
+              for(var i = 1; i <= fileLen; i++){
+                fd.append('file' + 1, file[i - 1]);
+              }
+              $scope.loadingImgShow = true;
+              $http.post(uploadUrl, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}}).success(function(data){
+                if(data.result){
+                  var i, mediaLength;
+                  $scope.uploadFileUrl = data.data;
+                  if(data.data && data.data.length > 0){
+                    mediaLength = data.data.length;
+                    for(i = 0; i < mediaLength; i++){
+                      var src = showFileUrl + data.data[i]; //媒体文件路径
+                      if($scope.kjParams.uploadType == 'img'){
+                        $.markItUp(
+                          { replaceWith:'<img src="'+src+'" alt=""(!( class="[![Class]!]")!) />' }
+                        );
+                      }
+                      if($scope.kjParams.uploadType == 'mp3'){
+                        $.markItUp(
+                          { replaceWith:'<audio src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></audio>' }
+                        );
+                      }
+                      if($scope.kjParams.uploadType == 'video'){
+                        $.markItUp(
+                          { replaceWith:'<video src="'+src+'" controls="controls" (!( class="[![Class]!]")!)></video>' }
+                        );
+                      }
+                    }
+                    $('#mediaPlugin').hide();
+                    $('.formulaEditTiGan').keyup();
+                  }
+                  else{
+                    DataService.alertInfFun('err', '没有文件！');
+                  }
+                }
+                else{
+                  DataService.alertInfFun('err', data.error);
+                }
+                $scope.uploadFiles = [];
+                $scope.kjParams.uploadType = '';
                 $scope.loadingImgShow = false;
               });
             }

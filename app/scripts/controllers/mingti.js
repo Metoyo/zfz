@@ -1533,6 +1533,14 @@ define(['angular', 'config', 'jquery', 'lazy', 'markitup', 'setJs'], function (a
               mis.push('答案');
             }
           }
+          if($scope.newTiXingId == 3){ //整理判断题
+            if(tiMuData['题目内容']['答案'] == '对'){
+              tiMuData['题目内容']['答案'] = true;
+            }
+            if(tiMuData['题目内容']['答案'] == '错'){
+              tiMuData['题目内容']['答案'] = false;
+            }
+          }
           if($scope.newTiXingId == 4){ //整理填空题
             var reg = new RegExp('<span>.*?</span>', 'g');
             var count = 1;

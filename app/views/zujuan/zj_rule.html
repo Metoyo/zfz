@@ -262,7 +262,7 @@
           <button type="button" class="btn btn-primary ml10" ng-click="generatePaper()" ng-disabled="btnDisable" ng-if="sjzSet['组卷方式'] == '规则'">
             预览试卷
           </button>
-          <button type="button" class="btn btn-primary ml10" ng-click="saveZjRule()" ng-disabled="zuJuanParam.msgClr">
+          <button type="button" class="btn btn-primary ml10" ng-click="saveZjRule()" ng-disabled="zuJuanParam.msgClr || loadingImgShow">
             保存试卷组
           </button>
         </td>
@@ -272,22 +272,22 @@
 </div>
 <!--弹出层，修改大题名称-->
 <div class="popup-wrap alter-dati" ng-if="zuJuanParam.sjzEdit">
-    <div class="popup-wrap-inner">
-        <div class="pwi-header plr10 text-center"><span class="title">修改大题名称</span></div>
-        <div class="pwi-body p10 form-horizontal">
-            <div class="row" ng-repeat="tx in sjzSet['组卷规则']">
-                <div class="form-group">
-                    <label class="col-sm-1 control-label">{{cnNumArr[$index]}}、</label>
+  <div class="popup-wrap-inner">
+    <div class="pwi-header plr10 text-center"><span class="title">修改大题名称</span></div>
+    <div class="pwi-body p10 form-horizontal">
+      <div class="row" ng-repeat="tx in sjzSet['组卷规则']">
+        <div class="form-group">
+          <label class="col-sm-1 control-label">{{cnNumArr[$index]}}、</label>
 
-                    <div class="col-sm-10">
-                        <input type="text" ng-model="tx['大题名称']" placeholder="此大题名称" class="form-control"/>
-                    </div>
-                </div>
-            </div>
+          <div class="col-sm-10">
+            <input type="text" ng-model="tx['大题名称']" placeholder="此大题名称" class="form-control"/>
+          </div>
         </div>
-        <div class="pwi-footer plr10 text-center">
-            <button type="button" class="btn btn-danger mt5" ng-click="closeSjzEdit()">取消</button>
-            <button type="button" class="btn btn-primary mt5 ml15" ng-click="closeSjzEdit()">确定</button>
-        </div>
+      </div>
     </div>
+    <div class="pwi-footer plr10 text-center">
+      <button type="button" class="btn btn-danger mt5" ng-click="closeSjzEdit()">取消</button>
+      <button type="button" class="btn btn-primary mt5 ml15" ng-click="closeSjzEdit()">确定</button>
+    </div>
+  </div>
 </div>

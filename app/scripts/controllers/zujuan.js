@@ -1691,6 +1691,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           }
           else{
             $scope.btnDisable = true;
+            $scope.loadingImgShow = true;
             if($scope.sjzSet['组卷方式'] == '规则' && $scope.sjList && $scope.sjList.length > 0 && !$scope.selectSjz){ //规则组卷
               Lazy($scope.sjList).each(function(sj){
                 Lazy(sj['试卷题目']).each(function(tm){
@@ -1711,11 +1712,13 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             $http(obj).success(function(data){
               if(data.result){
                 $scope.btnDisable = false;
+                $scope.loadingImgShow = false;
                 $scope.showPaperList();
                 DataService.alertInfFun('suc', '保存成功！');
               }
               else{
                 $scope.btnDisable = false;
+                $scope.loadingImgShow = false;
                 DataService.alertInfFun('err', data.error);
               }
             });
