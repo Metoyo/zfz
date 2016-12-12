@@ -1,0 +1,93 @@
+<h4>解除微信绑定</h4>
+<div class="form-horizontal dagangInput p10">
+  <div class="loading-box text-center" ng-show="loadingImgShow">
+    <img src="/images/loading.gif" alt="" width="64" height="64"/>
+    <p>数据加载中，请耐心等待……</p>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      查询方式
+    </label>
+    <div class="col-md-10">
+      <label class="radio-inline">
+        <input type="radio" value="uid" ng-model="adminParams.wxStyle"/> UID
+      </label>
+      <label class="radio-inline">
+        <input type="radio" value="email" ng-model="adminParams.wxStyle"/> 邮箱
+      </label>
+      <label class="radio-inline">
+        <input type="radio" value="xuexiao" ng-model="adminParams.wxStyle"/> 学校教师
+      </label>
+      <label class="radio-inline">
+        <input type="radio" value="xuehao" ng-model="adminParams.wxStyle"/> 学校+学号
+      </label>
+    </div>
+  </div>
+  <div class="mt20">
+    <div class="form-group" ng-if="adminParams.wxStyle == 'uid'">
+      <label class="col-md-2 control-label">
+        UID
+      </label>
+      <div class="col-md-10">
+        <input type="text" class="form-control" ng-model="weiXin.uid">
+      </div>
+    </div>
+    <div class="form-group" ng-if="adminParams.wxStyle == 'email'">
+      <label class="col-md-2 control-label">
+        Email
+      </label>
+      <div class="col-md-10">
+        <input type="text" class="form-control" ng-model="weiXin.email">
+      </div>
+    </div>
+    <div class="form-group" ng-if="adminParams.wxStyle == 'xuexiao'">
+      <label class="col-md-2 control-label">
+        学校ID
+      </label>
+      <div class="col-md-10">
+        <select class="form-control" ng-options="jg['学校ID'] as jg['学校名称'] for jg in jigou_list"
+                ng-model="weiXin.xuexiao">
+          <option value="">请选择</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" ng-if="adminParams.wxStyle == 'xuehao'">
+      <label class="col-md-2 control-label">
+        学校ID
+      </label>
+      <div class="col-md-10">
+        <select class="form-control" ng-options="jg['学校ID'] as jg['学校名称'] for jg in jigou_list"
+                ng-model="weiXin.xuexiao">
+          <option value="">请选择</option>
+        </select>
+      </div>
+      <label class="col-md-2 control-label mt15">
+        学号
+      </label>
+      <div class="col-md-10 mt15">
+        <input type="text" class="form-control" ng-model="weiXin.xuehao">
+      </div>
+    </div>
+  </div>
+  <div class="form-group text-right">
+    <button type="button" class="btn btn-primary" ng-click="qryWeiXinUsr()">查询</button>
+  </div>
+  <div class="mt15" ng-if="weiXinUsr.length > 0">
+    <table class="table table-bordered jg-table">
+      <tr>
+        <th>姓名</th>
+        <th>邮箱</th>
+        <th>微信ID</th>
+        <th width="80px">操作</th>
+      </tr>
+      <tr ng-repeat="wx in weiXinUsr">
+        <td ng-bind="wx['姓名']"></td>
+        <td ng-bind="wx['邮箱']"></td>
+        <td ng-bind="wx['微信ID']"></td>
+        <td>
+          <a href="javascript:void(0)" ng-click="unBinding(wx)">解绑</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

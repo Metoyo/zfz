@@ -45,7 +45,8 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           editKcTp: '', //编辑考点的类型
           kaoDianFrom: '',
           navHide: false, //隐藏二级导航
-          studentTest: false //学生自测
+          studentTest: false, //学生自测
+          wxStyle: '' //微信查询用户的方式
         };
         $scope.pageParam = {
           currentPage: '',
@@ -65,6 +66,12 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             sjbid: '',
             xuehao: ''
           }
+        };
+        $scope.weiXin = { //查询微信账户
+          uid: '',
+          email: '',
+          xuexiao: '',
+          xuehao: ''
         };
         $scope.cnNumArr = config.cnNumArr; //题支的序号
         $scope.usrInfo = loginUsr;
@@ -2679,6 +2686,95 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           }
           else{
             DataService.alertInfFun('pmt', '学生的UID不存在！');
+          }
+        };
+
+        /**
+         * 题目复制
+         */
+        $scope.renderWeiXin = function(){
+          getJgList();
+          $scope.kemu_list = '';
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.loadingImgShow = false;
+          $scope.adminSubWebTpl = 'views/renzheng/rz_weixin.html';
+        };
+
+        /**
+         * 查询微信用户
+         */
+        $scope.qryWeiXinUsr = function(){
+          var obj = {
+            method: 'GET',
+            url: yongHuUrl,
+            params: {}
+          };
+          var mis = [];
+          if($scope.adminParams.wxStyle == 'uid'){
+            obj.params['UID'] = $scope.weiXin.uid ? $scope.weiXin.uid : mis.push('UID');
+          }
+          if($scope.adminParams.wxStyle == 'email'){
+            obj.params['邮箱'] = $scope.weiXin.email ? $scope.weiXin.email : mis.push('邮箱');
+          }
+          if($scope.adminParams.wxStyle == 'xuexiao'){
+            obj.params['学校ID'] = $scope.weiXin.xuexiao ? $scope.weiXin.xuexiao : mis.push('学校');
+            obj.params['用户类别'] = 1;
+          }
+          if($scope.adminParams.wxStyle == 'xuehao'){
+            obj.params['学校ID'] = $scope.weiXin.xuexiao ? $scope.weiXin.xuexiao : mis.push('学校');
+            obj.params['学号'] = $scope.weiXin.xuehao ? $scope.weiXin.xuehao : mis.push('学号');
+            obj.params['用户类别'] = 2;
+          }
+          if(mis.length > 0){
+            DataService.alertInfFun('pmt', '缺少：' + mis.join());
+            return ;
+          }
+          $http(obj).success(function(data){
+            if(data.result && data.data){
+              $scope.weiXinUsr = data.data;
+            }
+            else{
+              $scope.weiXinUsr = [];
+              DataService.alertInfFun('err', data.error || '没有用户信息！');
+            }
+          });
+        };
+
+        /**
+         * 解除绑定
+         */
+        $scope.unBinding = function(wx){
+          var mis = [];
+          if(!wx['UID']){
+            mis.push('UID');
+          }
+          if(!wx['微信ID']){
+            mis.push('微信ID');
+          }
+          if(mis.length > 0){
+            DataService.alertInfFun('pmt', '缺少：' + mis.join());
+            return ;
+          }
+          $scope.loadingImgShow = true;
+          var obj = {
+            method: 'POST',
+            url: yongHuUrl,
+            data: {
+              'UID': wx['UID'],
+              '微信ID': ''
+            }
+          };
+          if(confirm('确定要解除微信绑定吗？')){
+            $http(obj).success(function(data){
+              if(data.result){
+                $scope.qryWeiXinUsr();
+                DataService.alertInfFun('suc', '微信解除绑定成功！');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+            });
           }
         };
 
