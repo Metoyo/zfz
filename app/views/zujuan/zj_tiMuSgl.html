@@ -4,9 +4,12 @@
     <!--换题时用到的科目题型-->
     <div>
       <span class="ml10">题型：</span>
-      <label class="radio-inline">
-        <input type="radio" ng-model="zuJuanParam.txId" value="{{sglSjParam.sltDt['题型ID']}}">
-        {{txArr[sglSjParam.sltDt['题型ID']-1]}}
+      <!--<label class="radio-inline">-->
+      <!--<input type="radio" ng-model="zuJuanParam.txId" value="{{sglSjParam.sltDt['题型ID']}}">-->
+      <!--{{txArr[sglSjParam.sltDt['题型ID']-1]}}-->
+      <!--</label>-->
+      <label class="radio-inline" ng-repeat="kmtx in kmtxList">
+        <input type="radio" ng-model="zuJuanParam.txId" value="{{kmtx['题型ID']}}" ng-change="qryTiMuByTxId()"> {{kmtx['题型名称']}}
       </label>
     </div>
     <div class="mt5">
@@ -75,10 +78,10 @@
             创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
           </p>
           <div class="editWrap">
-              <h3 class="item-title text-right">
-                  <button type="button" class="btn btn-primary" ng-click="addToPaper(tm, 'single')" ng-hide="tm.ckd">加入试卷</button>
-                  <button type="button" class="btn btn-default ng-hide" ng-click="removeOutSgl(tm)" ng-show="tm.ckd">移出试卷</button>
-              </h3>
+            <h3 class="item-title text-right">
+              <button type="button" class="btn btn-primary" ng-click="addToPaper(tm, 'single')" ng-hide="tm.ckd">加入试卷</button>
+              <button type="button" class="btn btn-default ng-hide" ng-click="removeOutSgl(tm)" ng-show="tm.ckd">移出试卷</button>
+            </h3>
           </div>
         </div>
         <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">

@@ -2112,6 +2112,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           if(!($scope.chuTiRens && $scope.chuTiRens.length > 0)){
             qryChuTiRen();
           }
+          kmTxData(); //temp
           $scope.zjTpl = 'views/zujuan/zj_addSj.html';
         };
 
