@@ -1693,21 +1693,22 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
             $scope.btnDisable = true;
             $scope.loadingImgShow = true;
             if($scope.sjzSet['组卷方式'] == '规则' && $scope.sjList && $scope.sjList.length > 0 && !$scope.selectSjz){ //规则组卷
-              Lazy($scope.sjList).each(function(sj){
+              var sjArrs = angular.copy($scope.sjList);
+              Lazy(sjArrs).each(function(sj){
                 Lazy(sj['试卷题目']).each(function(tm){
                   var oldStArr = angular.copy(tm['题目']);
                   var newStArr = [];
                   Lazy(oldStArr).each(function(st){
                     var tmObj = {
-                      '题目ID': tm['题目ID'],
-                      '分值': parseInt(tm['分值'])
+                      '题目ID': st['题目ID'],
+                      '分值': parseInt(st['分值'])
                     };
                     newStArr.push(tmObj);
                   });
                   tm['题目'] = newStArr;
                 });
               });
-              obj['试卷'] = JSON.stringify($scope.sjList);
+              obj.data['试卷'] = JSON.stringify(sjArrs);
             }
             $http(obj).success(function(data){
               if(data.result){

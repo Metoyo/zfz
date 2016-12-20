@@ -73,6 +73,9 @@
           <label class="checkbox-inline w110">
             <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['题目乱序']"> 题目乱序
           </label>
+          <label class="checkbox-inline w110">
+            <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['填空题笔答']"> 填空题笔答
+          </label>
           <label class="checkbox-inline">
             每页题目数
             <select ng-options="nm for nm in tiMuNumPerPage" ng-model="kaoShiZuData['考试组设置']['每页题目数']">
@@ -82,7 +85,10 @@
         </p>
         <p class="m0">
           <label class="checkbox-inline w110">
-            <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['填空题笔答']"> 填空题笔答
+            <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['问答题笔答']"> 问答题笔答
+          </label>
+          <label class="checkbox-inline w110">
+            <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['现场评分']"> 现场评分
           </label>
           <label class="checkbox-inline w110">
             <input type="checkbox" ng-model="kaoShiZuData['考试组设置']['允许计算器']"> 允许计算器
