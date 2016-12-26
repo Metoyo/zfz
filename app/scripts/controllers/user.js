@@ -1,4 +1,4 @@
-define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
+﻿define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
   'use strict';
   angular.module('zhifzApp.controllers.UserCtrl', [])
     .controller('UserCtrl', ['$rootScope', '$scope', '$http', '$location', 'DataService', '$cookieStore', 'urlRedirect',
@@ -2173,6 +2173,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
               '学校ID': '',
               '科目ID': '',
               '返回试卷': true,
+              '返回考试': true,
               '状态': JSON.stringify([5, 6])
             }
           };
@@ -2260,7 +2261,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
           };
           $scope.scannerResInfo = '';
           if($scope.scanner.inputInfo.sjaid){
-            var obja = {'OMR试卷编号':'A','试卷ID': $scope.scanner.inputInfo.sjaid};
+            var obja = {'OMR试卷编号':'A','试卷ID': $scope.scanner.inputInfo.sjaid['试卷ID']};
             omr_set['试卷映射'].push(obja);
           }
           else{
@@ -2268,7 +2269,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             return ;
           }
           if($scope.scanner.inputInfo.sjbid){
-            var objb = {'OMR试卷编号':'B','试卷ID': $scope.scanner.inputInfo.sjbid};
+            var objb = {'OMR试卷编号':'B','试卷ID': $scope.scanner.inputInfo.sjaid['试卷ID']};
             omr_set['试卷映射'].push(objb);
           }
           if($scope.scanner.inputInfo.xuehao && $scope.scanner.inputInfo.xuehao.length > 0){

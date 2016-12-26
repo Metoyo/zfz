@@ -1861,20 +1861,22 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
                   var fdTar = Lazy(oneSj).find(function(dt1){
                     return dt1['大题名称'] == dt['大题名称'];
                   });
-                  tmArr = fdTar['题目'];
-                  Lazy(gdtmArr).each(function(gdtm){
-                    if(tmArr && tmArr.length > 0){
-                      var fdTm = Lazy(tmArr).find(function(tm){
-                        return tm['题目ID'] == gdtm['题目ID'];
-                      });
-                      if(fdTm){
-                        gdtm['题目内容'] = fdTm['题目内容'];
+                  if(fdTar){
+                    tmArr = fdTar['题目'];
+                    Lazy(gdtmArr).each(function(gdtm){
+                      if(tmArr && tmArr.length > 0){
+                        var fdTm = Lazy(tmArr).find(function(tm){
+                          return tm['题目ID'] == gdtm['题目ID'];
+                        });
+                        if(fdTm){
+                          gdtm['题目内容'] = fdTm['题目内容'];
+                        }
+                        else{
+                          gdtm['题目内容'] = [];
+                        }
                       }
-                      else{
-                        gdtm['题目内容'] = [];
-                      }
-                    }
-                  });
+                    });
+                  }
                 }
               });
               if(sjzZsdArr.length > 0){

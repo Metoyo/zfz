@@ -29,10 +29,10 @@
                  ng-model="newClassTest['测验名称']"/>
         </div>
         <!--<div class="col-sm-4">-->
-          <!--<button type="button" class="btn btn-primary" ng-click="saveClassTest()" style="margin-top: 2px"-->
-                  <!--ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">-->
-            <!--保存测验-->
-          <!--</button>-->
+        <!--<button type="button" class="btn btn-primary" ng-click="saveClassTest()" style="margin-top: 2px"-->
+        <!--ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">-->
+        <!--保存测验-->
+        <!--</button>-->
         <!--</div>-->
       </div>
       <div class="form-group">
@@ -52,16 +52,16 @@
         </div>
       </div>
       <!--<div class="form-group">-->
-        <!--<label class="col-sm-2 control-label">选择题目</label>-->
-        <!--<div class="col-sm-6">-->
-          <!--<a href="javascript:;" class="mt7 dpb" ng-click="showTiMuList()">添加新试题</a>-->
-        <!--</div>-->
+      <!--<label class="col-sm-2 control-label">选择题目</label>-->
+      <!--<div class="col-sm-6">-->
+      <!--<a href="javascript:;" class="mt7 dpb" ng-click="showTiMuList()">添加新试题</a>-->
+      <!--</div>-->
       <!--</div>-->
       <!--<div class="save-box">-->
-        <!--&lt;!&ndash;ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || loadingImgShow">保存测验&ndash;&gt;-->
-        <!--<button type="button" class="btn btn-primary" ng-click="saveClassTest()"-->
-                <!--ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">保存测验-->
-        <!--</button>-->
+      <!--&lt;!&ndash;ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || loadingImgShow">保存测验&ndash;&gt;-->
+      <!--<button type="button" class="btn btn-primary" ng-click="saveClassTest()"-->
+      <!--ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">保存测验-->
+      <!--</button>-->
       <!--</div>-->
     </form>
   </div>
@@ -143,7 +143,7 @@
     </div>
   </div>
 </div>
-<!--命题-->
+<!--命题 单选题-->
 <div class="popup-percent" ng-if="kjParams.addTiMuWrap">
   <div class="popup-percent-inner">
     <div class="inner-box">
@@ -154,25 +154,26 @@
               <a href="javascript:void(0)" ng-click="showDanXuanTiGanEditor();hideDanXuanEdt=true">题干编辑器</a>
             </div>
           </div>
+          <!--题干-->
           <div class="form-group">
             <label class="col-sm-1 control-label">题干</label>
             <div class="col-sm-8">
               <textarea class="form-control formulaEditTiGan" rows="5" ng-model="timu['题目内容']['题干']" placeholder="请输入题干" ng-change="previewTiGan()"></textarea>
               <div class="previewBox" ng-show="hideDanXuanEdt">
                 <h4 class="title">
-            <span class="pull-left">
-                内容预览：
-            </span>
-            <span class="pull-right" ng-click="removeTiGanEditor();hideDanXuanEdt=false">
-                关闭题干编辑器
-            </span>
+                  <span class="pull-left">
+                      内容预览：
+                  </span>
+                  <span class="pull-right" ng-click="removeTiGanEditor();hideDanXuanEdt=false">
+                      关闭题干编辑器
+                  </span>
                 </h4>
                 <div id="prevDoc">
                 </div>
               </div>
             </div>
           </div>
-          <!--弹出层-->
+          <!--弹出层，添加多媒体-->
           <div id="mediaPlugin" class="popup-wrap">
             <div class="popup-wrap-inner">
               <div class="pwi-header plr10 text-center">
@@ -192,7 +193,7 @@
                 </p>
               </div>
               <div class="pwi-footer plr10 text-center">
-                <button type="button" class="btn btn-primary mt7" ng-click="uploadMyFiles()">添加到编辑器</button>
+                <button type="button" class="btn btn-primary mt7" ng-click="uploadMyFilesTest()">添加到编辑器</button>
                 <button type="button" class="btn btn-danger ml15 mt7" ng-click="closeMediaPlugin()">关闭</button>
               </div>
             </div>
@@ -204,12 +205,9 @@
               <textarea class="form-control formulaEditTiZhi" rows="5" ng-model="kjParams.xuanZheTiZhi" ng-change="previewTiZhi()"></textarea>
               <div class="previewBox">
                 <h4 class="title">
-            <span class="pull-left">
-                内容预览：
-            </span>
+                  <span class="pull-left">内容预览：</span>
                 </h4>
-                <div id="prevTiZhiDoc">
-                </div>
+                <div id="prevTiZhiDoc"></div>
               </div>
             </div>
             <div class="col-sm-8 col-sm-offset-1 assignment-box">
@@ -228,6 +226,7 @@
               正确答案
             </div>
           </div>
+          <!--题支，单选题-->
           <div class="form-group tizhiWrap" ng-repeat="num in loopArr">
             <label class="col-sm-1 control-label">{{letterArr[$index]}}.</label>
             <div class="col-sm-8">
@@ -235,7 +234,7 @@
             </div>
             <div class="col-sm-2">
               <span class="glyphicon glyphicon-minus-sign delete-this-tiem" ng-click="deleteOneItem($index,num)" ng-hide="loopArr.length < 3"></span>
-              <div class="radio {{'answer' + $index}}" ng-class="{'radio-select':num.ckd}" ng-click="chooseDaAn(num,'dan')">
+              <div class="radio {{'answer' + $index}}" ng-class="{'radio-select':num.ckd}" ng-click="chooseDaAn(num)">
                 <span class="glyphicon glyphicon-ok"></span>
               </div>
             </div>

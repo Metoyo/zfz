@@ -260,6 +260,27 @@ module.exports = function (grunt) {
     //   dist: {}
     // },
 
+    //css压缩
+    cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'app/styles',
+          src: ['*.css', '!*.min.css'],
+          dest: 'dist/styles',
+          ext: '.css'
+        }]
+      }
+    },
+
+    //js文件压缩
+    // uglify: {
+    //   static_mappings: {
+    //    files: [
+    //      {src: 'dist/scripts/main.js', dest: 'dist/scripts/main.min.js'}
+    //    ]
+    //   }
+    // },
     // The following *-min tasks produce minified files in the dist folder
     imagemin: {
       dist: {
@@ -322,40 +343,52 @@ module.exports = function (grunt) {
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            '*.html',
-            'views/{,*/}*.html',
-            'images/{,*/}*.{webp}',
-            'fonts/{,*/}*.*'
-          ]
-        }, {
-          expand: true,
-          cwd: '.',
-          dest: '.tmp',
-          src: ['bower_components/**/*']
-        }, {
-          expand: true,
-          cwd: '.',
-          dest: '<%= yeoman.dist %>',
-          src: ['bower_components/requirejs/*']
-        }, {
-          expand: true,
-          cwd: '.tmp/images',
-          dest: '<%= yeoman.dist %>/images',
-          src: ['generated/*']
-        }, {
-          expand: true,
-          cwd: 'bower_components/bootstrap/dist',
-          src: 'fonts/*',
-          dest: '<%= yeoman.dist %>'
-        }]
+        files: [
+          {
+            expand: true,
+            dot: true,
+            cwd: '<%= yeoman.app %>',
+            dest: '<%= yeoman.dist %>',
+            src: [
+              '*.{ico,png,txt}',
+              '.htaccess',
+              '*.html',
+              'views/{,*/}*.html',
+              'images/{,*/}*.{webp}',
+              'fonts/{,*/}*.*'
+            ]
+          },
+          {
+            expand: true,
+            cwd: '.',
+            dest: '.tmp',
+            src: ['bower_components/**/*']
+          },
+          {
+            expand: true,
+            cwd: '.',
+            dest: '<%= yeoman.dist %>',
+            src: ['bower_components/requirejs/*']
+          },
+          {
+            expand: true,
+            cwd: '.tmp/images',
+            dest: '<%= yeoman.dist %>/images',
+            src: ['generated/*']
+          },
+          {
+            expand: true,
+            cwd: 'bower_components/bootstrap/dist',
+            src: 'fonts/*',
+            dest: '<%= yeoman.dist %>'
+          }
+          // {
+          //   expand: true,
+          //   cwd: 'bower_components/bootstrap/dist/css',
+          //   src: 'bootstrap.min.css',
+          //   dest: 'dist/styles'
+          // }
+        ]
       },
       styles: {
         expand: true,
@@ -423,15 +456,14 @@ module.exports = function (grunt) {
           removeCombined: true,
           baseUrl: '.tmp/<%= yeoman.app %>/scripts',
           mainConfigFile: '.tmp/<%= yeoman.app %>/scripts/main.js',
-          optimize: 'uglify2',
-          uglify2: {
+          optimize: 'uglify',
+          uglify: {
             mangle: false
           }
         }
       }
     }
   });
-
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
