@@ -88,6 +88,7 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
             obj.params['用户名'] = login.userName;
           }
           urlArr = [];
+          $rootScope.urlArrs = [];
           $scope.loginBtn = true;
           $http(obj).success(function(data){
             if(data.result && data.data){

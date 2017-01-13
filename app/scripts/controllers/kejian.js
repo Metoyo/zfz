@@ -622,7 +622,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                   //'时限': '',
                   '组卷规则': []
                 },
-                '状态': 1
+                '状态': 0
               };
               $scope.tiMuArr = [
                 {

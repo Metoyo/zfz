@@ -2322,39 +2322,42 @@
         /**
          * 生成pdf
          */
-        //$scope.createPdf = function(stat){
-        //  var obj = {
-        //    token: token,
-        //    kaozhizuid: '',
-        //    xuexiaoname: '',
-        //    kaoshizuname: '',
-        //    pfdtype: stat
-        //  };
-        //  if($scope.scanner.selectInfo.kszid){
-        //    obj.kaozhizuid = $scope.scanner.selectInfo.kszid;
-        //    var findXueXiao = Lazy($scope.jigou_list).find(function(jg){
-        //      return jg['学校ID'] == $scope.scanner.selectInfo.jgid;
-        //    });
-        //    var findKaoShiZu = Lazy($scope.kaoshizu_list).find(function(ksz){
-        //      return ksz['考试组ID'] == $scope.scanner.selectInfo.kszid;
-        //    });
-        //    obj.xuexiaoname = findXueXiao['学校名称'];
-        //    obj.kaoshizuname = findKaoShiZu['考试组名称'];
-        //    $scope.loadingImgShow = true;
-        //    $http({method: 'GET', url: createPdfUrl, params: obj}).success(function(data){
-        //      if(data.result){
-        //        DataService.alertInfFun('suc', '生成成功！');
-        //      }
-        //      else{
-        //        DataService.alertInfFun('err', data.error);
-        //      }
-        //      $scope.loadingImgShow = false;
-        //    });
-        //  }
-        //  else{
-        //    DataService.alertInfFun('pmt', '请选择考试组!');
-        //  }
-        //};
+        $scope.createPdf = function(stat){
+          var obj = {
+            '考试组ID': '',
+            '学校名称': '',
+            '考试组名称': '',
+            pfdtype: stat
+          };
+          if($scope.scanner.selectInfo.kszid){
+            obj['考试组ID'] = $scope.scanner.selectInfo.kszid;
+            var findXueXiao = Lazy($scope.jigou_list).find(function(jg){
+              return jg['学校ID'] == $scope.scanner.selectInfo.jgid;
+            });
+            var findKaoShiZu = Lazy($scope.kaoshizu_list).find(function(ksz){
+              return ksz['考试组ID'] == $scope.scanner.selectInfo.kszid;
+            });
+            if(findXueXiao){
+              obj['学校名称'] = findXueXiao['学校名称'];
+            }
+            if(findKaoShiZu){
+              obj['考试组名称'] = findKaoShiZu['考试组名称'];
+            }
+            $scope.loadingImgShow = true;
+            $http({method: 'GET', url: createPdfUrl, params: obj}).success(function(data){
+              if(data.result){
+                DataService.alertInfFun('suc', '正在生成中……');
+              }
+              else{
+                DataService.alertInfFun('err', data.error);
+              }
+              $scope.loadingImgShow = false;
+            });
+          }
+          else{
+            DataService.alertInfFun('pmt', '请选择考试组!');
+          }
+        };
 
         /**
          * 学校权限设置

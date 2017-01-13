@@ -72,6 +72,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               $cookieStore.remove('ckUsr');
               $cookieStore.remove('ckJs');
               config.loginUsr = '';
+              $rootScope.urlArrs = [];
               urlRedirect.goTo($location.$$path, '/renzheng');
             }
             else{
