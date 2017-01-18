@@ -2,8 +2,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
   function (angular, config, $, lazy, datepicker, qrcode) { // 001 开始
     'use strict';
     angular.module('zhifzApp.controllers.KejianCtrl', []) //controller 开始
-      .controller('KejianCtrl', ['$rootScope', '$scope', '$http', '$timeout', 'DataService', '$cookieStore', '$routeParams',
-          function ($rootScope, $scope, $http, $timeout, DataService, $cookieStore, $routeParams) { // 002 开始
+      .controller('KejianCtrl', ['$rootScope', '$scope', '$http', '$location', '$timeout', 'DataService', '$cookieStore',
+          function ($rootScope, $scope, $http, $location, $timeout, DataService, $cookieStore) { // 002 开始
             /**
              * 定义变量
              */
@@ -46,9 +46,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             $scope.tiXingArr = config.tiXingArr; //题型名称数组
             $scope.kjParams = {
               showErWeiMa: false, //显示二维码
-              //wrapTran: true, //class的转换
               tiMuLen: '', //题目数量
-              //allTkIds: [], //所有题库ID
               tiKuId: '', //题库ID
               sltTest: '', //选中的测验
               xuanZheTiZhi: '', //选择题题支内容
@@ -104,8 +102,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               //  '题型名称': '判断题'
               //}
             ];
-
-            //var tiMuId = $routeParams.id;
 
             /**
              * 设置用户的默认大纲
@@ -382,16 +378,21 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             /**
              * 查询课件列表
              */
-            $scope.getClassTest = function(){
+            $scope.getClassTest = function(state){
+              var zt = state || [0,1,2];
               var obj = {
                 method: 'GET',
                 url: ceYanUrl,
                 params: {
-                  '学校ID': jgID,
-                  '创建人UID': logUid,
-                  '状态': JSON.stringify([0,1])
+                  // '学校ID': jgID,
+                  // '创建人UID': logUid,
+                  '状态': JSON.stringify(zt)
                 }
               };
+              if(!state){
+                obj.params['学校ID'] = jgID;
+                obj.params['创建人UID'] = logUid;
+              }
               $http(obj).success(function(data){
                 if(data.result && data.data){
                   pageMake(data.data);
@@ -403,10 +404,11 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                   DataService.alertInfFun('err', data.error);
                 }
               });
-              $scope.tabActive = 'stcy';
-              $scope.txTpl = 'views/kejian/classTestList.html';
+              if(!state){
+                $scope.tabActive = 'stcy';
+                $scope.txTpl = 'views/kejian/classTestList.html';
+              }
             };
-            $scope.getClassTest();
 
             /**
              * 测验的分页数据查询函数
@@ -421,7 +423,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             /**
              * 查看测验详细
              */
-            $scope.classTestDetail = function(id){
+            $scope.classTestDetail = function(cy){
+              var id = cy['测验ID'];
               var obj = {
                 method: 'GET',
                 url: wenJuanDiaoChaUrl,
@@ -822,7 +825,7 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
             /**
              * 保存题目
              */
-            $scope.saveTiMu = function(){
+            $scope.saveTiMu = function(fromImg){
               var mis = [];
               var tiMuData = angular.copy($scope.timu);
               var tgSlt = document.querySelector('.formulaEditTiGan');
@@ -838,7 +841,6 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
               tiMuData['题目内容']['选项'] = tzArr.length ? tzArr : [];
               if(daArr && daArr.length > 0){
                 tiMuData['题目内容']['答案'] = $scope.timu['题型ID'] == 1 ? daArr[0] : daArr;
-                // tiMuData['题目内容']['答案'] = daArr[0];
               }
               else{
                 mis.push('答案');
@@ -890,7 +892,10 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                     if(!$scope.kjParams.isAddTiMu){
                       $scope.closeAddTiMuPop();
                     }
-                    DataService.alertInfFun('suc', '保存成功！');
+                    if(fromImg){
+                      $scope.saveCeYan(false, data.data['题目ID']);
+                    }
+                    DataService.alertInfFun('suc', '题目保存成功！');
                   }
                   else{
                     DataService.alertInfFun('err', data.error);
@@ -1506,6 +1511,173 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker', 'qrcode'], // 000 �
                   }
                 });
               }
+            };
+
+            /**
+             * 超级用户的录题页面
+             */
+            var currentPath = $location.$$path;
+            if(currentPath == '/kejian/luti'){
+              $scope.getClassTest([2]);
+            }
+            else{
+              $scope.getClassTest();
+            }
+
+            /**
+             * 查询状态为2的测验
+             */
+            $scope.getTestImg = function(cy){
+              $scope.classTestDtl = {
+                '测验名称': cy['测验名称'],
+                '图片ID': ''
+              };
+              $scope.timu = {
+                '题库ID': $scope.kjParams.tiKuId,
+                '科目ID': '',
+                '题型ID': 2,
+                '题目内容': {
+                  '题干': '',
+                  '答案': '',
+                  '提示': ''
+                },
+                '难度': 3,
+                '出题人UID': '',
+                '备注': ''
+              };
+              $scope.loopArr = [
+                {itemVal: '', ckd: false},
+                {itemVal: '', ckd: false},
+                {itemVal: '', ckd: false},
+                {itemVal: '', ckd: false}
+              ];
+              $scope.kjParams.sltTest = cy;
+              if(cy['测验设置']['教师']){
+                var js = cy['测验设置']['教师'];
+                $scope.timu['科目ID'] = js['科目ID'];
+                $scope.timu['出题人UID'] = js['UID'];
+                //查询题库
+                var objGr = {
+                  method: 'GET',
+                  url: tiKuUrl,
+                  params: {
+                    '学校ID': js['学校ID'],
+                    '领域ID': js['领域ID'],
+                    '类型': 9
+                  }
+                };
+                $http(objGr).success(function(tiku){
+                  if(tiku.result && tiku.data){
+                    $scope.kjParams.tiKuId = tiku.data[0]['题库ID'];
+                    $scope.timu['题库ID'] = tiku.data[0]['题库ID'];
+                  }
+                  else{
+                    var objNtk = {
+                      method: 'PUT',
+                      url: tiKuUrl,
+                      data: {
+                        '题库名称': js['领域名称'] + '随堂测验题库',
+                        '学校ID': js['学校ID'],
+                        '领域ID': js['领域ID'],
+                        '类型': 9
+                      }
+                    };
+                    $http(objNtk).success(function(data){
+                      if(data.result && data.data){
+                        $scope.kjParams.tiKuId = data.data['题库ID'];
+                        $scope.timu['题库ID'] = tiku.data['题库ID'];
+                      }
+                      else{
+                        DataService.alertInfFun('err', data.error);
+                      }
+                    });
+                  }
+                });
+              }
+              else{
+                DataService.alertInfFun('pmt', '缺少出题人信息！');
+              }
+              if(cy['测验设置']['图片ID'] && cy['测验设置']['图片ID'].length > 0){
+                $scope.classTestDtl['图片ID'] = cy['测验设置']['图片ID'].reverse();
+              }
+              else{
+                DataService.alertInfFun('pmt', '缺少题目图片信息！');
+              }
+              $scope.kjParams.isAddTiMu = true;
+            };
+
+            /**
+             * 保存图片录题测验
+             */
+            $scope.saveCeYan = function(zt, tmid){
+              var sltCy = $scope.kjParams.sltTest;
+              var copySet = '';
+              var obj = {
+                method: 'POST',
+                url: ceYanUrl,
+                data: {
+                  '测验ID': sltCy['测验ID'],
+                  '测验设置': {
+                    '固定题目': true,
+                    '组卷规则': [],
+                    '图片ID': sltCy['测验设置']['图片ID'],
+                    '微信ID': sltCy['测验设置']['微信ID'],
+                    '教师': sltCy['测验设置']['教师']
+                  }
+                }
+              };
+              var saveFun = function () {
+                $http(obj).success(function(pData){
+                  if(pData.result){
+                    if(zt){
+                      DataService.alertInfFun('suc', '测验保存成功！');
+                    }
+                    else{
+                      $scope.kjParams.sltTest['测验设置'] = copySet;
+                    }
+                  }
+                  else{
+                    DataService.alertInfFun('err', pData.error);
+                  }
+                });
+              };
+              if(zt){ //题目已经录完，修改状态
+                delete obj.data['测验设置'];
+                obj.data['状态'] = 0;
+                obj.data['通知老师'] = true;
+                obj.data['标签'] = sltCy['标签'];
+                obj.data['微信ID'] = sltCy['测验设置']['微信ID'];
+                obj.data['测验名称'] = sltCy['测验名称'];
+                obj.data['姓名'] = sltCy['测验设置']['教师']['姓名'];
+                saveFun();
+              }
+              else{ //还在录题
+                if(sltCy['测验设置']['组卷规则'] && sltCy['测验设置']['组卷规则'].length > 0){
+                  obj.data['测验设置']['组卷规则'] = sltCy['测验设置']['组卷规则'];
+                }
+                else{
+                  obj.data['测验设置']['组卷规则'].push({'大题名称': '多选题', '固定题目': []});
+                }
+                Lazy(obj.data['测验设置']['组卷规则']).each(function(dt){
+                  if(dt['大题名称'] == '多选题' && tmid){
+                    var tmObj = {
+                      '题目ID': tmid,
+                      '分值': 1
+                    };
+                    dt['固定题目'].push(tmObj);
+                  }
+                });
+                copySet = angular.copy(obj.data['测验设置']);
+                obj.data['测验设置'] = JSON.stringify(obj.data['测验设置']);
+                saveFun();
+              }
+            };
+
+            /**
+             * 退出程序
+             */
+            $scope.signOut = function(){
+              DataService.logout();
             };
 
             /**

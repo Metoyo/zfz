@@ -159,10 +159,18 @@ define(['angular', 'config', 'lazy'], function (angular, config, lazy) {
                   jsArr = Lazy(jsTpArr).sortBy(function(js){ return js; }).uniq().toArray(); //得到角色的数组
                   var adminQx = Lazy(jsArr).contains(0); //判断系统管理员
                   var xxglyQx = Lazy(jsArr).contains(1); //判断学校管理员
+                  var lutiKm = Lazy(kmArr).contains(0); //判断录入人的科目
+                  var lutiJs = Lazy(jsArr).contains(3); //判断录入人的科目
                   $cookieStore.put('ckJs', JSON.stringify(jsArr));
                   if(adminQx || xxglyQx){ //判断管理员
+                    $cookieStore.put('ckUrl', JSON.stringify(urlArr));
                     var navUrl = '/user/' + data.data['用户名']; //导向的URL
                     urlRedirect.goTo(currentPath, navUrl);
+                  }
+                  else if(lutiKm && lutiJs){
+                    var km = {'科目ID': 0, '领域ID': 0};
+                    $cookieStore.put('ckKeMu', JSON.stringify(km));
+                    urlRedirect.goTo(currentPath, '/kejian/luti');
                   }
                   else{
                     $scope.usrKeMu = [];

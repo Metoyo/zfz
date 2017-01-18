@@ -91,6 +91,11 @@ define( "config", [], function () {
         templateUrl: '../views/kejian/kejian.html',
         controller: 'KejianCtrl',
         requireLogin: true
+      },
+      '/kejian/luti': {
+        templateUrl: '../views/kejian/luti.html',
+        controller: 'KejianCtrl',
+        requireLogin: true
       }
     },
     moduleObj: [ //得到角色是数组

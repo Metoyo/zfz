@@ -1,0 +1,42 @@
+<h4>添加超级用户</h4>
+<div class="form-horizontal dagangInput p10">
+  <div class="loading-box text-center" ng-show="loadingImgShow">
+    <img src="/images/loading.gif" alt="" width="64" height="64"/>
+    <p>数据加载中，请耐心等待……</p>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      系统账号
+    </label>
+    <div class="col-md-8">
+      <input type="text" class="form-control" ng-model="superUser['用户名']"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      密码
+    </label>
+    <div class="col-md-8">
+      <input type="text" class="form-control" ng-model="superUser['密码']"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      邮箱
+    </label>
+    <div class="col-md-8">
+      <input type="text" class="form-control" ng-model="superUser['邮箱']"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-md-2 control-label">
+      真实姓名
+    </label>
+    <div class="col-md-8">
+      <input type="text" class="form-control" ng-model="superUser['姓名']"/>
+    </div>
+  </div>
+  <div class="form-group text-right">
+    <button type="button" class="btn btn-primary" ng-click="saveUser()">提交</button>
+  </div>
+</div>

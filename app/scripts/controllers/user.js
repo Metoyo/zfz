@@ -27,6 +27,7 @@
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
         var jsArr = JSON.parse($cookieStore.get('ckJs'));
+        var emailRegexp = /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/; //验证邮箱的正则表达式
         $scope.shenheList = [];
         $scope.isShenHeBox = true; //判断是不是审核页面
         $scope.adminParams = {
@@ -2781,6 +2782,104 @@
             });
           }
         };
+
+        /**
+         *  添加录题用户
+         */
+        $scope.renderAddUser = function(){
+          $scope.superUser = {
+            '姓名': '',
+            '学校ID': 0,
+            '密码': '',
+            '用户名': '',
+            '用户类别': 1,
+            '邮箱': '',
+            // '角色': "[{'学校ID':0,'领域ID':0,'科目ID':0,'角色ID':3,'状态': 1}]",
+            '用户设置': "{'录题用户': true}"
+          };
+          $scope.isShenHeBox = false; //判断是不是审核页面
+          $scope.loadingImgShow = false;
+          $scope.adminSubWebTpl = 'views/renzheng/rz_addUser.html';
+        };
+
+        /**
+         * 保存超级用户
+         */
+        $scope.saveUser = function(){
+          var mis = [];
+          if(!$scope.superUser['姓名']){
+            mis.push('姓名');
+          }
+          if(!$scope.superUser['密码']){
+            mis.push('密码');
+          }
+          if(!$scope.superUser['用户名']){
+            mis.push('用户名');
+          }
+          if(!$scope.superUser['邮箱']){
+            mis.push('邮箱');
+          }
+          else{
+            var matchRlt = $scope.superUser['邮箱'].match(emailRegexp);
+            if(matchRlt == null){
+              DataService.alertInfFun('pmt', '邮箱格式不正确！');
+              return ;
+            }
+          }
+          if(mis && mis.length > 0){
+            DataService.alertInfFun('pmt', '缺少：' + mis.join());
+            return ;
+          }
+          var obj = {
+            method: 'PUT',
+            url: yongHuUrl,
+            data: $scope.superUser
+          };
+          $http(obj).success(function(data){
+            if(data.result){
+              //审批用户
+              var objSp = {
+                method: 'POST',
+                url: yongHuJueSeUrl,
+                data: {
+                  'UID': data.data['UID'],
+                  '角色': [
+                    {
+                      '学校ID': 0,
+                      '领域ID': 0,
+                      '科目ID': 0,
+                      '角色ID': 3,
+                      '状态': 1
+                    }
+                  ]
+                }
+              };
+              objSp.data['角色'] = JSON.stringify(objSp.data['角色']);
+              $http(objSp).success(function(rlt){
+                if(rlt.result){
+                  $scope.superUser = {
+                    '姓名': '',
+                    '学校ID': 0,
+                    '密码': '',
+                    '用户名': '',
+                    '用户类别': 1,
+                    '邮箱': '',
+                    // '角色': "[{'学校ID':0,'领域ID':0,'科目ID':0,'角色ID':3,'状态': 1}]",
+                    '用户设置': "{'录题用户': true}"
+                  };
+                  DataService.alertInfFun('suc', '提交成功！');
+                }
+                else{
+                  DataService.alertInfFun('err', rlt.error);
+                }
+              });
+            }
+            else{
+              DataService.alertInfFun('err', data.error);
+            }
+          });
+        };
+
 
       }]);
 });

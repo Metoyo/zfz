@@ -71,7 +71,8 @@ h1, h2, h3, h4, h5, h6,
 
 .wp100 {
   width: 100%; }
-
+.maxWd{
+  max-width: 100%; }
 .w40 {
   width: 40px; }
 
