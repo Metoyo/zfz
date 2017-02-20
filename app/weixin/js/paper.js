@@ -17,6 +17,7 @@ $(function(){
   var ppPar = { //测验用到的参数
     wxid: '',
     //wxid: 'wxabcb783dbd59b067',
+    // wxid: 'oA5Yrw348MVRKwHLPdG8cpDFuKaA', //松涛
     testID: '',
     jgId: '',
     uid: '',
@@ -39,7 +40,7 @@ $(function(){
     var ttl = title || '错误信息';
     $('.msgBox').html(info);
     $('.msgTitle').html(ttl);
-    $('#dialog2').show().on('click', '.weui_btn_dialog', function () {
+    $('#dialog2').show().on('click', '.weui-dialog__btn', function () {
       $('#dialog2').off('click').hide();
     });
   };
@@ -48,6 +49,7 @@ $(function(){
    * 模板render函数
    */
   var renderFun =  function(data, tplId){
+    template.config('escape', false);
     var html = template(tplId, data);
     $('#content').html(html);
   };
@@ -72,11 +74,19 @@ $(function(){
     });
     MathJax.Hub.Queue(["Typeset", MathJax.Hub, "content"]);
     var tmId = d['题目ID'];
+    var txId = d['题型ID'];
     var daTiLen = daTiArr.length;
     for(var i = 0; i < daTiLen; i++){
       if(daTiArr[i]['题目ID'] == tmId){
-        var idx = parseInt(daTiArr[i]['答案']);
-        $('.tiZhiOpt').eq(idx).prop('checked', true);
+        if(txId == 1){
+          var idx = parseInt(daTiArr[i]['索引']);
+          $('.tiZhiOpt').eq(idx).prop('checked', true);
+        }
+        if(txId == 2){
+          Lazy(daTiArr[i]['索引']).each(function(sy){
+            $('.tiZhiOpt').eq(sy).prop('checked', true);
+          });
+        }
       }
     }
     if(p == a){
@@ -91,6 +101,7 @@ $(function(){
    * 加载测验
    */
   var loadTest = function(){
+    tiMuArr = [];
     if(ppPar.stat == 1){
       $.ajax({
         method: 'PUT',
@@ -104,9 +115,22 @@ $(function(){
             if(data.data['测验题目'][0]['题目'].length > 0){
               var tmpTitle = data.data['测验题目'][0]['大题名称'];
               var tmpTitleArr = tmpTitle.split('-');
-              paperTitle = tmpTitleArr[1];
-              tiMuArr = data.data['测验题目'][0]['题目'];
               zhuCeId = data.data['注册ID'];
+              paperTitle = tmpTitleArr[1];
+              Lazy(data.data['测验题目']).each(function(dt){
+                Lazy(dt['题目']).each(function(xt){
+                  var newXx = [];
+                  Lazy(xt['题目内容']['选项']).each(function(tz, idx, lst){
+                    var newTz = {
+                      '题支': tz,
+                      '序号': idx
+                    };
+                    newXx.push(newTz);
+                  });
+                  xt['题目内容']['选项'] = Lazy(newXx).shuffle().value();
+                  tiMuArr.push(xt);
+                });
+              });
               paperLen = tiMuArr.length;
               currentPg = 1;
               $('#navBar').show();
@@ -136,6 +160,24 @@ $(function(){
   };
 
   /**
+   * 延迟调用函数
+   */
+  var _delayTimer = {};
+  function delayCall(id, delay, func) {
+    var timer = _delayTimer[id];
+    if (timer) {
+      clearTimeout(timer);
+    }
+    _delayTimer[id] = setTimeout(function () {
+      if (func) {
+        func();
+      }
+      clearTimeout(_delayTimer[id]);
+      delete _delayTimer[id];
+    }, delay);
+  }
+
+  /**
    * 函数初始化
    */
   var initFun = function(){
@@ -144,27 +186,54 @@ $(function(){
     ppPar.testID = tarId.data('test');
     ppPar.jgId = tarId.data('jg');
     ppPar.stat = tarId.data('stat');
-    $.ajax({
-      method: 'GET',
-      url: loginUrl,
-      data:{
-        '微信ID': ppPar.wxid
-      },
-      success: function (data) {
-        data = dataMake(data);
-        if(data.result && data.data){
-          //加载测验
-          loadTest();
-        }
-        else{
-          //用户注册
-          renderFun({}, 'tplLogin');
-        }
-      },
-      error: function (error) {
-        dialog(error);
-      }
-    });
+    // ppPar.wxid = 'oA5Yrw348MVRKwHLPdG8cpDFuKaA';
+    // ppPar.testID = 1236;
+    // ppPar.jgId = 1033;
+    // ppPar.stat = 1;
+    if(ppPar.wxid){
+        $.ajax({
+            method: 'GET',
+            url: loginUrl,
+            data:{
+                '微信ID': ppPar.wxid
+            },
+            success: function (data) {
+                data = dataMake(data);
+                if(data.result && data.data){
+                    //加载测验
+                    loadTest();
+                }
+                else{
+                    //用户注册
+                    renderFun({}, 'tplLogin');
+                    var $iosActionsheet = $('#iosActionsheet');
+                    var $iosMask = $('#iosMask');
+                    function hideActionSheet() {
+                        $iosActionsheet.removeClass('weui-actionsheet_toggle');
+                        $iosMask.fadeOut(200);
+                    }
+                    $iosMask.on('click', hideActionSheet);
+                    $('#iosActionsheetCancel, #actionsheet_confirm').on('click', hideActionSheet);
+                    $("#showIOSActionSheet").on("click", function(){
+                        $iosActionsheet.addClass('weui-actionsheet_toggle');
+                        $iosMask.fadeIn(200);
+                    });
+                    $('.optXueXiao').on('click', function () {
+                        $(this).addClass('tabOn').siblings('.tabOn').removeClass('tabOn');
+                        var idx = $(this).index();
+                        ppPar.sltSch = ppPar.allSch[idx];
+                        $('.xueXiaoWrap').data('id', ppPar.sltSch['学校ID']).html(ppPar.sltSch['学校名称']).removeClass('clA8');
+                    });
+                }
+            },
+            error: function (error) {
+                dialog(error);
+            }
+        });
+    }
+    else{
+        dialog('微信ID为空！');
+    }
   };
   initFun();
 
@@ -204,8 +273,9 @@ $(function(){
               method: 'GET',
               url: loginUrl,
               data:{
-                '学校ID': ppPar.jgId,
-                '学号': xh
+                //'学校ID': ppPar.jgId,
+                //'学号': xh
+                '微信ID': ppPar.wxid
               },
               success: function (data1) {
                 data1 = dataMake(data1);
@@ -255,6 +325,7 @@ $(function(){
                 '学号': xh
               },
               success: function(data3){
+                data3 = dataMake(data3);
                 if(data3.result && data3.data){
                   $.ajax({
                     method: 'GET',
@@ -294,23 +365,106 @@ $(function(){
     })
     .on('click', '.tiZhiOpt', function(){ //答题
       var daStr = $(this).val();
+      var isChecked = $(this).prop('checked');
       var daArr = daStr.split('-');
-      var da = daArr[1];
-      var tmId = parseInt(daArr[0]);
-      var daTiLen = daTiArr.length;
-      var daObj = {
-        '题目ID': tmId,
-        '答案': da
-      };
+      var da = +daArr[1]; //答案
+      var idx = +daArr[2]; //索引
+      var txID = +daArr[3]; //题型ID
+      var tmId = +daArr[0];
+      var daObj = '';
       var noIn = true;
-      for(var i = 0; i < daTiLen; i++){
-        if(daTiArr[i]['题目ID'] == tmId){
-          daTiArr[i]['答案'] = da;
+      Lazy(daTiArr).each(function(tm, i, l){ //题目已在已答题目数组中
+        if(tm['题目ID'] == tmId){
+          if(txID == 1){
+            tm['答案'] = da;
+            tm['索引'] = idx;
+          }
+          else{
+            var daIsIn = Lazy(tm['索引']).contains(idx);
+            if(daIsIn){
+              if(!isChecked){
+                tm['答案'] = Lazy(tm['答案']).reject(function (daNum) {
+                  return daNum == da;
+                }).toArray();
+                tm['索引'] = Lazy(tm['索引']).reject(function (idxNum) {
+                  return idxNum == idx;
+                }).toArray();
+              }
+            }
+            else{
+              tm['答案'].push(da);
+              tm['索引'].push(idx);
+            }
+          }
           noIn = false;
         }
-      }
-      if(noIn){
+      });
+      if(noIn){ //题目不在已答题目数组中
+        if(txID == 1){
+          daObj = {
+            '题目ID': tmId,
+            '答案': da,
+            '索引': idx
+          };
+        }
+        else{
+          daObj = {
+            '题目ID': tmId,
+            '答案': [],
+            '索引': []
+          };
+          daObj['答案'].push(da);
+          daObj['索引'].push(idx);
+        }
         daTiArr.push(daObj);
+      }
+      // 提交答题数据
+      var findTm = Lazy(daTiArr).find(function (timu) {
+        return timu['题目ID'] == tmId;
+      });
+      // 提交函数
+      var tmArr = [];
+      var subFun = function(){
+        var tm = tmArr;
+        if(isArray(tm[0]['答案'])){
+          tm[0]['答案'] = Lazy(tm[0]['答案']).sort().toArray().join(',');
+        }
+        $.ajax({
+          method: 'POST',
+          url: yongHuDaTi,
+          data: {
+            '注册ID': zhuCeId,
+            '测验ID': ppPar.testID,
+            '答题': JSON.stringify(tm)
+          },
+          success: function (data) {
+            data = dataMake(data);
+            if(data.result && data.data){
+              // console.log(daTiArr);
+            }
+            else{
+              dialog(data.error || '答题结果为空！');
+            }
+          },
+          error: function (error) {
+            dialog(error);
+          }
+        });
+      };
+      if(findTm){
+        var rbTiMu = {
+          '题目ID': '',
+          '答案': ''
+        };
+        rbTiMu['题目ID'] = findTm['题目ID'];
+        rbTiMu['答案'] = findTm['答案'];
+        tmArr.push(rbTiMu);
+        if(txID == 2){
+          delayCall(tmId, 2000, subFun);
+        }
+        else{
+          subFun();
+        }
       }
     })
     .on('click', '#prvBtn', function(){ //上一页
@@ -343,48 +497,22 @@ $(function(){
     .on('click', '#submitTest', function(){ //提交用户答题
       var yiDaLen = daTiArr.length;
       var cut = paperLen - yiDaLen;
-      var subFun = function(){
+      var subFunTj = function(){
         $.ajax({
           method: 'POST',
-          url: yongHuDaTi,
+          url: yongHuCeYan,
           data: {
             '注册ID': zhuCeId,
-            '测验ID':ppPar.testID,
-            '答题': JSON.stringify(daTiArr)
+            '测验ID': ppPar.testID,
+            '微信ID': ppPar.id
           },
           success: function (data) {
             if(typeof(data) == 'string'){
               data = JSON.parse(data);
             }
-            if(data.result){
-              $.ajax({
-                method: 'POST',
-                url: yongHuCeYan,
-                data: {
-                  '注册ID': zhuCeId,
-                  '测验ID': ppPar.testID,
-                  '微信ID': ppPar.id
-                },
-                success: function (data) {
-                  if(typeof(data) == 'string'){
-                    data = JSON.parse(data);
-                  }
-                  if(data.result){ //关闭页面
-                    var dt = {
-                      allTm: data.data['答题总数'] - data.data['答对题数'],
-                      rightTm: data.data['答对题数']
-                    };
-                    renderFun(dt, 'tplScore');
-                    $('#navBar').hide();
-                  }
-                  else{
-                    dialog(data.error);
-                  }
-                },
-                error: function (error) {
-                  dialog(error);
-                }
-              });
+            if(data.result){ //关闭页面
+              renderFun({}, 'tplScore');
+              $('#navBar').hide();
             }
             else{
               dialog(data.error);
@@ -397,11 +525,11 @@ $(function(){
       };
       if(cut > 0){
         if(confirm('有' + cut + '未作答！确定要提交吗？')){
-          subFun();
+          delayCall(zhuCeId, 2000, subFunTj);
         }
       }
       else{
-        subFun();
+        delayCall(zhuCeId, 2000, subFunTj);
       }
     });
 });

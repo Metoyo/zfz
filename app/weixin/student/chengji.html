@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title class="title">成绩</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <link rel="stylesheet" href="/weixin/css/weui.min.css"/>
+    <link rel="stylesheet" href="/weixin/css/weui.min-v1.1.0.css"/>
     <link rel="stylesheet" href="/weixin/css/chengji.css"/>
-    <link rel="stylesheet" href="/weixin/css/font-awesome.min.css"/>
+    <!--<link rel="stylesheet" href="/weixin/css/font-awesome.min.css"/>-->
+    <!--<link rel="stylesheet" href="/weixin/css/chengji.min.css"/>-->
 </head>
 <body ontouchstart>
 <!--内容容器-->
@@ -14,60 +15,60 @@
 
 </div>
 <!--BEGIN dialog2-->
-<div class="weui_dialog_alert" id="dialog2" style="display: none;">
-    <div class="weui_mask"></div>
-    <div class="weui_dialog">
-        <div class="weui_dialog_hd"><strong class="weui_dialog_title msgTitle"></strong></div>
-        <div class="weui_dialog_bd msgBox"></div>
-        <div class="weui_dialog_ft">
-            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+<div class="js_dialog" id="iosDialog2" style="display: none;">
+    <div class="weui-mask"></div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__hd"><strong class="weui-dialog__title msgTitle"></strong></div>
+        <div class="weui-dialog__bd msgBox"></div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
         </div>
     </div>
 </div>
 <!--END dialog2-->
 <!--模板 学生登录-->
 <script id="tplLogin" type="text/html">
-    <div class="weui_cells weui_cells_form tplLogin">
-        <div class="weui_cell">
-            <div class="weui_cell_hd"><label class="weui_label">学校</label></div>
-            <div id="showActionSheet" class="weui_cell_bd weui_cell_primary xueXiaoWrap clA8" data-id="">
+    <div class="weui-cells weui-cells_form tplLogin">
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">学校</label></div>
+            <div id="showIOSActionSheet" class="weui-cell__bd weui-cell_primary xueXiaoWrap clA8" data-id="">
                 选择学校
             </div>
         </div>
-        <div class="weui_cell">
-            <div class="weui_cell_hd"><label class="weui_label">学号</label></div>
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="text" name="yourNum" placeholder="您的学号"/>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">学号</label></div>
+            <div class="weui-cell__bd weui-cell_primary">
+                <input class="weui-input" type="text" name="yourNum" placeholder="您的学号"/>
             </div>
         </div>
-        <div class="weui_cell">
-            <div class="weui_cell_hd"><label class="weui_label">姓名</label></div>
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="text" name="yourName" placeholder="您的姓名"/>
+        <div class="weui-cell">
+            <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+            <div class="weui-cell__bd weui-cell_primary">
+                <input class="weui-input" type="text" name="yourName" placeholder="您的姓名"/>
             </div>
         </div>
     </div>
     <div class="tplLogin">
-        <div class="weui_mask_transition" id="mask"></div>
-        <div class="weui_actionsheet" id="weui_actionsheet">
-            <div class="weui_actionsheet_menu">
+        <div class="weui-mask" id="iosMask" style="display: none"></div>
+        <div class="weui-actionsheet" id="iosActionsheet">
+            <div class="weui-actionsheet__menu">
                 {{each xueXiao}}
-                <div class="weui_actionsheet_cell optXueXiao">
-                    <i class="fa fa-check" aria-hidden="true"></i>
+                <div class="weui-actionsheet__cell optXueXiao">
+                    <i class="weui-icon-success-no-circle"></i>
                     <span>{{$value['学校名称']}}</span>
                 </div>
                 {{/each}}
             </div>
-            <div class="weui_actionsheet_action">
-                <div class="weui_actionsheet_cell dplf">
-                    <a href="javascript:;" id="actionsheet_confirm" class="weui_btn_dialog primary wp50 pullLeft bdr">确定</a>
-                    <a href="javascript:;" id="actionsheet_cancel" class="weui_btn_dialog default wp50 pullRight">取消</a>
+            <div class="weui-actionsheet__action">
+                <div class="weui-actionsheet__cell dplf">
+                    <a href="javascript:;" id="actionsheet_confirm" class="weui-dialog__btn weui-dialog__btn_primary wp50 pullLeft bdr">确定</a>
+                    <a href="javascript:;" id="iosActionsheetCancel" class="weui-dialog__btn weui-dialog__btn_default wp50 pullRight">关闭</a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="weui_btn_area">
-        <a class="weui_btn weui_btn_primary" href="javascript:" id="nextStep1">下一步</a>
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:" id="nextStep1">下一步</a>
     </div>
 </script>
 <!--模板 考试组-->
@@ -89,11 +90,11 @@
                     {{/if}}
                 {{/if}}
             </p>
-            <div class="button_sp_area center">
-                <a href="javascript:;" id="zhiShiDianFenXi" class="weui_btn weui_btn_mini weui_btn_default"
+            <div class="button-sp-area center">
+                <a href="javascript:;" id="zhiShiDianFenXi" class="weui-btn weui-btn_mini weui-btn_default"
                    data-id="{{$value['考试组ID']}}">知识点分析</a>
                 {{if $value.zuoda == 'on'}}
-                    <a href="javascript:;" id="zuoDaChongXian" class="weui_btn weui_btn_mini weui_btn_default ml20"
+                    <a href="javascript:;" id="zuoDaChongXian" class="weui-btn weui-btn_mini weui-btn_default ml20"
                        data-id="{{$value['考试组ID']}}">作答重现</a>
                 {{/if}}
             </div>
@@ -102,11 +103,11 @@
 </script>
 <!--模板 错误信息-->
 <script id="tplErrMsg" type="text/html">
-    <div class="weui_msg">
-        <div class="weui_icon_area"><i class="weui_icon_msg weui_icon_warn"></i></div>
-        <div class="weui_text_area">
-            <h2 class="weui_msg_title">操作失败</h2>
-            <p class="weui_msg_desc">没有你的信息，请老师导入你的信息！</p>
+    <div class="weui-msg">
+        <div class="weui-msg__icon-area"><i class="weui-icon_msg weui-icon-warn"></i></div>
+        <div class="weui-msg__text-area">
+            <h2 class="weui-msg__title">操作失败</h2>
+            <p class="weui-msg__desc">没有你的信息，请老师导入你的信息！</p>
         </div>
     </div>
 </script>
@@ -274,7 +275,7 @@
         {{/each}}
     </div>
     <div class="fixSty">
-        <a class="weui_btn weui_btn_primary backToKszList" href="javascript:">返回</a>
+        <a class="weui-btn weui-btn_primary backToKszList" href="javascript:">返回</a>
     </div>
 </script>
 <!--模板 知识点分析-->
@@ -291,7 +292,7 @@
         </ul>
     </div>
     <div class="fixSty">
-        <a class="weui_btn weui_btn_primary backToKszList" href="javascript:">返回</a>
+        <a class="weui-btn weui-btn_primary backToKszList" href="javascript:">返回</a>
     </div>
 </script>
 <!--用到的ji文件-->
@@ -301,5 +302,7 @@
 <script src="/weixin/js/lazy.min.js"></script>
 <script src="/weixin/js/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
 <script src="/weixin/js/chengji.js"></script>
+<!--<script src="/weixin/js/chengji.min.js"></script>-->
+<!--<script src="/weixin/js/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>-->
 </body>
 </html>

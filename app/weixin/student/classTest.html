@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title class="title">随堂测验</title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <link rel="stylesheet" href="/weixin/css/weui.min.css"/>
+    <link rel="stylesheet" href="/weixin/css/weui.min-v1.1.0.css"/>
     <link rel="stylesheet" href="/weixin/css/classTest.css"/>
-    <link rel="stylesheet" href="/weixin/css/iconfont.css"/>
+    <link rel="stylesheet" href="/weixin/css/font-awesome.min.css"/>
+    <!--<link rel="stylesheet" href="/weixin/css/classTest.min.css"/>-->
 </head>
 <body ontouchstart>
 <!--内容容器-->
@@ -17,13 +18,13 @@
     </div>
 </div>
 <!--BEGIN dialog2-->
-<div class="weui_dialog_alert" id="dialog2" style="display: none;">
-    <div class="weui_mask"></div>
-    <div class="weui_dialog">
-        <div class="weui_dialog_hd"><strong class="weui_dialog_title msgTitle"></strong></div>
-        <div class="weui_dialog_bd msgBox"></div>
-        <div class="weui_dialog_ft">
-            <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+<div class="js_dialog" id="iosDialog2" style="display: none;">
+    <div class="weui-mask"></div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__hd"><strong class="weui-dialog__title msgTitle"></strong></div>
+        <div class="weui-dialog__bd msgBox"></div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
         </div>
     </div>
 </div>
@@ -31,72 +32,137 @@
 <!--模板 输入测验码的模板，登录用户-->
 <script id="tplTestNum" type="text/html">
     <h3 class="center mt20">请输入测验码</h3>
-    <div class="weui_cells weui_cells_form">
-        <div class="weui_cell p15">
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input center" type="text" name="testCode" placeholder="测验码"/>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell p15">
+            <div class="weui-cell__bd weui-cell_primary">
+                <input class="weui-input center" type="text" name="testCode" placeholder="测验码"/>
             </div>
         </div>
     </div>
-    <div class="weui_btn_area mt50">
-        <a class="weui_btn weui_btn_primary" href="javascript:;" id="getClassTestTiMu">开始测验</a>
+    <div class="weui-btn-area mt50">
+        <a class="weui-btn weui-btn_primary" href="javascript:;" id="getClassTestTiMu">开始测验</a>
     </div>
 </script>
 <!--模板 输入测验码的模板，未登录用户-->
 <script id="tplTestNumUnLog" type="text/html">
     <h3 class="center mt20">请输入测验码和个人信息</h3>
-    <div class="weui_cells weui_cells_form">
-        <div class="weui_cell p15">
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input center" type="text" name="testCode" placeholder="测验码"/>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell p15">
+            <div class="weui-cell__bd weui-cell_primary">
+                <input class="weui-input center" type="text" name="testCode" placeholder="测验码"/>
             </div>
         </div>
-        <div class="weui_cell p15">
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input center" type="text" name="xueHao" placeholder="学号"/>
+        <div class="weui-cell p15">
+            <div class="weui-cell__bd weui-cell_primary">
+                <input class="weui-input center" type="text" name="xueHao" placeholder="学号"/>
             </div>
         </div>
-        <div class="weui_cell p15">
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input center" type="text" name="xingMing" placeholder="姓名"/>
+        <div class="weui-cell p15">
+            <div class="weui-cell__bd weui-cell_primary">
+                <input class="weui-input center" type="text" name="xingMing" placeholder="姓名"/>
             </div>
         </div>
     </div>
-    <div class="weui_btn_area mt50">
-        <a class="weui_btn weui_btn_primary" href="javascript:;" id="getClassTestTiMuUnLog">开始测验</a>
+    <div class="weui-btn-area mt50">
+        <a class="weui-btn weui-btn_primary" href="javascript:;" id="getClassTestTiMuUnLog">开始测验</a>
     </div>
 </script>
 <!--试卷作答模板-->
 <script id="tplPaper" type="text/html">
     <h1 class="center fz18">{{title}}({{page}}/{{totalPg}})</h1>
-    <div>
-        <h4 class="tiGan">{{tiMu['题目内容']['题干']}}</h4>
+    <div class="p10Nb">
+        <h4 class="tiGan pb10">{{tiMu['题目内容']['题干']}}</h4>
         {{each tiMu['题目内容']['选项'] as tznr j}}
-        <div class="tiZhi ptb10">
-            <input type="radio" name="{{'radio' + tiMu['题目ID']}}" value="{{tiMu['题目ID'] + '-' + j}}" id="{{'radio' + tiMu['题目ID'] + '_' + j}}" class="tiZhiOpt"/>
-            <label for="{{'radio' + tiMu['题目ID'] + '_' + j}}"> ({{letterArr[j]}}) {{tznr}} </label>
+        <div class="tiZhi p10">
+            {{if tiMu['题型ID'] == 1}}
+            <input type="radio" name="{{'radio' + tiMu['题目ID']}}" value="{{tiMu['题目ID'] + '-' + tznr['序号'] + '-' + j + '-' + tiMu['题型ID']}}"
+                   id="{{'radio' + tiMu['题目ID'] + '_' + j}}" class="tiZhiOpt"/>
+            <label for="{{'radio' + tiMu['题目ID'] + '_' + j}}"> ({{letterArr[j]}}) {{tznr['题支']}} </label>
+            {{/if}}
+            {{if tiMu['题型ID'] == 2}}
+            <input type="checkbox" name="{{'checkbox' + tiMu['题目ID']}}" value="{{tiMu['题目ID'] + '-' + tznr['序号'] + '-' + j + '-' + tiMu['题型ID']}}"
+                   id="{{'checkbox' + tiMu['题目ID'] + '_' + j}}" class="tiZhiOpt"/>
+            <label for="{{'checkbox' + tiMu['题目ID'] + '_' + j}}"> ({{letterArr[j]}}) {{tznr['题支']}} </label>
+            {{/if}}
         </div>
         {{/each}}
     </div>
 </script>
 <!--测验结果-->
 <script id="tplScore" type="text/html">
-    <h1 class="center fz18" style="margin-top: 100px">答题总数: {{allTm}}，答对题数: {{rightTm}}</h1>
+    <h3 class="center">
+        {{title}}
+    </h3>
+    {{each tiMuArr as tx h}}
+    <div class="pullLeft wp100 mt10">
+        <h4 class="plr10 fw600 mb10">{{zhn[h] + '、' + tx['大题名称']}}</h4>
+        {{each tx['题目'] as tiMu i}}
+        <div class="tiMuBox plr10">
+            <h4 class="tiGan ptb10">{{(i + 1) + '、' + tiMu['题目内容']['题干']}}</h4>
+            {{each tiMu['题目内容']['选项'] as tznr j}}
+            <div class="tiZhi ptb10">
+                <span class="option">
+                    {{if tznr.ckd}}
+                    <i class="weui-icon-success-no-circle">
+                    {{/if}}
+                    </i>({{letterArr[j]}})
+                </span>
+                <p class="pl25">{{tznr['题支']}}</p>
+            </div>
+            {{/each}}
+            <div class="tiZhi ptb10" style="border: 0;color: #888;">
+                正确答案: {{tiMu['题目内容']['答案'] | daAnFormat}}
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{/each}}
 </script>
+<!--答题的导航-->
 <script id="answerNav" type="text/html">
     <div id="prvBtn" class="navBar_item">
-        <i class="iconfont icon-shangyiti"></i> 上一题
+        <i class="fa fa-chevron-left fa-fw" aria-hidden="true"></i> 上一题
     </div>
     <div id="nextBtn" class="navBar_item">
-        下一题 <i class="iconfont icon-xiayiti"></i>
+        下一题 <i class="fa fa-chevron-right fa-fw" aria-hidden="true"></i>
     </div>
     <div id="submitTest" class="navBar_item submitTest">
-        <i class="iconfont icon-icon13"></i> 结束测试
+        <i class="fa fa-times fa-fw" aria-hidden="true"></i> 结束测试
     </div>
 </script>
-<script id="resultNav" type="text/html">
-    <div id="backToInput" class="navBar_item">
-        <i class="iconfont icon-shangyiti"></i> 返回
+<!--作答重现界面的返回-->
+<script id="tplBackToList" type="text/html">
+    <div id="backToList" class="navBar_item">
+        <i class="fa fa-arrow-circle-o-left fa-fw" aria-hidden="true"></i> 返回
+    </div>
+</script>
+<!--新测验老测验的导航列表-->
+<!--列表和班级成绩的导航-->
+<script id="tplListKind" type="text/html">
+    <div id="newClassTest" class="navBar_item">
+        <i class="fa fa-pencil-square-o fa-fw" aria-hidden="true"></i> 最新测验
+    </div>
+    <div id="historyListTest" class="navBar_item">
+        <i class="fa fa-history fa-fw" aria-hidden="true"></i> 往期测验
+    </div>
+</script>
+<!--往期测验列表-->
+<script id="classTestList" type="text/html">
+    <div class="weui-cells weui-cells_form testList">
+        {{each testDt}}
+        <div class="weui-cell weui-cell_switch plr10Two">
+            <div class="weui-cell__bd zuoDa" data-id="{{$value['测验ID']}}" data-name="{{$value['测验名称']}}">
+                <p>
+                    <i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
+                    <span style="vertical-align: middle">{{$value['测验名称']}}</span>
+                </p>
+                <p class="fz14">
+                    <span>答对数: </span><span class="clBlue">{{$value['答对数']}}</span><span class="plr10">|</span>
+                    <span>答题时间: </span><span class="clBlue">{{$value['答题时间'] | dateFormat:'yyyy-MM-dd hh:mm'}}</span>
+                </p>
+            </div>
+        </div>
+        {{/each}}
     </div>
 </script>
 <!--用到的ji文件-->
@@ -105,5 +171,7 @@
 <script src="/weixin/js/template.js"></script>
 <script src="/weixin/js/lazy.min.js"></script>
 <script src="/weixin/js/classTest.js"></script>
+<!--<script src="/weixin/js/classTest.min.js"></script>-->
+<!--<script src="/weixin/js/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>-->
 </body>
 </html>

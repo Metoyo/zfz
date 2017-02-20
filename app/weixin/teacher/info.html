@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
     <title>申请免费试用的教师</title>
     <link rel="stylesheet" href="/weixin/css/info.css"/>
+    <!--<link rel="stylesheet" href="/weixin/css/info.min.css"/>-->
 </head>
 <body ontouchstart>
 <script id="teacherInfo" type="text/html">
@@ -30,53 +31,104 @@
     {{/each}}
 </script>
 <div id="container" class="container">
-
+    <div>
+        <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" id="checkJsApi">checkJsApi</a>
+    </div>
+    <div>
+        <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" id="chooseImage">chooseImage</a>
+    </div>
 </div>
 <!--用到的ji文件-->
-<script src="../js/jquery-3.1.0.min.js"></script>
-<script src="../js/template.js"></script>
-<script src="../js/lazy.min.js"></script>
+<script src="/weixin/js/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript">
-    $(function(){
-        var keyValueUrl = '/key_value';
-        var initFun = function(){
-            $.ajax({
-                method: 'GET',
-                url: keyValueUrl,
-                success: function (data) {
-                    if(typeof(data) == 'string'){
-                        data = JSON.parse(data);
-                    }
-                    if(data.result && data.data){
-                        var newData = [];
-                        Lazy(data.data).each(function(tech){
-                            var obj = JSON.parse(tech['键值内容']);
-                            var dt = new Date();
-                            var ye = dt.getFullYear();
-                            var mt = dt.getMonth() + 1;
-                            var dy = dt.getDate();
-                            obj['创建时间'] = ye + '-' + mt + '-' + dy;
-                            newData.push(obj);
-                        });
-
-                        var nwDt = {
-                            teacher: ''
-                        };
-                        nwDt.teacher = newData.reverse();
-                        var html = template('teacherInfo', nwDt);
-                        $('#container').html(html);
-                    }
-                    else{
-                        alert(data.error || '没有数据！');
-                    }
-                },
-                error: function (error) {
-                    alert(error);
-                }
-            });
-        };
-        initFun();
-    });
+  //返回的数据类型处理
+//  var dataMake = function(dt){
+//    if(typeof(dt) == 'string'){
+//      return JSON.parse(dt);
+//    }
+//    else{
+//      return dt;
+//    }
+//  };
+//  $.ajax({
+//    url : "/jssdk",
+//    type : 'post',
+//    data : {
+//      'url' : location.href.split('#')[0]
+//    },
+//    success : function(data) {
+//      data = dataMake(data);
+//      console.log(data.data.ticket);
+//      wx.config({
+//        debug: true,
+//        appId: data.data.appId,
+//        timestamp: data.data.timestamp,
+//        nonceStr: data.data.nonceStr,
+//        signature : data.data.signature,
+//        jsApiList : [ 'checkJsApi', 'onMenuShareTimeline',
+//          'onMenuShareAppMessage', 'onMenuShareQQ',
+//          'onMenuShareWeibo', 'hideMenuItems',
+//          'showMenuItems', 'hideAllNonBaseMenuItem',
+//          'showAllNonBaseMenuItem', 'translateVoice',
+//          'startRecord', 'stopRecord', 'onRecordEnd',
+//          'playVoice', 'pauseVoice', 'stopVoice',
+//          'uploadVoice', 'downloadVoice', 'chooseImage',
+//          'previewImage', 'uploadImage', 'downloadImage',
+//          'getNetworkType', 'openLocation', 'getLocation',
+//          'hideOptionMenu', 'showOptionMenu', 'closeWindow',
+//          'scanQRCode', 'chooseWXPay',
+//          'openProductSpecificView', 'addCard', 'chooseCard',
+//          'openCard' ]
+//      });
+//    }
+//  });
 </script>
+<script>
+//  wx.ready(function () {
+//    // 1 判断当前版本是否支持指定 JS 接口，支持批量判断
+//    $('#checkJsApi').on('click', function(){
+//      wx.checkJsApi({
+//        jsApiList: [
+//          'getNetworkType',
+//          'previewImage',
+//          'chooseImage'
+//        ],
+//        success: function (res) {
+//          alert(JSON.stringify(res));
+//        }
+//      });
+//    });
+//
+//    function decryptCode(code, callback) {
+//      $.getJSON('/jssdk/decrypt_code.php?code=' + encodeURI(code), function (res) {
+//        if (res.errcode == 0) {
+//          codes.push(res.code);
+//        }
+//      });
+//    }
+//  });
+//
+//  $('#chooseImage').on('click', function(){
+//    wx.chooseImage({
+//      count: 1, // 默认9
+//      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+//      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+//      success: function (res) {
+//        var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+//        console.log(localIds);
+//      }
+//    });
+//  });
+//
+//  wx.error(function (res) {
+//    alert(res.errMsg);
+//  });
+</script>
+<script src="/weixin/js/template.js"></script>
+<script src="/weixin/js/lazy.min.js"></script>
+<script src="/weixin/js/info.js"></script>
+<!--<script src="/weixin/js/wxapi.js"></script>-->
+<!--<script src="/weixin/js/info.min.js"></script>-->
 </body>
 </html>

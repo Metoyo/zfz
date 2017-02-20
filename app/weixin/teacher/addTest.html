@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>添加新测验</title>
+    <link rel="stylesheet" href="/weixin/css/weui.min-v1.1.0.css"/>
+    <link rel="stylesheet" href="/weixin/font-awesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="/weixin/css/addTest.css"/>
+    <!--<link rel="stylesheet" href="/weixin/css/addtest.min.css"/>-->
+</head>
+<body ontouchstart>
+    <!--模板 用户信息-->
+    <script id="tplUsr" type="text/html">
+        <span>{{xuexiao}}</span>
+        <span class="ml10">{{xingming}}</span>
+    </script>
+    <!--用邮箱查询用户是否存在-->
+    <script id="tplCheckUsr" type="text/html">
+        <div class="weui-cells__title">
+            <span class="step1">请输入邮箱，查询是否为系统注册用户</span>
+            <span class="step2" style="display: none">您已是系统用户，填入您的密码关联微信</span>
+            <span class="step3" style="display: none">您不是注册用户，请填入信息完成注册</span>
+        </div>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell plr10Two ptb15">
+                <div class="weui-cell__hd"><label class="weui-label">邮箱</label></div>
+                <div class="weui-cell__bd weui_cell_primary">
+                    <input class="weui-input techEmail" type="text" name="techEmail" placeholder="您的邮箱"/>
+                </div>
+            </div>
+            <div class="weui-cell plr10Two xingming ptb15" style="display: none">
+                <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+                <div class="weui-cell__bd weui_cell_primary">
+                    <input class="weui-input" type="text" name="techName" placeholder="您的姓名"/>
+                </div>
+            </div>
+            <div class="weui-cell plr10Two mima ptb15" style="display: none">
+                <div class="weui-cell__hd"><label class="weui-label">密码</label></div>
+                <div class="weui-cell__bd weui_cell_primary">
+                    <input class="weui-input" type="password" name="techPsw" placeholder="您的密码"/>
+                </div>
+                <div class="weui-cell__ft">
+                    <button id="pswShow" class="weui-vcode-btn">显示</button>
+                    <button id="pswHide" class="weui-vcode-btn">隐藏</button>
+                </div>
+            </div>
+        </div>
+    </script>
+    <!--输入邮箱查询用户-->
+    <script id="tplCheckUsrNav" type="text/html">
+        <div id="nextStep" class="navBar_item step1">
+            <i class="fa fa-question-circle-o fa-fw" aria-hidden="true"></i> 查询
+        </div>
+        <div id="nextStep1" class="navBar_item step2">
+            <i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> 登录并关联
+        </div>
+        <div id="nextStep2" class="navBar_item step3">
+            <i class="fa fa-registered fa-fw" aria-hidden="true"></i> 注册并关联
+        </div>
+    </script>
+    <!--模板 新建测验模板-->
+    <script id="tplTestName" type="text/html">
+        {{if keMu && keMu.length > 1}}
+        <h4 class="center">请选择科目</h4>
+        <div>
+            {{each keMu as km i}}
+            <div class="cardChangCi" data-kmid="{{km['科目ID']}}" data-kmname="{{km['科目名称']}}">
+                <i class="weui-icon-success-no-circle"></i>
+                <span>{{km['科目名称']}}</span>
+            </div>
+            {{/each }}
+        </div>
+        {{/if}}
+        <h4 class="center mt20">请输入课堂测验名称</h4>
+        <div class="weui-cells weui-cells_form">
+            <div class="weui-cell p15">
+                <div class="weui-cell__bd weui-cell_primary">
+                    <input class="weui-input center" type="text" name="testName" placeholder="课堂测验名称"/>
+                </div>
+            </div>
+        </div>
+        <div id="imgPreview">
+
+        </div>
+    </script>
+    <!--微信选择图片的预览-->
+    <script id="tplImagePreview" type="text/html">
+        <h4 class="center mt20 mb10">图片预览</h4>
+        {{each pics as pic i}}
+        <div class="tiMuBox plr10">
+            <img src="{{pic}}"/>
+        </div>
+        {{/each}}
+    </script>
+    <!--列表和班级成绩的导航-->
+    <script id="tplAddTestNav" type="text/html">
+        <div id="chooseImage" class="navBar_item">
+            <i class="fa fa-file-image-o fa-fw" aria-hidden="true"></i> 选择图片
+        </div>
+        <div id="deleteImage" class="navBar_item">
+            <i class="fa fa-trash-o fa-fw" aria-hidden="true"></i> 删除图片
+        </div>
+        <div id="saveTest" class="navBar_item">
+            <i class="fa fa-floppy-o fa-fw" aria-hidden="true"></i> 保存测验
+        </div>
+    </script>
+    <!--容器-->
+    <div id="container" class="container">
+        <div id="topBar">
+        </div>
+        <div id="content" class="content">
+        </div>
+        <div id="navBar" class="navBar">
+        </div>
+        <div class="js_dialog" id="iosDialog2" style="display: none;">
+            <div class="weui-mask"></div>
+            <div class="weui-dialog">
+                <div class="weui-dialog__bd">
+                    <strong class="weui-dialog__title msgTitle"></strong>
+                </div>
+                <div class="weui-dialog__bd msgBox"></div>
+                <div class="weui-dialog__ft">
+                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                </div>
+            </div>
+        </div>
+        <!-- loading toast -->
+        <div id="loadingToast" style="display:none;">
+            <div class="weui-mask_transparent"></div>
+            <div class="weui-toast">
+                <i class="weui-loading weui-icon_toast"></i>
+                <p class="weui-toast__content">数据加载中</p>
+            </div>
+        </div>
+    </div>
+    <script src="/weixin/js/jquery-3.1.0.min.js"></script>
+    <script src="/weixin/js/template.js"></script>
+    <script src="/weixin/js/lazy.min.js"></script>
+    <script src="/weixin/js/bluebird.min.js"></script>
+    <!--<script src="/weixin/js/addTest.min.js"></script>-->
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script type="text/javascript">
+      //返回的数据类型处理
+      var dataMake = function(dt){
+        if(typeof(dt) == 'string'){
+          return JSON.parse(dt);
+        }
+        else{
+          return dt;
+        }
+      };
+      $.ajax({
+        url : "/jssdk",
+        type : 'post',
+        data : {
+          'url' : location.href.split('#')[0]
+        },
+        success : function(data) {
+          data = dataMake(data);
+          wx.config({
+            debug: false,
+            appId: data.data.appId,
+            timestamp: data.data.timestamp,
+            nonceStr: data.data.nonceStr,
+            signature : data.data.signature,
+            jsApiList : [ 'chooseImage', 'previewImage', 'uploadImage', 'downloadImage' ]
+          });
+        }
+      });
+    </script>
+    <script src="/weixin/js/addTest.js"></script>
+</body>
+</html>
+<!--https://api.weixin.qq.com/cgi-bin/media/get?access_token=uiLzg-gh5s9olx7fJj9kMZUY6IsqwzT_2bkE4kGCxwLMVA9aMhNEFSWbRKbJpr8LG-_aPkxWtMSlW0S5kID9bd3QBMDV1Eqzn8HkXyGIwHRlgCe3UddNsPT_pEf-ss_5NMVhAJAUTC&media_id=DoGs8-M9RoBNHMivA_UpwucBOkP2HbENfks-ClNpjWfa8PY0vNQc2FIVqR8v66Ai-->

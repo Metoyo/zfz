@@ -19,7 +19,6 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         var jgID = loginUsr['学校ID']; //登录用户学校
         var logUid = loginUsr['UID']; //登录用户的UID
         var keMuId = dftKm['科目ID']; //默认的科目ID
-        var lingYuId = dftKm['领域ID']; //默认的科目ID
         var keMuJiaoShiUrl = '/kemu_jiaoshi'; //学校教师
         var keXuHaoUrl = '/kexuhao'; //课序号
         var kxhJiaoShiUrl = '/kexuhao_jiaoshi'; //课序号教师

@@ -4,45 +4,63 @@
     <meta charset="UTF-8">
     <title class="title"></title>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
-    <link rel="stylesheet" href="/weixin/css/weui.min.css"/>
+    <link rel="stylesheet" href="/weixin/css/weui.min-v1.1.0.css"/>
     <link rel="stylesheet" href="/weixin/css/paper.css"/>
-    <link rel="stylesheet" href="/weixin/css/iconfont.css"/>
+    <link rel="stylesheet" href="/weixin/font-awesome/css/font-awesome.min.css"/>
+    <!--<link rel="stylesheet" href="/weixin/css/paper.min.css"/>-->
 </head>
 <body ontouchstart>
 <!--试卷作答模板-->
 <script id="tplPaper" type="text/html">
     <h1 class="center fz18">{{title}}({{page}}/{{totalPg}})</h1>
+    <!--<div>-->
+        <!--<h4 class="tiGan">{{tiMu['题目内容']['题干']}}</h4>-->
+        <!--{{each tiMu['题目内容']['选项'] as tznr j}}-->
+            <!--<div class="tiZhi ptb10">-->
+                <!--<input type="radio" name="{{'radio' + tiMu['题目ID']}}" value="{{tiMu['题目ID'] + '-' + j}}" id="{{'radio' + tiMu['题目ID'] + '_' + j}}" class="tiZhiOpt"/>-->
+                <!--<label for="{{'radio' + tiMu['题目ID'] + '_' + j}}"> ({{letterArr[j]}}) {{tznr}} </label>-->
+            <!--</div>-->
+        <!--{{/each}}-->
+    <!--</div>-->
     <div>
         <h4 class="tiGan">{{tiMu['题目内容']['题干']}}</h4>
         {{each tiMu['题目内容']['选项'] as tznr j}}
-            <div class="tiZhi ptb10">
-                <input type="radio" name="{{'radio' + tiMu['题目ID']}}" value="{{tiMu['题目ID'] + '-' + j}}" id="{{'radio' + tiMu['题目ID'] + '_' + j}}" class="tiZhiOpt"/>
-                <label for="{{'radio' + tiMu['题目ID'] + '_' + j}}"> ({{letterArr[j]}}) {{tznr}} </label>
-            </div>
+        <div class="tiZhi ptb10">
+            {{if tiMu['题型ID'] == 1}}
+            <input type="radio" name="{{'radio' + tiMu['题目ID']}}" value="{{tiMu['题目ID'] + '-' + tznr['序号'] + '-' + j + '-' + tiMu['题型ID']}}"
+                   id="{{'radio' + tiMu['题目ID'] + '_' + j}}" class="tiZhiOpt"/>
+            <label for="{{'radio' + tiMu['题目ID'] + '_' + j}}"> ({{letterArr[j]}}) {{tznr['题支']}} </label>
+            {{/if}}
+            {{if tiMu['题型ID'] == 2}}
+            <input type="checkbox" name="{{'checkbox' + tiMu['题目ID']}}" value="{{tiMu['题目ID'] + '-' + tznr['序号'] + '-' + j + '-' + tiMu['题型ID']}}"
+                   id="{{'checkbox' + tiMu['题目ID'] + '_' + j}}" class="tiZhiOpt"/>
+            <label for="{{'checkbox' + tiMu['题目ID'] + '_' + j}}"> ({{letterArr[j]}}) {{tznr['题支']}} </label>
+            {{/if}}
+        </div>
         {{/each}}
     </div>
 </script>
 <!--答题情况-->
 <script id="tplScore" type="text/html">
-    <h1 class="center fz18" style="margin-top: 100px">答对题数: {{rightTm}}, 答错题数: {{allTm}}，</h1>
+    <h1 class="center fz18" style="margin-top: 100px">测验成功提交！</h1>
 </script>
 <!--输入学号-->
 <script id="tplLogin" type="text/html">
     <h3 class="center mt20">请输学号和姓名关联账户</h3>
-    <div class="weui_cells weui_cells_form">
-        <div class="weui_cell">
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input center" type="text" name="xueHao" placeholder="学号"/>
+    <div class="weui-cells weui-cells_form">
+        <div class="weui-cell">
+            <div class="weui-cell__bd weui-cell_primary">
+                <input class="weui-input center" type="text" name="xueHao" placeholder="学号"/>
             </div>
         </div>
-        <div class="weui_cell">
-            <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input center" type="text" name="xingMing" placeholder="姓名"/>
+        <div class="weui-cell">
+            <div class="weui-cell__bd weui-cell_primary">
+                <input class="weui-input center" type="text" name="xingMing" placeholder="姓名"/>
             </div>
         </div>
     </div>
-    <div class="weui_btn_area">
-        <a class="weui_btn weui_btn_primary" href="javascript:;" id="linkUsr">确定</a>
+    <div class="weui-btn-area">
+        <a class="weui-btn weui-btn_primary" href="javascript:;" id="linkUsr">确定</a>
     </div>
 </script>
 <!--内容容器-->
@@ -51,23 +69,23 @@
     </div>
     <div id="navBar" class="navBar" style="display: none">
         <div id="prvBtn" class="navBar_item navBar_item_on">
-            <i class="iconfont icon-shangyiti"></i> 上一题
+            <i class="fa fa-chevron-left fa-fw" aria-hidden="true"></i> 上一题
         </div>
         <div id="nextBtn" class="navBar_item">
-            下一题 <i class="iconfont icon-xiayiti"></i>
+            下一题 <i class="fa fa-chevron-right fa-fw" aria-hidden="true"></i>
         </div>
         <div id="submitTest" class="navBar_item submitTest">
-            <i class="iconfont icon-icon13"></i> 结束测试
+            <i class="fa fa-times fa-fw" aria-hidden="true"></i> 结束测试
         </div>
     </div>
     <!--BEGIN dialog2-->
-    <div class="weui_dialog_alert" id="dialog2" style="display: none;">
-        <div class="weui_mask"></div>
-        <div class="weui_dialog">
-            <div class="weui_dialog_hd"><strong class="weui_dialog_title msgTitle"></strong></div>
-            <div class="weui_dialog_bd msgBox"></div>
-            <div class="weui_dialog_ft">
-                <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+    <div class="js_dialog" id="iosDialog2" style="display: none;">
+        <div class="weui-mask"></div>
+        <div class="weui-dialog">
+            <div class="weui-dialog__hd"><strong class="weui-dialog__title msgTitle"></strong></div>
+            <div class="weui-dialog__bd msgBox"></div>
+            <div class="weui-dialog__ft">
+                <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
             </div>
         </div>
     </div>
@@ -76,6 +94,9 @@
 <script src="/weixin/js/jquery-3.1.0.min.js"></script>
 <script src="/weixin/js/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
 <script src="/weixin/js/template.js"></script>
+<script src="/weixin/js/lazy.min.js"></script>
 <script src="/weixin/js/paper.js"></script>
+<!--<script src="/weixin/js/paper.min.js"></script>-->
+<!--<script src="/weixin/js/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>-->
 </body>
 </html>

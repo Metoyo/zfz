@@ -23,7 +23,7 @@ body {
 .content {
     position: fixed;
     bottom: 50px;
-    top: 0;
+    top: 20px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 10px 0;
@@ -87,6 +87,9 @@ body {
 .wp100{
     width: 100%;
 }
+.mt10{
+    margin-top: 10px;
+}
 .mt20{
     margin-top: 20px;
 }
@@ -111,6 +114,9 @@ body {
 .ml15{
     margin-left: 15px;
 }
+.mr15{
+    margin-right: 15px;
+}
 .p10{
     padding: 10px;
 }
@@ -132,6 +138,9 @@ body {
     font-size: 14px;
     color: #9e9e9e;
     margin-left: 16px;
+}
+.fz16{
+    font-size: 16px;
 }
 .center{
     text-align: center;
@@ -162,6 +171,9 @@ body {
     background-color: #fff;
     margin-bottom: 20px;
 }
+.tiMuBox:last-child{
+    margin-bottom: 5px;
+}
 .tiGan{
     border-bottom: 1px solid #ddd;
 }
@@ -180,8 +192,8 @@ body {
 }
 .option{
     position: absolute;
-    /*top: 50%;*/
-    /*margin-top: -13px;*/
+    top: 50%;
+    margin-top: -11px;
     left: -5px;
     width: 40px;
     text-align: right;
@@ -239,10 +251,6 @@ body {
     padding-left: 10px;
     padding-right: 10px;
 }
-.scoreList .iconfont,
-.testList .iconfont{
-    font-size: 12px;
-}
 .testList .fz14{
     margin-top: 10px;
 }
@@ -264,5 +272,34 @@ body {
     top: 32px;
     right: 10px;
     font-size: 14px;
-    color: #777;
+    color: #3daad6;
+}
+.tiGan img{
+    max-width: 100%;
+}
+#topBar{
+    text-align: center;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #000000;
+    color: #fff;
+}
+.unDoMore, .unDoClose{
+    display: none;
+    color: #3daad6;
+    float: right;
+}
+.navBarHide .content{
+    bottom: 0;
+}
+.navBarHide .navBar{
+    display: none;
+}
+.riqi:first-child{
+    margin-top: 0;
 }

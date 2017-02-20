@@ -1,0 +1,88 @@
+body,html {
+    height: 100%;
+    -webkit-tap-highlight-color: transparent
+}
+body {
+    overflow-x: hidden;
+    background-color: #fbf9fe
+}
+*{
+    font-weight: normal;
+}
+/*导航样式开始*/
+.container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
+    background-color: #f5f5f5;
+}
+.content {
+    position: fixed;
+    bottom: 0;
+    top: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 0;
+    width: 100%;
+    height: initial;
+    box-sizing: border-box;
+}
+.mt20{
+    margin-top: 20px;
+}
+.p10-30{
+    padding: 10px 30px;
+}
+.fz16{
+    font-size: 16px;
+}
+.plr10Two{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.clA8{
+    color: #a8a8a8;
+}
+.wp50{
+    width: 50%;
+}
+.dplf{
+    display: flex;
+}
+.bdr{
+    border-right: 1px solid #cfcfcf;
+}
+.pullLeft{
+    float: left;
+}
+.pullRight{
+    float: right;
+}
+.weui-cell:before{
+    left: 0;
+}
+.weui-label{
+    width: 60px;
+}
+.tplLogin .weui-label{
+    width: 50px;
+}
+#xueXiaoList .weui-actionsheet__menu{
+    height: 192px;
+    overflow: auto;
+}
+.weui-actionsheet__cell{
+    font-size: 16px;
+}
+.weui-icon-success-no-circle{
+    display: none;
+    font-size: 16px;
+}
+.tabOn .weui-icon-success-no-circle{
+    display: inline-block;
+    color: #09BB07;
+}

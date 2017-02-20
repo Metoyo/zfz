@@ -17,8 +17,8 @@ $(function(){
     sltOrgKsz: '', //选中的考试组
     sltKs: '', //选中的考试ID
     sltKc: '', //选中的考场ID
-    wxid: ''
-    //wxid: 'wxabcb783dbd59b067'
+    // wxid: ''
+    wxid: 'oA5Yrw348MVRKwHLPdG8cpDFuKaA'
   };
 
   /**
@@ -34,11 +34,27 @@ $(function(){
   };
 
   /**
+    * 关闭提示框
+   */
+  var dialog = function(info, title){
+    var ttl = title || '错误信息';
+    $('.msgBox').html(info);
+    $('.msgTitle').html(ttl);
+    $('#iosDialog2').show().on('click', '.weui-dialog__btn', function () {
+        $('#iosDialog2').off('click').hide();
+    });
+  };
+
+  /**
    * 模板render函数
    */
   var renderFun =  function(data, tplId){
     var html = template(tplId, data);
     $('#content').html(html);
+  };
+  var renderXxFun =  function(data, tplId){
+    var html = template(tplId, data);
+    $('#xueXiaoList').html(html);
   };
 
   /**
@@ -107,7 +123,26 @@ $(function(){
             xueXiao: data.data
           };
           bmPar.allSch = data.data;
-          renderFun(dt, 'tplLogin');
+          renderFun({}, 'tplLogin');
+          renderXxFun(dt, 'tplXueXiaoList');
+          var $iosActionsheet = $('#iosActionsheet');
+          var $iosMask = $('#iosMask');
+          function hideActionSheet() {
+            $iosActionsheet.removeClass('weui-actionsheet_toggle');
+            $iosMask.fadeOut(200);
+          }
+          $iosMask.on('click', hideActionSheet);
+          $('#iosActionsheetCancel, #actionsheet_confirm').on('click', hideActionSheet);
+          $("#showIOSActionSheet").on("click", function(){
+            $iosActionsheet.addClass('weui-actionsheet_toggle');
+            $iosMask.fadeIn(200);
+          });
+          $('.optXueXiao').on('click', function () {
+            $(this).addClass('tabOn').siblings('.tabOn').removeClass('tabOn');
+            var idx = $(this).index();
+            bmPar.sltSch = bmPar.allSch[idx];
+            $('.xueXiaoWrap').data('id', bmPar.sltSch['学校ID']).html(bmPar.sltSch['学校名称']).removeClass('clA8');
+          });
         }
         else{
           dialog(data.error || '没有学校数据！');
@@ -171,7 +206,13 @@ $(function(){
                     var dt = {
                       kszArr: bmPar.allKsz
                     };
-                    renderFun(dt, 'tplKaoShiZu');
+                    if(bmPar.allKsz && bmPar.allKsz.length > 0){
+                      renderFun(dt, 'tplKaoShiZu');
+                    }
+                    else{
+                      renderFun({}, 'tplNoBaoMing');
+                      $('#navBar').hide();
+                    }
                   }
                   else{
                     renderFun({}, 'tplNoBaoMing');
@@ -205,79 +246,42 @@ $(function(){
    * 初始化函数
    */
   var initFun = function(){
-    var opId = $('#myBody').data('id');
-    bmPar.wxid = opId || '';
-    $.ajax({
-      method: 'GET',
-      url: loginUrl,
-      data:{
-        '微信ID': bmPar.wxid
-      },
-      success: function (data) {
-        data = dataMake(data);
-        if(data.result && data.data){
-          //显示可以报名的考试
-          bmPar.uid = data.data['UID'];
-          qryKaoShi();
+    // bmPar.wxid = $('#myBody').data('id') || '';
+    $('#navBar').hide();
+    if(bmPar.wxid){
+      $.ajax({
+        method: 'GET',
+        url: loginUrl,
+        data:{
+          '微信ID': bmPar.wxid
+        },
+        success: function (data) {
+          data = dataMake(data);
+          if(data.result && data.data){
+            //显示可以报名的考试
+            bmPar.uid = data.data['UID'];
+            qryKaoShi();
+            }
+          else{
+            //显示用户查询界面
+            tplLoginRender();
+          }
+        },
+        error: function (error) {
+          dialog(error);
         }
-        else{
-          //显示用户查询界面
-          tplLoginRender();
-        }
-      },
-      error: function (error) {
-        dialog(error);
-      }
-    });
+      });
+    }
+    else{
+      dialog('微信ID为空！');
+    }
   };
   initFun();
 
   /**
-   * 关闭提示框
-   */
-  var dialog = function(info, title){
-    var ttl = title || '错误信息';
-    $('.msgBox').html(info);
-    $('.msgTitle').html(ttl);
-    $('#dialog2').show().on('click', '.weui_btn_dialog', function () {
-      $('#dialog2').off('click').hide();
-    });
-  };
-
-  /**
    * 点击事件
    */
-  $('#container').on('click', '#showActionSheet', function () { //弹出学校列表
-    var mask = $('#mask');
-    var weuiActionsheet = $('#weui_actionsheet');
-    weuiActionsheet.addClass('weui_actionsheet_toggle');
-    mask.show()
-      .focus()//加focus是为了触发一次页面的重排(reflow or layout thrashing),使mask的transition动画得以正常触发
-      .addClass('weui_fade_toggle').one('click', function () {
-        hideActionSheet(weuiActionsheet, mask);
-      });
-    $('#actionsheet_cancel, #actionsheet_confirm').one('click', function () {
-      hideActionSheet(weuiActionsheet, mask);
-    });
-    $('.optXueXiao').on('click', function () {
-      $(this).addClass('tabOn').siblings('.tabOn').removeClass('tabOn');
-      var idx = $(this).index();
-      bmPar.sltSch = bmPar.allSch[idx];
-      $('.xueXiaoWrap').data('id', bmPar.sltSch['学校ID']).html(bmPar.sltSch['学校名称']).removeClass('clA8');
-
-    });
-    mask.unbind('transitionend').unbind('webkitTransitionEnd');
-    function hideActionSheet(weuiActionsheet, mask) {
-      weuiActionsheet.removeClass('weui_actionsheet_toggle');
-      mask.removeClass('weui_fade_toggle');
-      mask.on('transitionend', function () {
-        mask.hide();
-      }).on('webkitTransitionEnd', function () {
-        mask.hide();
-      })
-    }
-  }) //点击下一步，去验证考生是否已注册
-    .on('click', '#nextStep1', function(){
+  $('#container').on('click', '#nextStep1', function(){
       var xxId = $('.xueXiaoWrap').data('id');
       var xh = $('input[name="yourNum"]').val();
       var xm = $('input[name="yourName"]').val();
@@ -418,11 +422,8 @@ $(function(){
                 ksz['状态'] = 1;
               }
             });
-            dialog('保存成功！', '成功');
-            var dt = {
-              kszArr: bmPar.allKsz
-            };
-            renderFun(dt, 'tplKaoShiZu');
+            dialog('报名成功！', '报名成功');
+            $('#backToKsz').click();
           }
           else {
             dialog(data.error);

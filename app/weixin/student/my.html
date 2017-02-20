@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title class="title">我的信息</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+        <link rel="stylesheet" href="/weixin/css/weui.min-v1.1.0.css"/>
+        <link rel="stylesheet" href="/weixin/css/my.css"/>
+        <!--<link rel="stylesheet" href="/weixin/css/my.min.css"/>-->
+    </head>
+    <body ontouchstart>
+        <!--模板 学校列表-->
+        <script id="tplXueXiaoList" type="text/html">
+            <div class="weui-mask" id="iosMask" style="display: none"></div>
+            <div class="weui-actionsheet" id="iosActionsheet">
+                <div class="weui-actionsheet__menu">
+                    {{each xueXiao}}
+                    <div class="weui-actionsheet__cell optXueXiao">
+                        <i class="weui-icon-success-no-circle"></i>
+                        <span>{{$value['学校名称']}}</span>
+                    </div>
+                    {{/each}}
+                </div>
+                <div class="weui-actionsheet__action">
+                    <div class="weui-actionsheet__cell dplf">
+                        <a href="javascript:;" id="actionsheet_confirm" class="weui-dialog__btn weui-dialog__btn_primary wp50 pullLeft bdr">确定</a>
+                        <a href="javascript:;" id="iosActionsheetCancel" class="weui-dialog__btn weui-dialog__btn_default wp50 pullRight">取消</a>
+                    </div>
+                </div>
+            </div>
+        </script>
+        <!--模板 学生登录-->
+        <script id="tplLogin" type="text/html">
+            <div class="weui-cells weui-cells_form fz16">
+                <div class="weui-cell p15">
+                    <div class="weui-cell__hd"><label class="weui-label">学校</label></div>
+                    <div id="showIOSActionSheet" class="weui-cell__bd weui-cell_primary xueXiaoWrap clA8" data-id="">
+                        选择学校
+                    </div>
+                </div>
+                <div class="weui-cell p15">
+                    <div class="weui-cell__hd"><label class="weui-label">学号</label></div>
+                    <div class="weui-cell__bd weui-cell_primary">
+                        <input class="weui-input" type="text" name="yourNum" placeholder="您的学号"/>
+                    </div>
+                </div>
+                <div class="weui-cell p15">
+                    <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+                    <div class="weui-cell__bd weui-cell_primary">
+                        <input class="weui-input" type="text" name="yourName" placeholder="您的姓名"/>
+                    </div>
+                </div>
+            </div>
+            <div class="weui-btn-area mt20 p10-30">
+                <a class="weui-btn weui-btn_primary fz16" href="javascript:" id="nextStep1">下一步</a>
+            </div>
+        </script>
+        <!--模板 错误信息-->
+        <script id="tplErrMsg" type="text/html">
+            <div class="weui-msg">
+                <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
+                <div class="weui-msg__text-area">
+                    <h2 class="weui-msg__title">操作失败</h2>
+                    <p class="weui-msg__desc">没有你的信息，请老师导入你的信息！</p>
+                </div>
+            </div>
+        </script>
+        <!--学生信息页面-->
+        <script id="tplUsrInfo" type="text/html">
+            <div class="weui-cells weui-cells_form fz16">
+                <div class="weui-cell plr10Two ptb15">
+                    <div class="weui-cell__hd"><label class="weui-label">学校</label></div>
+                    <div class="weui-cell__bd weui-cell_primary">
+                        {{xuexiao}}
+                    </div>
+                </div>
+                <div class="weui-cell plr10Two ptb15">
+                    <div class="weui-cell__hd"><label class="weui-label">学号</label></div>
+                    <div class="weui-cell__bd weui-cell_primary">
+                        {{xuehao}}
+                    </div>
+                </div>
+                <div class="weui-cell plr10Two ptb15">
+                    <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+                    <div class="weui-cell__bd weui-cell_primary">
+                        {{xingming}}
+                    </div>
+                </div>
+                <!--<div class="weui-cell plr10Two ptb15">-->
+                    <!--<div class="weui-cell__hd"><label class="weui-label">班级</label></div>-->
+                    <!--<div class="weui-cell__bd weui-cell_primary">-->
+                        <!--{{banji}}-->
+                    <!--</div>-->
+                <!--</div>-->
+            </div>
+            <div class="weui-btn-area mt20 p10-30">
+                <a class="weui-btn weui-btn_primary fz16" href="javascript:" id="unBinding">解除微信绑定</a>
+            </div>
+        </script>
+        <!--内容容器-->
+        <div class="container" id="container">
+            <div id="content" class="content">
+            </div>
+            <!--学校列表-->
+            <div id="xueXiaoList">
+            </div>
+            <div class="js_dialog" id="iosDialog2" style="display: none;">
+                <div class="weui-mask"></div>
+                <div class="weui-dialog">
+                    <div class="weui-dialog__bd">
+                        <strong class="weui-dialog__title msgTitle"></strong>
+                    </div>
+                    <div class="weui-dialog__bd msgBox"></div>
+                    <div class="weui-dialog__ft">
+                        <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--用到的ji文件-->
+        <script src="/weixin/js/jquery-3.1.0.min.js"></script>
+        <script src="/weixin/js/template.js"></script>
+        <script src="/weixin/js/my.js"></script>
+        <!--<script src="/weixin/js/my.min.js"></script>-->
+    </body>
+</html>

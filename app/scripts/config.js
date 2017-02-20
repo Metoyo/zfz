@@ -125,7 +125,7 @@ define( "config", [], function () {
       },
       {
         myUrl : 'kejian',
-        urlName: '课件'
+        urlName: '测验'
       },
       {
         myUrl : 'baoming',

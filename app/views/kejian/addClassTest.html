@@ -1,146 +1,151 @@
-<!--导航-->
-<div class="sub-nav fixed-top" ng-init="tabActive = 'xjcy'">
-  <ul class="nav nav-tabs">
-    <li ng-class="{active: tabActive == 'stcy'}">
-      <a href="javascript:void(0)" ng-click="getClassTest()">
-        随堂测验
-      </a>
-    </li>
-    <li ng-class="{active: tabActive == 'xjcy'}">
-      <a href="javascript:void(0)" ng-click="addClassTest()">
-        新建测验
-      </a>
-    </li>
-    <li ng-class="{active: tabActive == 'kjgl'}">
-      <a href="javascript:void(0)" ng-click="getKeJianList()">
-        课件管理
-      </a>
+<!-- 内容 开始-->
+<div class="row editKaoShi">
+  <h4 class="form-group">
+    <span style="line-height: 28px">新建测验</span>
+    <button type="button" class="btn btn-primary pull-right" ng-click="saveClassTest()" ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">
+      保存测验
+    </button>
+    <button type="button" class="btn btn-danger pull-right mr15" ng-click="closeAddNewTest()">
+      关闭
+    </button>
+  </h4>
+  <form class="form-horizontal" name="kaoshiForm">
+    <div class="form-group">
+      <label class="mr5">测验名称：</label>
+      <input type="text" name="ksName" class="wp30" style="padding: 3px" placeholder="测验名称" required autofocus="true"
+             ng-model="newClassTest['测验名称']"/>
+    </div>
+    <div class="form-group">
+      <label class="mr5">测验状态：</label>
+      <label class="mr15">
+        <input type="radio" ng-model="newClassTest['状态']" value=1> 开启
+      </label>
+      <label>
+        <input type="radio" ng-model="newClassTest['状态']" value=0> 关闭
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="mr5">题目数量：</label>
+      <span ng-bind="kjParams.tiMuLen"></span>
+      <a href="javascript:;" class="clGreen ml50" ng-click="addNewTiMuPop()">+新建题目</a>
+    </div>
+  </form>
+</div>
+<!--课件里面的题目-->
+<div class="row" ng-if="ceYanTiMuArr.length > 0">
+  <h4 class="bdb fz16 text-center cBlue" style="padding-bottom: 5px">本测验题目</h4>
+  <ul class="list-unstyled testList" id="testList1" style="padding: 0">
+    <li ng-repeat="tm in ceYanTiMuArr" class="delete_{{tm['题目ID']}} pr130" repeat-done>
+      <div class="item-sub-title pull-left">
+        <p class="knowledge-point">
+          题型：<span ng-bind="tiXingArr[tm['题型ID']-1]"></span>
+        </p>
+        <p class="knowledge-point">
+          出题人：<span class="pull-right" ng-bind="tm['出题人姓名']"></span>
+        </p>
+        <p class="knowledge-point">
+          ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
+        </p>
+        <p>
+          创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
+        </p>
+        <div class="editWrap">
+          <button type="button" class="btn btn-default" ng-click="deleteItem(tm['题目ID'], $index)">删除</button>
+          <button type="button" class="btn btn-default" ng-click="editItem(tm)">修改</button>
+          <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入测验</button>
+          <button type="button" class="btn btn-default" ng-click="removeOut(tm)" ng-show="tm.ckd">移出测验</button>
+        </div>
+      </div>
+      <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
+        <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干'] | outTiGan"></h3>
+        <div class="item-tizhi-wrap">
+          <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+            <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
+            <span class="tiZhiSpan" ng-bind-html="tz"></span>
+          </p>
+        </div>
+      </div>
+      <div class="answer-cont">
+        <div class="positionRe">
+          <span class="daAnLabel">答案：</span>
+          <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
+        </div>
+        <div class="positionRe" ng-show="tm['备注']">
+          <span class="daAnLabel">备注：</span>
+          <div class="daAnBox" ng-bind-html="tm['备注']"></div>
+        </div>
+      </div>
     </li>
   </ul>
 </div>
-<!-- 考务的容器 开始-->
-<div class="tab-content wp90 mlp5">
-  <div class="row editKaoShi">
-    <form class="form-horizontal" name="kaoshiForm">
-      <div class="form-group">
-        <label class="col-sm-2 control-label">测验名称<i>*</i></label>
-        <div class="col-sm-6">
-          <input type="text" name="ksName" class="form-control" placeholder="测验名称" required autofocus="true"
-                 ng-model="newClassTest['测验名称']"/>
-        </div>
-        <!--<div class="col-sm-4">-->
-        <!--<button type="button" class="btn btn-primary" ng-click="saveClassTest()" style="margin-top: 2px"-->
-        <!--ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">-->
-        <!--保存测验-->
-        <!--</button>-->
-        <!--</div>-->
-      </div>
-      <div class="form-group">
-        <label class="col-sm-2 control-label">默认测验状态</label>
-        <div class="col-sm-3">
-          <label class="radio-inline">
-            <input type="radio" ng-model="newClassTest['状态']" value=1> 开启
-          </label>
-          <label class="radio-inline">
-            <input type="radio" ng-model="newClassTest['状态']" value=0> 关闭
-          </label>
-        </div>
-        <div class="col-sm-2">
-          <button type="button" class="btn btn-primary" ng-click="saveClassTest()" ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">
-            保存测验
-          </button>
+<!--题目列表-->
+<div class="row mt15">
+  <h4 class="bdb fz16 text-center cYell" style="padding-bottom: 5px">所有题目</h4>
+  <ul class="list-unstyled testList" id="testList" style="padding: 0">
+    <li ng-repeat="tm in timuDetails" class="delete_{{tm['题目ID']}} pr130" repeat-done>
+      <div class="item-sub-title pull-left">
+        <p class="knowledge-point">
+          题型：<span ng-bind="tiXingArr[tm['题型ID']-1]"></span>
+        </p>
+        <p class="knowledge-point">
+          出题人：<span class="pull-right" ng-bind="tm['出题人姓名']"></span>
+        </p>
+        <p class="knowledge-point">
+          ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
+        </p>
+        <p>
+          创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
+        </p>
+        <div class="editWrap">
+          <button type="button" class="btn btn-default" ng-click="deleteItem(tm['题目ID'], $index)">删除</button>
+          <button type="button" class="btn btn-default" ng-click="editItem(tm)">修改</button>
+          <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入测验</button>
+          <button type="button" class="btn btn-default" ng-click="removeOut(tm)" ng-show="tm.ckd">移出测验</button>
         </div>
       </div>
-      <!--<div class="form-group">-->
-      <!--<label class="col-sm-2 control-label">选择题目</label>-->
-      <!--<div class="col-sm-6">-->
-      <!--<a href="javascript:;" class="mt7 dpb" ng-click="showTiMuList()">添加新试题</a>-->
-      <!--</div>-->
-      <!--</div>-->
-      <!--<div class="save-box">-->
-      <!--&lt;!&ndash;ng-disabled="kaoshiForm.ksName.$invalid || kaoshiForm.ksTime.$invalid || loadingImgShow">保存测验&ndash;&gt;-->
-      <!--<button type="button" class="btn btn-primary" ng-click="saveClassTest()"-->
-      <!--ng-disabled="kaoshiForm.ksName.$invalid || loadingImgShow">保存测验-->
-      <!--</button>-->
-      <!--</div>-->
-    </form>
-  </div>
-  <!--题目列表-->
-  <div class="row">
-    <div class="total-test clearfix">
-      <div class="pull-left" style="margin-top: 4px;">
-        共<strong ng-bind="kjParams.tiMuLen || 0"></strong>题
+      <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
+        <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干'] | outTiGan"></h3>
+        <div class="item-tizhi-wrap">
+          <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+            <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
+            <span class="tiZhiSpan" ng-bind-html="tz"></span>
+          </p>
+        </div>
       </div>
-      <div class="pull-right">
-        <button type="button" class="btn btn-success" ng-click="addNewTiMuPop()">添加新题目</button>
+      <div class="answer-cont">
+        <div class="positionRe">
+          <span class="daAnLabel">答案：</span>
+          <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
+        </div>
+        <div class="positionRe" ng-show="tm['备注']">
+          <span class="daAnLabel">备注：</span>
+          <div class="daAnBox" ng-bind-html="tm['备注']"></div>
+        </div>
       </div>
-    </div>
-    <ul class="list-unstyled testList" id="testList">
-      <li ng-repeat="tm in timuDetails" class="delete_{{tm['题目ID']}} pr130" repeat-done>
-        <div class="item-sub-title pull-left">
-          <p class="knowledge-point">
-            题型：<span ng-bind="tiXingArr[tm['题型ID']-1]"></span>
-          </p>
-          <p class="knowledge-point">
-            出题人：<span class="pull-right" ng-bind="tm['出题人姓名']"></span>
-          </p>
-          <p class="knowledge-point">
-            ID：<span class="pull-right" ng-bind="tm['题目ID']"></span>
-          </p>
-          <p>
-            创建时间：{{tm['创建时间'] | localDate | date : 'yyyy-MM-dd'}}
-          </p>
-          <div class="editWrap">
-            <button type="button" class="btn btn-default" ng-click="deleteItem(tm['题目ID'], $index)">删除</button>
-            <button type="button" class="btn btn-default" ng-click="editItem(tm)">修改</button>
-            <button type="button" class="btn btn-primary" ng-click="addToPaper(tm)" ng-hide="tm.ckd">加入测验</button>
-            <button type="button" class="btn btn-default" ng-click="removeOut(tm)" ng-show="tm.ckd">移出测验</button>
-          </div>
-        </div>
-        <div class="item-cont" bn-slide-show slide-show-target="answer-cont" slide-show-idx="{{$index}}" title="显示答案">
-          <h3 class="item-tigan" ng-bind-html="tm['题目内容']['题干'] | outTiGan"></h3>
-          <div class="item-tizhi-wrap">
-            <p class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
-              <span ng-cloak>{{'(' + letterArr[$index] + ')'}}</span>
-              <span class="tiZhiSpan" ng-bind-html="tz"></span>
-            </p>
-          </div>
-        </div>
-        <div class="answer-cont">
-          <div class="positionRe">
-            <span class="daAnLabel">答案：</span>
-            <div class="daAnBox" ng-bind-html="tm['题目内容']['答案']"></div>
-          </div>
-          <div class="positionRe" ng-show="tm['备注']">
-            <span class="daAnLabel">备注：</span>
-            <div class="daAnBox" ng-bind-html="tm['备注']"></div>
-          </div>
-        </div>
+    </li>
+  </ul>
+  <div class="paging text-right" ng-if="pageParam.pageArr.length" style="padding: 0">
+    <ul class="pagination pagination-sm" style="margin: 10px 0">
+      <li ng-class="{disabled: pageParam.activePage == 1}">
+        <a href ng-click="pageGetData(1)">首页</a>
+      </li>
+      <li ng-class="{disabled: pageParam.activePage == 1}">
+        <a href ng-click="pageGetData(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
+          上一页
+        </a>
+      </li>
+      <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
+        <a href ng-click="pageGetData(pg)">{{pg}}</a>
+      </li>
+      <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+        <a href ng-click="pageGetData(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
+          下一页
+        </a>
+      </li>
+      <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+        <a href ng-click="pageGetData(pageParam.lastPage)">尾页</a>
       </li>
     </ul>
-    <div class="paging text-right" ng-if="pageParam.pageArr.length">
-      <ul class="pagination pagination-sm">
-        <li ng-class="{disabled: pageParam.activePage == 1}">
-          <a href ng-click="pageGetData(1)">首页</a>
-        </li>
-        <li ng-class="{disabled: pageParam.activePage == 1}">
-          <a href ng-click="pageGetData(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
-            上一页
-          </a>
-        </li>
-        <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
-          <a href ng-click="pageGetData(pg)">{{pg}}</a>
-        </li>
-        <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
-          <a href ng-click="pageGetData(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
-            下一页
-          </a>
-        </li>
-        <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
-          <a href ng-click="pageGetData(pageParam.lastPage)">尾页</a>
-        </li>
-      </ul>
-    </div>
   </div>
 </div>
 <!--命题 单选题-->

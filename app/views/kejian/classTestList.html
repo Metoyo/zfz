@@ -1,32 +1,15 @@
-<!--导航-->
-<div class="sub-nav fixed-top" ng-init="tabActive = 'stcy'">
-  <ul class="nav nav-tabs">
-    <li ng-class="{active: tabActive == 'stcy'}">
-      <a href="javascript:void(0)" ng-click="getClassTest()">
-        随堂测验
-      </a>
-    </li>
-    <li ng-class="{active: tabActive == 'xjcy'}">
-      <a href="javascript:void(0)" ng-click="addClassTest()">
-        新建测验
-      </a>
-    </li>
-    <li ng-class="{active: tabActive == 'kjgl'}">
-      <a href="javascript:void(0)" ng-click="getKeJianList()">
-        课件管理
-      </a>
-    </li>
-  </ul>
-</div>
-<!-- 考务的容器 开始-->
-<div class="tab-content wp90 mlp5">
+<!--测验列表-->
+<div ng-if="!classTestDtl">
+  <h5>
+    <a href="javascript:;" class="clGreen fz16" ng-click="addClassTest()">+新建测验</a>
+  </h5>
   <table class="table table-striped">
     <tr class="active">
       <th>测验名称</th>
       <th width="220px" class="text-center">创建时间</th>
       <th width="220px" class="text-center">测验状态</th>
       <th width="100px" class="text-center">测试结果</th>
-      <th width="80px" class="text-center">二维码</th>
+      <th width="80px" class="text-center">测验码</th>
       <th width="80px" class="text-center">操作</th>
     </tr>
     <tr ng-repeat="ct in classTestList">
@@ -41,7 +24,11 @@
         </label>
       </td>
       <td class="text-center"><a href="javascript:void(0)" ng-click="classTestDetail(ct)">查看</a></td>
-      <td class="text-center"><a href="javascript:void(0)" ng-click="makeErWeiMa(ct)">生成</a></td>
+      <td class="text-center">
+        <a href="javascript:void(0)" ng-click="makeErWeiMa(ct)" ng-bind="ct['标签']" ng-if="ct['状态']<2"></a>
+        <span ng-if="ct['状态']==2">待录入</span>
+        <span ng-if="ct['状态']==3">待发布</span>
+      </td>
       <td class="text-center">
         <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteClassTest(ct['测验ID'])" title="删除"></span>
       </td>
@@ -72,26 +59,60 @@
       </li>
     </ul>
   </div>
-  <!--弹出层-->
-  <div class="popup-wrap" ng-show="kjParams.showErWeiMa">
-    <div class="popup-wrap-inner">
-      <div class="pwi-header plr10 text-center">
-        <span class="title">课序号管理</span>
-      </div>
-      <div class="pwi-body plr10">
-        <p class="text-center mt10" ng-bind="kjParams.sltTest['测验名称']"></p>
-        <div id="QRCodeBox" class="text-center" style="margin-top: 30px">
-        </div>
-        <p class="text-center mt15">
-          测验编号：<span ng-bind="kjParams.sltTest['标签']"></span>
-        </p>
-      </div>
-      <div class="pwi-footer plr10 text-center">
-        <a id="downloadEwm" class="btn btn-success mt5" href="" download="{{kjParams.sltTest['测验名称'] + '.png'}}">
-          保存图片
-        </a>
-        <button type="button" class="btn btn-danger mt5 ml15" ng-click="closePopup()">关闭</button>
-      </div>
+</div>
+<!--弹出层-->
+<div class="popup-wrap" ng-show="kjParams.showErWeiMa">
+  <div class="popup-wrap-inner">
+    <div class="pwi-header plr10 text-center">
+      <span class="title">课序号管理</span>
     </div>
+    <div class="pwi-body plr10">
+      <p class="text-center mt10" ng-bind="kjParams.sltTest['测验名称']"></p>
+      <div id="QRCodeBox" class="text-center" style="margin-top: 30px">
+      </div>
+      <p class="text-center mt15">
+        测验编号：<span ng-bind="kjParams.sltTest['标签']"></span>
+      </p>
+    </div>
+    <div class="pwi-footer plr10 text-center">
+      <a id="downloadEwm" class="btn btn-success mt5" href="" download="{{kjParams.sltTest['测验名称'] + '.png'}}">
+        保存图片
+      </a>
+      <button type="button" class="btn btn-danger mt5 ml15" ng-click="closePopup()">关闭</button>
+    </div>
+  </div>
+</div>
+<!--测验详情-->
+<div id="paperWrap" class="panel-body paperWrap" ng-if="classTestDtl">
+  <h3 class="text-center m0">
+    <span ng-bind="classTestDtl['测验名称']"></span>
+    <button type="button" class="btn btn-danger pull-right" ng-click="backToTestList()">返回测验列表</button>
+  </h3>
+  <div class="pull-left wp100" ng-repeat="tx in classTestDtl['测验题目']" repeat-done>
+    <h4 ng-bind="cnNumArr[$index] + '、' + tx['大题名称']"></h4>
+    <ul class="list-unstyled testList">
+      <li ng-repeat="tm in tx['题目']">
+        <div class="item-cont positionRe daTiName">
+          <h3 class="item-tigan" ng-bind-html="($index + 1) + '、' + tm['题目内容']['题干'] | outTiGan"></h3>
+          <!-- 单选题 -->
+          <div class="item-tizhi-wrap">
+            <div class="item-tizhi" ng-repeat="tz in tm['题目内容']['选项'] track by $index">
+              <p>
+                <span ng-cloak ng-if="tm['题型ID'] == 1" ng-class="{clRed:tm['题目内容']['答案']==$index}">{{'(' + letterArr[$index] + ')'}}</span>
+                <span ng-cloak ng-if="tm['题型ID'] == 2" ng-class="{clRed:tm['题目内容']['答案'].toString().indexOf($index)>=0}">{{'(' + letterArr[$index] + ')'}}</span>
+                <span class="tiZhiSpan" ng-bind-html="tz"></span>
+              </p>
+              <p class="percentage">
+                <span class="percentage-bar" style="width: {{((tm['选项分析'][$index]['人数']/classTestDtl['参与人数'])*100).toFixed(1) + '%'}}"></span>
+                <span class="percentage-info">
+                    答题人数：{{(tm['选项分析'][$index]['人数']) || 0}}/{{classTestDtl['参与人数']}}，
+                    占比：{{((tm['选项分析'][$index]['人数']/classTestDtl['参与人数'])*100 || 0).toFixed(1) + '%'}}
+                  </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </div>

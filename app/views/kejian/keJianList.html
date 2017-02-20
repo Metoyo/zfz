@@ -1,67 +1,47 @@
-<!--导航-->
-<div class="sub-nav fixed-top" ng-init="tabActive = 'kjgl'">
-  <ul class="nav nav-tabs">
-    <li ng-class="{active: tabActive == 'stcy'}">
-      <a href="javascript:void(0)" ng-click="getClassTest()">
-        随堂测验
+<h5>
+  <a href="javascript:;" class="clGreen fz16" ng-click="showKeJianAdd()">+添加课件</a>
+</h5>
+<table class="table table-striped">
+  <tr class="active">
+    <th>课件名称</th>
+    <th width="220px" class="text-center">创建时间</th>
+    <th width="80px" class="text-center">操作</th>
+  </tr>
+  <tr ng-repeat="kj in keJianList">
+    <td>
+      <a ng-href="/show_file/{{kj['文件名称']}}" ng-bind="kj['备注']"></a>
+    </td>
+    <td class="text-center" ng-bind="kj['创建时间'] | localDate:'ww'"></td>
+    <td class="text-center">
+      <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKeJian(kj)" title="删除"></span>
+    </td>
+  </tr>
+</table>
+<div class="paging text-right" ng-if="keJianList.length">
+  <ul class="pagination pagination-sm">
+    <li ng-class="{disabled: pageParam.activePage == 1}">
+      <a href ng-click="keJianDist(1)">首页</a>
+    </li>
+    <li ng-class="{disabled: pageParam.activePage == 1}">
+      <a href
+         ng-click="keJianDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
+        上一页
       </a>
     </li>
-    <li ng-class="{active: tabActive == 'xjcy'}">
-      <a href="javascript:void(0)" ng-click="addClassTest()">
-        新建测验
+    <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
+      <a href ng-click="keJianDist(pg)">{{pg}}</a>
+    </li>
+    <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
+      <a href
+         ng-click="keJianDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
+        下一页
       </a>
     </li>
-    <li ng-class="{active: tabActive == 'kjgl'}">
-      <a href="javascript:void(0)" ng-click="getKeJianList()">
-        课件管理
-      </a>
+    <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
+      <a href ng-click="keJianDist(pageParam.lastPage)">尾页</a>
     </li>
   </ul>
 </div>
-<!-- 考务的容器 开始-->
-<div class="tab-content wp90 mlp5">
-  <button type="button" class="btn btn-primary" ng-click="showKeJianAdd()">添加课件</button>
-  <table class="table table-striped mt15">
-    <tr class="active">
-      <th>课件名称</th>
-      <th width="220px" class="text-center">创建时间</th>
-      <th width="80px" class="text-center">操作</th>
-    </tr>
-    <tr ng-repeat="kj in keJianList">
-      <td>
-        <a ng-href="/show_file/{{kj['文件名称']}}" ng-bind="kj['备注']"></a>
-      </td>
-      <td class="text-center" ng-bind="kj['创建时间'] | localDate:'ww'"></td>
-      <td class="text-center">
-        <span class="glyphicon glyphicon-trash co676767 cursorPointer" ng-click="deleteKeJian(kj)" title="删除"></span>
-      </td>
-    </tr>
-  </table>
-  <div class="paging text-right" ng-if="keJianList.length">
-    <ul class="pagination pagination-sm">
-      <li ng-class="{disabled: pageParam.activePage == 1}">
-        <a href ng-click="keJianDist(1)">首页</a>
-      </li>
-      <li ng-class="{disabled: pageParam.activePage == 1}">
-        <a href
-           ng-click="keJianDist(prevPg = pageParam.activePage > 1 ? pageParam.activePage - 1 : 1)">
-          上一页
-        </a>
-      </li>
-      <li ng-repeat="pg in pageParam.disPage" ng-class="{active: pageParam.activePage == pg}">
-        <a href ng-click="keJianDist(pg)">{{pg}}</a>
-      </li>
-      <li ng-class="{disabled: pageParam.activePage ==  pageParam.lastPage}">
-        <a href
-           ng-click="keJianDist(nextPg = pageParam.activePage < pageParam.lastPage ? pageParam.activePage + 1 : pageParam.lastPage)">
-          下一页
-        </a>
-      </li>
-      <li ng-class="{disabled: pageParam.activePage == pageParam.lastPage}">
-        <a href ng-click="keJianDist(pageParam.lastPage)">尾页</a>
-      </li>
-    </ul>
-  </div>
 </div>
 <div class="popup-wrap" ng-if="upLoadWrap">
   <div class="popup-wrap-inner">
@@ -84,4 +64,3 @@
       <button type="button" class="btn btn-danger ml15 mt7" ng-click="closeKeJianAdd()">关闭</button>
     </div>
   </div>
-</div>

@@ -5,92 +5,11 @@
         <title class="title">随堂测验</title>
         <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
         <link rel="stylesheet" href="/weixin/css/weui.min-v1.1.0.css"/>
-        <link rel="stylesheet" href="/weixin/css/iconfont.css"/>
+        <link rel="stylesheet" href="/weixin/font-awesome/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="/weixin/css/quiz.css"/>
+        <!--<link rel="stylesheet" href="/weixin/css/quiz.min.css"/>-->
     </head>
     <body ontouchstart>
-        <!--测试结果列表模板-->
-        <script id="tplResultList" type="text/html">
-            <div class="weui-cells weui-cells_form testList">
-                {{each testDt}}
-                <div class="weui-cell weui-cell_switch plr10Two">
-                    <div class="weui-cell__bd testResult" data-id="{{$value['测验ID']}}" data-name="{{$value['测验名称']}}"
-                         data-ren="{{$value['参与人数'] || 0}}" data-stat="{{$value['状态']}}" data-tag="{{$value['标签']}}">
-                        <p>
-                            <i class="iconfont icon-xiayiti"></i>
-                            <span style="vertical-align: middle">{{$value['测验名称']}}</span>
-                        </p>
-                        <p class="fz14">
-                            <span>测验码: </span><span class="clBlue">{{$value['标签']}}</span><span class="plr10">|</span>
-                            <span>参与人数: </span><span class="clBlue">{{$value['参与人数'] || 0}}</span>
-                        </p>
-                    </div>
-                    <div class="weui-cell__ft ml10">
-                        {{if $value['状态'] == 1}}
-                        <input class="weui-switch" type="checkbox" checked data-id="{{$value['测验ID']}}"/>
-                        {{/if}}
-                        {{if $value['状态'] == 0}}
-                        <input class="weui-switch" type="checkbox" data-id="{{$value['测验ID']}}"/>
-                        {{/if}}
-                    </div>
-                </div>
-                {{/each}}
-            </div>
-        </script>
-        <!--测试结果详情模板-->
-        <script id="tplResult" type="text/html">
-            <article class="weui_article">
-                <h3 class="center testName p10" style="padding-bottom:0">
-                    <span class="fw600">{{title}}</span>
-                    <span class="fz12 clBlue shareBtn"><i class="iconfont icon-fenxiang"></i>分享</span>
-                </h3>
-                <h4 class="center fz14" style="margin-left: 0">
-                    参与人数: <span class="clBlue">{{ren}}</span><span class="plr10">|</span>
-                    <span class="testEnd clGreen" style="display: none">已开始</span>
-                    <span class="testStart clRed" style="display: none">已关闭</span>
-                </h4>
-                {{each tiMuArr as tx h}}
-                <div class="pullLeft wp100 mt20">
-                    <h4 class="plr10 fw600 mb10">{{zhn[h] + '、' + tx['大题名称']}}</h4>
-                    {{each tx['题目'] as tiMu i}}
-                    <div class="tiMuBox plr10">
-                        <div class="tiZhi ptb10 rightLv">
-                            正确率：<span class="clGreen">{{tiMu['正确率']}}%</span>
-                        </div>
-                        <h4 class="tiGan ptb10">{{(i + 1) + '、' + tiMu['题目内容']['题干']}}</h4>
-                        {{each tiMu['题目内容']['选项'] as tznr j}}
-                        <div class="tiZhi ptb10">
-                            <span class="option">
-                                {{if tiMu['题目内容']['答案'] == j}}
-                                <i class="weui-icon-success-no-circle">
-                                {{/if}}
-                                </i>({{letterArr[j]}})
-                            </span>
-                            <p class="pl25">{{tznr}}</p>
-                            <span class="pepNum">{{tiMu['选项分析'][j]['人数']}}</span>
-                        </div>
-                        {{/each}}
-                    </div>
-                    {{/each}}
-                </div>
-                {{/each}}
-            </article>
-            <h6 class="noMore">没有更多了</h6>
-            <div class="js_dialog erWeiMa" style="display: none">
-                <div class="weui-mask"></div>
-                <div class="weui-dialog">
-                    <div class="weui-dialog__bd">
-                        <div id="QRCodeBox"></div>
-                    </div>
-                    <div class="weui-dialog__bd center cl000">
-                        测验编号:{{tag}}
-                    </div>
-                    <div class="weui-dialog__ft">
-                        <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">关闭</a>
-                    </div>
-                </div>
-            </div>
-        </script>
         <!--用邮箱查询用户是否存在-->
         <script id="tplCheckUsr" type="text/html">
             <div class="weui-cells__title">
@@ -123,153 +42,26 @@
                 </div>
             </div>
         </script>
-        <!--课序号列表模板-->
-        <script id="tplKxhList" type="text/html">
-            <div class="weui-cells weui-cells_form scoreList">
-                {{each scoreDt}}
-                <div class="weui-cell weui-cell_switch plr10Two">
-                    <div class="weui-cell__bd scoreResult" data-id="{{$value['课序号ID']}}" data-name="{{$value['课序号名称']}}">
-                        <p>
-                            <i class="iconfont icon-xiayiti"></i>
-                            <span style="vertical-align: middle">{{$value['课序号名称']}}</span>
-                        </p>
-                        <p class="fz14 mt5">
-                            <span>{{$value['测验次数']}}次测验</span>
-                            <span class="ml5">{{$value['测验人数']}}人次</span>
-                        </p>
-                    </div>
-                </div>
-                {{/each}}
-            </div>
-        </script>
-        <!--课序号测验列表模板-->
-        <script id="tplKxhTestList" type="text/html">
-            <h3 class="center ptb10">{{title}}</h3>
-            <div class="weui-cells weui-cells_form">
-                {{each kxhTest['测验']}}
-                <div class="weui-cell">
-                    <div class="weui-cell__bd p10 kxhTest" data-id="{{$value['测验ID']}}" data-name="{{$value['测验名称']}}"
-                         data-kxh="{{title}}" data-kxhid="{{kxhId}}" data-right="{{(($value['答对数']/$value['题目数'])*100).toFixed(1)}}">
-                        <p class="fz14" style="margin-left: 0">
-                            <i class="iconfont icon-xiayiti fz12"></i>
-                            <span class="ml5">{{$value['更新时间']}}</span>
-                        </p>
-                        <p class="ml15">
-                            <span style="vertical-align: middle">{{$value['测验名称']}}</span>
-                        </p>
-                        <p class="fz14 mt5">
-                            参与人次 <span class="clBlue">{{$value['答题人数'] || 0}}</span>  |
-                            正确率 <span class="clBlue">{{(($value['答对数']/$value['题目数'])*100).toFixed(1)}}%</span>
-                        </p>
-                    </div>
-                </div>
-                {{/each}}
-            </div>
-        </script>
-        <!--课序号测验详情模板-->
-        <script id="tplKxhTestDetail" type="text/html">
-            <div class="weui-cells weui-cells_form">
-                <div class="weui-cell plr10Two">
-                    <div class="weui-cell__bd">
-                        <h3>{{testName}}</h3>
-                        <p class="fz14" style="margin-left: 0">{{kxhName}} <span class="clBlue">{{kxhPep}}</span>人</p>
-                        <p class="fz14" style="margin-left: 0">{{updateDate}}</p>
-                    </div>
-                </div>
-                <div class="weui-cell plr10Two">
-                    <div class="weui-cell__bd fz14" style="margin-left: 0">
-                        <span>完成率</span> <span class="clBlue" style="font-size: 24px">{{doneLv}}%</span>
-                        <span class="ml15">正确率</span> <span class="clBlue" style="font-size: 24px">{{rightLv}}%</span>
-                    </div>
-                </div>
-                <div class="weui-cell plr10Two">
-                    <div class="weui-cell__bd" style="font-size: 14px">
-                        <p>未完成：</p>
-                        <p>
-                            {{each undoStu as stu i}}
-                            <span class="mr5">{{stu['姓名']}}</span>
-                            {{/each}}
-                        </p>
-                    </div>
-                </div>
-                <div class="getStuScore">
-                    <i class="iconfont icon-liebiao1"></i>查看学生成绩
-                </div>
-            </div>
-            <article class="weui_article">
-                <h3 class="center testName ptb10">{{title}}</h3>
-                {{each tiMuArr as tx h}}
-                <div class="pullLeft wp100">
-                    <h4 class="plr10">{{zhn[h] + '、' + tx['大题名称']}}</h4>
-                    {{each tx['题目'] as tiMu i}}
-                    <div class="tiMuBox plr10">
-                        <div class="tiZhi ptb10 rightLv">
-                            正确率：<span class="clGreen">{{tiMu['正确率']}}%</span>
-                        </div>
-                        <h4 class="tiGan ptb10">{{(i + 1) + '、' + tiMu['题目内容']['题干']}}</h4>
-                        {{each tiMu['题目内容']['选项'] as tznr j}}
-                        <div class="tiZhi ptb10">
-                            <span class="option">
-                                {{if tiMu['题目内容']['答案'] == j}}
-                                <i class="weui-icon-success-no-circle">
-                                    {{/if}}
-                                </i>({{letterArr[j]}})
-                            </span>
-                            <p class="pl25">{{tznr}}</p>
-                            <span class="pepNum">{{tiMu['选项分析'][j]['人数']}}</span>
-                        </div>
-                        {{/each}}
-                    </div>
-                    {{/each}}
-                </div>
-                {{/each}}
-            </article>
-            <h6 class="noMore">没有更多了</h6>
-        </script>
         <!--输入邮箱查询用户-->
         <script id="tplCheckUsrNav" type="text/html">
             <div id="nextStep" class="navBar_item step1">
-                <i class="iconfont icon-baocun"></i> 查询
+                <i class="fa fa-question-circle-o fa-fw" aria-hidden="true"></i> 查询
             </div>
             <div id="nextStep1" class="navBar_item step2">
-                <i class="iconfont icon-baocun"></i> 登录并关联
+                <i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> 登录并关联
             </div>
             <div id="nextStep2" class="navBar_item step3">
-                <i class="iconfont icon-baocun"></i> 注册并关联
-            </div>
-        </script>
-        <!--列表和成绩的导航-->
-        <script id="tplResultListNav" type="text/html">
-            <div class="navBar_item getTestList">
-                <i class="iconfont icon-liebiao1"></i> 测验列表
-            </div>
-            <div class="navBar_item getScoreList">
-                <i class="iconfont icon-iconfontchengji-copy-copy"></i> 成绩
-            </div>
-        </script>
-        <!--测验详情的导航-->
-        <script id="tplResultNav" type="text/html">
-            <div class="navBar_item getTestList">
-                <i class="iconfont icon-liebiao1"></i> 返回
-            </div>
-            <div id="testStart" class="navBar_item kaiGuan" style="display: none">
-                <i class="iconfont icon-bf-icon-open"></i> 开始测验
-            </div>
-            <div id="testEnd" class="navBar_item kaiGuan" style="display: none">
-                <i class="iconfont icon-bf-icon-close"></i> 关闭测验
-            </div>
-            <div id="refresh" class="navBar_item">
-                <i class="iconfont icon-shuaxin"></i> 刷新
+                <i class="fa fa-registered fa-fw" aria-hidden="true"></i> 注册并关联
             </div>
         </script>
         <!--测验学生成绩列表-->
-        <script id="tplKxhTestStu" type="text/html">
+        <script id="tplStuScore" type="text/html">
             <div class="weui-cells weui-cells_form">
                 {{each stuDt}}
                 <div class="weui-cell weui-cell_switch plr10Two">
                     <div class="weui-cell__bd">
                         <p>
-                            <i class="iconfont icon-xiayiti fz12"></i>
+                            <i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
                             <span style="vertical-align: middle">{{$value['学号']}}</span>
                             <span class="ml15" style="vertical-align: middle">{{$value['姓名']}}</span>
                         </p>
@@ -280,42 +72,208 @@
                 </div>
                 {{/each}}
             </div>
-            <h6 class="noMore mt20">没有更多了</h6>
-        </script>
-        <!--课序号下面的测验测验列表导航-->
-        <script id="tplKxhTestListNav" type="text/html">
-            <div class="navBar_item getScoreList">
-                <i class="iconfont icon-liebiao1"></i> 返回
-            </div>
-            <div class="navBar_item getScoreList">
-                <i class="iconfont icon-iconfontchengji-copy-copy"></i> 成绩
-            </div>
-        </script>
-        <!--课序号下面的测验测验列表导航-->
-        <script id="tplKxhTestDetailNav" type="text/html">
-            <div class="navBar_item scoreResult" data-id="{{kxhId}}" data-name="{{kxhName}}">
-                <i class="iconfont icon-liebiao1"></i> 返回
-            </div>
-            <div class="navBar_item getScoreList">
-                <i class="iconfont icon-iconfontchengji-copy-copy"></i> 成绩
-            </div>
-        </script>
-        <!--课序号下面的测验测验列表导航-->
-        <script id="tplKxhTestStuNav" type="text/html">
-            <div class="navBar_item kxhTest" data-id="{{kxhTestId}}" data-name="{{kxhTestName}}"
-                 data-kxh="{{kxhName}}" data-kxhid="{{kxhId}}" data-right="{{right}}">
-                <i class="iconfont icon-liebiao1"></i> 返回
-            </div>
-            <div class="navBar_item getScoreList">
-                <i class="iconfont icon-iconfontchengji-copy-copy"></i> 成绩
-            </div>
+            <h6 class="noMore mt5">没有更多了</h6>
         </script>
         <!--有教师用户关联微信的导航-->
         <script id="tplNoData" type="text/html">
             <h4 class="center noData">{{msg}}</h4>
         </script>
+        <!--用户信息-->
+        <script id="tplUsr" type="text/html">
+            <span>{{xuexiao}}</span>
+            <span class="ml10">{{xingming}}</span>
+        </script>
+        <!--测试结果列表模板-->
+        <script id="tplResultList" type="text/html">
+            {{each testDt as riqi i}}
+            <h4 class="mt10 plr10 riqi">{{riqi['日期']}}</h4>
+            <div class="weui-cells weui-cells_form testList">
+                {{each riqi['测验'] as clt j}}
+                <div class="weui-cell weui-cell_switch plr10Two">
+                    <div class="weui-cell__bd testResult" data-id="{{clt['测验ID']}}" data-name="{{clt['测验名称']}}"
+                         data-stat="{{clt['状态']}}" data-tag="{{clt['标签']}}">
+                        <p>
+                            <i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
+                            <span style="vertical-align: middle">{{clt['测验名称']}}</span>
+                        </p>
+                        <p class="fz14">
+                            <span>测验码: </span>
+                            {{if clt['状态'] == 2}}
+                            <span class="clBlue" style="color:#fff">{{clt['标签']}}</span>
+                            {{/if}}
+                            {{if clt['状态'] != 2}}
+                            <span class="clBlue">{{clt['标签']}}</span>
+                            {{/if}}
+                            <span class="plr10">|</span>
+                            <span>参与人数: </span><span class="clBlue">{{clt['参与人数'] || 0}}</span>
+                        </p>
+                    </div>
+                    <div class="weui-cell__ft ml10">
+                        {{if clt['状态'] == 2}}
+                        <span class="fz16">录入中</span>
+                        {{/if}}
+                        {{if clt['状态'] == 1}}
+                        <input class="weui-switch" type="checkbox" checked data-id="{{clt['测验ID']}}"/>
+                        {{/if}}
+                        {{if clt['状态'] == 0}}
+                        <input class="weui-switch" type="checkbox" data-id="{{clt['测验ID']}}"/>
+                        {{/if}}
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            {{/each}}
+            <h4 class="mt20 plr10 mctWrap">
+                <a href="javascript:;" class="weui-btn weui-btn_default fz16 moreClassTest">更多测验</a>
+            </h4>
+        </script>
+        <!--统计详情模板-->
+        <script id="tplAnalysis" type="text/html">
+            <div class="weui-cells weui-cells_form">
+                <div class="weui-cell plr10Two">
+                    <div class="weui-cell__bd">
+                        <h3>{{testName}}</h3>
+                        <p class="fz14" style="margin-left: 0">{{className}} <span class="clBlue">{{peopleNum}}</span>人</p>
+                        <p>
+                            {{if testStatus == 0}}
+                            <span class="fz14 clRed" style="margin-left: 0">已关闭</span>
+                            {{/if}}
+                            {{if testStatus == 1}}
+                            <span class="fz14 clGreen" style="margin-left: 0">已开启</span>
+                            {{/if}}
+                        </p>
+                    </div>
+                </div>
+                <div class="weui-cell plr10Two">
+                    <div class="weui-cell__bd fz14" style="margin-left: 0">
+                        {{if testDonePct >= 0}}
+                        <span>完成率</span> <span class="clBlue mr15" style="font-size: 24px">{{testDonePct}}%</span>
+                        {{/if}}
+                        <span>正确率</span> <span class="clBlue" style="font-size: 24px">{{testRightPct}}%</span>
+                    </div>
+                </div>
+                <div class="weui-cell plr10Two">
+                    <div class="weui-cell__bd" style="font-size: 14px">
+                        <p class="mb10">
+                            <span>未完成：</span>
+                            <a href="javascript:;" class="unDoMore">展开名单</a>
+                            <a href="javascript:;" class="unDoClose">收起名单</a>
+                        </p>
+                        <p class="undoNameList">
+                            {{each peopleUndoList as stu i}}
+                            <span class="mr5">{{stu['姓名']}}</span>
+                            {{/each}}
+                        </p>
+                    </div>
+                </div>
+                <div class="getStuScore" data-wcl="{{testDonePct}}">
+                    <i class="fa fa-list-ol fa-fw" aria-hidden="true"></i>查看学生成绩
+                </div>
+            </div>
+            <article class="weui_article">
+                {{each testTiMu as tx h}}
+                <div class="pullLeft wp100 mt10">
+                    <h4 class="plr10">{{zhn[h] + '、' + tx['大题名称']}}</h4>
+                    {{each tx['题目'] as tiMu i}}
+                    <div class="tiMuBox p10">
+                        <div class="tiZhi ptb10 rightLv">
+                            正确率：<span class="clGreen">{{tiMu['正确率']}}%</span>
+                        </div>
+                        <h4 class="tiGan ptb10">{{(i + 1) + '、' + tiMu['题目内容']['题干']}}</h4>
+                        {{each tiMu['题目内容']['选项'] as tznr j}}
+                        <div class="tiZhi ptb10">
+                            <span class="option">
+                                {{if tznr.ckd}}
+                                <i class="weui-icon-success-no-circle">
+                                    {{/if}}
+                                </i>({{letter[j]}})
+                            </span>
+                            <p class="pl25">{{tznr['题支']}}</p>
+                            <span class="pepNum">{{tiMu['选项分析'][j]['人数']}}</span>
+                        </div>
+                        {{/each}}
+                    </div>
+                    {{/each}}
+                </div>
+                {{/each}}
+            </article>
+            <h6 class="noMore">没有更多了</h6>
+        </script>
+        <!--班级课序号列表模板-->
+        <script id="tplClass" type="text/html">
+            <article class="weui_article">
+                <div class="pullLeft wp100 mt10">
+                    <h4 class="plr10">全部考生</h4>
+                    <div class="tiMuBox p10">
+                        <a href="javascript:;" class="weui-btn weui-btn_default fz16 backToAnalysis">查看</a>
+                    </div>
+                </div>
+                <div class="pullLeft wp100 mt10">
+                    <h4 class="plr10">课序号</h4>
+                    <div class="tiMuBox p10">
+                        {{each kxhDt}}
+                        <div class="weui-cell weui-cell_switch">
+                            <div class="weui-cell__bd teacherKxh" data-id="{{$value['课序号ID']}}" data-name="{{$value['课序号名称']}}">
+                                <p>
+                                    <i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
+                                    <span style="vertical-align: middle">{{$value['课序号名称']}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+                <div class="pullLeft wp100 mt10">
+                    <h4 class="plr10">班级</h4>
+                    <div class="tiMuBox p10">
+                        {{each classDt}}
+                        <div class="weui-cell weui-cell_switch">
+                            <div class="weui-cell__bd teacherBanJi" data-id="{{$value['班级ID']}}" data-name="{{$value['班级名称']}}">
+                                <p>
+                                    <i class="fa fa-angle-right fa-fw" aria-hidden="true"></i>
+                                    <span style="vertical-align: middle">{{$value['班级名称']}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </article>
+        </script>
+        <!--测验详情的导航-->
+        <script id="tplResultNav" type="text/html">
+            <div class="navBar_item getTestList">
+                <i class="fa fa-arrow-circle-o-left fa-fw" aria-hidden="true"></i> 返回
+            </div>
+            <div id="getClassList" class="navBar_item getClassList">
+                <i class="fa fa-heart-o fa-fw" aria-hidden="true"></i> 选择班级
+            </div>
+            <div class="navBar_item refresh">
+                <i class="fa fa-refresh fa-fw" aria-hidden="true"></i> 刷新
+            </div>
+        </script>
+        <!--学生名单列表导航-->
+        <script id="tplStuScoreNav" type="text/html">
+            <div class="navBar_item backToAnalysis">
+                <i class="fa fa-arrow-circle-o-left fa-fw" aria-hidden="true"></i> 返回
+            </div>
+        </script>
+        <!--有班级进入统计的导航-->
+        <script id="tplFromCLassNav" type="text/html">
+            <div class="navBar_item getTestList">
+                <i class="fa fa-arrow-circle-o-left fa-fw" aria-hidden="true"></i> 测验列表
+            </div>
+            <div class="navBar_item getClassList">
+                <i class="fa fa-arrow-circle-o-left fa-fw" aria-hidden="true"></i> 班级列表
+            </div>
+            <div class="navBar_item refresh">
+                <i class="fa fa-refresh fa-fw" aria-hidden="true"></i> 刷新
+            </div>
+        </script>
         <!--内容容器-->
         <div class="container" id="container">
+            <div id="topBar">
+            </div>
             <div id="content" class="content">
             </div>
             <div id="navBar" class="navBar">
@@ -349,5 +307,7 @@
         <script src="/weixin/js/qrcode.min.js"></script>
         <script src="/weixin/js/quiz.js"></script>
         <script src="/weixin/js/bluebird.min.js"></script>
+        <!--<script src="/weixin/js/quiz.min.js"></script>-->
+        <!--<script src="/weixin/js/markitup/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>-->
     </body>
 </html>

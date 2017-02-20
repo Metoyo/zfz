@@ -20,7 +20,7 @@ $(function(){
     jgId: '', //学校ID
     allKsz: '', //所有考试组
     wxid: ''
-    //wxid: 'wxabcb783dbd59b067'
+    // wxid: 'wxabcb783dbd59b067'
   };
 
   /**
@@ -33,6 +33,18 @@ $(function(){
     else{
       return dt;
     }
+  };
+
+  /**
+    * 关闭提示框
+    */
+  var dialog = function(info, title){
+    var ttl = title || '错误信息';
+    $('.msgBox').html(info);
+    $('.msgTitle').html(ttl);
+    $('#dialog2').show().on('click', '.weui-dialog__btn', function () {
+        $('#dialog2').off('click').hide();
+    });
   };
 
   /**
@@ -180,6 +192,24 @@ $(function(){
           };
           cjPar.allSch = data.data;
           renderFun(dt, 'tplLogin');
+          var $iosActionsheet = $('#iosActionsheet');
+          var $iosMask = $('#iosMask');
+          function hideActionSheet() {
+            $iosActionsheet.removeClass('weui-actionsheet_toggle');
+            $iosMask.fadeOut(200);
+          }
+          $iosMask.on('click', hideActionSheet);
+          $('#iosActionsheetCancel, #actionsheet_confirm').on('click', hideActionSheet);
+          $("#showIOSActionSheet").on("click", function(){
+            $iosActionsheet.addClass('weui-actionsheet_toggle');
+            $iosMask.fadeIn(200);
+          });
+          $('.optXueXiao').on('click', function () {
+            $(this).addClass('tabOn').siblings('.tabOn').removeClass('tabOn');
+            var idx = $(this).index();
+            cjPar.sltSch = cjPar.allSch[idx];
+            $('.xueXiaoWrap').data('id', cjPar.sltSch['学校ID']).html(cjPar.sltSch['学校名称']).removeClass('clA8');
+          });
         }
         else{
           dialog(data.error || '没有学校数据！');
@@ -229,7 +259,6 @@ $(function(){
                     }
                   }
                 });
-                //cjPar.allKsz = Lazy(students.data).reverse().toArray();
                 cjPar.allKsz = cnSort(students.data, '考试组名称');
                 var dt = {
                   kszList: cjPar.allKsz
@@ -259,79 +288,41 @@ $(function(){
    * 初始化函数
    */
   var initFun = function(){
-    var opId = $('#myBody').data('id');
-    cjPar.wxid = opId || '';
-    $.ajax({
-      method: 'GET',
-      url: loginUrl,
-      data:{
-        '微信ID': cjPar.wxid
-      },
-      success: function (data) {
-        data = dataMake(data);
-        if(data.result && data.data){
-          cjPar.uid = data.data['UID'];
-          cjPar.jgId = data.data['学校ID'];
-          qryKaoShiZu();
-        }
-        else{
-          //显示用户查询界面
-          tplLoginRender();
-        }
-      },
-      error: function (error) {
-        dialog(error);
-      }
-    });
+    cjPar.wxid = $('#myBody').data('id') || '';
+    if(cjPar.wxid){
+        $.ajax({
+            method: 'GET',
+            url: loginUrl,
+            data:{
+                '微信ID': cjPar.wxid
+            },
+            success: function (data) {
+                data = dataMake(data);
+                if(data.result && data.data){
+                    cjPar.uid = data.data['UID'];
+                    cjPar.jgId = data.data['学校ID'];
+                    qryKaoShiZu();
+                }
+                else{
+                    //显示用户查询界面
+                    tplLoginRender();
+                }
+            },
+            error: function (error) {
+                dialog(error);
+            }
+        });
+    }
+    else{
+        dialog('微信ID为空！');
+    }
   };
   initFun();
 
   /**
-   * 关闭提示框
-   */
-  var dialog = function(info, title){
-    var ttl = title || '错误信息';
-    $('.msgBox').html(info);
-    $('.msgTitle').html(ttl);
-    $('#dialog2').show().on('click', '.weui_btn_dialog', function () {
-      $('#dialog2').off('click').hide();
-    });
-  };
-
-  /**
    * 点击事件
    */
-  $('#container').on('click', '#showActionSheet', function () { //弹出学校列表
-    var mask = $('#mask');
-    var weuiActionsheet = $('#weui_actionsheet');
-    weuiActionsheet.addClass('weui_actionsheet_toggle');
-    mask.show()
-      .focus()//加focus是为了触发一次页面的重排(reflow or layout thrashing),使mask的transition动画得以正常触发
-      .addClass('weui_fade_toggle').one('click', function () {
-        hideActionSheet(weuiActionsheet, mask);
-      });
-    $('#actionsheet_cancel, #actionsheet_confirm').one('click', function () {
-      hideActionSheet(weuiActionsheet, mask);
-    });
-    $('.optXueXiao').on('click', function () {
-      $(this).addClass('tabOn').siblings('.tabOn').removeClass('tabOn');
-      var idx = $(this).index();
-      cjPar.sltSch = cjPar.allSch[idx];
-      $('.xueXiaoWrap').data('id', cjPar.sltSch['学校ID']).html(cjPar.sltSch['学校名称']).removeClass('clA8');
-
-    });
-    mask.unbind('transitionend').unbind('webkitTransitionEnd');
-    function hideActionSheet(weuiActionsheet, mask) {
-      weuiActionsheet.removeClass('weui_actionsheet_toggle');
-      mask.removeClass('weui_fade_toggle');
-      mask.on('transitionend', function () {
-        mask.hide();
-      }).on('webkitTransitionEnd', function () {
-        mask.hide();
-      })
-    }
-  }) //点击下一步，去验证考生是否已注册
-    .on('click', '#nextStep1', function(){
+  $('#container').on('click', '#nextStep1', function(){
       var xxId = $('.xueXiaoWrap').data('id');
       var xh = $('input[name="yourNum"]').val();
       var xm = $('input[name="yourName"]').val();
