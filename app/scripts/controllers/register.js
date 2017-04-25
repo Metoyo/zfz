@@ -309,6 +309,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
          */
         $scope.submitRegisterInfo = function(){
           delete $scope.teacherInfo['确认密码'];
+          console.log($scope.teacherInfo);
           $scope.teacherInfo['角色'] = JSON.stringify($scope.teacherInfo['角色']);
           var obj = {method: 'PUT', url: yongHuUrl, data: $scope.teacherInfo};
           $scope.fbdBtn = true;

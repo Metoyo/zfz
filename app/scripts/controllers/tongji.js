@@ -861,8 +861,8 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
           };
 
           /**
-          * 查询考试通过考生UID
-          */
+           * 查询考试通过考生UID
+           */
           $scope.qryKaoShiByXueHao = function(){
             var yhObj = {
               method: 'GET',

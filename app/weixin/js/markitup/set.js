@@ -9,21 +9,25 @@
 // ----------------------------------------------------------------------------
 // Basic set. Feel free to add more tags
 // ----------------------------------------------------------------------------
-var ifHasMark;
-var gsType = '';
-var gsReplaceFun = function(gs){
-  if(ifHasMark){
-    return gs;
-  }
-  else{
-    return '#$' + gs + '$#';
-  }
-};
+var ifHasMark,
+  gsReplaceFun = function(gs){
+    if(ifHasMark){
+      return gs;
+    }
+    else{
+      return '#$' + gs + '$#';
+    }
+  };
+var isTianKong = false;
 function matheq_preview() {
   $('#prevDoc').html($('.formulaEditTiGan').val());
   $('#prevTiZhiDoc').html($('.formulaEditTiZhi').val());
   MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevDoc"]);
   MathJax.Hub.Queue(["Typeset", MathJax.Hub, "prevTiZhiDoc"]);
+  if(isTianKong){
+    $('#tianKongTiGanInput').click();
+    // $('#tianKongTiZhiInput').click();
+  }
 }
 var mySettings = {
   nameSpace:       "mktEditor",
@@ -33,22 +37,25 @@ var mySettings = {
   onTab:        {keepDefault:false, replaceWith:''},
   resizeHandle: false,
   beforeInsert:function(h) {
-    var textVal = $('.markItUpEditor').val();
+    isTianKong = h.name == '增加个空' ? true : false;
+    var isTg = $(h.textarea).hasClass('formulaEditTiGan');
+    var textVal = isTg ? $('.formulaEditTiGan').val() : $('.formulaEditTiZhi').val();
     var myPst = h.caretPosition;
     var beforeTxt = textVal.slice(0, myPst);
     var afterTxt = textVal.slice(myPst);
     var beforeMark;
     var afterMark;
-    gsType = h.name;
     beforeMark = beforeTxt.lastIndexOf('#$');
     afterMark = afterTxt.indexOf('$#');
-    ifHasMark = beforeMark >= 0 && afterMark >= 0;
+    if(beforeMark >= 0 && afterMark >= 0){
+      ifHasMark = true;
+    }
+    else{
+      ifHasMark = false;
+    }
   },
   afterInsert:function() {
     matheq_preview();
-    if(gsType == '增加个空'){
-      $('#blankNums').click();
-    }
   },
   markupSet:[
     {name:'a01', className:'width70', dropMenu: [
@@ -86,7 +93,7 @@ var mySettings = {
         return gsReplaceFun('\\mathop{a}\\limits_{b}^{c}');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\begin{array}{}{a}\\\\{b}\\end{array}');
+        return gsReplaceFun('\\begin{array}{}a\\\\b\\end{array}');
       }},
       {name:'', className:'', replaceWith: function(){
         return gsReplaceFun('\\overline{abc}');
@@ -1311,40 +1318,40 @@ var mySettings = {
     ]},
     {name:'a15', className:'width70 wh105x70', dropMenu: [
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{matrix}{a_{1}}&\\cdots&{a_{n}}\\end{matrix}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}a_{1}&\\cdots&a_{n}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{matrix}{a_{1}}\\\\\\vdots\\\\{a_{n}}\\end{matrix}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}a_{1}\\\\\\vdots\\\\a_{n}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{matrix}{a_{1}}& & \\\\ &\\ddots& \\\\ & &{a_{n}}\\end{matrix}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}a_{1}& & \\\\ &\\ddots& \\\\ & &a_{n}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{matrix}{a_{11}}&{a_{12}}\\\\{a_{21}}&{a_{22}}\\end{matrix}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}a_{11}&a_{12}\\\\a_{21}&a_{22}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left[\\begin{matrix}{a_{11}}&{a_{12}}\\\\{a_{21}}&{a_{22}}\\end{matrix}\\right]');
+        return gsReplaceFun('\\left[\\begin{matrix}a_{11}&a_{12}\\\\a_{21}&a_{22}\\end{matrix}\\right]');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left|\\begin{matrix}{a_{11}}&{a_{12}}\\\\{a_{21}}&{a_{22}}\\end{matrix}\\right|');
+        return gsReplaceFun('\\left|\\begin{matrix}a_{11}&a_{12}\\\\a_{21}&a_{22}\\end{matrix}\\right|');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{matrix}{a_{11}}&{a_{12}}&{a_{13}}\\\\{a_{21}}&{a_{22}}&{a_{23}}\\\\{a_{31}}&{a_{32}}&{a_{33}}\\end{matrix}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}a_{11}&a_{12}&a_{13}\\\\a_{21}&a_{22}&a_{23}\\\\a_{31}&a_{32}&a_{33}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left[\\begin{matrix}{a_{11}}&{a_{12}}&{a_{13}}\\\\{a_{21}}&{a_{22}}&{a_{23}}\\\\{a_{31}}&{a_{32}}&{a_{33}}\\end{matrix}\\right]');
+        return gsReplaceFun('\\left[\\begin{matrix}a_{11}&a_{12}&a_{13}\\\\a_{21}&a_{22}&a_{23}\\\\a_{31}&a_{32}&a_{33}\\end{matrix}\\right]');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left|\\begin{matrix}{a_{11}}&{a_{12}}&{a_{13}}\\\\{a_{21}}&{a_{22}}&{a_{23}}\\\\{a_{31}}&{a_{32}}&{a_{33}}\\end{matrix}\\right|');
+        return gsReplaceFun('\\left|\\begin{matrix}a_{11}&a_{12}&{a_13}\\\\a_{21}&a_{22}&a_{23}\\\\a_{31}&a_{32}&a_{33}\\end{matrix}\\right|');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left(\\begin{matrix}{a_{11}}&\\cdots&{a_{1n}}\\\\\\vdots&\\ddots&\\vdots\\\\{a_{m1}}&\\cdots&{a_{mn}}\\end{matrix}\\right)');
+        return gsReplaceFun('\\left(\\begin{matrix}a_{11}&\\cdots&a_{1n}\\\\\\vdots&\\ddots&\\vdots\\\\a_{m1}&\\cdots&a_{mn}\\end{matrix}\\right)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left[\\begin{matrix}{a_{11}}&\\cdots&{a_{1n}}\\\\\\vdots&\\ddots&\\vdots\\\\{a_{m1}}&\\cdots&{a_{mn}}\\end{matrix}\\right]');
+        return gsReplaceFun('\\left[\\begin{matrix}a_{11}&\\cdots&a_{1n}\\\\\\vdots&\\ddots&\\vdots\\\\a_{m1}&\\cdots&a_{mn}\\end{matrix}\\right]');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\left|\\begin{matrix}{a_{11}}&\\cdots&{a_{1n}}\\\\\\vdots&\\ddots&\\vdots\\\\{a_{m1}}&\\cdots&{a_{mn}}\\end{matrix}\\right|');
+        return gsReplaceFun('\\left|\\begin{matrix}a_{11}&\\cdots&a_{1n}\\\\\\vdots&\\ddots&\\vdots\\\\a_{m1}&\\cdots&a_{mn}\\end{matrix}\\right|');
       }}
     ]},
     {name:'a16', className:'width70', dropMenu: [
@@ -1482,7 +1489,7 @@ var mySettings = {
       return gsReplaceFun('f\'(x)');
     }},
     {name:'', className:'', replaceWith: function(){
-      return gsReplaceFun('\\dfrac{\\text{d}y}{\\text{d}x}');
+      return gsReplaceFun('\\dfrac{\\text dy}{\\text dx}');
     }},
     {name:'', className:'', replaceWith: function(){
       return gsReplaceFun('\\dfrac{\\Delta y}{\\Delta x}');
@@ -1510,16 +1517,16 @@ var mySettings = {
         return gsReplaceFun('\\dfrac{-b\\pm\\sqrt{b^2 - 4ac}}{2a}');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\int f(x)\\text{d}x');
+        return gsReplaceFun('\\int f(x)\\text dx');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('\\int_a^bf(x)\\text{d}x');
+        return gsReplaceFun('\\int_a^bf(x)\\text dx');
       }},
       {name:'', className:'', replaceWith: function(){
         return gsReplaceFun('\\lim\\limits_{x\\to\\infty}f(x)');
       }},
       {name:'', className:'', replaceWith: function(){
-        return gsReplaceFun('f(x)=\\left\\{\\begin{array}{}a\\\\b\\\\c\\end{array}\\begin{array}{},x>0\\\\,x=0\\\\,x<0\\end{array}\\right.');
+        return gsReplaceFun('f(x)=\\left\\{\\begin{array}{}a,&x\\gt0\\\\b,&x=0\\\\c,&x\\lt0\\end{array}\\right.');
       }}
     ]},
     {name:'媒体库',

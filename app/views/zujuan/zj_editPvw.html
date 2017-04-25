@@ -54,8 +54,11 @@
   <div class="panel panel-default" ng-if="zuJuanParam.showSjzSj">
     <div class="panel-heading">
       <h3 class="panel-title" style="line-height: 28px;">
-        <a href="javascript:void(0)" class="ml15" ng-repeat="sj in sjList" ng-class="{active: shiJuanActive == $index}"
-           ng-bind="'卷'+ ($index + 1)" ng-click="showShiJuanDtl(sj, $index)"></a>
+        <a href="javascript:void(0)" class="plr10" ng-repeat="sj in sjList" ng-class="{active: shiJuanActive == $index}"
+           ng-click="showShiJuanDtl(sj, $index)">
+          <span ng-bind="'卷'+ ($index + 1)"></span>
+          <span ng-if="sj['备注']" ng-bind="'—《' + sj['备注'] + '》'"></span>
+        </a>
         <button type="button" class="btn btn-danger pull-right" ng-click="closeSjzPaper()">关闭</button>
       </h3>
     </div>

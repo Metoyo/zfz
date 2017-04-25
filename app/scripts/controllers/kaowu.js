@@ -323,8 +323,8 @@ define(['angular', 'config', 'jquery', 'lazy', 'datepicker'], // 000 开始
               '考试须知': '',
               '考试组设置': {
                 '随机试卷': false,
-                '选项乱序': true,
-                '题目乱序': true,
+                '选项乱序': false,
+                '题目乱序': false,
                 '填空题笔答': false,
                 '问答题笔答': true,
                 '现场评分': false,

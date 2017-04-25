@@ -1,47 +1,51 @@
 <!--条件选中-->
 <div class="row editKaoShi">
-  <form class="form-horizontal" name="kaoshiForm">
-    <div class="form-group">
-      <label>请选择一个</label>
-      <select class="h28" ng-options="kxh['课序号ID'] as kxh['课序号名称'] for kxh in kxhList" ng-model="kjParams.sltKxh"
-              ng-change="getTongJiDt(kjParams.sltKxh, 'kxh')">
-        <option value="">课序号</option>
-      </select>
-      <!--<label class="ml15" ng-if="banJiList.length > 0">或者</label>-->
-      <!--<select class="h28" ng-if="banJiList.length > 0" ng-options="bj['班级ID'] as bj['班级名称'] for bj in banJiList"-->
-              <!--ng-model="kjParams.sltBj" ng-change="getTongJiDt(kjParams.sltBj, 'bj')">-->
-        <!--<option value="">行政班</option>-->
-      <!--</select>-->
-    </div>
-  </form>
+    <form class="form-horizontal" name="kaoshiForm">
+        <div class="form-group">
+            <label>请选择一个</label>
+            <select class="h28" ng-options="kxh['课序号ID'] as kxh['课序号名称'] for kxh in kxhList" ng-model="kjParams.sltKxh"
+                    ng-change="getTongJiDt(kjParams.sltKxh, 'kxh')">
+                <option value="">课序号</option>
+            </select>
+            <!--<label class="ml15" ng-if="banJiList.length > 0">或者</label>-->
+            <!--<select class="h28" ng-if="banJiList.length > 0" ng-options="bj['班级ID'] as bj['班级名称'] for bj in banJiList"-->
+            <!--ng-model="kjParams.sltBj" ng-change="getTongJiDt(kjParams.sltBj, 'bj')">-->
+            <!--<option value="">行政班</option>-->
+            <!--</select>-->
+        </div>
+    </form>
 </div>
 <!--题目列表-->
 <div class="row">
-  <h4 class="fz16 pull-left wp100">
-    <span class="pull-left mr15 mt5" ng-bind="ceYanTongJiDt.bjName"></span>
-    <span class="pull-left mt5" ng-if="ceYanTongJiDt.bjPepNum > 0">共 {{ceYanTongJiDt.bjPepNum}} 人</span>
-    <button type="button" class="btn btn-primary pull-right" ng-click="exportTestScore()">导出Excel</button>
-  </h4>
-  <table class="table table-bordered table-striped">
-    <tr class="active">
-      <th>学号</th>
-      <th>姓名</th>
-      <th>课序号</th>
-      <th>班级</th>
-      <th>参与测验次数</th>
-      <th>总测验次数</th>
-      <th>正确数</th>
-      <th>总题数</th>
-    </tr>
-    <tr ng-repeat="usr in ceYanTongJiDt.stus">
-      <td ng-bind="usr['学号']"></td>
-      <td ng-bind="usr['姓名']"></td>
-      <td ng-bind="usr['课序号名称']"></td>
-      <td ng-bind="usr['班级名称']"></td>
-      <td ng-bind="usr['测验成绩']['参与测验次数'] || 0"></td>
-      <td ng-bind="usr['测验成绩']['总测验次数'] || 0"></td>
-      <td ng-bind="usr['测验成绩']['正确题数'] || 0"></td>
-      <td ng-bind="usr['测验成绩']['总题数'] || 0"></td>
-    </tr>
-  </table>
+    <h4 class="fz16 pull-left wp100">
+        <span class="pull-left mr15 mt5" ng-bind="ceYanTongJiDt.bjName"></span>
+        <span class="pull-left mt5" ng-if="ceYanTongJiDt.bjPepNum > 0">共 {{ceYanTongJiDt.bjPepNum}} 人</span>
+        <button type="button" class="btn btn-primary pull-right" ng-click="exportTestScore()">导出Excel</button>
+    </h4>
+    <table class="table table-bordered table-striped">
+        <tr class="active">
+            <th>学号</th>
+            <th>姓名</th>
+            <th>课序号</th>
+            <th>班级</th>
+            <th>总测验次数</th>
+            <th>参与测验次数</th>
+            <th>参与率</th>
+            <th>总题数</th>
+            <th>正确数</th>
+            <th>正确率</th>
+        </tr>
+        <tr ng-repeat="usr in ceYanTongJiDt.stus">
+            <td ng-bind="usr['学号']"></td>
+            <td ng-bind="usr['姓名']"></td>
+            <td ng-bind="usr['课序号名称']"></td>
+            <td ng-bind="usr['班级名称']"></td>
+            <td ng-bind="ceYanTongJiDt.testNum"></td>
+            <td ng-bind="usr['测验成绩']['参与测验次数'] || 0"></td>
+            <td ng-bind="(((usr['测验成绩']['参与测验次数'] || 0)/(ceYanTongJiDt.testNum || 1))*100).toFixed(1) + '%'"></td>
+            <td ng-bind="ceYanTongJiDt.itemNum"></td>
+            <td ng-bind="usr['测验成绩']['正确题数'] || 0"></td>
+            <td ng-bind="(((usr['测验成绩']['正确题数'] || 0)/(ceYanTongJiDt.itemNum || 1))*100).toFixed(1) + '%'"></td>
+        </tr>
+    </table>
 </div>
