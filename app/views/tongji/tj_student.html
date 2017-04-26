@@ -84,27 +84,26 @@
                 (本题得分率：<b ng-bind="xtm['得分率'] + '%'"></b>)
                 (阅卷教师：<b ng-bind="xtm['考生作答']['阅卷教师']"></b>)
               </h4>
-              <!-- 单选题 -->
-              <div class="ar-tzs" ng-if="xtm['题型ID'] == 1">
-                <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
-                  <p class="positionAb">
-                    <input type="radio" name="{{'radio' + $parent.$index}}" value="{{$index}}"
-                           ng-model="xtm['考生作答']['考生答案']" disabled/> {{'(' + tjParas.letterArr[$index] + ')'}}
-                  </p>
-                  <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm['考生作答']['考生答案'] == tjParas.letterArr[$index]}"></p>
+                <!-- 单选题 -->
+                <div class="ar-tzs" ng-if="xtm['题型ID'] == 1">
+                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index" ng-class="{clRed:tznr.ckd}">
+                        <p class="positionAb">
+                            <input type="radio" name="{{'radio' + $parent.$index}}" value="{{$index}}"
+                                   ng-checked="tznr.ckd" disabled/> {{'(' + tjParas.letterArr[$index] + ')'}}
+                        </p>
+                        <p class="pl40" ng-bind-html="tznr['选项内容']"></p>
+                    </div>
                 </div>
-              </div>
-              <!-- 多选题 -->
-              <div class="ar-tzs" ng-if="xtm['题型ID'] == 2">
-                <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
-                  <p class="positionAb">
-                    <input type="checkbox" name="{{'checkbox' + $parent.$index}}"
-                           ng-checked="xtm['考生作答']['考生答案'].indexOf(tjParas.letterArr[$index]) > -1" disabled/>
-                    {{'(' + tjParas.letterArr[$index] + ')'}}
-                  </p>
-                  <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm['考生作答']['考生答案'] == tjParas.letterArr[$index]}"></p>
+                <!-- 多选题 -->
+                <div class="ar-tzs" ng-if="xtm['题型ID'] == 2">
+                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index" ng-class="{clRed:tznr.ckd}">
+                        <p class="positionAb">
+                            <input type="checkbox" name="{{'checkbox' + $parent.$index}}"
+                                   ng-checked="tznr.ckd" disabled/>{{'(' + tjParas.letterArr[$index] + ')'}}
+                        </p>
+                        <p class="pl40" ng-bind-html="tznr['选项内容']"></p>
+                    </div>
                 </div>
-              </div>
               <!-- 判读题 -->
               <div class="ar-tzs" ng-if="xtm['题型ID'] == 3">
                 <span ng-class="{clRed:xtm['考生作答']['考生答案'] == 1}">

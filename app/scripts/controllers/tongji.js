@@ -313,7 +313,7 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
             $http(obj).success(function(data){
               if(data.result && data.data){
                 pageMake(data.data);
-                kaoShiZuStore = Lazy(data.data).reverse().toArray();
+                kaoShiZuStore = Lazy(data.data).sortBy('考试组ID').reverse().toArray();
                 $scope.kaoShiZuDist(1);
                 $scope.tj_tabActive = 'kaoshiTj';
                 $scope.isTjDetailShow = false;

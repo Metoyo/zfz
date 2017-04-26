@@ -72,23 +72,22 @@
                   </h4>
                   <!-- 单选题 -->
                   <div class="ar-tzs" ng-if="xtm['题型ID'] == 1">
-                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
+                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index" ng-class="{clRed:tznr.ckd}">
                       <p class="positionAb">
                         <input type="radio" name="{{'radio' + $parent.$index}}" value="{{$index}}"
-                               ng-model="xtm['考生作答']['考生答案']" disabled/> {{'(' + stuParams.letterArr[$index] + ')'}}
+                               ng-checked="tznr.ckd" disabled/> {{'(' + tjParas.letterArr[$index] + ')'}}
                       </p>
-                      <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm['考生作答']['考生答案'] == stuParams.letterArr[$index]}"></p>
+                      <p class="pl40" ng-bind-html="tznr['选项内容']"></p>
                     </div>
                   </div>
                   <!-- 多选题 -->
                   <div class="ar-tzs" ng-if="xtm['题型ID'] == 2">
-                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
+                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index" ng-class="{clRed:tznr.ckd}">
                       <p class="positionAb">
                         <input type="checkbox" name="{{'checkbox' + $parent.$index}}"
-                               ng-checked="xtm['考生作答']['考生答案'].indexOf(stuParams.letterArr[$index]) > -1" disabled/>
-                        {{'(' + stuParams.letterArr[$index] + ')'}}
+                               ng-checked="tznr.ckd" disabled/>{{'(' + tjParas.letterArr[$index] + ')'}}
                       </p>
-                      <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm['考生作答']['考生答案'] == stuParams.letterArr[$index]}"></p>
+                      <p class="pl40" ng-bind-html="tznr['选项内容']"></p>
                     </div>
                   </div>
                   <!-- 判读题 -->
@@ -104,7 +103,7 @@
                   <!--&lt;!&ndash; 填空题 &ndash;&gt;-->
                   <!--<div class="ar-tzs" ng-if="xtm['题型ID'] == 4" ng-bind-html="xtm">-->
                   <!--</div>-->
-                   <!-- 题型ID大于等于5 -->
+                  <!-- 题型ID大于等于5 -->
                   <div class="ar-tzs itemHasImg" ng-if="xtm['题型ID'] >= 5" ng-bind-html="xtm['考生作答']['考生答案']">
                   </div>
                   <h5>标准答案：<span ng-bind-html="xtm['题目内容']['答案']"></span></h5>

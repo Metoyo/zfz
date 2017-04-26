@@ -176,27 +176,26 @@
                 (本题得分率：<b ng-bind="xtm['得分率'] + '%'"></b>)
                 (阅卷教师：<b ng-bind="xtm['考生作答']['阅卷教师']"></b>)
               </h4>
-              <!-- 单选题 -->
-              <div class="ar-tzs" ng-if="xtm['题型ID'] == 1">
-                <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
-                  <p class="positionAb">
-                    <input type="radio" name="{{'radio' + $parent.$index}}" value="{{$index}}"
-                           ng-model="xtm['考生作答']['考生答案']" disabled/> {{'(' + tjParas.letterArr[$index] + ')'}}
-                  </p>
-                  <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm['考生作答']['考生答案'] == tjParas.letterArr[$index]}"></p>
+                <!-- 单选题 -->
+                <div class="ar-tzs" ng-if="xtm['题型ID'] == 1">
+                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index" ng-class="{clRed:tznr.ckd}">
+                        <p class="positionAb">
+                            <input type="radio" name="{{'radio' + $parent.$index}}" value="{{$index}}"
+                                   ng-checked="tznr.ckd" disabled/> {{'(' + tjParas.letterArr[$index] + ')'}}
+                        </p>
+                        <p class="pl40" ng-bind-html="tznr['选项内容']"></p>
+                    </div>
                 </div>
-              </div>
-              <!-- 多选题 -->
-              <div class="ar-tzs" ng-if="xtm['题型ID'] == 2">
-                <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index">
-                  <p class="positionAb">
-                    <input type="checkbox" name="{{'checkbox' + $parent.$index}}"
-                           ng-checked="xtm['考生作答']['考生答案'].indexOf(tjParas.letterArr[$index]) > -1" disabled/>
-                    {{'(' + tjParas.letterArr[$index] + ')'}}
-                  </p>
-                  <p class="pl40" ng-bind-html="tznr" ng-class="{clRed:xtm['考生作答']['考生答案'] == tjParas.letterArr[$index]}"></p>
+                <!-- 多选题 -->
+                <div class="ar-tzs" ng-if="xtm['题型ID'] == 2">
+                    <div class="ar-tz" ng-repeat="tznr in xtm['题目内容']['选项'] track by $index" ng-class="{clRed:tznr.ckd}">
+                        <p class="positionAb">
+                            <input type="checkbox" name="{{'checkbox' + $parent.$index}}"
+                                   ng-checked="tznr.ckd" disabled/>{{'(' + tjParas.letterArr[$index] + ')'}}
+                        </p>
+                        <p class="pl40" ng-bind-html="tznr['选项内容']"></p>
+                    </div>
                 </div>
-              </div>
               <!-- 判读题 -->
               <div class="ar-tzs" ng-if="xtm['题型ID'] == 3">
                 <span ng-class="{clRed:xtm['考生作答']['考生答案'] == 1}">
@@ -275,3 +274,68 @@
     </div>
   </div>
 </div>
+
+<!--<div>-->
+    <!--<h4>-->
+        <!--<span>{{cnNumArr[i]}}、</span>-->
+        <!--<span>{{dati['大题名称']}}</span>-->
+    <!--</h4>-->
+    <!--<ul class="list-unstyled">-->
+        <!--{{each dati['题目'] as xtm j}}-->
+        <!--<li class="ptb5">-->
+            <!--<h4 class="ar-tiGan itemHasImg">-->
+                <!--<span>{{(j + 1) + '、' + xtm['题目内容']['题干']}}</span>-->
+                <!--(本小题  <b>{{xtm['分值']}}</b>  分)-->
+                <!--(最后得分：<b class="clRed">{{xtm['考生作答']['得分']}}</b>  分-->
+                <!--{{if xtm['考生作答']['阅卷'].length > 0}}-->
+                <!--阅卷教师：-->
+                <!--{{each xtm['考生作答']['阅卷'] as yjjs l}}-->
+                <!--<b style="margin-left: 5px">-->
+                    <!--{{yjjs['评分教师姓名']}}-->
+                <!--</b>-->
+                <!--{{/each}}-->
+                <!--{{/if}})-->
+            <!--</h4>-->
+            <!--<div class="ar-tzs itemHasImg">-->
+                <!--&lt;!&ndash; 单选题 &ndash;&gt;-->
+                <!--{{if xtm['题型ID'] == 1}}-->
+                <!--{{each xtm['题目内容']['选项'] as tznr k}}-->
+                <!--<div class="ar-tz">-->
+                    <!--<p class="positionAb">-->
+                        <!--<input class="fLeft" type="radio" name="{{'radio' + j}}" value="{{letterArr[k]}}" {{xtm['考生作答']['考生答案']==k ? 'checked' : ''}}/>-->
+                        <!--<span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>-->
+                    <!--</p>-->
+                    <!--<p class="pl40 {{xtm['考生作答']['考生答案']==k ? 'bdBottom' : ''}}">{{{tznr}}}</p>-->
+                <!--</div>-->
+                <!--{{/each}}-->
+                <!--{{/if}}-->
+                <!--&lt;!&ndash; 多选题 &ndash;&gt;-->
+                <!--{{if xtm['题型ID'] == 2}}-->
+                <!--{{each xtm['题目内容']['选项'] as tznr k}}-->
+                <!--<div class="ar-tz">-->
+                    <!--<p class="positionAb">-->
+                        <!--<input type="checkbox" class="fLeft" name="{{'checkbox' + j}}" {{xtm['考生作答']['考生答案'].indexOf(k)>-1 ? 'checked' : ''}}"/>-->
+                        <!--<span class="fLeft">{{'(' + letterArr[k] + ')'}}</span>-->
+                    <!--</p>-->
+                    <!--<p class="pl40 {{xtm['考生作答']['考生答案'].indexOf(k)>-1 ? 'bdBottom' : ''}}">{{{tznr}}}</p>-->
+                <!--</div>-->
+                <!--{{/each}}-->
+                <!--{{/if}}-->
+                <!--&lt;!&ndash; 判读题 &ndash;&gt;-->
+                <!--{{if xtm['题型ID'] == 3}}-->
+                <!--<span>-->
+				<!--<input type="radio" name="{{'pdRadio' + j}}" value="对" {{xtm['考生作答']['考生答案']==1 ? 'checked' : ''}}/>  <span class="{{xtm['考生作答']['考生答案']==1 ? 'bdBottom' : ''}}">对</span>-->
+				<!--</span>-->
+                <!--<span>-->
+				<!--<input type="radio" name="{{'pdRadio' + j}}" value="错" style="margin: 0 0 0 20px" {{xtm['考生作答']['考生答案']==0 ? 'checked' : ''}}/>  <span class="{{xtm['考生作答']['考生答案']==0 ? 'bdBottom' : ''}}">错</span>-->
+				<!--</span>-->
+                <!--{{/if}}-->
+                <!--&lt;!&ndash; 题型ID大于等于5 &ndash;&gt;-->
+                <!--{{if xtm['题型ID'] >= 5}}-->
+                <!--<p style="margin: 0;padding: 0;text-align: center;width: 100%;">{{{xtm['考生作答']['考生答案']}}}</p>-->
+                <!--{{/if}}-->
+            <!--</div>-->
+        <!--</li>-->
+        <!--{{/each}}-->
+    <!--</ul>-->
+<!--</div>-->

@@ -87,22 +87,39 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           if(tm['题型ID'] <= 2){ //修改选择题答案
             var daanStr = tm['题目内容']['答案'];
             var tzStr = tm['题目内容']['选项'];
+            var zdDaan = tm['考生作答'] ? tm['考生作答']['考生答案'] : 'null';
             var daan = [];
             if(tm['题型ID'] == 1){
-              daan.push(letterArr[daanStr]);
+              Lazy(tzStr).each(function (tz, idx) {
+                tz.ckd = false;
+                if(tz['选项序号'] == daanStr){ //处理标准答案
+                  daan.push(letterArr[idx]);
+                }
+                if(tz['选项序号'] == zdDaan){ //处理考生答案
+                  tz.ckd = true;
+                }
+              });
             }
             else{
               var daanArr = [];
+              var zdDaanArr = zdDaan.split(',');
               if(daanStr && typeof(daanStr) == 'string'){
                 daanArr = JSON.parse(daanStr);
               }
               else{
                 daanArr = daanStr;
               }
-              var daanLen = daanArr.length || 0;
-              for(var i = 0; i < daanLen; i++){
-                daan.push(letterArr[daanArr[i]]);
-              }
+              // var daanLen = daanArr.length || 0;
+              Lazy(tzStr).each(function (tz, idx) {
+                var isIn = Lazy(daanArr).contains(tz['选项序号']); // 处理标准答案
+                if(isIn){
+                  daan.push(letterArr[idx]);
+                }
+                tz.ckd = Lazy(zdDaanArr).contains(tz['选项序号'].toString()); //处理考生答案
+              })
+              // for(var i = 0; i < daanLen; i++){
+              //   daan.push(letterArr[daanArr[i]]);
+              // }
             }
             tm['题目内容']['答案'] = daan.join(',');
             if(tzStr && typeof(tzStr) == 'string'){
