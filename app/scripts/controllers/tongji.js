@@ -796,7 +796,7 @@ define(['angular', 'config', 'charts', 'jquery', 'lazy'],
                       return dfl['题目ID'] == tm['题目ID'];
                     });
                     tm['得分率'] = findTar ? findTar['得分率'] : 0;
-                    tm = DataService.formatDaAn(tm);
+                    tm = DataService.formatDaAnZuoDa(tm);
                   });
                 });
                 finaData.sj_tm = data.data['试卷题目'];

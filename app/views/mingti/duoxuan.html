@@ -117,6 +117,12 @@
         </div>
         <div class="form-group answerBox">
           <div class="col-sm-8 col-sm-offset-1 text-right">
+              <div class="pull-left">
+                  <span>显示题支数量：</span>
+                  <input class="text-center w40" type="text" ng-model="timu['题目内容']['题支数量']" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                         onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="2">
+                  <em class="cYell ml10">(为空时，显示全部题支)</em>
+              </div>
             <a href="javascript:void(0)" ng-click="showDuoXuanTiZhiEditor();showDuoXuanTiZhiEdt=true"
                ng-hide="showDuoXuanTiZhiEdt">题支编辑器</a>
             <a href="javascript:void(0)" ng-click="removeTiZhiEditor();showDuoXuanTiZhiEdt=false"

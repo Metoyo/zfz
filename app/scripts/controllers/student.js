@@ -483,7 +483,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
               finaData.sj_name = data.data['试卷组名称'];
               Lazy(data.data['试卷题目']).each(function(dt){
                 Lazy(dt['题目']).each(function(tm){
-                  tm = DataService.formatDaAn(tm);
+                  tm = DataService.formatDaAnZuoDa(tm);
                 });
               });
               finaData.sj_tm = data.data['试卷题目'];

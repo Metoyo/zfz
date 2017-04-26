@@ -87,39 +87,22 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           if(tm['题型ID'] <= 2){ //修改选择题答案
             var daanStr = tm['题目内容']['答案'];
             var tzStr = tm['题目内容']['选项'];
-            var zdDaan = tm['考生作答'] ? tm['考生作答']['考生答案'] : 'null';
             var daan = [];
             if(tm['题型ID'] == 1){
-              Lazy(tzStr).each(function (tz, idx) {
-                tz.ckd = false;
-                if(tz['选项序号'] == daanStr){ //处理标准答案
-                  daan.push(letterArr[idx]);
-                }
-                if(tz['选项序号'] == zdDaan){ //处理考生答案
-                  tz.ckd = true;
-                }
-              });
+              daan.push(letterArr[daanStr]);
             }
             else{
               var daanArr = [];
-              var zdDaanArr = zdDaan.split(',');
               if(daanStr && typeof(daanStr) == 'string'){
                 daanArr = JSON.parse(daanStr);
               }
               else{
                 daanArr = daanStr;
               }
-              // var daanLen = daanArr.length || 0;
-              Lazy(tzStr).each(function (tz, idx) {
-                var isIn = Lazy(daanArr).contains(tz['选项序号']); // 处理标准答案
-                if(isIn){
-                  daan.push(letterArr[idx]);
-                }
-                tz.ckd = Lazy(zdDaanArr).contains(tz['选项序号'].toString()); //处理考生答案
-              })
-              // for(var i = 0; i < daanLen; i++){
-              //   daan.push(letterArr[daanArr[i]]);
-              // }
+              var daanLen = daanArr.length || 0;
+              for(var i = 0; i < daanLen; i++){
+                daan.push(letterArr[daanArr[i]]);
+              }
             }
             tm['题目内容']['答案'] = daan.join(',');
             if(tzStr && typeof(tzStr) == 'string'){
@@ -210,6 +193,136 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
           }
           return tm;
         };
+
+        //作答重现的题目答案格式化
+          this.formatDaAnZuoDa = function(tm){
+              var letterArr = config.letterArr;
+              if(tm['题型ID'] <= 2){ //修改选择题答案
+                  var daanStr = tm['题目内容']['答案'];
+                  var tzStr = tm['题目内容']['选项'];
+                  var zdDaan = tm['考生作答'] ? tm['考生作答']['考生答案'] : 'null';
+                  var daan = [];
+                  if(tm['题型ID'] == 1){
+                      Lazy(tzStr).each(function (tz, idx) {
+                          tz.ckd = false;
+                          if(tz['选项序号'] == daanStr){ //处理标准答案
+                              daan.push(letterArr[idx]);
+                          }
+                          if(tz['选项序号'] == zdDaan){ //处理考生答案
+                              tz.ckd = true;
+                          }
+                      });
+                  }
+                  else{
+                      var daanArr = [];
+                      var zdDaanArr = zdDaan.split(',');
+                      if(daanStr && typeof(daanStr) == 'string'){
+                          daanArr = JSON.parse(daanStr);
+                      }
+                      else{
+                          daanArr = daanStr;
+                      }
+                      // var daanLen = daanArr.length || 0;
+                      Lazy(tzStr).each(function (tz, idx) {
+                          var isIn = Lazy(daanArr).contains(tz['选项序号']); // 处理标准答案
+                          if(isIn){
+                              daan.push(letterArr[idx]);
+                          }
+                          tz.ckd = Lazy(zdDaanArr).contains(tz['选项序号'].toString()); //处理考生答案
+                      })
+                      // for(var i = 0; i < daanLen; i++){
+                      //   daan.push(letterArr[daanArr[i]]);
+                      // }
+                  }
+                  tm['题目内容']['答案'] = daan.join(',');
+                  if(tzStr && typeof(tzStr) == 'string'){
+                      tm['题目内容']['选项'] = JSON.parse(tzStr);
+                  }
+              }
+              if(tm['题型ID'] == 3){ //修改判断题答案
+                  tm['题目内容']['答案'] = tm['题目内容']['答案'] ? '对' : '错';
+              }
+              if(tm['题型ID'] == 4){ //修改填空题的答案
+                  var tkTgStr = tm['题目内容']['题干'];
+                  var daAnFormatReg = new RegExp('<\%{.*?}\%>', 'g');
+                  var count = 1;
+                  var daAnArr = [];
+                  tm['题目内容']['原始答案'] = angular.copy(tm['题目内容']['答案']);
+                  tm['题目内容']['原始题干'] = angular.copy(tm['题目内容']['题干']);
+                  tm['题目内容']['题干'] = tkTgStr.replace(daAnFormatReg, function(arg) {
+                      var xhStr = '';
+                      if(tm['考生作答']){ //作答重现
+                          var tkKsDa = tm['考生作答']['考生答案'];
+                          if (typeof(tkKsDa) == 'string') {
+                              tkKsDa = JSON.parse(tkKsDa);
+                          }
+                          var findDaAn = tkKsDa[count - 1];
+                          if(findDaAn){
+                              if (typeof(findDaAn) == 'string') {
+                                  findDaAn = JSON.parse(findDaAn);
+                              }
+                              if(findDaAn['答题方式'] == 2){
+                                  xhStr = '<span class="ar-tk-da"><img src="' + findDaAn['用户答案'] + '"/></span>';
+                              }
+                              else{
+                                  xhStr = '<span class="ar-tk-da">' + findDaAn['用户答案'] + '</span>';
+                              }
+                          }
+                          else{
+                              xhStr = '<span class="ar-tk-da">' + '           ' + '</span>';
+                          }
+                          count ++;
+                          return xhStr;
+                      }
+                      else{ //题目展示
+                          var text = arg.slice(2, -2);
+                          var textJson = JSON.parse(text);
+                          var _len = textJson['尺寸'];
+                          for(var i = 0; i < _len; i ++ ){
+                              xhStr += '_';
+                          }
+                          count ++;
+                          return xhStr;
+                      }
+                  });
+                  Lazy(tm['题目内容']['答案']).each(function(da){
+                      var tmp = '第' + (da['序号'] + 1) + '空：' + da['答案'].join('，');
+                      daAnArr.push(tmp);
+                  });
+                  tm['题目内容']['答案'] = daAnArr.join('；');
+              }
+              if(tm['考生作答']){
+                  if(tm['考生作答']['阅卷'] && tm['考生作答']['阅卷'].length > 0){
+                      tm['考生作答']['阅卷教师'] = Lazy(tm['考生作答']['阅卷']).map(function(yj){
+                          return yj['评分教师姓名'];
+                      }).join(',');
+                  }
+                  if(tm['题型ID'] == 2){
+
+                  }
+                  if(tm['题型ID'] >= 5){
+                      var jstKsDa = tm['考生作答']['考生答案'];
+                      var jstKsFinalDaAn = [];
+                      if(typeof(jstKsDa) == 'string'){
+                          jstKsDa = JSON.parse(jstKsDa);
+                      }
+                      for(var key in jstKsDa){
+                          var bdDaObj = '';
+                          if(typeof(jstKsDa[key]) == 'string'){
+                              bdDaObj = JSON.parse(jstKsDa[key]);
+                          }
+                          else{
+                              bdDaObj = jstKsDa[key];
+                          }
+                          if(bdDaObj){
+                              jstKsFinalDaAn.push('<img src="' + bdDaObj['用户答案'] + '"/>');
+                          }
+                      }
+                      tm['考生作答']['考生答案'] = jstKsFinalDaAn.join(' ');
+                  }
+              }
+              return tm;
+          };
 
         //中文排序
         this.cnSort = function(data, par){

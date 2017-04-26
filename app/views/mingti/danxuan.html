@@ -60,6 +60,7 @@
         <div id="mediaPlugin" class="popup-wrap">
           <div class="popup-wrap-inner">
             <div class="pwi-header plr10 text-center">
+              <!--<input id="fileUpload" type="file" file-upload class="pull-left hide addFileBtn"/>-->
               <input id="fileUpload" type="file" class="pull-left hide addFileBtn" multiple onchange="angular.element(this).scope().fileNameChanged(this)"/>
               <button ng-click="addMyFile('img')" class="btn btn-success mt7">添加图片</button>
               <button ng-click="addMyFile('mp3')" class="btn btn-success ml15 mt7">添加音频</button>
@@ -127,6 +128,12 @@
         </div>
         <div class="form-group answerBox">
           <div class="col-sm-8 col-sm-offset-1 text-right">
+              <div class="pull-left">
+                  <span>显示题支数量：</span>
+                  <input class="text-center w40" type="text" ng-model="timu['题目内容']['题支数量']" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                         onafterpaste="this.value=this.value.replace(/\D/g,'')" maxlength="2">
+                  <em class="cYell ml10">(为空时，显示全部题支)</em>
+              </div>
             <a href="javascript:void(0)" ng-click="showDanXuanTiZhiEditor();showTiZhiEdt=true" ng-hide="showTiZhiEdt">题支编辑器</a>
             <a href="javascript:void(0)" ng-click="removeTiZhiEditor();showTiZhiEdt=false" ng-show="showTiZhiEdt">关闭题支编辑器</a>
           </div>
