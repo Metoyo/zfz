@@ -397,6 +397,7 @@ define(['angular', 'config', 'jquery', 'lazy'], function (angular, config, $, la
         $scope.queryKaoShiZuDetail = function(ks){
           $scope.selectKsz = Lazy($scope.stuParams.bmKszArr).find(function(ksz){ return ksz['考试组ID'] == ks['考试组ID']}) || '';
           if($scope.selectKsz){
+            $scope.selectKsz['考试'] = Lazy($scope.selectKsz['考试']).sortBy('考试ID').toArray();
             Lazy($scope.selectKsz['考试']).each(function(cc){
               if(cc['考试ID'] == ks['考试ID']){
                 cc.ckd = ks['状态'] == 1;

@@ -20,7 +20,10 @@
           <th width="80px" class="text-center">操作</th>
         </tr>
         <tr ng-repeat="ks in kaoShiArrs">
-          <td ng-bind="ks['考试组名称']"></td>
+          <td>
+            <span ng-bind="ks['考试组名称']"></span>
+            <span class="co676767" ng-if="ks.baoMingStart==false">(报名已截止)</span>
+          </td>
           <td ng-bind="ks['考点名称']"></td>
           <td class="text-center">
             <span class="clRed" ng-if="ks['状态']==0">未报名</span>
@@ -68,38 +71,38 @@
         </tr>
       </table>
     </div>
-    <div class="row" ng-show="selectKsz">
-      <h4 class="pb10">
-        <span ng-bind="selectKsz['考试组名称']"></span>
-        <button type="button" class="btn btn-success pull-right" ng-if="selectKsz.baoMingStart==true" ng-click="saveStudentSelcet()">确定报名</button>
-        <button type="button" class="btn btn-danger pull-right mr10" ng-click="backToKszList()">返回</button>
-      </h4>
-      <table class="table table-striped">
-        <tr>
-          <th>场次</th>
-          <th>开考时间</th>
-          <th>操作</th>
-        </tr>
-        <tr ng-repeat="cc in selectKsz['考试']">
-          <td ng-bind="cc['考试名称']"></td>
-          <td ng-bind="cc['开始时间'] | localDate:'ww'"></td>
-          <td class="bmKaoDianBox">
-            <div class="form-body mr5" ng-if="selectKsz.baoMingStart==true">
-              <div class="radio" ng-class="{'radio-select':cc.ckd}" ng-if="cc['已报名人数'] < cc['考位数']" ng-click="bmKaoDianSelect(cc)">
-                <span class="glyphicon glyphicon-ok"></span>
-              </div>
-              <span ng-bind="cc['考点名称']"></span><span ng-if="cc['已报名人数'] >= cc['考位数']">
-                (<b class="co676767">已满</b>)
-                <b class="clRed" ng-if="cc.ckd">(已报)</b>
-              </span>
-            </div>
-            <div class="form-body mr5" ng-if="selectKsz.baoMingStart==false">
-              <span ng-bind="cc['考点名称']"></span><span ng-if="cc.ckd"><b class="clRed">(已报)</b></span>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div>
+    <!--<div class="row" ng-show="selectKsz">-->
+    <!--<h4 class="pb10">-->
+    <!--<span ng-bind="selectKsz['考试组名称']"></span>-->
+    <!--<button type="button" class="btn btn-success pull-right" ng-if="selectKsz.baoMingStart==true" ng-click="saveStudentSelcet()">确定报名</button>-->
+    <!--<button type="button" class="btn btn-danger pull-right mr10" ng-click="backToKszList()">返回</button>-->
+    <!--</h4>-->
+    <!--<table class="table table-striped">-->
+    <!--<tr>-->
+    <!--<th>场次</th>-->
+    <!--<th>开考时间</th>-->
+    <!--<th>操作</th>-->
+    <!--</tr>-->
+    <!--<tr ng-repeat="cc in selectKsz['考试']">-->
+    <!--<td ng-bind="cc['考试名称']"></td>-->
+    <!--<td ng-bind="cc['开始时间'] | localDate:'ww'"></td>-->
+    <!--<td class="bmKaoDianBox">-->
+    <!--<div class="form-body mr5" ng-if="selectKsz.baoMingStart==true">-->
+    <!--<div class="radio" ng-class="{'radio-select':cc.ckd}" ng-if="cc['已报名人数'] < cc['考位数']" ng-click="bmKaoDianSelect(cc)">-->
+    <!--<span class="glyphicon glyphicon-ok"></span>-->
+    <!--</div>-->
+    <!--<span ng-bind="cc['考点名称']"></span><span ng-if="cc['已报名人数'] >= cc['考位数']">-->
+    <!--(<b class="co676767">已满</b>)-->
+    <!--<b class="clRed" ng-if="cc.ckd">(已报)</b>-->
+    <!--</span>-->
+    <!--</div>-->
+    <!--<div class="form-body mr5" ng-if="selectKsz.baoMingStart==false">-->
+    <!--<span ng-bind="cc['考点名称']"></span><span ng-if="cc.ckd"><b class="clRed">(已报)</b></span>-->
+    <!--</div>-->
+    <!--</td>-->
+    <!--</tr>-->
+    <!--</table>-->
+    <!--</div>-->
     <div class="row text-center">
       <p>也可扫描二维码通过微信报名、查看报考信息</p>
       <img src="/images/qrcode_for_gh_12239389f6e5_430.jpg" alt="" style="width: 200px"/>

@@ -160,9 +160,8 @@
                 <span class="glyphicon glyphicon-pencil"></span>
               </a>
               <span class="clRed pull-left" ng-if="kaoShiZuDtl['考试组设置']['随机试卷'] && kaoShiZuDtl['状态'] < 3">(此考试为随机试卷,只能修改试卷组)</span>
-              <span class="clRed pull-left" ng-if="kaoShiZuDtl['考试组设置']['随机试卷'] && kaoShiZuDtl['状态'] >= 3">(此考试为随机试卷)</span>
-              <!--a href="javascript:void(0)" ng-if="kaoShiZuDtl['状态'] < 3" ng-click="savePaperAlter()">保存修改</a-->
-              <a href="javascript:void(0)" class="ml15" ng-if="kaoShiZuDtl['状态'] < 5" ng-click="daBaoShiJuan()">重新下发试卷</a>
+              <span class="clRed pull-left" ng-if="kaoShiZuDtl['考试组设置']['随机试卷'] && kaoShiZuDtl['状态'] >= 3">(此考试为随机试卷)</span><!--a href="javascript:void(0)" ng-if="kaoShiZuDtl['状态'] < 3" ng-click="savePaperAlter()">保存修改</a-->
+              <a href="javascript:void(0)" class="ml15" ng-if="kaoShiZuDtl['状态'] > 2 && kaoShiZuDtl['状态'] < 5" ng-click="daBaoShiJuan()">重新下发试卷</a>
             </p>
             <table class="table table-striped">
               <tr class="active">
